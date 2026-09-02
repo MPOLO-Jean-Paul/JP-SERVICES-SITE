@@ -1,0 +1,2688 @@
+/* =============================================================================
+   JP-Services — Professional Polish (Dr.Fone inspired)
+   Harmonisation Dr.Fone blue, corrections mobile et perfectionnements UI
+   ============================================================================= */
+
+:root {
+    --jp-pro-blue: #1F72F1;
+    --jp-pro-blue-dark: #0E58C7;
+    --jp-pro-blue-soft: #E9F1FE;
+    --jp-pro-ink: #0B1526;
+    --jp-pro-copy: #3B4557;
+    --jp-pro-muted: #6B7385;
+    --jp-pro-line: #E5E9F0;
+    --jp-pro-panel: #FFFFFF;
+    --jp-pro-shade: #F5F7FB;
+    --jp-pro-accent: #FFB020;
+    --jp-pro-radius: 10px;
+    --jp-pro-radius-lg: 14px;
+    --jp-pro-shadow-sm: 0 2px 8px rgba(15, 23, 42, .06);
+    --jp-pro-shadow-md: 0 8px 24px rgba(15, 23, 42, .09);
+    --jp-pro-shadow-lg: 0 20px 44px rgba(15, 23, 42, .12);
+}
+
+html[data-theme="dark"] {
+    --jp-pro-blue-soft: rgba(31, 114, 241, .18);
+    --jp-pro-panel: #171B26;
+    --jp-pro-shade: #10141C;
+    --jp-pro-line: rgba(255, 255, 255, .1);
+    --jp-pro-ink: #F5F7FB;
+    --jp-pro-copy: #C2C8D4;
+    --jp-pro-muted: #8B95A6;
+}
+
+/* ---------- Bouton d'accent professionnel ---------- */
+.jp-btn-primary,
+body.jp-app .btn-primary,
+body.jp-app .btn-next {
+    background: var(--jp-pro-blue) !important;
+    border-color: var(--jp-pro-blue) !important;
+    color: #fff !important;
+    letter-spacing: -.005em;
+    transition: background .18s ease, transform .18s ease, box-shadow .18s ease;
+    box-shadow: 0 6px 18px rgba(31, 114, 241, .22);
+}
+.jp-btn-primary:hover,
+body.jp-app .btn-primary:hover,
+body.jp-app .btn-next:hover {
+    background: var(--jp-pro-blue-dark) !important;
+    border-color: var(--jp-pro-blue-dark) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px rgba(14, 88, 199, .3);
+}
+
+/* ============================================================================
+   1. FOOTER NEWSLETTER — Champ e-mail masqué, apparaît au clic sur "S'abonner"
+   ============================================================================ */
+.jp-classroom-footer .jp-footer-newsletter {
+    padding: 34px 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 28px;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+}
+.jp-footer-newsletter[data-newsletter] > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+}
+/* Bouton principal "Rester informé" affiché par défaut */
+.jp-footer-newsletter-open {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    background: var(--jp-pro-blue);
+    color: #fff;
+    border: 0;
+    border-radius: 999px;
+    font: 800 .85rem/1 inherit;
+    letter-spacing: -.005em;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(31, 114, 241, .28);
+    transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.jp-footer-newsletter-open:hover {
+    background: var(--jp-pro-blue-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(14, 88, 199, .34);
+}
+.jp-footer-newsletter-open i { font-size: .9em; }
+
+/* Le formulaire est masqué par défaut */
+.jp-footer-newsletter form,
+.jp-footer-newsletter small {
+    display: none;
+}
+.jp-footer-newsletter[data-open="true"] .jp-footer-newsletter-open {
+    display: none;
+}
+.jp-footer-newsletter[data-open="true"] form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    width: 100%;
+    max-width: 480px;
+    padding: 4px;
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 999px;
+    animation: jpNewsletterReveal .32s cubic-bezier(.2,.7,.2,1);
+    overflow: hidden;
+}
+.jp-footer-newsletter[data-open="true"] small {
+    display: block;
+    margin-top: 4px;
+    color: rgba(255, 255, 255, .55);
+    font-size: .72rem;
+}
+.jp-footer-newsletter[data-open="true"] input {
+    min-height: 44px;
+    padding: 10px 16px;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: #fff;
+    font: inherit;
+    font-size: .84rem;
+}
+.jp-footer-newsletter[data-open="true"] input::placeholder { color: rgba(255, 255, 255, .55); }
+.jp-footer-newsletter[data-open="true"] button[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 18px;
+    color: #fff;
+    background: var(--jp-pro-blue);
+    border: 0;
+    border-radius: 999px;
+    font: 800 .8rem/1 inherit;
+    cursor: pointer;
+    transition: background .18s ease;
+}
+.jp-footer-newsletter[data-open="true"] button[type="submit"]:hover { background: var(--jp-pro-blue-dark); }
+
+@keyframes jpNewsletterReveal {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 720px) {
+    .jp-classroom-footer .jp-footer-newsletter {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 24px 18px;
+    }
+    .jp-footer-newsletter[data-open="true"] form { grid-template-columns: 1fr; max-width: 100%; padding: 8px; border-radius: 14px; gap: 8px; }
+    .jp-footer-newsletter[data-open="true"] button[type="submit"] { width: 100%; justify-content: center; border-radius: 10px; }
+    .jp-footer-newsletter[data-open="true"] input { border-radius: 10px; background: rgba(255,255,255,.05); }
+}
+
+/* ============================================================================
+   2. FORMATIONS & FORMATIONS EN LIGNE — Fix chevauchements mobile
+   ============================================================================ */
+
+/* Tablet mid-range: assure une transition 3→2→1 colonne fluide */
+@media (max-width: 900px) {
+    .jp-live-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .jp-training-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .jp-training-card-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+}
+@media (max-width: 640px) {
+    .jp-live-grid { grid-template-columns: 1fr; gap: 14px; }
+    .jp-training-steps { grid-template-columns: 1fr; gap: 14px; }
+    .jp-live-card { padding: 20px; }
+    .jp-training-steps article { padding: 22px; min-height: auto; }
+    .jp-live-card-actions { flex-direction: column; align-items: stretch; }
+    .jp-live-card-actions .jp-btn { justify-content: center; width: 100%; }
+    .jp-training-hero-actions { flex-direction: column; align-items: stretch; }
+    .jp-training-hero-actions .jp-btn { justify-content: center; width: 100%; }
+}
+
+/* Cartes formations — style pro Dr.Fone */
+.jp-training-card { border-radius: var(--jp-pro-radius); }
+.jp-training-card:hover { border-color: var(--jp-pro-blue); box-shadow: var(--jp-pro-shadow-md); }
+.jp-training-card-kicker { color: var(--jp-pro-blue); }
+.jp-training-card h3 a:hover { color: var(--jp-pro-blue); }
+.jp-training-card-facts dt i { color: var(--jp-pro-blue); }
+.jp-training-domains button:hover { color: var(--jp-pro-blue); border-color: rgba(31, 114, 241, .35); }
+.jp-training-domains button.is-active { background: var(--jp-pro-blue); border-color: var(--jp-pro-blue); }
+.jp-training-domains button.is-active span { color: var(--jp-pro-blue-dark); }
+.jp-training-results-head h2 strong { color: var(--jp-pro-blue); }
+.jp-filter-reset { color: var(--jp-pro-blue); }
+.jp-training-steps article { border-top: 4px solid var(--jp-pro-blue); border-radius: var(--jp-pro-radius); }
+.jp-training-steps article > i { color: var(--jp-pro-blue); background: var(--jp-pro-blue-soft); }
+.jp-training-steps article > span { color: rgba(31, 114, 241, .14); }
+.jp-live-card { border-radius: var(--jp-pro-radius); border-color: var(--jp-pro-line); }
+.jp-live-card.is-live { border-color: #E86B62; }
+.jp-live-status { color: var(--jp-pro-blue); }
+.jp-live-access { background: var(--jp-pro-blue-soft); color: var(--jp-pro-blue); }
+
+/* Sur-héros formations en ligne */
+.jp-live-hero { background: linear-gradient(120deg, #EBF3FF 0%, #F5F7FB 100%); }
+html[data-theme="dark"] .jp-live-hero { background: linear-gradient(120deg, #10182A 0%, #0E1220 100%); }
+
+/* ============================================================================
+   3. PANNEAUX LATÉRAUX — Navigation professionnelle avec sous-détails
+   ============================================================================ */
+.oc-panel.jp-mobile-drawer {
+    width: min(360px, 92vw);
+    border-right: 1px solid var(--jp-pro-line);
+}
+.oc-panel .panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--jp-pro-line);
+    background: linear-gradient(135deg, var(--jp-pro-blue) 0%, var(--jp-pro-blue-dark) 100%);
+    color: #fff;
+}
+.oc-panel .panel-header .panel-brand,
+.oc-panel .panel-header .panel-title { color: #fff !important; font-weight: 800; letter-spacing: -.01em; }
+.oc-panel .panel-header .panel-brand img { filter: brightness(0) invert(1); }
+.oc-panel .panel-close { color: #fff; opacity: .9; }
+.oc-panel .panel-close:hover { opacity: 1; background: rgba(255,255,255,.15); }
+.oc-panel .panel-body { padding: 14px 12px 20px; background: var(--jp-pro-panel); }
+.panel-kicker {
+    display: block !important;
+    margin: 14px 12px 8px !important;
+    color: var(--jp-pro-muted) !important;
+    font-size: .68rem !important;
+    letter-spacing: .1em !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+}
+.panel-nav-list { margin: 0 0 6px; padding: 0; list-style: none; }
+.panel-nav-list li + li { margin-top: 2px; }
+.panel-nav-list a,
+.panel-nav-list button {
+    display: grid !important;
+    grid-template-columns: 40px 1fr auto !important;
+    align-items: center;
+    gap: 12px !important;
+    width: 100%;
+    padding: 12px 12px !important;
+    color: var(--jp-pro-ink) !important;
+    background: transparent !important;
+    border: 0;
+    border-radius: 10px !important;
+    text-align: left;
+    text-decoration: none;
+    font: 700 .88rem/1.25 inherit !important;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+.panel-nav-list a > span,
+.panel-nav-list button > span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+.panel-nav-list a > span > small,
+.panel-nav-list button > span > small {
+    display: block;
+    color: var(--jp-pro-muted);
+    font-size: .72rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0;
+    white-space: normal;
+}
+.panel-nav-list a:hover > span > small,
+.panel-nav-list button:hover > span > small { color: var(--jp-pro-blue-dark); opacity: .85; }
+.panel-nav-list a i:first-child,
+.panel-nav-list button i:first-child {
+    display: grid !important;
+    place-items: center;
+    width: 40px !important;
+    height: 40px !important;
+    color: var(--jp-pro-blue) !important;
+    background: var(--jp-pro-blue-soft) !important;
+    border-radius: 10px !important;
+    font-size: .95rem !important;
+}
+.panel-nav-list a:hover,
+.panel-nav-list button:hover {
+    background: var(--jp-pro-blue-soft) !important;
+    color: var(--jp-pro-blue-dark) !important;
+}
+.panel-nav-list a:hover i:first-child,
+.panel-nav-list button:hover i:first-child { background: var(--jp-pro-blue) !important; color: #fff !important; }
+.panel-nav-list a.is-active,
+.panel-nav-list button.is-active {
+    background: var(--jp-pro-blue-soft) !important;
+    color: var(--jp-pro-blue-dark) !important;
+}
+.panel-nav-list a::after {
+    grid-column: 3;
+    color: var(--jp-pro-muted);
+    content: "\f054";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: .72rem;
+    opacity: .5;
+    transition: transform .18s ease, opacity .18s ease;
+}
+.panel-nav-list a:hover::after { transform: translateX(3px); opacity: 1; color: var(--jp-pro-blue); }
+.panel-nav-list .panel-primary {
+    background: var(--jp-pro-blue) !important;
+    color: #fff !important;
+    box-shadow: 0 6px 16px rgba(31, 114, 241, .28);
+}
+.panel-nav-list .panel-primary i:first-child { background: rgba(255,255,255,.2) !important; color: #fff !important; }
+.panel-nav-list .panel-primary::after { color: rgba(255,255,255,.9); }
+.panel-nav-list .panel-primary:hover { background: var(--jp-pro-blue-dark) !important; color: #fff !important; }
+.panel-nav-list .panel-danger { color: #C53030 !important; }
+.panel-nav-list .panel-danger i:first-child { background: #FEE2E2 !important; color: #C53030 !important; }
+
+.oc-panel .panel-footer {
+    padding: 14px 20px;
+    border-top: 1px solid var(--jp-pro-line);
+    background: var(--jp-pro-shade);
+    color: var(--jp-pro-muted);
+    font-size: .72rem;
+    text-align: center;
+}
+
+/* Compte utilisateur en tête (panel droit) */
+.jp-mobile-account-summary {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 12px;
+    margin: 4px 6px 12px;
+    background: var(--jp-pro-blue-soft);
+    border-radius: 12px;
+    border: 1px solid rgba(31, 114, 241, .18);
+}
+.jp-mobile-account-summary .jp-account-avatar {
+    display: grid; place-items: center;
+    width: 44px; height: 44px;
+    background: var(--jp-pro-blue); color: #fff;
+    border-radius: 12px;
+    font-weight: 800;
+}
+.jp-mobile-account-summary strong { display: block; color: var(--jp-pro-ink); font-size: .9rem; }
+.jp-mobile-account-summary small { color: var(--jp-pro-muted); font-size: .7rem; }
+
+/* ============================================================================
+   4. HEADER / MEGA MENU — Accent bleu pro
+   ============================================================================ */
+.jp-header-menu button.is-current,
+.jp-header-link.is-current { color: var(--jp-pro-blue) !important; }
+.jp-mega-link:hover { background: var(--jp-pro-blue-soft) !important; }
+.jp-mega-link:hover i,
+.jp-mega-link:hover strong { color: var(--jp-pro-blue) !important; }
+.jp-mega-intro a { color: var(--jp-pro-blue) !important; }
+.jp-mega-label { color: var(--jp-pro-blue) !important; }
+
+/* ============================================================================
+   5. PAGE INSCRIPTION — Style pro et clair
+   ============================================================================ */
+.auth-wrapper { background: linear-gradient(120deg, #EBF3FF 0%, #F5F7FB 100%); min-height: 100vh; padding: 32px 16px; }
+html[data-theme="dark"] .auth-wrapper { background: linear-gradient(120deg, #0E1220 0%, #171B26 100%); }
+.auth-card {
+    max-width: 1080px;
+    margin: 0 auto;
+    background: var(--jp-pro-panel);
+    border: 1px solid var(--jp-pro-line);
+    border-radius: var(--jp-pro-radius-lg);
+    box-shadow: var(--jp-pro-shadow-lg);
+    padding: clamp(24px, 4vw, 44px);
+}
+.auth-card .brand-header h1 { color: var(--jp-pro-ink); font-size: clamp(1.55rem, 3vw, 2.05rem); letter-spacing: -.02em; }
+.auth-card .brand-header p { color: var(--jp-pro-copy); }
+.auth-security-note {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 12px 14px; margin: 18px 0;
+    background: var(--jp-pro-blue-soft);
+    border-left: 3px solid var(--jp-pro-blue);
+    border-radius: 8px;
+    color: var(--jp-pro-copy);
+    font-size: .82rem;
+    line-height: 1.5;
+}
+.auth-security-note i { color: var(--jp-pro-blue); margin-top: 2px; }
+.auth-meta {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    padding-top: 18px; margin-top: 20px;
+    border-top: 1px solid var(--jp-pro-line);
+}
+.auth-footer-link { color: var(--jp-pro-blue); font-weight: 700; text-decoration: none; }
+.auth-footer-link:hover { color: var(--jp-pro-blue-dark); text-decoration: underline; }
+
+/* Champs plus lisibles */
+.auth-card .form-control {
+    padding: 12px 14px;
+    border: 1px solid var(--jp-pro-line);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--jp-pro-ink);
+    font-size: .92rem;
+    transition: border-color .18s ease, box-shadow .18s ease;
+}
+.auth-card .form-control:focus {
+    border-color: var(--jp-pro-blue);
+    box-shadow: 0 0 0 3px rgba(31,114,241,.18);
+    outline: 0;
+}
+.auth-card .form-label { color: var(--jp-pro-copy); font-weight: 600; font-size: .82rem; margin-bottom: 6px; }
+.auth-card .alert-danger {
+    background: #FEECEC;
+    color: #9F1D1D;
+    border: 1px solid #F5C6C6;
+    border-left: 4px solid #C53030;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: .88rem;
+}
+.auth-card .alert-success {
+    background: #E7F6EE;
+    color: #175E3B;
+    border: 1px solid #C4E6D1;
+    border-left: 4px solid #1E7A3C;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: .88rem;
+}
+@media (max-width: 767px) {
+    .auth-wrapper { padding: 16px 12px; }
+    .auth-card { padding: 20px 18px; border-radius: 12px; }
+    .auth-meta { flex-direction: column; align-items: stretch; gap: 10px; }
+    .auth-meta .btn { width: 100%; justify-content: center; }
+}
+
+/* ============================================================================
+   6. GLOBAL — Harmonisation des accents violets vers bleu pro
+   ============================================================================ */
+body.jp-app .text-primary { color: var(--jp-pro-blue) !important; }
+body.jp-app .bg-primary { background: var(--jp-pro-blue) !important; }
+.jp-classroom-footer .jp-footer-cta-btn {
+    background: var(--jp-pro-blue) !important;
+    border-color: var(--jp-pro-blue) !important;
+    color: #fff !important;
+}
+.jp-classroom-footer .jp-footer-cta-btn:hover { background: var(--jp-pro-blue-dark) !important; }
+.home-eyebrow { color: var(--jp-pro-blue) !important; }
+
+/* ============================================================================
+   7. Google Sign-In — Séparateur pro
+   ============================================================================ */
+.jp-social-auth { display: flex; flex-direction: column; align-items: stretch; gap: 14px; margin: 0 0 18px; }
+.jp-social-auth .g_id_signin,
+.jp-social-auth .jp-google-signin { display: flex; min-height: 44px; justify-content: center; }
+.jp-google-fallback-button { align-items: center; background: #fff; border: 1px solid #d6dbe5; border-radius: 999px; color: #253047; cursor: pointer; display: inline-flex; font: inherit; font-size: .93rem; font-weight: 700; gap: 10px; justify-content: center; min-height: 44px; padding: 0 20px; transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; width: min(320px, 100%); }
+.jp-google-fallback-button i { color: #4285f4; font-size: 1.05rem; }
+.jp-google-fallback-button:hover, .jp-google-fallback-button:focus-visible { background: #f8faff; border-color: #8ab4f8; box-shadow: 0 0 0 3px rgba(66,133,244,.18); outline: 0; }
+html[data-theme="dark"] .jp-google-fallback-button { background: #fff; color: #253047; }
+.jp-google-auth-status { color: var(--jp-pro-muted); font-size: .82rem; margin: -5px 0 0; text-align: center; }
+.jp-auth-divider { position: relative; text-align: center; margin: 6px 0 2px; }
+.jp-auth-divider::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 50%;
+    height: 1px;
+    background: var(--jp-pro-line);
+}
+.jp-auth-divider span {
+    position: relative;
+    display: inline-block;
+    padding: 0 12px;
+    background: var(--jp-pro-panel);
+    color: var(--jp-pro-muted);
+    font-size: .74rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+html[data-theme="dark"] .jp-auth-divider span { background: var(--jp-pro-panel); }
+
+/* ============================================================================
+   9. NEWSLETTER — Thèmes (chips) footer + page de préférences
+   ============================================================================ */
+.jp-footer-newsletter .jp-newsletter-themes { display: none; }
+.jp-footer-newsletter[data-open="true"] .jp-newsletter-themes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 480px;
+    animation: jpNewsletterReveal .32s cubic-bezier(.2,.7,.2,1);
+}
+.jp-newsletter-chip { position: relative; cursor: pointer; }
+.jp-newsletter-chip input { position: absolute; opacity: 0; pointer-events: none; }
+.jp-newsletter-chip span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(127, 127, 127, .4);
+    background: rgba(127, 127, 127, .08);
+    color: inherit;
+    opacity: .78;
+    font-size: .74rem;
+    font-weight: 700;
+    transition: background .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+.jp-newsletter-chip span::before {
+    content: "\f067";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: .68em;
+}
+.jp-newsletter-chip input:checked + span {
+    background: var(--jp-pro-blue);
+    border-color: var(--jp-pro-blue);
+    color: #fff;
+    opacity: 1;
+    box-shadow: 0 6px 16px rgba(31, 114, 241, .28);
+}
+.jp-newsletter-chip input:checked + span::before { content: "\f00c"; }
+.jp-newsletter-chip input:focus-visible + span { outline: 2px solid var(--jp-pro-blue); outline-offset: 2px; }
+
+/* Page publique de gestion des préférences */
+.jp-prefs-card { max-width: 520px; }
+.jp-prefs-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 800;
+    margin: 0 0 18px;
+}
+.jp-prefs-status.is-active { background: #E7F6EE; color: #175E3B; }
+.jp-prefs-status.is-inactive { background: #FEF3E2; color: #8A5A12; }
+.jp-prefs-label {
+    margin: 0 0 10px;
+    font-size: .8rem;
+    font-weight: 800;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: var(--jp-copy, #3B4557);
+}
+.jp-prefs-themes { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 22px; }
+.jp-prefs-chip { position: relative; cursor: pointer; }
+.jp-prefs-chip input { position: absolute; opacity: 0; pointer-events: none; }
+.jp-prefs-chip span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 1.5px solid var(--jp-line, #E5E9F0);
+    background: var(--jp-panel, #fff);
+    color: var(--jp-copy, #3B4557);
+    font-size: .82rem;
+    font-weight: 700;
+    transition: background .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.jp-prefs-chip span::before {
+    content: "\f067";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: .7em;
+    color: var(--jp-pro-blue);
+}
+.jp-prefs-chip:hover span { border-color: var(--jp-pro-blue); }
+.jp-prefs-chip input:checked + span {
+    background: #EAF2FE;
+    border-color: var(--jp-pro-blue);
+    color: var(--jp-pro-blue-dark, #0E58C7);
+}
+.jp-prefs-chip input:checked + span::before { content: "\f00c"; }
+.jp-prefs-chip input:focus-visible + span { outline: 2px solid var(--jp-pro-blue); outline-offset: 2px; }
+.jp-prefs-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.jp-prefs-unsubscribe {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 18px;
+    border: 1.5px solid #F3C5C5;
+    border-radius: 999px;
+    background: transparent;
+    color: #9F1D1D;
+    font: 700 .82rem/1 inherit;
+    cursor: pointer;
+    transition: background .18s ease, border-color .18s ease;
+}
+.jp-prefs-unsubscribe:hover { background: #FEECEC; border-color: #C53030; }
+
+/* Bandeau cookies : se range en haut à droite quand la newsletter du footer est ouverte */
+.jp-cookie-banner.is-dodged {
+    inset: 84px 16px auto auto;
+    margin-inline: 0;
+    max-width: 420px;
+}
+
+/* Contraste du flash newsletter sur footer sombre ou clair */
+.jp-footer-newsletter .alert {
+    background: rgba(255, 255, 255, .96) !important;
+    border: 1px solid rgba(0, 0, 0, .08) !important;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-weight: 600;
+}
+
+/* Header admin : évite le chevauchement du badge ADMIN avec la navigation */
+.jp-admin-nav .jp-admin-brand { flex-shrink: 0; margin-right: 6px; }
+.jp-admin-nav .jp-admin-links { min-width: 0; }
+
+/* -------------------------------------------------------------------------
+   En-tête public : composition produit nette (marque à gauche, navigation
+   centrale, action principale à droite). Les éléments et la marque restent
+   propres à JP-Services.
+--------------------------------------------------------------------------- */
+.oc-header.jp-drfone-header {
+    height: 70px !important;
+    background: rgba(255, 255, 255, .97) !important;
+    border-bottom: 1px solid #edf0f4 !important;
+    box-shadow: none !important;
+    backdrop-filter: blur(18px);
+}
+.oc-header.jp-drfone-header.is-scrolled {
+    height: 70px !important;
+    box-shadow: 0 6px 20px rgba(17, 35, 60, .08) !important;
+}
+.jp-drfone-header .jp-classroom-header-inner {
+    width: min(100% - 48px, 1440px) !important;
+    gap: 18px !important;
+}
+.jp-drfone-header .oc-menu-toggle { display: none !important; }
+.jp-drfone-header .jp-drfone-brand {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px !important;
+    min-width: max-content;
+    color: #15191f !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    letter-spacing: -.045em !important;
+}
+.jp-drfone-header .jp-drfone-parent {
+    color: #2a3038;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: -.055em;
+}
+.jp-drfone-header .jp-drfone-divider {
+    width: 1px;
+    height: 22px;
+    background: #d6dbe2;
+}
+.jp-drfone-header .jp-drfone-brand img,
+.jp-drfone-header.is-scrolled .jp-drfone-brand img {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 7px;
+    object-fit: cover;
+}
+.jp-drfone-header .jp-drfone-product {
+    color: #161b23;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    text-transform: none;
+}
+.jp-drfone-header .jp-classroom-nav {
+    margin-left: auto;
+    margin-right: auto;
+    align-self: stretch;
+}
+.jp-drfone-header .jp-header-menu > button,
+.jp-drfone-header .jp-header-link {
+    min-height: 70px;
+    padding: 0 12px;
+    color: #4c5665 !important;
+    background: transparent !important;
+    border: 0 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+}
+.jp-drfone-header .jp-header-menu > button:hover,
+.jp-drfone-header .jp-header-menu > button.is-current,
+.jp-drfone-header .jp-header-link:hover,
+.jp-drfone-header .jp-header-link.is-current {
+    color: #137ee8 !important;
+    background: transparent !important;
+}
+.jp-drfone-header .jp-header-menu > button i { color: inherit; font-size: 8px; }
+.jp-drfone-header .jp-classroom-actions { gap: 7px !important; }
+.jp-drfone-header .oc-search-btn,
+.jp-drfone-header .jp-help-action,
+.jp-drfone-header .jp-install-action { display: none !important; }
+.jp-drfone-header .jp-language-button,
+.jp-drfone-header .jp-theme-button {
+    width: 32px !important;
+    height: 32px !important;
+    color: #697587 !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 6px !important;
+}
+.jp-drfone-header .jp-language-button:hover,
+.jp-drfone-header .jp-theme-button:hover { color: #137ee8 !important; background: #f3f8fe !important; }
+.jp-drfone-header .jp-drfone-account .jp-account-button {
+    min-height: 36px;
+    padding: 0 14px;
+    gap: 7px;
+    color: #fff !important;
+    background: #15191f !important;
+    border: 1px solid #15191f !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+    font-size: 11px;
+    font-weight: 800;
+}
+.jp-drfone-header .jp-drfone-account .jp-account-button:hover { background: #2a3038 !important; border-color: #2a3038 !important; }
+.jp-drfone-header .jp-drfone-account .jp-account-avatar { display: none !important; }
+.jp-drfone-header .jp-drfone-account .jp-account-label { display: inline !important; color: inherit !important; }
+.jp-drfone-header .jp-drfone-account .jp-account-chevron { color: inherit !important; font-size: 8px; }
+
+html[data-theme="dark"] .oc-header.jp-drfone-header { background: rgba(18, 23, 31, .96) !important; border-bottom-color: rgba(255, 255, 255, .1) !important; }
+html[data-theme="dark"] .jp-drfone-header .jp-drfone-brand,
+html[data-theme="dark"] .jp-drfone-header .jp-drfone-parent,
+html[data-theme="dark"] .jp-drfone-header .jp-drfone-product { color: #fff !important; }
+html[data-theme="dark"] .jp-drfone-header .jp-drfone-divider { background: rgba(255, 255, 255, .27); }
+html[data-theme="dark"] .jp-drfone-header .jp-header-menu > button,
+html[data-theme="dark"] .jp-drfone-header .jp-header-link { color: #c9d1dc !important; }
+
+@media (max-width: 1080px) {
+    .jp-drfone-header .jp-classroom-nav { display: none !important; }
+    .jp-drfone-header .oc-menu-toggle { display: grid !important; order: 4; }
+    .jp-drfone-header .jp-classroom-actions { margin-left: auto; }
+    .jp-drfone-header .jp-language-control,
+    .jp-drfone-header .jp-theme-control { display: none !important; }
+    /* Évite que la règle mobile historique .oc-logo span masque "Services". */
+    .jp-drfone-header .jp-drfone-brand .jp-drfone-product { display: inline !important; }
+}
+@media (max-width: 900px) {
+    .jp-drfone-header .jp-classroom-actions { display: none !important; }
+    .jp-drfone-header .oc-menu-toggle,
+    .jp-drfone-header .oc-right-toggle {
+        display: grid !important;
+        width: 40px !important;
+        height: 40px !important;
+        place-items: center;
+        flex: 0 0 40px;
+        color: #26364b !important;
+        background: #f3f7fb !important;
+        border: 1px solid #dfe7f0 !important;
+        border-radius: 7px !important;
+        line-height: 1;
+    }
+    .jp-drfone-header .oc-menu-toggle { order: 0; margin-left: auto; }
+    .jp-drfone-header .oc-right-toggle { order: 0; margin-left: 0; }
+    .jp-drfone-header .oc-menu-toggle i,
+    .jp-drfone-header .oc-right-toggle i {
+        display: block;
+        color: inherit;
+        font-size: 15px;
+        line-height: 1;
+    }
+    .jp-drfone-header .oc-menu-toggle:hover,
+    .jp-drfone-header .oc-right-toggle:hover { color: #137ee8 !important; background: #eaf5ff !important; border-color: #b9ddfc !important; }
+}
+@media (max-width: 640px) {
+    .oc-header.jp-drfone-header,
+    .oc-header.jp-drfone-header.is-scrolled { height: 62px !important; }
+    .jp-drfone-header .jp-classroom-header-inner { width: min(100% - 28px, 1440px) !important; gap: 9px !important; }
+    .jp-drfone-header .jp-drfone-parent,
+    .jp-drfone-header .jp-drfone-divider { display: none !important; }
+    .jp-drfone-header .jp-drfone-brand { gap: 6px !important; }
+    .jp-drfone-header .jp-drfone-brand img,
+    .jp-drfone-header.is-scrolled .jp-drfone-brand img { width: 25px !important; height: 25px !important; }
+    .jp-drfone-header .jp-drfone-product { font-size: 13px; }
+    .jp-drfone-header .jp-drfone-account .jp-account-button { min-height: 33px; padding: 0 10px; font-size: 10px; }
+    .jp-drfone-header .oc-menu-toggle,
+    .jp-drfone-header .oc-right-toggle { width: 36px !important; height: 36px !important; flex-basis: 36px; }
+}
+
+/* Pied de page public compact : liens de conformité, puis mention légale. */
+.footer-ultra.jp-classroom-footer.jp-drfone-footer,
+html[data-theme="dark"] .footer-ultra.jp-classroom-footer.jp-drfone-footer {
+    background: #000 !important;
+    color: #868686 !important;
+}
+.jp-drfone-footer .jp-footer-cta-band,
+.jp-drfone-footer .jp-footer-main,
+.jp-drfone-footer .jp-footer-newsletter { display: none !important; }
+.jp-drfone-footer .footer-bottom-bar {
+    background: #000 !important;
+    border: 0 !important;
+}
+.jp-drfone-footer .footer-bottom-inner {
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 14px !important;
+    width: min(100% - 48px, 1160px) !important;
+    min-height: 119px !important;
+    padding: 21px 0 18px !important;
+}
+.jp-drfone-footer .footer-legal-links {
+    order: 0;
+    display: flex !important;
+    justify-content: flex-start !important;
+    gap: 8px 24px !important;
+    width: auto;
+}
+.jp-drfone-footer .footer-legal-links a,
+.jp-drfone-footer .footer-legal-links button {
+    color: #c4c4c4 !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    line-height: 1.35;
+    text-decoration: none !important;
+}
+.jp-drfone-footer .footer-legal-links a:hover,
+.jp-drfone-footer .footer-legal-links button:hover { color: #fff !important; }
+.jp-drfone-footer .footer-bottom-inner > span {
+    order: 2;
+    flex: 0 0 100%;
+    max-width: 970px;
+    color: #777 !important;
+    font-size: 10px !important;
+    font-weight: 500;
+    line-height: 1.55;
+}
+.jp-drfone-footer .jp-drfone-footer-socials {
+    order: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-left: auto;
+}
+.jp-drfone-footer .jp-drfone-footer-socials a {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    color: #d7d7d7;
+    background: #171717;
+    border: 1px solid #303030;
+    border-radius: 50%;
+    font-size: 12px;
+    line-height: 1;
+    transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.jp-drfone-footer .jp-drfone-footer-socials a:hover {
+    color: #fff;
+    background: #147de6;
+    border-color: #147de6;
+    transform: translateY(-2px);
+}
+.jp-drfone-footer .jp-drfone-footer-socials i { display: block; line-height: 1; }
+.jp-drfone-footer .jp-footer-bottom-language { display: none !important; }
+.jp-drfone-footer #backToTop { background: #1e1e1e !important; border-color: #363636 !important; }
+.jp-drfone-footer #backToTop:hover { background: #147de6 !important; border-color: #147de6 !important; }
+@media (max-width: 640px) {
+    .jp-drfone-footer .footer-bottom-inner { width: min(100% - 32px, 1160px) !important; min-height: 0 !important; padding: 26px 0 24px !important; gap: 13px !important; }
+    .jp-drfone-footer .footer-legal-links { gap: 8px 15px !important; }
+    .jp-drfone-footer .footer-legal-links a,
+    .jp-drfone-footer .footer-legal-links button { font-size: 10px !important; }
+    .jp-drfone-footer .jp-drfone-footer-socials { flex: 0 0 100%; margin-left: 0; gap: 9px; }
+    .jp-drfone-footer .jp-drfone-footer-socials a { width: 38px; height: 38px; font-size: 15px; }
+}
+
+/* -------------------------------------------------------------------------
+   Typographie et lecture mobile : hiérarchie nette, sans texte coupé ou
+   chevauchement dans les colonnes, cartes et tiroirs.
+--------------------------------------------------------------------------- */
+:root { --jp-product-font: "Manrope", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+body.jp-app {
+    font-family: var(--jp-product-font) !important;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+body.jp-app main :where(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--jp-product-font) !important;
+    font-weight: 800;
+    text-wrap: balance;
+}
+body.jp-app main :where(p, li) {
+    font-weight: 500;
+    text-wrap: pretty;
+}
+body.jp-app .jp-df-hero h1 {
+    font-weight: 800;
+    letter-spacing: -.045em !important;
+    text-wrap: balance;
+}
+body.jp-app .jp-df-hero-inner > p {
+    font-weight: 500;
+    letter-spacing: -.01em;
+}
+
+@media (max-width: 760px) {
+    html, body.jp-app { overflow-x: clip; }
+    body.jp-app { font-size: 15px; }
+    body.jp-app :where(main, section, article, aside, header, footer, .container, .container-fluid, .home-shell, .jp-shell) { min-width: 0; }
+    body.jp-app main :where(h1, h2, h3, h4, h5, h6, p, li, small, strong, a, button, label) { max-width: 100%; min-width: 0; }
+    body.jp-app main :where(h1, h2, h3, h4, h5, h6) {
+        overflow-wrap: normal;
+        word-break: normal;
+        hyphens: auto;
+        letter-spacing: -.028em !important;
+        text-wrap: balance;
+    }
+    body.jp-app main :where(p, li, small, .card-text, .text-muted) {
+        overflow-wrap: anywhere;
+        word-break: normal;
+        hyphens: auto;
+        text-wrap: pretty;
+    }
+    body.jp-app main :where(.row, [class*="-grid"], [class*="-flex"]) > * { min-width: 0; }
+    body.jp-app .panel-nav-list a,
+    body.jp-app .panel-nav-list button { grid-template-columns: 40px minmax(0, 1fr) auto !important; }
+    body.jp-app .panel-nav-list a > span,
+    body.jp-app .panel-nav-list button > span { overflow-wrap: anywhere; }
+    body.jp-app .jp-drfone-footer :where(.footer-legal-links, .footer-bottom-inner) { white-space: normal !important; }
+}
+@media (max-width: 560px) {
+    body.jp-app .jp-df-hero-visual { padding-inline: 8px; }
+    body.jp-app .jp-df-float-left,
+    body.jp-app .jp-df-float-bottom { display: none; }
+    body.jp-app .jp-df-frame img { height: 230px; }
+}
+
+/* Authentification : contraste fiable dans les deux thèmes et lecture mobile. */
+.auth-wrapper {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: clamp(76px, 8vw, 108px) 16px clamp(32px, 5vw, 64px);
+    background:
+        radial-gradient(circle at 13% 12%, rgba(31, 114, 241, .18), transparent 25rem),
+        radial-gradient(circle at 88% 86%, rgba(117, 81, 235, .11), transparent 24rem),
+        linear-gradient(135deg, #f7fbff 0%, #f5f7fb 52%, #fff 100%);
+}
+.auth-wrapper::before,
+.auth-wrapper::after {
+    position: absolute;
+    z-index: -1;
+    border: 1px solid rgba(31, 114, 241, .12);
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+}
+.auth-wrapper::before { width: 31rem; height: 31rem; top: -17rem; right: -11rem; }
+.auth-wrapper::after { width: 20rem; height: 20rem; bottom: -13rem; left: -8rem; border-color: rgba(117, 81, 235, .12); }
+.auth-card {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 560px);
+    margin: 0;
+    border-radius: 18px;
+    box-shadow: 0 24px 64px rgba(15, 23, 42, .12);
+}
+.auth-card.auth-wide { width: min(100%, 980px); }
+.auth-card :where(h1, h2, h3, p, label, small, a, button) { max-width: 100%; }
+.auth-card :where(p, small, .alert, .auth-security-note span) { overflow-wrap: anywhere; }
+.auth-card .row > * { min-width: 0; }
+.auth-card .form-control { min-height: 48px; }
+.auth-card .jp-password-toggle { min-width: 40px; min-height: 40px; }
+.auth-card .jp-google-fallback-button { min-height: 48px; }
+@media (prefers-reduced-motion: no-preference) {
+    .auth-card { animation: jp-auth-card-enter .55s cubic-bezier(.2, .75, .28, 1) both; }
+}
+@keyframes jp-auth-card-enter {
+    from { opacity: 0; transform: translateY(12px) scale(.985); }
+    to { opacity: 1; transform: none; }
+}
+html[data-theme="dark"] .auth-wrapper {
+    background:
+        radial-gradient(circle at 13% 12%, rgba(31, 114, 241, .2), transparent 25rem),
+        radial-gradient(circle at 88% 86%, rgba(117, 81, 235, .16), transparent 24rem),
+        linear-gradient(135deg, #0c1220 0%, #111827 52%, #12111b 100%);
+}
+html[data-theme="dark"] .auth-card {
+    background: #171f2d;
+    border-color: rgba(255, 255, 255, .12);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, .38);
+}
+html[data-theme="dark"] .auth-card .form-control {
+    background: #0d1522;
+    border-color: rgba(255, 255, 255, .16);
+    color: #f5f7fb;
+    caret-color: #8dc0ff;
+}
+html[data-theme="dark"] .auth-card .form-control::placeholder { color: #9ca9bd; }
+html[data-theme="dark"] .auth-card .jp-password-toggle { color: #b7c4d7 !important; }
+html[data-theme="dark"] .auth-card .auth-security-note { background: rgba(31, 114, 241, .13); }
+html[data-theme="dark"] .auth-card.auth-wide .col-lg-5 > div {
+    background: rgba(31, 114, 241, .13) !important;
+    color: #c7d3e4 !important;
+}
+html[data-theme="dark"] .auth-card.auth-wide .col-lg-5 > div strong,
+html[data-theme="dark"] .auth-card.auth-wide .col-lg-5 > div ul { color: #f5f7fb !important; }
+@media (max-width: 767px) {
+    .auth-wrapper { place-items: start center; padding: 72px 12px 28px; }
+    .auth-card,
+    .auth-card.auth-wide { width: 100%; padding: 22px 18px; border-radius: 15px; }
+    .auth-card .brand-header h1 { font-size: clamp(1.5rem, 8vw, 1.95rem); line-height: 1.14; }
+    .auth-card .brand-header p { line-height: 1.6; }
+    .auth-card .auth-meta { margin-top: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .auth-card { animation: none !important; }
+}
+
+/* --------------------------------------------------------------------------
+   Finition responsive : hiérarchie calme, dimensions fluides et lecture nette
+   -------------------------------------------------------------------------- */
+:root {
+    --jp-header-height: clamp(3.9rem, 4.9vw, 4.5rem);
+    --jp-header-side-space: clamp(1rem, 2.45vw, 1.75rem);
+    --jp-control-size: clamp(2rem, 2.35vw, 2.25rem);
+}
+
+/* Entête produit : une marque fixe, une navigation centrée et des actions
+   compactes. Les valeurs fluides évitent tout effet "grossi" ou tassé. */
+.oc-header.jp-drfone-header,
+.oc-header.jp-drfone-header.is-scrolled {
+    height: var(--jp-header-height) !important;
+    background: rgba(255, 255, 255, .94) !important;
+    border-bottom-color: rgba(31, 45, 63, .09) !important;
+    box-shadow: 0 1px 0 rgba(16, 24, 40, .02) !important;
+    backdrop-filter: saturate(160%) blur(18px);
+}
+.oc-header.jp-drfone-header.is-scrolled {
+    box-shadow: 0 8px 24px rgba(25, 43, 67, .08) !important;
+}
+.jp-drfone-header .jp-classroom-header-inner {
+    width: min(calc(100% - (var(--jp-header-side-space) * 2)), 1440px) !important;
+    gap: clamp(.6rem, 1.3vw, 1.2rem) !important;
+    min-width: 0;
+}
+.jp-drfone-header .jp-drfone-brand {
+    gap: clamp(.35rem, .55vw, .55rem) !important;
+    min-width: 0;
+    font-size: clamp(.88rem, .82rem + .18vw, 1rem) !important;
+}
+.jp-drfone-header .jp-drfone-parent {
+    font-size: clamp(.72rem, .68rem + .13vw, .81rem) !important;
+}
+.jp-drfone-header .jp-drfone-divider {
+    height: clamp(1.12rem, 1.7vw, 1.4rem);
+}
+.jp-drfone-header .jp-drfone-brand img,
+.jp-drfone-header.is-scrolled .jp-drfone-brand img {
+    width: clamp(1.55rem, 2vw, 1.85rem) !important;
+    height: clamp(1.55rem, 2vw, 1.85rem) !important;
+}
+.jp-drfone-header .jp-drfone-product {
+    overflow: hidden;
+    font-size: clamp(.83rem, .77rem + .18vw, .98rem) !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.jp-drfone-header .jp-classroom-nav {
+    gap: clamp(0, .55vw, .45rem);
+    min-width: 0;
+}
+.jp-drfone-header :is(.jp-header-menu > button, .jp-header-link) {
+    position: relative;
+    min-height: var(--jp-header-height) !important;
+    padding-inline: clamp(.42rem, .82vw, .9rem) !important;
+    font-size: clamp(.72rem, .67rem + .15vw, .82rem) !important;
+    letter-spacing: -.012em;
+    white-space: nowrap;
+}
+.jp-drfone-header :is(.jp-header-menu > button, .jp-header-link)::after {
+    position: absolute;
+    right: clamp(.42rem, .82vw, .9rem);
+    bottom: 0;
+    left: clamp(.42rem, .82vw, .9rem);
+    height: 2px;
+    content: "";
+    background: #167de4;
+    border-radius: 999px 999px 0 0;
+    opacity: 0;
+    transform: scaleX(.35);
+    transition: transform .2s ease, opacity .2s ease;
+}
+.jp-drfone-header :is(.jp-header-menu > button:hover, .jp-header-menu > button.is-current, .jp-header-link:hover, .jp-header-link.is-current)::after,
+.jp-drfone-header .jp-header-menu > button[aria-expanded="true"]::after {
+    opacity: 1;
+    transform: scaleX(1);
+}
+.jp-drfone-header .jp-classroom-actions { gap: clamp(.3rem, .55vw, .5rem) !important; }
+.jp-drfone-header :is(.jp-language-button, .jp-theme-button) {
+    width: var(--jp-control-size) !important;
+    height: var(--jp-control-size) !important;
+    border-radius: .5rem !important;
+}
+.jp-drfone-header .jp-drfone-account .jp-account-button {
+    min-height: clamp(2rem, 2.5vw, 2.35rem);
+    padding-inline: clamp(.58rem, .9vw, .9rem);
+    border-radius: .42rem !important;
+    font-size: clamp(.68rem, .64rem + .1vw, .75rem);
+    letter-spacing: -.005em;
+}
+.jp-drfone-header :is(.jp-language-button, .jp-theme-button, .jp-account-button, .oc-menu-toggle, .oc-right-toggle):focus-visible,
+.jp-drfone-header :is(.jp-header-menu > button, .jp-header-link):focus-visible {
+    outline: 3px solid rgba(22, 125, 228, .28);
+    outline-offset: 2px;
+}
+
+/* Les icônes sociales sont de vrais boutons graphiques : aucun soulignement,
+   y compris lorsque le navigateur applique une décoration de lien globale. */
+.jp-drfone-footer :is(.footer-socials, .jp-drfone-footer-socials) a,
+.jp-drfone-footer :is(.footer-socials, .jp-drfone-footer-socials) a:hover,
+.jp-drfone-footer :is(.footer-socials, .jp-drfone-footer-socials) a:focus-visible {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+}
+.jp-drfone-footer :is(.footer-socials, .jp-drfone-footer-socials) a::after {
+    display: none !important;
+    content: none !important;
+}
+.jp-drfone-footer .jp-drfone-footer-socials {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(.35rem, .7vw, .55rem);
+}
+.jp-drfone-footer .jp-drfone-footer-socials a {
+    display: grid;
+    width: clamp(1.9rem, 2.5vw, 2.2rem);
+    height: clamp(1.9rem, 2.5vw, 2.2rem);
+    place-items: center;
+    color: #b8c2ce !important;
+    background: #1c232c;
+    border: 1px solid #303a47;
+    border-radius: 50%;
+    line-height: 1;
+    transition: color .18s ease, background-color .18s ease, border-color .18s ease, transform .18s ease;
+}
+.jp-drfone-footer .jp-drfone-footer-socials a:hover,
+.jp-drfone-footer .jp-drfone-footer-socials a:focus-visible {
+    color: #fff !important;
+    background: #167de4;
+    border-color: #167de4;
+    transform: translateY(-2px);
+}
+
+/* Les grilles conservent trois cartes sur grand écran, puis deviennent deux
+   colonnes et enfin une seule colonne lisible sur téléphone. */
+body.jp-app :is(.jp-training-grid, .jp-news-grid) {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    align-items: stretch;
+}
+body.jp-app :is(.jp-training-grid, .jp-news-grid) > * { min-width: 0; }
+body.jp-app :is(.jp-training-card, .jp-news-card) :is(h3, h3 a) {
+    font-size: clamp(1.05rem, .96rem + .35vw, 1.35rem) !important;
+    line-height: 1.18 !important;
+    overflow-wrap: anywhere;
+}
+body.jp-app .jp-news-card-featured h3 {
+    font-size: clamp(1.28rem, 1.05rem + .85vw, 1.72rem) !important;
+}
+body.jp-app :is(.jp-training-card, .jp-news-card) p {
+    font-size: clamp(.82rem, .78rem + .12vw, .91rem) !important;
+    line-height: 1.62 !important;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 1080px) {
+    .jp-drfone-header .oc-menu-toggle {
+        width: var(--jp-control-size) !important;
+        height: var(--jp-control-size) !important;
+        flex-basis: var(--jp-control-size);
+    }
+    .jp-drfone-header .jp-drfone-brand { flex: 1 1 auto; }
+    body.jp-app :is(.jp-training-grid, .jp-news-grid) {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+@media (max-width: 980px) {
+    .jp-drfone-footer .jp-footer-main {
+        grid-template-columns: 1fr;
+        gap: clamp(1.9rem, 5vw, 3rem);
+    }
+    .jp-drfone-footer .jp-footer-brand-column > p { max-width: 40rem; }
+}
+@media (max-width: 760px) {
+    .jp-drfone-header .jp-drfone-product { max-width: min(38vw, 10rem); }
+    .jp-drfone-header .oc-menu-toggle,
+    .jp-drfone-header .oc-right-toggle {
+        width: var(--jp-control-size) !important;
+        height: var(--jp-control-size) !important;
+        flex-basis: var(--jp-control-size);
+        border-radius: .5rem !important;
+    }
+    body.jp-app :is(.jp-training-grid, .jp-news-grid) { grid-template-columns: minmax(0, 1fr) !important; }
+    body.jp-app .jp-news-card-featured { grid-column: auto; }
+}
+@media (max-width: 430px) {
+    .jp-drfone-header .jp-classroom-header-inner { gap: .42rem !important; }
+    .jp-drfone-header .jp-drfone-product { max-width: 7.25rem; }
+    .jp-drfone-footer .footer-bottom-inner { flex-direction: column; align-items: flex-start !important; }
+}
+
+/* Les panneaux mobiles reprennent la même densité visuelle que l'entête :
+   respiration, titres fluides et zones tactiles fiables. */
+.oc-panel.jp-mobile-drawer {
+    width: min(25.5rem, calc(100vw - .75rem));
+}
+.oc-panel.jp-mobile-drawer .panel-header {
+    min-height: clamp(4rem, 12vw, 4.75rem);
+    padding-inline: clamp(1rem, 4vw, 1.5rem) !important;
+}
+.oc-panel.jp-mobile-drawer .panel-body {
+    padding-inline: clamp(1rem, 4vw, 1.5rem) !important;
+}
+.oc-panel.jp-mobile-drawer :is(.jp-drawer-intro h2, .jp-drawer-account-teaser h3) {
+    font-size: clamp(1.16rem, 1rem + .7vw, 1.48rem) !important;
+    line-height: 1.14 !important;
+    letter-spacing: -.035em;
+}
+.oc-panel.jp-mobile-drawer :is(.jp-drawer-intro p, .jp-drawer-account-teaser p, .panel-nav a) {
+    font-size: clamp(.83rem, .78rem + .15vw, .93rem) !important;
+    line-height: 1.55;
+}
+
+/* Même principe pour le pied de page : aucune taille rigide sur le texte de
+   lecture, afin de préserver le confort du très grand écran au téléphone. */
+.jp-drfone-footer .jp-footer-brand-column > p,
+.jp-drfone-footer .footer-col a,
+.jp-drfone-footer .footer-bottom-inner > span,
+.jp-drfone-footer .footer-legal-links :is(a, button) {
+    font-size: clamp(.7rem, .66rem + .14vw, .84rem) !important;
+}
+.jp-drfone-footer .footer-accordion {
+    font-size: clamp(.72rem, .68rem + .12vw, .82rem) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+    .jp-drfone-header :is(.jp-header-menu > button, .jp-header-link)::after,
+    .jp-drfone-footer .jp-drfone-footer-socials a { transition: none !important; }
+}
+
+/* ---------------------------------------------------------------------------
+   Direction produit 2026 : interface précise, calme et non générique.
+--------------------------------------------------------------------------- */
+body.jp-app :is(.jp-training-hero, .jp-news-hero) {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: clamp(60px, 8vw, 108px);
+    background:
+        radial-gradient(circle at 80% 12%, rgba(92, 181, 255, .16), transparent 22rem),
+        radial-gradient(circle at 10% 90%, rgba(122, 101, 237, .08), transparent 22rem),
+        linear-gradient(180deg, #f8fbff 0%, #fff 80%) !important;
+    border-bottom: 1px solid #edf1f6 !important;
+}
+body.jp-app :is(.jp-training-hero, .jp-news-hero)::before {
+    position: absolute;
+    z-index: -1;
+    top: 60px;
+    right: -160px;
+    width: 360px;
+    aspect-ratio: 1;
+    border: 1px solid rgba(44, 132, 234, .12);
+    border-radius: 50%;
+    box-shadow: 0 0 0 50px rgba(44, 132, 234, .035), 0 0 0 103px rgba(44, 132, 234, .02);
+    content: "";
+    pointer-events: none;
+}
+body.jp-app :is(.jp-training-hero, .jp-news-hero) h2 {
+    max-width: 760px;
+    margin-block: 15px;
+    color: #151b24 !important;
+    font-family: var(--jp-product-font, Manrope, Inter, sans-serif) !important;
+    font-size: clamp(2.25rem, 1.45rem + 3.15vw, 4rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.07 !important;
+    letter-spacing: -.058em !important;
+    text-wrap: balance;
+}
+body.jp-app :is(.jp-training-hero, .jp-news-hero) p {
+    max-width: 620px;
+    color: #5d6877 !important;
+    font-size: clamp(.98rem, .92rem + .25vw, 1.08rem);
+    font-weight: 500;
+    line-height: 1.7;
+}
+body.jp-app :is(.jp-training-hero, .jp-news-hero) .home-eyebrow {
+    padding: 6px 11px !important;
+    color: #287fd6 !important;
+    background: #eef7ff !important;
+    border: 1px solid #d8ebff !important;
+    border-radius: 6px !important;
+    font-size: .68rem !important;
+    font-weight: 800 !important;
+    letter-spacing: .02em !important;
+}
+.jp-training-hero-actions { gap: 10px !important; margin-top: 25px; }
+.jp-training-hero-actions .jp-btn,
+.jp-news-hero-actions .jp-btn {
+    min-height: 46px;
+    padding: 0 18px !important;
+    border-radius: 7px !important;
+    font-size: .82rem !important;
+    font-weight: 800 !important;
+}
+.jp-training-overview {
+    position: relative;
+    overflow: hidden;
+    padding: 12px !important;
+    background: rgba(255,255,255,.76) !important;
+    border: 1px solid rgba(211, 222, 235, .9) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 22px 60px rgba(23, 46, 75, .1) !important;
+    backdrop-filter: blur(14px);
+}
+.jp-training-overview::after {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 130px;
+    height: 130px;
+    background: radial-gradient(circle, rgba(76, 169, 255, .18), transparent 69%);
+    content: "";
+    pointer-events: none;
+}
+.jp-training-overview > div:not(.jp-hero-illustration) {
+    position: relative;
+    z-index: 1;
+    min-height: 72px;
+    padding: 14px !important;
+    background: #f7faff;
+    border: 1px solid #e6eff9;
+    border-radius: 10px;
+}
+.jp-training-overview strong {
+    color: #151b24 !important;
+    font-family: var(--jp-product-font, Manrope, Inter, sans-serif);
+    font-size: 1.45rem !important;
+    letter-spacing: -.05em;
+}
+.jp-training-overview span { color: #687689 !important; font-size: .7rem !important; font-weight: 700; }
+
+.jp-training-catalog { background: #fff; }
+.jp-training-finder {
+    padding: 10px !important;
+    background: #fff !important;
+    border: 1px solid #e4ebf2 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 12px 30px rgba(21, 37, 57, .06);
+}
+.jp-training-search,
+.jp-training-selects select {
+    min-height: 46px !important;
+    background: #f7f9fc !important;
+    border-color: transparent !important;
+    border-radius: 8px !important;
+}
+.jp-training-search:focus-within,
+.jp-training-selects select:focus {
+    background: #fff !important;
+    border-color: #99cdfd !important;
+    box-shadow: 0 0 0 3px rgba(43, 139, 246, .12) !important;
+}
+.jp-training-domains {
+    display: flex;
+    gap: 8px;
+    padding-block: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.jp-training-domains::-webkit-scrollbar { display: none; }
+.jp-training-domains button {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 0 11px !important;
+    color: #536174 !important;
+    background: #f6f8fb !important;
+    border: 1px solid #e3e9f0 !important;
+    border-radius: 7px !important;
+    font-size: .72rem !important;
+    font-weight: 750 !important;
+}
+.jp-training-domains button.is-active,
+.jp-training-domains button:hover {
+    color: #1979d4 !important;
+    background: #edf7ff !important;
+    border-color: #b8dcfb !important;
+}
+.jp-training-domains button span {
+    min-width: 18px;
+    color: inherit !important;
+    background: transparent !important;
+    font-size: .65rem !important;
+}
+.jp-training-results-head { align-items: end; margin-top: 38px; }
+.jp-training-results-head h2,
+.jp-news-heading h2 {
+    color: #171e28 !important;
+    font-family: var(--jp-product-font, Manrope, Inter, sans-serif);
+    font-size: clamp(1.65rem, 1.25rem + 1vw, 2.25rem) !important;
+    font-weight: 800;
+    letter-spacing: -.045em !important;
+}
+.jp-training-grid,
+.jp-news-grid { gap: clamp(16px, 2.3vw, 26px) !important; }
+.jp-training-card,
+.jp-news-card {
+    overflow: hidden;
+    background: #fff !important;
+    border: 1px solid #e5ebf1 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 0 rgba(12, 22, 34, .015);
+    transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease !important;
+}
+.jp-training-card:hover,
+.jp-news-card:hover {
+    transform: translateY(-4px) !important;
+    border-color: #d7e4f1 !important;
+    box-shadow: 0 18px 40px rgba(27, 48, 75, .11) !important;
+}
+.jp-training-card-media,
+.jp-news-card-media {
+    overflow: hidden;
+    background: #eff5fb;
+}
+.jp-training-card-media img,
+.jp-news-card-media img {
+    transition: transform .55s cubic-bezier(.2,.7,.2,1);
+}
+.jp-training-card:hover .jp-training-card-media img,
+.jp-news-card:hover .jp-news-card-media img { transform: scale(1.035); }
+.jp-training-card-body,
+.jp-news-card-body { padding: 20px !important; }
+.jp-training-card-kicker,
+.jp-news-card-meta {
+    color: #68788b !important;
+    font-size: .67rem !important;
+    font-weight: 750 !important;
+}
+.jp-training-card h3,
+.jp-news-card h3 {
+    color: #18212d !important;
+    font-family: var(--jp-product-font, Manrope, Inter, sans-serif);
+    font-size: 1.06rem !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    letter-spacing: -.03em;
+}
+.jp-training-card p,
+.jp-news-card p { color: #647184 !important; font-size: .81rem !important; line-height: 1.65 !important; }
+.jp-training-card-facts {
+    gap: 0 !important;
+    border-top: 1px solid #edf1f5;
+    border-bottom: 1px solid #edf1f5;
+}
+.jp-training-card-facts > div { padding: 9px 0 !important; }
+.jp-training-card-facts dt { color: #8491a1 !important; font-size: .63rem !important; }
+.jp-training-card-facts dd { color: #354355 !important; font-size: .7rem !important; font-weight: 750 !important; }
+.jp-training-card-footer { padding-top: 15px !important; }
+.jp-training-card-footer .jp-btn {
+    min-height: 36px;
+    padding: 0 12px !important;
+    border-radius: 6px !important;
+    font-size: .69rem !important;
+}
+.jp-soft-card-media {
+    min-height: 154px;
+    background:
+        radial-gradient(circle at 50% 40%, rgba(122, 187, 255, .24), transparent 34%),
+        linear-gradient(145deg, #f7fbff, #eef4fa) !important;
+}
+.jp-soft-card-media > span:first-child {
+    display: grid;
+    width: 58px;
+    height: 58px;
+    place-items: center;
+    color: #257dd8;
+    background: #fff;
+    border: 1px solid #e2eaf3;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(47, 95, 148, .12);
+    font-size: 1.35rem;
+}
+.jp-soft-version {
+    padding: 5px 9px !important;
+    color: #657488 !important;
+    background: rgba(255,255,255,.9) !important;
+    border: 1px solid #e2eaf2;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    font-size: .64rem !important;
+}
+.jp-soft-card .jp-btn-primary {
+    color: #fff !important;
+    background: #167de4 !important;
+    border-color: #167de4 !important;
+}
+
+.jp-news-hero { padding-bottom: clamp(46px, 6vw, 80px) !important; }
+.jp-news-heading { margin-bottom: 30px; }
+.jp-news-contact {
+    padding: 11px 13px !important;
+    background: #f7faff;
+    border: 1px solid #e5edf5 !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+}
+.jp-news-card-featured { grid-column: span 2; }
+.jp-news-card-featured .jp-news-card-body { padding: 25px !important; }
+.jp-news-card-featured h3 { font-size: clamp(1.25rem, 1rem + .8vw, 1.65rem) !important; }
+html[data-theme="dark"] body.jp-app :is(.jp-training-hero, .jp-news-hero) {
+    background: linear-gradient(180deg, #111a26, #10151d 85%) !important;
+    border-color: #273446 !important;
+}
+html[data-theme="dark"] body.jp-app :is(.jp-training-hero, .jp-news-hero) h2,
+html[data-theme="dark"] .jp-training-results-head h2,
+html[data-theme="dark"] .jp-news-heading h2,
+html[data-theme="dark"] :is(.jp-training-card, .jp-news-card) h3 { color: #eff5fc !important; }
+html[data-theme="dark"] :is(.jp-training-finder, .jp-training-card, .jp-news-card, .jp-training-overview) {
+    background: #172231 !important;
+    border-color: #2a3a4e !important;
+}
+html[data-theme="dark"] :is(.jp-training-search, .jp-training-selects select, .jp-training-domains button) {
+    color: #d7e3f1 !important;
+    background: #101a27 !important;
+    border-color: #29394d !important;
+}
+html[data-theme="dark"] :is(.jp-training-card p, .jp-news-card p, .jp-training-overview span) { color: #aab9ca !important; }
+
+/* La dernière couche remplace les anciennes règles compactes du footer/tiroirs. */
+.oc-panel.jp-mobile-drawer .panel-header {
+    background: rgba(255,255,255,.96) !important;
+    border-color: #e8edf3 !important;
+    color: #151b24 !important;
+}
+.oc-panel.jp-mobile-drawer .panel-header .panel-brand,
+.oc-panel.jp-mobile-drawer .panel-header .panel-title { color: #151b24 !important; }
+.oc-panel.jp-mobile-drawer .panel-header .panel-brand img { filter: none !important; }
+.oc-panel.jp-mobile-drawer .panel-body { background: #fff !important; }
+.footer-ultra.jp-classroom-footer.jp-drfone-footer,
+html[data-theme="dark"] .footer-ultra.jp-classroom-footer.jp-drfone-footer {
+    background: #11151b !important;
+    color: #b3bdca !important;
+    border-top: 1px solid #252d37 !important;
+}
+.jp-drfone-footer .jp-footer-cta-band,
+.jp-drfone-footer .jp-footer-newsletter { display: none !important; }
+.jp-drfone-footer .jp-footer-main {
+    display: grid !important;
+    grid-template-columns: minmax(220px, .9fr) minmax(0, 2.5fr);
+    gap: clamp(34px, 6vw, 96px);
+    width: min(100% - 48px, 1180px);
+    margin: 0 auto;
+    padding: clamp(46px, 6vw, 72px) 0 42px;
+}
+.jp-drfone-footer .footer-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff !important;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -.045em;
+    text-decoration: none;
+}
+.jp-drfone-footer .footer-brand img { width: 31px; height: 31px; border-radius: 8px; }
+.jp-drfone-footer .jp-footer-brand-column > p {
+    max-width: 280px;
+    margin: 17px 0;
+    color: #8f9baa !important;
+    font-size: .78rem;
+    line-height: 1.7;
+}
+.jp-drfone-footer .jp-footer-contact-link { color: #fff !important; font-size: .76rem; font-weight: 800; text-decoration: none; }
+.jp-drfone-footer .jp-footer-navigation {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+.jp-drfone-footer .footer-col:last-child { display: none; }
+.jp-drfone-footer .footer-accordion {
+    display: block;
+    width: auto;
+    margin: 0 0 14px;
+    padding: 0;
+    color: #f5f7fa !important;
+    background: transparent;
+    border: 0;
+    font: 800 .74rem/1.2 var(--jp-product-font, Inter, sans-serif);
+    letter-spacing: .015em;
+    pointer-events: none;
+}
+.jp-drfone-footer .footer-accordion i { display: none; }
+.jp-drfone-footer .footer-col ul { display: grid !important; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.jp-drfone-footer .footer-col a {
+    color: #9ca8b7 !important;
+    font-size: .73rem;
+    line-height: 1.35;
+    text-decoration: none;
+    transition: color .18s ease, transform .18s ease;
+}
+.jp-drfone-footer .footer-col a:hover { color: #fff !important; transform: translateX(2px); }
+.jp-drfone-footer .footer-bottom-bar { background: #0b0e12 !important; border-top: 1px solid #252d37 !important; }
+.jp-drfone-footer .footer-bottom-inner {
+    width: min(100% - 48px, 1180px) !important;
+    min-height: 0 !important;
+    padding: 18px 0 !important;
+    justify-content: space-between !important;
+    gap: 12px 20px !important;
+}
+.jp-drfone-footer .footer-bottom-inner > span { order: initial; flex: initial; color: #6f7b8b !important; font-size: .68rem !important; }
+.jp-drfone-footer .footer-legal-links { order: initial; width: auto; justify-content: center !important; gap: 8px 17px !important; }
+.jp-drfone-footer .footer-legal-links :is(a, button) { color: #8f9baa !important; font-size: .67rem !important; text-decoration: none !important; }
+.jp-drfone-footer .footer-legal-links :is(a, button):hover { color: #fff !important; }
+.jp-drfone-footer .jp-drfone-footer-socials { margin-left: 0; }
+.jp-drfone-footer .jp-footer-bottom-language { display: none !important; }
+@media (max-width: 760px) {
+    body.jp-app :is(.jp-training-hero, .jp-news-hero) { padding-block: 48px 54px; }
+    body.jp-app :is(.jp-training-hero, .jp-news-hero)::before { top: 28px; right: -230px; }
+    body.jp-app :is(.jp-training-hero, .jp-news-hero) h2 { font-size: clamp(2.05rem, 10vw, 3rem) !important; }
+    .jp-training-overview { margin-top: 24px; }
+    .jp-training-grid, .jp-news-grid { grid-template-columns: 1fr !important; }
+    .jp-news-card-featured { grid-column: auto; }
+    .jp-drfone-footer .jp-footer-main {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        width: min(100% - 32px, 520px);
+        padding: 40px 0 28px;
+    }
+    .jp-drfone-footer .jp-footer-navigation { grid-template-columns: 1fr; gap: 0; }
+    .jp-drfone-footer .footer-col { border-top: 1px solid #252d37; }
+    .jp-drfone-footer .footer-accordion {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        min-height: 49px;
+        margin: 0;
+        pointer-events: auto;
+        cursor: pointer;
+    }
+    .jp-drfone-footer .footer-accordion i { display: block; color: #8f9baa; font-size: .65rem; }
+    .jp-drfone-footer .footer-accordion[aria-expanded="false"] + ul { display: none !important; }
+    .jp-drfone-footer .footer-col ul { padding: 0 0 16px; }
+    .jp-drfone-footer .footer-bottom-inner { width: min(100% - 32px, 520px) !important; justify-content: flex-start !important; }
+    .jp-drfone-footer .footer-legal-links { justify-content: flex-start !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .jp-training-card,
+    .jp-news-card,
+    .jp-training-card-media img,
+    .jp-news-card-media img,
+    .jp-drfone-footer .footer-col a { transition: none !important; }
+}
+
+/* Correctif des pages Formation(s) et Logiciels.
+   L'ancien en-tête générique plaçait le label, le titre et le texte dans une
+   seule ligne flex. Sur écran étroit, chaque élément se retrouvait comprimé.
+   Cette composition garde deux zones confortables au large puis devient une
+   vraie colonne unique avant toute césure disgracieuse. */
+body.jp-app .jp-training-guidance .jp-section-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(15rem, .85fr);
+    align-items: end;
+    gap: .8rem clamp(1.5rem, 5vw, 5rem);
+    margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+body.jp-app .jp-training-guidance .jp-section-heading > .home-eyebrow {
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin: 0;
+}
+body.jp-app .jp-training-guidance .jp-section-heading > h2,
+body.jp-app .jp-training-guidance .jp-section-heading > p {
+    min-width: 0;
+    margin: 0;
+}
+body.jp-app .jp-training-guidance .jp-section-heading > h2 {
+    max-width: 17ch;
+    font-size: clamp(1.7rem, 1.25rem + 1.7vw, 2.65rem) !important;
+    line-height: 1.1 !important;
+    text-wrap: balance;
+}
+body.jp-app .jp-training-guidance .jp-section-heading > p {
+    max-width: 35rem;
+    color: #586779;
+    font-size: clamp(.9rem, .84rem + .2vw, 1rem);
+    line-height: 1.68;
+}
+body.jp-app .jp-training-guidance .jp-training-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+body.jp-app .jp-training-guidance .jp-training-steps > article {
+    min-width: 0;
+}
+
+@media (max-width: 900px) {
+    body.jp-app .jp-training-guidance .jp-section-heading {
+        grid-template-columns: minmax(0, 1fr) minmax(14rem, .8fr);
+        gap: .7rem 1.5rem;
+    }
+    body.jp-app .jp-training-guidance .jp-training-steps {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (max-width: 720px) {
+    body.jp-app .jp-training-guidance .jp-section-heading {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .7rem;
+    }
+    body.jp-app .jp-training-guidance .jp-section-heading > .home-eyebrow,
+    body.jp-app .jp-training-guidance .jp-section-heading > h2,
+    body.jp-app .jp-training-guidance .jp-section-heading > p {
+        width: 100%;
+        max-width: none;
+    }
+    body.jp-app .jp-training-guidance .jp-section-heading > h2 {
+        font-size: clamp(1.65rem, 8.2vw, 2.25rem) !important;
+        hyphens: none;
+    }
+    body.jp-app .jp-training-guidance .jp-section-heading > p {
+        font-size: clamp(.9rem, 3.9vw, 1rem);
+        overflow-wrap: normal;
+        hyphens: none;
+    }
+    body.jp-app .jp-training-guidance .jp-training-steps {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 1rem;
+    }
+    body.jp-app .jp-training-guidance .jp-training-steps > article {
+        min-height: 0;
+        padding: clamp(1.25rem, 6vw, 1.5rem);
+    }
+}
+
+/* Cartes de service : finition produit sobre et informative.
+   On retire les numéros décoratifs et les accents surdimensionnés au profit
+   d'une hiérarchie claire, proche d'une fiche logicielle professionnelle. */
+body.jp-app :is(.jp-training-card, .jp-live-card, .jp-training-guidance .jp-training-steps > article) {
+    background: #fff !important;
+    border: 1px solid #e3e9f0 !important;
+    border-radius: .55rem !important;
+    box-shadow: none !important;
+}
+body.jp-app :is(.jp-training-card, .jp-live-card, .jp-training-guidance .jp-training-steps > article):hover {
+    border-color: #c7d9ed !important;
+    box-shadow: 0 10px 24px rgba(30, 59, 91, .07) !important;
+    transform: translateY(-2px);
+}
+body.jp-app .jp-training-guidance .jp-training-steps > article {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 0;
+    padding: clamp(1.25rem, 2.4vw, 1.65rem);
+    border-top-width: 1px !important;
+}
+body.jp-app .jp-training-guidance .jp-training-steps article > span {
+    position: static !important;
+    display: inline-flex;
+    align-items: center;
+    min-width: 2.1rem;
+    height: 1.25rem;
+    padding: 0 .42rem;
+    color: #347cc4 !important;
+    background: #eef6ff;
+    border: 1px solid #dcecfb;
+    border-radius: 999px;
+    font-size: .64rem !important;
+    font-weight: 800;
+    letter-spacing: .08em;
+    line-height: 1;
+}
+body.jp-app .jp-training-guidance .jp-training-steps article > i {
+    display: grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-top: .85rem;
+    place-items: center;
+    color: #2477c9 !important;
+    background: #f2f7fd !important;
+    border: 1px solid #e2edf8;
+    border-radius: .42rem;
+    font-size: .9rem;
+}
+body.jp-app .jp-training-guidance .jp-training-steps h3 {
+    margin: .9rem 0 .38rem;
+    color: #172b43;
+    font-size: clamp(1rem, .94rem + .18vw, 1.14rem) !important;
+    line-height: 1.25 !important;
+    letter-spacing: -.02em;
+}
+body.jp-app .jp-training-guidance .jp-training-steps p {
+    margin: 0;
+    color: #5b6a7c;
+    font-size: clamp(.82rem, .78rem + .12vw, .9rem) !important;
+    line-height: 1.6;
+}
+
+/* Une échelle compacte commune évite que les titres dominent le contenu sur
+   téléphone, tout en laissant les titres de héros clairement identifiables. */
+@media (max-width: 720px) {
+    body.jp-app main h1 {
+        font-size: clamp(1.65rem, 7vw, 2.08rem) !important;
+        line-height: 1.1 !important;
+    }
+    body.jp-app main h2 {
+        font-size: clamp(1.45rem, 6.2vw, 1.92rem) !important;
+        line-height: 1.15 !important;
+        hyphens: none;
+    }
+    body.jp-app main h3 {
+        font-size: clamp(1rem, 4.4vw, 1.2rem) !important;
+        line-height: 1.25 !important;
+        hyphens: none;
+    }
+    body.jp-app :is(.jp-training-hero, .jp-live-hero, .jp-news-hero) h2 {
+        font-size: clamp(1.7rem, 7.1vw, 2.12rem) !important;
+        line-height: 1.1 !important;
+    }
+    body.jp-app .jp-training-guidance .jp-section-heading > h2 {
+        font-size: clamp(1.5rem, 6.4vw, 1.9rem) !important;
+        line-height: 1.14 !important;
+    }
+    body.jp-app .jp-training-guidance .jp-training-steps > article {
+        padding: 1.2rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Navigation produit : méga-menus de découverte sur ordinateur
+   -------------------------------------------------------------------------- */
+@media (min-width: 1081px) and (hover: hover) {
+    .jp-drfone-header .jp-header-backdrop {
+        background: rgba(18, 32, 48, .06);
+        backdrop-filter: blur(2px);
+    }
+    .jp-drfone-header .jp-mega-menu {
+        z-index: 40;
+        padding: .55rem 0 1rem;
+        color: #182535;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+    }
+    .jp-drfone-header .jp-mega-menu-inner,
+    .jp-drfone-header .jp-mega-menu-inner.jp-mega-menu-services,
+    .jp-drfone-header .jp-mega-menu-inner.jp-mega-menu-product {
+        display: grid;
+        grid-template-columns: minmax(13.5rem, .78fr) repeat(2, minmax(14rem, 1fr));
+        gap: clamp(1.15rem, 2.4vw, 2.4rem);
+        width: min(calc(100% - 2rem), 82rem);
+        min-height: 18rem;
+        margin: 0 auto;
+        padding: clamp(1.45rem, 2.7vw, 2rem);
+        background: #fff;
+        border: 1px solid #e4eaf1;
+        border-radius: .95rem;
+        box-shadow: 0 20px 48px rgba(18, 39, 67, .13);
+    }
+    .jp-drfone-header .jp-mega-intro {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        min-width: 0;
+        padding: .25rem clamp(1rem, 2vw, 1.75rem) .25rem .2rem;
+        border-right: 1px solid #e7ecf2;
+    }
+    .jp-drfone-header .jp-mega-intro > span,
+    .jp-drfone-header .jp-mega-label {
+        color: #1778e9 !important;
+        font-size: .68rem;
+        font-weight: 800;
+        letter-spacing: .055em;
+        text-transform: uppercase;
+    }
+    .jp-drfone-header .jp-mega-intro h2 {
+        max-width: 13ch;
+        margin: .72rem 0 .65rem;
+        color: #152235;
+        font-size: clamp(1.18rem, 1rem + .5vw, 1.48rem);
+        font-weight: 800;
+        line-height: 1.16;
+        letter-spacing: -.04em;
+        text-wrap: balance;
+    }
+    .jp-drfone-header .jp-mega-intro p {
+        max-width: 16rem;
+        margin: 0;
+        color: #647386;
+        font-size: .79rem;
+        line-height: 1.58;
+    }
+    .jp-drfone-header .jp-mega-intro > a {
+        display: inline-flex;
+        align-items: center;
+        gap: .42rem;
+        margin-top: auto;
+        padding: .6rem .8rem;
+        color: #fff !important;
+        background: #147ee9;
+        border: 1px solid #147ee9;
+        border-radius: .42rem;
+        font-size: .74rem;
+        font-weight: 750;
+        line-height: 1.1;
+        text-decoration: none;
+        transition: background-color .18s ease, transform .18s ease;
+    }
+    .jp-drfone-header .jp-mega-intro > a:hover {
+        color: #fff !important;
+        background: #0b67c8;
+        transform: translateY(-1px);
+    }
+    .jp-drfone-header .jp-mega-group {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: .26rem;
+        min-width: 0;
+    }
+    .jp-drfone-header .jp-mega-group > .jp-mega-label { margin: .22rem 0 .48rem; }
+    .jp-drfone-header .jp-mega-link {
+        display: grid;
+        grid-template-columns: 2.1rem minmax(0, 1fr);
+        align-items: start;
+        gap: .65rem;
+        min-width: 0;
+        padding: .55rem;
+        color: #1d2b3b;
+        background: transparent !important;
+        border: 1px solid transparent;
+        border-radius: .55rem;
+        text-decoration: none;
+        transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+    }
+    .jp-drfone-header .jp-mega-link > i {
+        display: grid;
+        width: 2.1rem;
+        height: 2.1rem;
+        place-items: center;
+        color: #197ce9 !important;
+        background: #edf6ff;
+        border: 1px solid #dcecfb;
+        border-radius: .45rem;
+        font-size: .88rem;
+    }
+    .jp-drfone-header .jp-mega-link:nth-of-type(3n) > i { color: #0c9e7b !important; background: #edfbf6; border-color: #d7f2e8; }
+    .jp-drfone-header .jp-mega-link:nth-of-type(4n) > i { color: #7d64d8 !important; background: #f3f0ff; border-color: #e8e2ff; }
+    .jp-drfone-header .jp-mega-link strong {
+        display: block;
+        margin: .1rem 0 .18rem;
+        color: #172535 !important;
+        font-size: .81rem;
+        font-weight: 760;
+        line-height: 1.2;
+    }
+    .jp-drfone-header .jp-mega-link small {
+        display: block;
+        color: #68778a;
+        font-size: .7rem;
+        line-height: 1.42;
+    }
+    .jp-drfone-header .jp-mega-link:hover,
+    .jp-drfone-header .jp-mega-link:focus-visible {
+        background: #f6faff !important;
+        border-color: #dbeaf9;
+        transform: translateX(2px);
+    }
+    .jp-drfone-header .jp-mega-link:focus-visible,
+    .jp-drfone-header .jp-mega-intro > a:focus-visible { outline: 3px solid rgba(20, 126, 233, .28); outline-offset: 2px; }
+}
+
+/* Héros d'accueil : rythme éditorial et présentation produit nette. */
+body.jp-app .jp-df-hero {
+    background: #fff;
+}
+body.jp-app .jp-df-hero::before,
+body.jp-app .jp-df-hero::after { opacity: .55; }
+body.jp-app .jp-df-hero-inner { max-width: 74rem; }
+body.jp-app .jp-df-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .38rem;
+    padding: .36rem .75rem;
+    color: #147ee9;
+    background: #fff;
+    border: 1px solid #147ee9;
+    border-radius: 999px;
+    font-size: clamp(.7rem, .67rem + .12vw, .78rem);
+    font-weight: 750;
+    line-height: 1;
+}
+body.jp-app .jp-df-hero h1 {
+    max-width: 19ch;
+    margin-inline: auto;
+    color: #111a26;
+    font-size: clamp(2.35rem, 1.65rem + 3.1vw, 3.65rem) !important;
+    font-weight: 800;
+    line-height: 1.08 !important;
+    letter-spacing: -.055em !important;
+}
+body.jp-app .jp-df-hero h1 em { color: #147ee9; }
+body.jp-app .jp-df-hero-inner > p {
+    max-width: 43rem;
+    color: #657286;
+    font-size: clamp(.98rem, .91rem + .28vw, 1.1rem);
+    line-height: 1.62;
+}
+body.jp-app .jp-df-hero-actions { gap: .85rem; margin-top: 1.55rem; }
+body.jp-app .jp-df-btn-dark {
+    color: #fff;
+    background: linear-gradient(135deg, #168cff, #0871e4);
+    border-color: #0871e4;
+    border-radius: .6rem;
+    box-shadow: 0 8px 18px rgba(20, 126, 233, .22);
+}
+body.jp-app .jp-df-btn-dark:hover { color: #fff; background: #086aca; transform: translateY(-1px); }
+body.jp-app .jp-df-btn-outline {
+    color: #192636;
+    background: #fff;
+    border-color: #1e2c3c;
+    border-radius: .6rem;
+}
+body.jp-app .jp-df-hero-visual { max-width: 56rem; }
+body.jp-app .jp-df-frame {
+    border-color: #dce5ef;
+    border-radius: .95rem;
+    box-shadow: 0 20px 42px rgba(20, 43, 72, .13);
+}
+@media (max-width: 720px) {
+    body.jp-app .jp-df-hero { padding-top: 2.6rem; }
+    body.jp-app .jp-df-hero h1 { font-size: clamp(1.72rem, 7.6vw, 2.18rem) !important; }
+    body.jp-app .jp-df-hero-inner > p { font-size: .94rem; }
+    body.jp-app .jp-df-pill { font-size: .67rem; }
+}
+
+/* --------------------------------------------------------------------------
+   Connexion : espace éditorial à gauche, formulaire essentiel à droite
+   -------------------------------------------------------------------------- */
+body.jp-app:has(.jp-login-layout) {
+    min-height: 100vh;
+    background: #e9fcf5 !important;
+}
+body.jp-app .auth-wrapper.jp-login-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(23rem, 28rem);
+    align-items: center;
+    gap: clamp(3rem, 8vw, 9rem);
+    min-height: 100vh;
+    padding: clamp(2rem, 4.5vw, 4.5rem) clamp(1.5rem, 5.4vw, 5.5rem);
+    background:
+        radial-gradient(circle at 9% 16%, rgba(255,255,255,.62), transparent 24rem),
+        linear-gradient(135deg, #d8fff0 0%, #cbf9ed 44%, #e6fdf8 100%) !important;
+}
+.jp-login-showcase {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    min-width: 0;
+    max-width: 36rem;
+    padding: clamp(.25rem, 1vw, 1rem) 0;
+}
+.jp-login-showcase-brand,
+.jp-login-product {
+    display: inline-flex;
+    align-items: center;
+    gap: .65rem;
+    width: max-content;
+    color: #112234;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: -.035em;
+    text-decoration: none;
+}
+.jp-login-showcase-brand img,
+.jp-login-product img {
+    display: block;
+    width: 2.1rem !important;
+    height: 2.1rem !important;
+    object-fit: cover;
+    border-radius: .5rem;
+}
+.jp-login-showcase-copy {
+    margin-top: clamp(2.5rem, 5vw, 4.8rem);
+}
+.jp-login-kicker {
+    display: inline-block;
+    color: #1379e8;
+    font-size: .69rem;
+    font-weight: 850;
+    letter-spacing: .11em;
+}
+.jp-login-showcase h1 {
+    max-width: 14ch;
+    margin: .75rem 0 1.55rem;
+    color: #102033;
+    font-size: clamp(2rem, 1.45rem + 2vw, 3.1rem) !important;
+    font-weight: 800;
+    line-height: 1.08 !important;
+    letter-spacing: -.055em !important;
+    text-wrap: balance;
+}
+.jp-login-showcase ul {
+    display: grid;
+    gap: 1rem;
+    max-width: 29rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.jp-login-showcase li {
+    display: grid;
+    grid-template-columns: 1.35rem minmax(0, 1fr);
+    align-items: center;
+    gap: .7rem;
+    color: #405e69;
+    font-size: clamp(.84rem, .79rem + .18vw, .96rem);
+    line-height: 1.42;
+}
+.jp-login-showcase li > i {
+    display: grid;
+    width: 1.35rem;
+    height: 1.35rem;
+    place-items: center;
+    color: #157ce9;
+    background: rgba(255,255,255,.62);
+    border: 1px solid rgba(21,124,233,.16);
+    border-radius: .36rem;
+    font-size: .7rem;
+}
+.jp-login-showcase-visual {
+    position: relative;
+    width: min(100%, 28rem);
+    margin: auto 0 .45rem clamp(.5rem, 3vw, 2.3rem);
+    padding: 1.1rem;
+}
+.jp-login-showcase-visual > img {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    border: 1px solid rgba(255,255,255,.86);
+    border-radius: .85rem;
+    box-shadow: 0 20px 42px rgba(35, 99, 100, .17);
+    transform: rotate(-1.5deg);
+}
+.jp-login-visual-orb {
+    position: absolute;
+    z-index: 0;
+    border-radius: 50%;
+    filter: blur(1px);
+}
+.jp-login-visual-orb.is-one { top: -1rem; right: -1rem; width: 7rem; height: 7rem; background: rgba(42, 146, 255, .24); }
+.jp-login-visual-orb.is-two { bottom: -1rem; left: -1.7rem; width: 5rem; height: 5rem; background: rgba(64, 205, 160, .28); }
+.jp-login-visual-chip {
+    position: absolute;
+    z-index: 2;
+    right: -1.1rem;
+    bottom: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    max-width: 15rem;
+    padding: .58rem .72rem;
+    color: #214358;
+    background: rgba(255,255,255,.94);
+    border: 1px solid rgba(255,255,255,.96);
+    border-radius: .48rem;
+    box-shadow: 0 10px 22px rgba(35, 99, 100, .16);
+    font-size: .68rem;
+    font-weight: 750;
+    line-height: 1.25;
+}
+.jp-login-visual-chip i { color: #0da579; }
+
+body.jp-app .auth-card.jp-login-card {
+    width: 100%;
+    max-width: 28rem;
+    margin: 0;
+    padding: clamp(2rem, 3.25vw, 2.65rem) clamp(1.7rem, 3.5vw, 2.5rem);
+    background: rgba(255,255,255,.96) !important;
+    border: 1px solid rgba(255,255,255,.92) !important;
+    border-radius: .62rem !important;
+    box-shadow: 0 18px 42px rgba(22, 71, 79, .12) !important;
+}
+.jp-login-card .brand-header { margin-bottom: 1.55rem; text-align: left; }
+.jp-login-card .brand-header > a:not(.jp-login-product) { display: none; }
+.jp-login-product span { display: grid; gap: .04rem; line-height: 1; }
+.jp-login-product small { color: #627287; font-size: .61rem; font-weight: 600; letter-spacing: 0; }
+.jp-login-card .brand-header h1 {
+    margin: 1.25rem 0 .38rem;
+    color: #132237 !important;
+    font-size: clamp(1.55rem, 1.24rem + .8vw, 1.95rem) !important;
+    font-weight: 780;
+    line-height: 1.16;
+    letter-spacing: -.04em;
+}
+.jp-login-card .brand-header p {
+    margin: 0;
+    color: #748196;
+    font-size: .84rem;
+    line-height: 1.5;
+}
+.jp-login-card .alert { margin: 0 0 1rem; border-radius: .45rem; }
+.jp-login-card .jp-social-auth { gap: .7rem; margin-bottom: 1.2rem; }
+.jp-auth-social-label {
+    color: #7a8798;
+    font-size: .69rem;
+    font-weight: 650;
+}
+.jp-login-card .jp-google-signin,
+.jp-login-card .jp-social-auth .g_id_signin { justify-content: flex-start; min-height: 2.6rem; }
+.jp-login-card .jp-google-fallback-button {
+    width: 100%;
+    min-height: 2.6rem;
+    padding-inline: .9rem;
+    border-color: #dbe2eb;
+    border-radius: .45rem;
+    font-size: .8rem;
+    font-weight: 700;
+}
+.jp-login-card .jp-auth-divider { margin: .45rem 0 .1rem; }
+.jp-login-card .jp-auth-divider::before { background: #e1e6ed; }
+.jp-login-card .jp-auth-divider span { padding-inline: .65rem; background: #fff; color: #8a96a6; font-size: .66rem; font-weight: 600; letter-spacing: .025em; text-transform: none; }
+.jp-login-card .jp-field { margin-bottom: 1.1rem !important; }
+.jp-login-card .form-label {
+    display: block;
+    margin-bottom: .28rem;
+    color: #718096;
+    font-size: .75rem;
+    font-weight: 600;
+}
+.jp-login-card .form-control {
+    min-height: 2.9rem;
+    padding: .45rem 2.4rem .45rem 0;
+    color: #17263a;
+    background: transparent;
+    border: 0 !important;
+    border-bottom: 1px solid #d8e0e9 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    font-size: .9rem;
+}
+.jp-login-card .form-control:focus {
+    border-bottom: 2px solid #147ee9 !important;
+    box-shadow: none !important;
+}
+.jp-login-card .jp-input-wrap { position: relative; }
+.jp-login-card .jp-password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    display: grid;
+    width: 2.2rem;
+    height: 2.2rem;
+    padding: 0;
+    place-items: center;
+    color: #68788a;
+    background: transparent;
+    border: 0;
+    border-radius: .4rem;
+    transform: translateY(-50%);
+}
+.jp-login-card .jp-password-toggle:hover { color: #147ee9; background: #f2f8ff; }
+.jp-login-card .jp-login-submit {
+    width: 100%;
+    min-height: 2.8rem;
+    margin-top: .3rem;
+    color: #fff !important;
+    background: #147ee9 !important;
+    border-color: #147ee9 !important;
+    border-radius: .45rem !important;
+    box-shadow: none !important;
+    font-size: .86rem;
+    font-weight: 750 !important;
+}
+.jp-login-card .jp-login-submit:hover { background: #0b68c8 !important; transform: none; }
+.jp-login-signup { margin: 1rem 0 .38rem; color: #445266; font-size: .78rem; line-height: 1.45; }
+.jp-login-recovery { display: inline-block; font-size: .78rem; }
+.jp-login-card .auth-footer-link { color: #147ee9; font-weight: 650; text-decoration: none; }
+.jp-login-card .auth-footer-link:hover { color: #075fbb; text-decoration: underline; }
+.jp-login-card .auth-security-note {
+    align-items: center;
+    gap: .48rem;
+    margin: 1.35rem 0 0;
+    padding: .68rem 0 0;
+    color: #8591a1;
+    background: transparent;
+    border: 0;
+    border-top: 1px solid #ebeff4;
+    border-radius: 0;
+    font-size: .67rem;
+    line-height: 1.42;
+}
+.jp-login-card .auth-security-note i { color: #21a47c; }
+.auth-theme { z-index: 10; }
+
+html[data-theme="dark"] body.jp-app:has(.jp-login-layout) { background: #102729 !important; }
+html[data-theme="dark"] body.jp-app .auth-wrapper.jp-login-layout { background: linear-gradient(135deg, #113b3a, #102c34 60%, #172337) !important; }
+html[data-theme="dark"] .jp-login-showcase :is(h1, .jp-login-showcase-brand) { color: #f1fbfa; }
+html[data-theme="dark"] .jp-login-showcase li { color: #c2d8d7; }
+html[data-theme="dark"] body.jp-app .auth-card.jp-login-card { background: #172434 !important; border-color: #26374a !important; box-shadow: 0 18px 42px rgba(0,0,0,.26) !important; }
+html[data-theme="dark"] .jp-login-card .brand-header h1 { color: #f3f7fc !important; }
+html[data-theme="dark"] .jp-login-card .brand-header p,
+html[data-theme="dark"] .jp-login-card .form-label,
+html[data-theme="dark"] .jp-login-signup { color: #aebdce; }
+html[data-theme="dark"] .jp-login-card .form-control { color: #f1f6fb; border-bottom-color: #3c5066 !important; }
+html[data-theme="dark"] .jp-login-card .jp-auth-divider span { background: #172434; }
+html[data-theme="dark"] .jp-login-card .auth-security-note { border-top-color: #2c3e51; }
+
+@media (max-width: 960px) {
+    body.jp-app .auth-wrapper.jp-login-layout {
+        grid-template-columns: minmax(0, 28rem);
+        justify-content: center;
+        padding: clamp(1.25rem, 5vw, 3rem);
+    }
+    .jp-login-showcase { display: none; }
+    body.jp-app .auth-card.jp-login-card { max-width: 28rem; }
+}
+@media (max-width: 480px) {
+    body.jp-app .auth-wrapper.jp-login-layout { align-items: start; min-height: 100svh; padding: 1rem; }
+    body.jp-app .auth-card.jp-login-card { padding: 1.7rem 1.3rem; border-radius: .55rem !important; }
+    .jp-login-card .brand-header h1 { font-size: 1.48rem !important; }
+}
+
+/* Inscription : mêmes repères visuels que la connexion, avec les champs
+   complémentaires requis pour créer et activer un compte JP-Services. */
+body.jp-app .auth-card.jp-register-card { max-width: 29.5rem; }
+.jp-register-card .brand-header { margin-bottom: 1.25rem; }
+.jp-register-card .brand-header h1 { margin-top: 1.05rem; }
+.jp-register-form .jp-field { margin-bottom: .85rem !important; }
+.jp-register-name-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .8rem;
+}
+.jp-register-card .jp-register-photo { margin-top: .2rem; }
+.jp-register-card .jp-register-photo .form-label span {
+    color: #8b98a8;
+    font-size: .66rem;
+    font-weight: 500;
+}
+.jp-register-card .jp-register-photo .form-control {
+    min-height: 2.55rem;
+    padding: .42rem 0;
+    color: #718096;
+    cursor: pointer;
+    font-size: .74rem;
+}
+.jp-register-card .jp-register-photo .form-control::file-selector-button {
+    margin-right: .65rem;
+    padding: .34rem .55rem;
+    color: #1978da;
+    background: #edf6ff;
+    border: 1px solid #dcecfb;
+    border-radius: .32rem;
+    font: 700 .68rem/1 Inter, sans-serif;
+    cursor: pointer;
+}
+.jp-register-card .auth-security-note { margin: .95rem 0; }
+.jp-register-card .jp-login-submit { margin-top: 0; }
+.jp-register-card .jp-login-signup { margin-bottom: .65rem; }
+.jp-register-terms {
+    margin: 0;
+    color: #8995a5;
+    font-size: .66rem;
+    line-height: 1.42;
+}
+.jp-register-terms a { color: #147ee9; text-decoration: none; }
+.jp-register-terms a:hover { text-decoration: underline; }
+html[data-theme="dark"] .jp-register-card .jp-register-photo .form-control { color: #bdc9d7; }
+html[data-theme="dark"] .jp-register-terms { color: #98a9ba; }
+@media (max-width: 480px) {
+    .jp-register-name-row { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    body.jp-app .auth-card.jp-register-card { padding: 1.55rem 1.2rem; }
+}
+
+/* -------------------------------------------------------------------------
+   Thème sombre : une vraie palette (surfaces, textes, champs et cartes).
+   Cette couche finale neutralise les fonds blancs résiduels des composants.
+   ------------------------------------------------------------------------- */
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --jp-ink: #eff5fb;
+    --jp-copy: #c4d1df;
+    --jp-muted: #9caec0;
+    --jp-line: #2b3d50;
+    --jp-white: #142131;
+    --jp-surface: #101a27;
+    --jp-blue: #2588ff;
+}
+
+html[data-theme="dark"] body.jp-app {
+    color: #e8f0f8 !important;
+    background: #0b131e !important;
+}
+
+html[data-theme="dark"] body.jp-app :is(h1, h2, h3, h4, h5, h6, .jp-title, .card-title) {
+    color: #f4f8fc;
+}
+
+html[data-theme="dark"] body.jp-app :is(p, .text-muted, .jp-copy, .jp-description, .card-text) {
+    color: #b9c8d8;
+}
+
+html[data-theme="dark"] body.jp-app :is(
+    .jp-page-strip,
+    .jp-training-catalog,
+    .jp-training-guidance,
+    .jp-training-finder,
+    .jp-training-overview,
+    .jp-training-empty,
+    .jp-news-catalog,
+    .jp-news-empty,
+    .jp-live-catalog,
+    .jp-soft-catalog,
+    .jp-soft-filters,
+    .jp-soft-empty,
+    .jp-df-hero,
+    .jp-df-section,
+    .jp-df-trust,
+    .jp-df-tool,
+    .jp-df-stat,
+    .jp-df-trust-card,
+    .jp-training-card,
+    .jp-news-card,
+    .jp-live-card,
+    .jp-soft-card,
+    .card,
+    .modal-content,
+    .dropdown-menu
+) {
+    color: #e8f0f8;
+    background-color: #142131 !important;
+    border-color: #2a3c4f !important;
+}
+
+html[data-theme="dark"] body.jp-app :is(
+    .jp-training-hero,
+    .jp-news-hero,
+    .jp-live-hero,
+    .jp-soft-hero,
+    .jp-df-hero
+) {
+    background: radial-gradient(circle at 80% 10%, rgba(37, 136, 255, .16), transparent 30%), #0f1a28 !important;
+}
+
+html[data-theme="dark"] body.jp-app :is(
+    .form-control,
+    .form-select,
+    .form-check-input,
+    .input-group-text,
+    .form-control:focus,
+    .form-select:focus
+) {
+    color: #eef5fb !important;
+    background-color: #0d1723 !important;
+    border-color: #344a60 !important;
+}
+
+html[data-theme="dark"] body.jp-app :is(.form-control, .form-select)::placeholder {
+    color: #8295a9;
+    opacity: 1;
+}
+
+html[data-theme="dark"] body.jp-app :is(.form-control, .form-select):focus {
+    border-color: #2588ff !important;
+    box-shadow: 0 0 0 .2rem rgba(37, 136, 255, .16) !important;
+}
+
+html[data-theme="dark"] body.jp-app :is(.table, .table > :not(caption) > * > *) {
+    color: #e4edf6 !important;
+    background-color: #142131 !important;
+    border-color: #2a3c4f !important;
+}
+
+html[data-theme="dark"] body.jp-app :is(.alert-light, .bg-light) {
+    color: #dce9f6 !important;
+    background-color: #162536 !important;
+    border-color: #2c4054 !important;
+}
+
+/* Espace membre : les vues connexion/inscription reprennent uniquement le
+   choix sauvegardé sur le reste du site (ou le réglage du système). */
+html[data-theme="dark"] body.jp-app:has(.jp-login-layout) {
+    background: #0b1e25 !important;
+}
+
+html[data-theme="dark"] body.jp-app .auth-wrapper.jp-login-layout {
+    background: linear-gradient(135deg, #0f3a39, #102536 60%, #16223a) !important;
+}
+
+html[data-theme="dark"] .jp-login-showcase {
+    color: #cce2df;
+}
+
+html[data-theme="dark"] .jp-login-showcase :is(h1, .jp-login-showcase-brand, strong) {
+    color: #f1fbfa !important;
+}
+
+html[data-theme="dark"] .jp-login-showcase li {
+    color: #c7dddd !important;
+}
+
+html[data-theme="dark"] body.jp-app .auth-card.jp-login-card {
+    color: #eaf2fa;
+    background: #142233 !important;
+    border-color: #2d4359 !important;
+    box-shadow: 0 22px 52px rgba(0, 0, 0, .34) !important;
+}
+
+html[data-theme="dark"] .jp-login-card :is(.brand-header p, .form-label, .jp-login-signup, .auth-security-note, .jp-register-terms) {
+    color: #b7c6d6 !important;
+}
+
+html[data-theme="dark"] .jp-login-card .form-control {
+    color: #eff6fc !important;
+    background: transparent !important;
+    border-bottom-color: #425a70 !important;
+}
+
+html[data-theme="dark"] .jp-login-card .form-control:focus {
+    border-bottom-color: #42a5ff !important;
+    box-shadow: none !important;
+}
+
+html[data-theme="dark"] .jp-login-card :is(.jp-auth-divider, .auth-security-note) {
+    border-color: #2c4257 !important;
+}
+
+html[data-theme="dark"] .jp-login-card .jp-auth-divider span {
+    color: #98aabd;
+    background: #142233 !important;
+}
+
+html[data-theme="dark"] .jp-login-card .jp-google-fallback,
+html[data-theme="dark"] .jp-login-card .jp-password-toggle {
+    color: #d7e4f0 !important;
+    background: #1b2d3f !important;
+    border-color: #3a5168 !important;
+}
+
+html[data-theme="dark"] .jp-login-card .jp-google-fallback:hover {
+    color: #fff !important;
+    background: #223b54 !important;
+}
+
+html[data-theme="dark"] .jp-login-card :is(.alert-success, .alert-danger, .alert-warning, .alert-info) {
+    color: #e7f0f8;
+    background-color: #1a2c3d;
+    border-color: #3b566e;
+}
+
+html[data-theme="dark"] .jp-register-card .jp-register-photo .form-control::file-selector-button {
+    color: #b9dcff;
+    background: #1a3551;
+    border-color: #315779;
+}
+
+/* --------------------------------------------------------------------------
+   Parcours d'accès : gabarit fiable de 280 px au grand écran.
+   Ces pages ne chargent volontairement pas l'interface publique complète ;
+   elles conservent ainsi une lecture calme, mais avec les mêmes protections
+   de débordement et de contraste que le reste de la plateforme.
+   -------------------------------------------------------------------------- */
+body.jp-app:has(.auth-wrapper) { overflow-x: clip; }
+body.jp-app .auth-wrapper :is(.auth-card, .jp-login-showcase, .brand-header, .jp-field, .jp-input-wrap, .jp-recovery-input) { min-width: 0; }
+body.jp-app .auth-wrapper :is(h1, h2, h3, p, small, span, a, button, label) { overflow-wrap: anywhere; }
+
+body.jp-app .jp-recovery-showcase .jp-login-showcase-copy { margin-top: clamp(1.7rem, 4.8vh, 3.75rem); }
+body.jp-app .jp-recovery-showcase h1 { max-width: 17ch; }
+body.jp-app .jp-recovery-stage {
+    position: relative;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 28px;
+    align-items: center;
+    gap: 12px;
+    width: min(100%, 31rem);
+    margin: auto 0 0 auto;
+    padding: 14px;
+    overflow: hidden;
+    color: #e6f4ff;
+    background: linear-gradient(135deg, rgba(42, 117, 194, .37), rgba(12, 43, 75, .77));
+    border: 1px solid rgba(159, 214, 255, .24);
+    border-radius: 15px;
+    box-shadow: 0 15px 32px rgba(0, 0, 0, .18);
+}
+body.jp-app .jp-recovery-stage::after {
+    position: absolute;
+    top: -5rem;
+    right: -4.5rem;
+    width: 8rem;
+    height: 8rem;
+    border: 1px solid rgba(139, 211, 255, .22);
+    border-radius: 50%;
+    content: "";
+}
+body.jp-app .jp-recovery-stage-icon {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    color: #c7e8ff;
+    background: rgba(157, 218, 255, .14);
+    border: 1px solid rgba(169, 222, 255, .28);
+    border-radius: 13px;
+    font-size: 1rem;
+}
+body.jp-app .jp-recovery-stage > div:nth-child(2) { position: relative; z-index: 1; display: grid; gap: 3px; }
+body.jp-app .jp-recovery-stage strong { color: #f6fbff !important; font-size: .77rem; line-height: 1.2; }
+body.jp-app .jp-recovery-stage span { color: #b9d7ee; font-size: .66rem; line-height: 1.35; }
+body.jp-app .jp-recovery-stage-shield { position: relative; z-index: 1; color: #70dcb4; font-size: .93rem; }
+
+body.jp-app .auth-card.jp-recovery-card { max-width: 430px; }
+body.jp-app .jp-recovery-card .brand-header { margin-bottom: 19px; }
+body.jp-app .jp-recovery-card .brand-header h1 { max-width: 19ch; }
+body.jp-app .jp-recovery-card .alert { display: flex; align-items: flex-start; gap: 8px; margin: 0 0 14px; line-height: 1.42; }
+body.jp-app .jp-recovery-card .alert-success { color: #17634d !important; background: #edf9f4 !important; border: 1px solid #bfe9d8 !important; }
+body.jp-app .jp-recovery-card .alert-danger { color: #9d2c37 !important; background: #fff2f3 !important; border: 1px solid #f0c7cc !important; }
+body.jp-app .jp-recovery-form .jp-field { margin-bottom: 15px !important; }
+body.jp-app .jp-recovery-input { position: relative; }
+body.jp-app .jp-recovery-input > i { position: absolute; z-index: 1; top: 50%; left: 13px; color: #5d86a9; transform: translateY(-50%); font-size: .78rem; pointer-events: none; }
+body.jp-app .jp-recovery-input .form-control { padding-left: 38px !important; }
+body.jp-app .jp-recovery-card .jp-reset-code-input .form-control {
+    padding-right: 12px !important;
+    color: #176dc2 !important;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: .26em;
+    text-align: center;
+}
+body.jp-app .jp-reset-code-hint { display: block; margin-top: 6px; color: #70879e; font-size: .65rem; line-height: 1.35; }
+body.jp-app .jp-recovery-card .jp-login-submit { display: inline-flex; width: 100%; align-items: center; justify-content: center; gap: 8px; color: #fff !important; text-decoration: none; }
+body.jp-app .jp-recovery-back { display: flex; width: max-content; max-width: 100%; align-items: center; gap: 7px; margin: 14px auto 0; font-size: .72rem; text-align: center; text-decoration: none; }
+body.jp-app .jp-recovery-card .auth-security-note { margin-top: 15px; }
+body.jp-app .jp-activation-email { display: inline-block; max-width: 100%; overflow-wrap: anywhere; color: #1379e8; font-weight: 800; }
+body.jp-app .jp-recovery-actions { display: grid; gap: 12px; margin-top: 16px; text-align: center; }
+body.jp-app .jp-recovery-actions form { margin: 0; }
+body.jp-app .jp-recovery-actions .btn { width: 100%; }
+
+html[data-theme="dark"] body.jp-app .jp-recovery-stage { background: linear-gradient(135deg, rgba(39, 104, 166, .38), rgba(8, 31, 55, .82)); border-color: rgba(140, 204, 252, .23); }
+html[data-theme="dark"] body.jp-app .jp-recovery-stage span { color: #b4d2e8; }
+html[data-theme="dark"] body.jp-app .jp-recovery-card .alert-success { color: #b8f1da !important; background: #123c35 !important; border-color: #2b6c5b !important; }
+html[data-theme="dark"] body.jp-app .jp-recovery-card .alert-danger { color: #ffd0d7 !important; background: #4a2029 !important; border-color: #76404d !important; }
+html[data-theme="dark"] body.jp-app .jp-recovery-input > i { color: #9bc7ea; }
+html[data-theme="dark"] body.jp-app .jp-recovery-card .jp-reset-code-input .form-control { color: #9bd3ff !important; }
+html[data-theme="dark"] body.jp-app .jp-reset-code-hint { color: #aac2d8; }
+html[data-theme="dark"] body.jp-app .jp-activation-email { color: #8dcaff; }
+
+@media (max-width: 960px) {
+    body.jp-app .auth-wrapper.jp-login-layout { width: 100%; min-height: 100svh; }
+    body.jp-app .jp-recovery-stage { display: none; }
+}
+
+@media (max-width: 600px) {
+    body.jp-app .auth-theme.jp-theme-control {
+        position: fixed !important;
+        top: max(12px, env(safe-area-inset-top)) !important;
+        right: max(12px, env(safe-area-inset-right)) !important;
+        z-index: 50 !important;
+    }
+    body.jp-app .auth-theme .jp-theme-menu { right: 0; max-width: calc(100vw - 24px); }
+    body.jp-app:has(.auth-theme) .auth-wrapper.jp-login-layout { padding-top: 74px !important; }
+    body.jp-app .jp-recovery-card .brand-header h1 { font-size: clamp(1.42rem, 7vw, 1.75rem) !important; }
+    body.jp-app .jp-recovery-card .jp-reset-code-input .form-control { letter-spacing: .2em; }
+}
+
+@media (max-width: 360px) {
+    body.jp-app .auth-wrapper.jp-login-layout { padding-inline: 12px !important; }
+    body.jp-app .auth-card.jp-login-card { padding: 1.45rem 1rem !important; }
+    body.jp-app .jp-recovery-card .jp-reset-code-input .form-control { letter-spacing: .14em; }
+    body.jp-app .jp-recovery-stage { grid-template-columns: 38px minmax(0, 1fr); }
+}

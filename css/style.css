@@ -1,0 +1,57 @@
+/* Feuille de compatibilité pour les pages historiques de JP-Services. */
+@import url("osil-inspired.css?v=20260807");
+@import url("learning-platform.css?v=20260811");
+
+:root {
+    --jaune: #fff6b8;
+    --bleu: #1264b2;
+    --blanc: #ffffff;
+    --noir: #090b0e;
+}
+
+body {
+    color: var(--jp-ink, #090b0e);
+    background-color: #ffffff;
+}
+
+.navbar {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid rgba(9, 11, 14, 0.08);
+}
+
+.card-title {
+    color: var(--jp-ink, #090b0e);
+}
+
+body.dark-mode {
+    color: #f4f4f5;
+    background-color: #101114;
+}
+
+body.dark-mode .navbar,
+body.dark-mode .card,
+body.dark-mode .list-group-item,
+body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) {
+    color: #f4f4f5;
+    background-color: #191b20 !important;
+    border-color: #2d3038;
+}
+
+body.dark-mode .table,
+body.dark-mode .card-body {
+    color: #f4f4f5;
+}
+
+body.dark-mode a {
+    color: #ffb5be;
+}
+
+.light-theme-icon,
+.dark-theme-icon {
+    display: none;
+}
+
+body:not(.dark-mode) .light-theme-icon,
+body.dark-mode .dark-theme-icon {
+    display: inline-block;
+}

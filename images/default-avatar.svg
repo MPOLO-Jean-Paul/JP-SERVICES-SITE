@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Avatar JP-Services</title>
+  <desc id="desc">Silhouette de profil générique violette sur fond lavande.</desc>
+  <rect width="256" height="256" fill="#eeeaff"/>
+  <circle cx="128" cy="94" r="48" fill="#7451eb"/>
+  <path d="M44 228c5-54 37-83 84-83s79 29 84 83" fill="#7451eb"/>
+  <circle cx="208" cy="48" r="22" fill="#fff1cb"/>
+</svg>

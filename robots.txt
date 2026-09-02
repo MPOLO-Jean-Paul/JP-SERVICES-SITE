@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /uploads/
+Disallow: /storage/
+Disallow: /includes/
+Disallow: /app/
+Disallow: /activation
+Disallow: /inscription
+Disallow: /connexion
+Disallow: /mot-de-passe-oublie
+Disallow: /mot-de-passe/reinitialiser
+
+Sitemap: https://jp-services.wuaze.com/sitemap.xml

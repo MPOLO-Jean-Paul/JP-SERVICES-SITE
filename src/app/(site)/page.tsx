@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, CalendarDays, Check, ChevronRight, Clock3, ExternalLink, GraduationCap, MapPin } from "lucide-react";
+import { ArrowRight, ArrowUpRight, CalendarDays, Check, ChevronRight, Clock3, GraduationCap, MapPin } from "lucide-react";
 import { getCurrentUser } from "@/server/auth/session";
-import { getHomeStats, listActualites } from "@/server/services/content";
+import { listActualites } from "@/server/services/content";
 import { listUpcomingFormations } from "@/server/services/formations";
 import { excerpt, formatDate, formatPrice } from "@/lib/utils";
 import { SITE_URL, jsonLd } from "@/lib/seo";
@@ -33,11 +33,10 @@ const method = [
 ];
 
 export default async function HomePage() {
-  const [formations, actualites, user, stats] = await Promise.all([
+  const [formations, actualites, user] = await Promise.all([
     listUpcomingFormations(3).catch(() => []),
     listActualites(3).catch(() => []),
     getCurrentUser().catch(() => null),
-    getHomeStats().catch(() => null),
   ]);
   const preview = process.env.JP_PREVIEW_MODE === "1";
   const memberLink = user ? "/profil" : preview ? "/contact" : "/inscription";
@@ -76,7 +75,7 @@ export default async function HomePage() {
               <span>03</span><strong>Explorer SCOLIA Pro</strong><ArrowUpRight size={19} aria-hidden="true"/>
             </Link>
             <Link href="/contact" className="jp-guide-row">
-              <span>04</span><strong>Parler d'un projet</strong><ArrowUpRight size={19} aria-hidden="true"/>
+              <span>04</span><strong>Parler d&apos;un projet</strong><ArrowUpRight size={19} aria-hidden="true"/>
             </Link>
             <p className="jp-guide-footnote">Des parcours utiles, sans complexité inutile.</p>
           </aside>
@@ -104,7 +103,7 @@ export default async function HomePage() {
       <section className="jp-section jp-learning" aria-labelledby="learning-title">
         <div className="shell">
           <div className="jp-section-heading">
-            <div><p className="jp-overline">02 / SE FORMER</p><h2 id="learning-title">Les prochaines <em>occasions d'apprendre.</em></h2></div>
+            <div><p className="jp-overline">02 / SE FORMER</p><h2 id="learning-title">Les prochaines <em>occasions d&apos;apprendre.</em></h2></div>
             <Link href="/formations" className="jp-inline-link">Consulter le catalogue <ArrowUpRight size={18} aria-hidden="true"/></Link>
           </div>
           {formations.length ? <div className="jp-course-list">
@@ -133,7 +132,7 @@ export default async function HomePage() {
       <section className="jp-section jp-method" aria-labelledby="method-title">
         <div className="shell">
           <div className="jp-section-heading">
-            <div><p className="jp-overline">03 / NOTRE APPROCHE</p><h2 id="method-title">Moins de théorie isolée. <em>Plus d'application.</em></h2></div>
+            <div><p className="jp-overline">03 / NOTRE APPROCHE</p><h2 id="method-title">Moins de théorie isolée. <em>Plus d&apos;application.</em></h2></div>
             <p className="jp-section-aside">Une méthode simple pour garder le cap : comprendre un problème, travailler concrètement et mesurer la progression.</p>
           </div>
           <div className="jp-method-grid">{method.map(step=><div key={step.number} className="jp-method-step">
@@ -146,7 +145,7 @@ export default async function HomePage() {
         <div className="shell jp-scolia-grid">
           <div className="jp-scolia-main">
             <p className="jp-overline">04 / LOGICIEL MÉTIER <span className="jp-scolia-status">EN DÉVELOPPEMENT</span></p>
-            <h2 id="scolia-title">SCOLIA Pro.<br/><em>L'administration scolaire, simplifiée.</em></h2>
+            <h2 id="scolia-title">SCOLIA Pro.<br/><em>L&apos;administration scolaire, simplifiée.</em></h2>
             <p>Un projet logiciel conçu autour des opérations quotidiennes des établissements : suivi des apprenants, encaissements, organisation de la scolarité et pilotage des informations.</p>
             <div className="jp-scolia-actions">
               <Link href="/scolia" className="jp-action jp-action-light">Découvrir le projet <ArrowUpRight size={18}/></Link>
@@ -158,7 +157,7 @@ export default async function HomePage() {
             {["Gestion des apprenants","Finances & encaissements","Scolarité & évaluations","Rapports & administration"].map((name,i)=><div key={name} className="jp-scolia-index-row">
               <span>{String(i+1).padStart(2,"0")}</span><strong>{name}</strong><Check size={17} aria-hidden="true"/>
             </div>)}
-            <div className="jp-scolia-index-bottom"><span>UN ÉTABLISSEMENT, UNE VUE D'ENSEMBLE</span><span>JP—SERVICES</span></div>
+            <div className="jp-scolia-index-bottom"><span>UN ÉTABLISSEMENT, UNE VUE D&apos;ENSEMBLE</span><span>JP—SERVICES</span></div>
           </div>
         </div>
       </section>

@@ -69,3 +69,72 @@ test("en-têtes de sécurité présents", async ({ request }) => {
   expect(res.headers()["x-frame-options"]).toBe("SAMEORIGIN");
   expect(res.headers()["x-powered-by"]).toBeUndefined();
 });
+
+
+test("le menu mobile s'ouvre au-dessus du site et chaque entrée mène à sa page", async ({page}) => {
+  await page.setViewportSize({width: 390, height: 844});
+  await page.goto("/");
+  const trigger = page.locator('button[aria-controls="mobile-drawer"]');
+  await expect(trigger).toBeVisible();
+  await trigger.click();
+  await expect(page.locator("#mobile-drawer")).toBeVisible();
+  await expect(page.locator("#mobile-drawer")).toHaveAttribute("data-state","open");
+  await page.locator('#mobile-drawer a[href="/logiciels"]').click();
+  await expect(page).toHaveURL(/\/logiciels$/);
+  await expect(page.locator("#mobile-drawer")).toHaveCount(0);
+  await trigger.click();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#mobile-drawer")).toHaveCount(0);
+});
+
+test("les liens principaux sont accessibles directement au clavier sur ordinateur", async ({page,isMobile}) => {
+  test.skip(isMobile, "Navigation desktop uniquement");
+  await page.goto("/");
+  const nav = page.getByRole("navigation",{name:"Menu principal"});
+  await expect(nav.getByRole("link",{name:/Formations/i})).toBeVisible();
+  await expect(nav.getByRole("link",{name:/Logiciels/i})).toBeVisible();
+  await nav.getByRole("link",{name:/Projets/i}).click();
+  await expect(page).toHaveURL(/\/projets$/);
+});
+
+test("le formulaire de contact conserve le sujet transmis depuis SCOLIA Pro", async ({page}) => {
+  await page.goto("/contact?sujet=SCOLIA%20Pro");
+  await expect(page.locator("#sujet")).toHaveValue("SCOLIA Pro");
+});
+
+test("la nouvelle direction graphique reste lisible et sans débordement", async ({page}, testInfo) => {
+  test.setTimeout(90000);
+  for (const [label,width,height] of [
+    ["compact",320,700],["mobile",390,844],["tablette",820,1024],["desktop",1440,900]
+  ] as const) {
+    await page.setViewportSize({width,height});
+    await page.goto("/");
+    await expect(page.locator("h1")).toContainText("compétences");
+    await expect(page.locator(".jp-guide-row")).toHaveCount(4);
+    await expect(page.locator(".jp-area-link")).toHaveCount(3);
+    const widths = await page.evaluate(() => ({page: document.documentElement.scrollWidth,viewport:window.innerWidth}));
+    expect(widths.page, "Débordement d'affichage "+label).toBeLessThanOrEqual(widths.viewport+1);
+    if (label === "mobile" || label === "desktop") {
+      await testInfo.attach("jp-services-accueil-"+label,{body:await page.screenshot({fullPage:true}), contentType:"image/png"});
+    }
+  }
+});
+
+test("les liens internes visibles sur les rubriques publiques ne retournent pas 404",async ({page,request,isMobile}) => {
+  test.skip(isMobile, "Le même test couvre la navigation HTML sur ordinateur");
+  test.setTimeout(150000);
+  const hrefs = new Set<string>();
+  for(const path of ["/","/formations","/formations-en-ligne","/logiciels","/scolia","/projets","/forum","/actualites","/a-propos","/contact","/partenariat","/aide"]) {
+    const response = await page.goto(path);
+    expect(response?.status(), "Rubrique "+path).toBe(200);
+    for (const href of await page.locator('a[href^="/"]').evaluateAll(anchors =>
+      anchors.map(a => a.getAttribute("href") || "").filter(Boolean))) {
+      // Les téléchargements modifient des statistiques : pas de GET automatisé en audit.
+      if (!href.startsWith("/telecharger/") && !href.startsWith("/uploads/")) hrefs.add(href.split("#")[0]!);
+    }
+  }
+  for(const href of hrefs) {
+    const response = await request.get(href, {maxRedirects:0});
+    expect(response.status(), "Lien invalide : "+href).toBeLessThan(400);
+  }
+});

@@ -14,7 +14,7 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   auth_register_intro: "Rejoignez les formations, les outils et la communauté JP-Services.",
   contact_telephone: "+243 977 152 825",
   contact_whatsapp: "243860951131",
-  contact_email: "contact@jp-services.com",
+  contact_email: "contact@jp-services.org",
   contact_adresse: "Lubumbashi, République démocratique du Congo",
   social_facebook: "https://www.facebook.com/groups/1236192878705291",
   social_linkedin: "https://www.linkedin.com/in/jp-services-b51940381",

@@ -83,6 +83,9 @@ async function main() {
     }
   }
 
+  // L'ancien site utilisait le domaine .com : l'adresse officielle est désormais en .org.
+  await target`UPDATE site_settings SET valeur = 'contact@jp-services.org', mis_a_jour = now() WHERE cle = 'contact_email' AND valeur = 'contact@jp-services.com'`;
+
   await source.end();
   await target.end();
   console.log("\nTable                    lues   importées  ignorées");

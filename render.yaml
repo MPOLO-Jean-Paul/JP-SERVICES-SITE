@@ -57,11 +57,11 @@ services:
       - key: SMTP_PASSWORD
         sync: false
       - key: SMTP_FROM_ADDRESS
-        sync: false
+        value: contact@jp-services.org
       - key: SMTP_FROM_NAME
         value: JP-Services
       - key: ADMIN_NOTIFICATION_EMAIL
-        sync: false
+        value: contact@jp-services.org
       - key: NEXT_PUBLIC_GOOGLE_CLIENT_ID
         sync: false
 

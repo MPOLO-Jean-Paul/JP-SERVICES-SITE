@@ -32,9 +32,11 @@
     "S3_REGION": "auto",
     "S3_BUCKET": "jp-services-uploads",
     "SMTP_PORT": "587",
-    "SMTP_FROM_NAME": "JP-Services"
+    "SMTP_FROM_NAME": "JP-Services",
+    "SMTP_FROM_ADDRESS": "contact@jp-services.org",
+    "ADMIN_NOTIFICATION_EMAIL": "contact@jp-services.org"
   }
   // Secrets (npx wrangler secret put NOM) : APP_SECRET, DATABASE_URL (repli),
   // S3_ENDPOINT, S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY, SMTP_HOST, SMTP_USERNAME,
-  // SMTP_PASSWORD, SMTP_FROM_ADDRESS, ADMIN_NOTIFICATION_EMAIL.
+  // SMTP_PASSWORD.
 }

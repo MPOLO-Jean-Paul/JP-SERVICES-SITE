@@ -114,7 +114,7 @@ curl -I https://jp-services.org/contact.php     # 308 → /contact (anciennes ad
 ```
 
 - **Google** : ajoutez `https://jp-services.org` aux origines JavaScript autorisées du client OAuth, puis déclarez le domaine dans Google Search Console.
-- **E-mails** : `SMTP_FROM_ADDRESS` doit être une adresse `@jp-services.org` dont le fournisseur de messagerie est autorisé par les enregistrements SPF et DKIM du domaine, sinon les messages partent en indésirables.
+- **E-mails** : le site envoie depuis `contact@jp-services.org` (`SMTP_FROM_ADDRESS`) et y reçoit les notifications internes (`ADMIN_NOTIFICATION_EMAIL`). Utilisez le serveur SMTP du fournisseur de cette boîte, autorisé par les enregistrements SPF et DKIM du domaine, sinon les messages partent en indésirables.
 - **Coordonnées affichées** : l’adresse de contact publique se modifie dans **Administration → Paramètres**.
 
 ## 5. Partir d’une base vierge (recommandé)

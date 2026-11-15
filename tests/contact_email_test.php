@@ -38,17 +38,17 @@ echo "OK : validation et repli de l'adresse publique.\n";
 $phones = [
     ['+243 (977) 152-825', true, '+243977152825'],
     ['0977152825', true, '0977152825'],
-    ["+243 977 152 825\\r\\nBcc:spam", false, ''],
+    ["+243 977 152 825\r\nBcc:spam", false, ''],
     ['tel:+243977152825', false, ''],
     ['1234', false, ''],
 ];
 foreach ($phones as [$number, $valid, $uri]) {
     if (jp_valid_public_phone($number) !== $valid) {
-        fwrite(STDERR, "Échec validation du numéro public.\\n");
+        fwrite(STDERR, "Échec validation du numéro public.\n");
         exit(1);
     }
     if ($valid && jp_phone_tel_uri($number) !== $uri) {
-        fwrite(STDERR, "Échec génération du lien téléphonique.\\n");
+        fwrite(STDERR, "Échec génération du lien téléphonique.\n");
         exit(1);
     }
 }
@@ -58,25 +58,25 @@ $whatsapp = [
     ['243860951131', '243860951131'],
     ['textejavascript', null],
     ['003', null],
-    ["243860951131\\r\\nCc:spam", null],
+    ["243860951131\r\nCc:spam", null],
 ];
 foreach ($whatsapp as [$number, $expected]) {
     if (jp_normalize_whatsapp($number) !== $expected) {
-        fwrite(STDERR, "Échec normalisation du numéro WhatsApp.\\n");
+        fwrite(STDERR, "Échec normalisation du numéro WhatsApp.\n");
         exit(1);
     }
 }
 
 putenv('CONTACT_PHONE=+243 (977) 152-825');
 if (jp_contact_phone() !== '+243 (977) 152-825') {
-    fwrite(STDERR, "Échec lecture CONTACT_PHONE.\\n");
+    fwrite(STDERR, "Échec lecture CONTACT_PHONE.\n");
     exit(1);
 }
 putenv('CONTACT_PHONE');
 
 putenv('CONTACT_WHATSAPP=+243 860 951 131');
 if (jp_contact_whatsapp() !== '243860951131') {
-    fwrite(STDERR, "Échec lecture CONTACT_WHATSAPP.\\n");
+    fwrite(STDERR, "Échec lecture CONTACT_WHATSAPP.\n");
     exit(1);
 }
 putenv('CONTACT_WHATSAPP');

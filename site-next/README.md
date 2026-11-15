@@ -55,3 +55,23 @@ En novembre 2026, Cloudflare recommande **vinext** pour Next.js sur Workers, mai
 ### Références de conception
 
 Direction graphique originale inspirée des principes de hiérarchie visuelle et de sobriété de [Linear](https://linear.app) et [Vercel](https://vercel.com), sans réutilisation de leurs assets ni reproduction de leur identité.
+
+## Console d'administration privée (phase 3)
+
+L'espace /admin comprend un tableau de bord, la gestion éditoriale (brouillons, publication et ordre d'affichage), et une boîte de réception privée avec états lu/non lu. Son identité graphique reprend les composants du nouveau site.
+
+**La console est désactivée par défaut** : sans base durable et secrets valides, aucune donnée privée n'est accessible. Activation sur une base PostgreSQL **Neon** :
+
+1. Exécuter les migrations db/001_initial.sql puis db/002_admin.sql, dans cet ordre, après sauvegarde.
+2. Sur votre ordinateur, lancer : node scripts/generate-admin-credentials.mjs administrateur
+3. Conserver le mot de passe généré dans un gestionnaire sécurisé. Ne jamais coller la sortie de la commande dans un dépôt, ticket, chat public ou journal CI.
+4. Définir uniquement dans les secrets de l'hébergement : DATABASE_URL, ADMIN_USERNAME, ADMIN_PASSWORD_HASH, ADMIN_SESSION_SECRET ; renseigner CONTACT_RATE_LIMIT_SALT pour le formulaire public.
+5. Ouvrir /admin, vérifier le login, les sessions, les brouillons et les autorisations avant d'activer la réception de messages réels.
+
+Les mots de passe ne sont pas stockés en clair : PBKDF2-SHA256 (240 000 itérations dans l'utilitaire), cookie HttpOnly signé, SameSite Strict, Secure en production, expiration 8 heures et sessions conservées et révocables côté PostgreSQL. Les mutations vérifient leur origine et les champs passent par une validation serveur. La tentative de connexion est limitée en base sur une fenêtre de 15 minutes.
+
+### Base PostgreSQL : éviter une configuration incorrecte
+
+Le client actuel @neondatabase/serverless s'utilise directement avec **Neon** (ou un proxy PostgreSQL compatible avec son protocole HTTP). Il ne se connecte pas à une base Render PostgreSQL standard sur le port TCP 5432. Pour Render Postgres, il faudrait changer le client en node-postgres, et pour Cloudflare Workers utiliser Hyperdrive et un pilote compatible avant de déployer. Ne pas utiliser une URL Render PostgreSQL avec ce client.
+
+Render PostgreSQL gratuit **expire 30 jours après création**, avec suppression des données après la période de grâce si aucun changement de plan n'est effectué. Pour la préproduction, choisir un stockage persistant adapté avant d'accepter des demandes réelles. Le site public historique et ses données n'ont pas été migrés.

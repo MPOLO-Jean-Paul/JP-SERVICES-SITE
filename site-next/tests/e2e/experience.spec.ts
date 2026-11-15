@@ -79,3 +79,23 @@ test("Le contact et les API ne prétendent pas enregistrer sans base", async ({ 
   expect(results.ok()).toBeTruthy();
   expect((await results.json()).source).toBe("preview");
 });
+
+
+test("L'administration est fermée sans configuration et n'expose pas de données", async ({ page, request }) => {
+  await page.setViewportSize({width:390,height:844});
+  await page.goto("/admin");
+  await expect(page.getByRole("heading", {name:"Administration en préparation."})).toBeVisible();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(391);
+  for (const route of ["/api/admin/overview", "/api/admin/catalogue", "/api/admin/messages"]) {
+    const response = await request.get(route);
+    expect(response.status()).toBe(503);
+    expect(response.headers()["cache-control"]).toContain("no-store");
+  }
+  const unauthorizedChange = await request.post("/api/admin/catalogue", {
+    headers: {Origin:"https://example-attack.invalid","Content-Type":"application/json"},
+    data: {}
+  });
+  expect(unauthorizedChange.status()).toBe(503);
+  const meta = page.locator('meta[name="robots"]');
+  await expect(meta).toHaveAttribute("content", /noindex/);
+});

@@ -26,42 +26,42 @@ export const offerings: CatalogueItem[] = [
 ];
 
 export const navLinks = [
-  { href: "/services", label: "Expertises" },
   { href: "/formations", label: "Formations" },
+  { href: "/services", label: "Expertises" },
   { href: "/logiciels", label: "Logiciels" },
-  { href: "/projets", label: "Réalisations" },
+  { href: "/projets", label: "Projets" },
   { href: "/a-propos", label: "À propos" }
 ] as const;
 
 export const sectionContent = {
   services: {
-    eyebrow: "NOS EXPERTISES",
-    title: "Une expertise qui sert votre ambition.",
-    subtitle: "Du conseil aux applications, chaque solution répond à un usage précis.",
+    eyebrow: "NOS SAVOIR-FAIRE",
+    title: "Le numérique qui fait avancer vos projets.",
+    subtitle: "De la conception au déploiement, des solutions précises pour des besoins réels.",
     kind: "service" as Kind
   },
   formations: {
-    eyebrow: "TRANSMETTRE LE SAVOIR-FAIRE",
-    title: "Apprendre pour construire.",
-    subtitle: "Des parcours orientés vers la pratique et les compétences utiles.",
+    eyebrow: "APPRENDRE & PROGRESSER",
+    title: "Développez des compétences qui comptent.",
+    subtitle: "Explorez nos domaines de formation et les possibilités d'un accompagnement pratique. Programmes et modalités sur demande.",
     kind: "formation" as Kind
   },
   logiciels: {
-    eyebrow: "NOS PRODUITS NUMÉRIQUES",
-    title: "Des outils pour travailler mieux.",
-    subtitle: "Des solutions structurées, pensées pour les besoins du terrain.",
+    eyebrow: "DES OUTILS MÉTIERS UTILES",
+    title: "Des logiciels pensés pour simplifier.",
+    subtitle: "Des produits conçus au plus près des usages, dont SCOLIA Pro actuellement en développement.",
     kind: "logiciel" as Kind
   },
   projets: {
-    eyebrow: "NOTRE DÉMARCHE EN ACTION",
-    title: "Des projets qui ont du sens.",
-    subtitle: "Des produits en cours de conception et des ambitions concrètes.",
+    eyebrow: "NOTRE TRAVAIL",
+    title: "Des projets qui répondent au terrain.",
+    subtitle: "Découvrez nos initiatives et les solutions que nous construisons progressivement.",
     kind: "projet" as Kind
   },
   actualites: {
-    eyebrow: "JOURNAL JP-SERVICES",
-    title: "Les idées qui nous font avancer.",
-    subtitle: "Analyses, perspectives et nouveautés de notre studio.",
+    eyebrow: "NOTRE JOURNAL",
+    title: "Idées, découvertes et perspectives.",
+    subtitle: "Les évolutions du numérique et les projets JP-SERVICES, au fil de leur publication.",
     kind: "actualite" as Kind
   }
 } as const;

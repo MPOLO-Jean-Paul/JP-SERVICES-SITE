@@ -1,16 +1,40 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
-import { ArrowUpRight, MapPin } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Clock3, Mail, MapPin, MessageCircleMore } from "lucide-react";
+import { publicContactEmail } from "@/lib/identity";
 
-export const metadata: Metadata = { title: "Contact", description: "Parlez de votre projet à JP-SERVICES : échangeons sur vos besoins et vos objectifs." };
+export const metadata: Metadata = { title: "Contact", description: "Décrivez votre projet à JP-SERVICES : formations, applications, accompagnement ou logiciels à Lubumbashi." };
 
 export default function ContactPage() {
-  const email = process.env.CONTACT_EMAIL?.trim() || "contact@jp-services.com";
-  const safeEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : "contact@jp-services.com";
+  const email = publicContactEmail();
   return <>
-    <section className="inner-hero"><div className="shell"><div className="eyebrow"><span className="eyebrow-dot"/> NOUS CONTACTER</div><h1>Parlons de votre<br/><em>prochaine idée.</em></h1><p>Une question, un projet ou un besoin d'accompagnement ? Décrivez-nous votre objectif.</p></div></section>
-    <section className="section shell contact-layout"><div><div className="eyebrow eyebrow-dark">ENVOYER UN MESSAGE</div><h2 className="contact-heading">Comment pouvons-nous vous aider ?</h2><ContactForm /></div>
-      <aside className="contact-aside"><h2>Construisons quelque chose d'utile.</h2><p>Nous privilégions les échanges simples et directs. Parlez-nous du problème à résoudre, nous réfléchirons à la meilleure approche.</p><div className="contact-aside-rule"/><span className="contact-aside-label">E-MAIL PROFESSIONNEL</span><div><a href={"mailto:"+safeEmail}>{safeEmail} <ArrowUpRight size={13}/></a></div><div className="contact-aside-rule"/><span className="contact-aside-label">NOTRE BASE</span><p><MapPin size={16}/> Lubumbashi, République démocratique du Congo</p></aside>
+    <section className="editorial-page-hero editorial-contact-hero">
+      <div className="shell editorial-page-hero-inner">
+        <div className="editorial-breadcrumb">ACCUEIL <span>/</span> CONTACT</div>
+        <div className="editorial-page-label"><span/> ÉCHANGEONS SUR VOTRE IDÉE</div>
+        <h1>Une question, un projet ?<br/><em>Parlons-en.</em></h1>
+        <p>Que vous souhaitiez acquérir de nouvelles compétences ou créer une solution numérique, expliquez-nous votre besoin.</p>
+      </div>
+      <span className="editorial-hero-orbit" aria-hidden="true"/>
+    </section>
+    <section className="shell editorial-contact-layout">
+      <div className="editorial-form-wrap">
+        <div className="editorial-section-kicker">01 / VOTRE DEMANDE</div>
+        <h2>Décrivez-nous votre projet.</h2>
+        <p>Quelques détails suffisent pour commencer la conversation.</p>
+        <ContactForm />
+      </div>
+      <aside className="editorial-contact-aside">
+        <div className="editorial-contact-card">
+          <div className="editorial-contact-symbol"><MessageCircleMore size={25}/></div>
+          <h2>Chaque projet commence par une conversation.</h2>
+          <p>Un besoin concret, une question technique ou une formation ? Choisissez le moyen le plus simple pour nous joindre.</p>
+          <div className="editorial-contact-item"><Mail size={18}/><div><strong>E-mail professionnel</strong><a href={"mailto:"+email}>{email} <ArrowUpRight size={14}/></a></div></div>
+          <div className="editorial-contact-item"><MapPin size={18}/><div><strong>Notre implantation</strong><span>Lubumbashi, Haut-Katanga · RDC</span></div></div>
+          <div className="editorial-contact-item"><Clock3 size={18}/><div><strong>Disponibilité</strong><span>Écrivez-nous pour convenir d'un échange.</span></div></div>
+        </div>
+        <div className="editorial-contact-note"><strong>Vous souhaitez une formation ?</strong><p>Découvrez les domaines proposés, puis adressez-nous vos besoins.</p><a href="/formations">Explorer les formations <ArrowRight size={15}/></a></div>
+      </aside>
     </section>
   </>;
 }

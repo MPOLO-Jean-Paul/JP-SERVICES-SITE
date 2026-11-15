@@ -1,0 +1,56 @@
+name: "JP-SERVICES — Next.js CI"
+on:
+  pull_request:
+    paths:
+      - "site-next/**"
+      - "render.yaml"
+      - ".github/workflows/nextjs-preview.yml"
+  push:
+    branches: [main]
+    paths:
+      - "site-next/**"
+      - "render.yaml"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site-next
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - run: npm run typecheck
+      - name: Vérifier les routes et API en cours d'exécution
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run start >/tmp/jp-next.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl -fsS http://127.0.0.1:3000/api/health -o /tmp/health.json; then break; fi
+            sleep 1
+          done
+          node -e 'const h=require("/tmp/health.json"); if(h.status!=="ok" || h.service!=="jp-services-next")process.exit(1)'
+          curl -fsS http://127.0.0.1:3000/ | grep -q 'Des idées fortes'
+          curl -fsS http://127.0.0.1:3000/services | grep -q 'expertise'
+          curl -fsS 'http://127.0.0.1:3000/api/catalogue?kind=service' | grep -q '"source":"preview"'
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:3000/api/contact -H 'Content-Type: application/json' -d '{}')" = "403"
+      - name: Installer le navigateur pour les contrôles responsives
+        run: npx playwright install --with-deps chromium
+      - name: Vérifier l'ergonomie et les interactions
+        run: npm run test:e2e
+      - name: Enregistrer les captures des tests
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jp-services-ui-audit
+          path: |
+            site-next/test-results/
+            site-next/playwright-report/
+          if-no-files-found: ignore
+          retention-days: 14

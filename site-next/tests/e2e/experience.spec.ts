@@ -99,3 +99,20 @@ test("L'administration est fermée sans configuration et n'expose pas de donnée
   const meta = page.locator('meta[name="robots"]');
   await expect(meta).toHaveAttribute("content", /noindex/);
 });
+
+
+test("L'aperçu de la console est accessible sans aucune donnée privée", async ({page}, testInfo) => {
+  await page.setViewportSize({width:390,height:844});
+  await page.goto("/admin");
+  await page.getByRole("link",{name:/Voir la console en démonstration/}).click();
+  await expect(page).toHaveURL(/\/admin\/demo$/);
+  await expect(page.getByRole("status")).toContainText("données fictives");
+  await page.getByRole("button",{name:/Catalogue/}).click();
+  await expect(page.getByRole("heading",{name:"Catalogue éditorial"})).toBeVisible();
+  await page.getByRole("button",{name:/Consulter/}).first().click();
+  await expect(page.getByRole("region",{name:"Description de la fiche"})).toBeVisible();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(391);
+  await testInfo.attach("console-mobile-demo",{
+    body:await page.screenshot({fullPage:true}),contentType:"image/png"
+  });
+});

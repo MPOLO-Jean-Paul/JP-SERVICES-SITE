@@ -163,7 +163,7 @@ export function AdminConsole() {
     <h1>Administration en préparation.</h1>
     <p>Le panneau est disponible dans l'application, mais l'accès est désactivé tant que les identifiants de sécurité et la base PostgreSQL n'ont pas été configurés.</p>
     <div className="admin-entry-alert" role="status"><CircleAlert size={18}/> {alert || "Configuration serveur nécessaire."}</div>
-    <Link className="btn btn-outline" href="/"><ArrowLeft size={16}/> Retour au site</Link>
+    <div className="admin-preview-links"><Link className="btn btn-primary" href="/admin/demo">Voir la console en démonstration <ArrowRight size={16}/></Link><Link className="btn btn-outline" href="/"><ArrowLeft size={16}/> Retour au site</Link></div>
   </div>;
 
   if (mode === "locked") return <div className="admin-entry">

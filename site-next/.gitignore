@@ -8,3 +8,6 @@ dist
 .env.production
 *.log
 *.tsbuildinfo
+
+playwright-report/
+test-results/

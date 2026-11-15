@@ -40,3 +40,17 @@ jobs:
           curl -fsS http://127.0.0.1:3000/services | grep -q 'expertise'
           curl -fsS 'http://127.0.0.1:3000/api/catalogue?kind=service' | grep -q '"source":"preview"'
           test "$(curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:3000/api/contact -H 'Content-Type: application/json' -d '{}')" = "403"
+      - name: Installer le navigateur pour les contrôles responsives
+        run: npx playwright install --with-deps chromium
+      - name: Vérifier l'ergonomie et les interactions
+        run: npm run test:e2e
+      - name: Enregistrer les captures des tests
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jp-services-ui-audit
+          path: |
+            site-next/test-results/
+            site-next/playwright-report/
+          if-no-files-found: ignore
+          retention-days: 14

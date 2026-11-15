@@ -116,3 +116,45 @@ test("L'aperçu de la console est accessible sans aucune donnée privée", async
     body:await page.screenshot({fullPage:true}),contentType:"image/png"
   });
 });
+
+
+test("La charte éditoriale conserve la palette de JP-SERVICES sur toutes les pages", async ({page}, testInfo) => {
+  test.setTimeout(80000);
+  for (const [label,width,height] of [
+    ["compact",320,650],["mobile",390,844],["desktop",1440,900]
+  ] as const) {
+    await page.setViewportSize({width,height});
+    for (const path of ["/","/formations","/services","/logiciels","/projets","/actualites","/a-propos","/contact","/admin/demo"]) {
+      await page.goto(path);
+      const dimensions = await page.evaluate(() => ({
+        scroll:document.documentElement.scrollWidth,
+        viewport:window.innerWidth
+      }));
+      expect(dimensions.scroll, label+" "+path).toBeLessThanOrEqual(dimensions.viewport + 1);
+      await expect(page.locator(".editorial-header")).toBeVisible();
+      await expect(page.locator(".editorial-footer")).toHaveCount(1);
+      if (label === "desktop" && (path === "/" || path === "/formations")) {
+        await testInfo.attach("nouvelle-charte-"+path.replace(/\W/g,"_")+"-desktop",{
+          body:await page.screenshot({fullPage:true}),contentType:"image/png"
+        });
+      }
+      if (label === "mobile" && (path === "/" || path === "/contact")) {
+        await testInfo.attach("nouvelle-charte-"+path.replace(/\W/g,"_")+"-mobile",{
+          body:await page.screenshot({fullPage:true}),contentType:"image/png"
+        });
+      }
+    }
+  }
+});
+
+test("L'identité officielle est cohérente dans la navigation et les contacts", async ({page}) => {
+  await page.goto("/");
+  await expect(page.locator(".editorial-footer-domain")).toContainText("jp-services.org");
+  await expect(page.getByRole("link",{name:/contact@jp-services.org/})).toHaveCount(2);
+  await page.goto("/contact");
+  await expect(page.getByRole("link",{name:/contact@jp-services.org/})).toHaveCount(3);
+  await expect(page.getByRole("heading",{level:1})).toContainText("Une question, un projet");
+  await page.goto("/formations");
+  await expect(page.getByRole("heading",{level:1})).toContainText("Développez des compétences");
+  await expect(page.locator(".catalogue-card")).toHaveCount(3);
+});

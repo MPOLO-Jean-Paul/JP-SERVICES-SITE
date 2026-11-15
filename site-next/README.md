@@ -75,3 +75,21 @@ Les mots de passe ne sont pas stockés en clair : PBKDF2-SHA256 (240 000 itérat
 Le client actuel @neondatabase/serverless s'utilise directement avec **Neon** (ou un proxy PostgreSQL compatible avec son protocole HTTP). Il ne se connecte pas à une base Render PostgreSQL standard sur le port TCP 5432. Pour Render Postgres, il faudrait changer le client en node-postgres, et pour Cloudflare Workers utiliser Hyperdrive et un pilote compatible avant de déployer. Ne pas utiliser une URL Render PostgreSQL avec ce client.
 
 Render PostgreSQL gratuit **expire 30 jours après création**, avec suppression des données après la période de grâce si aucun changement de plan n'est effectué. Pour la préproduction, choisir un stockage persistant adapté avant d'accepter des demandes réelles. Le site public historique et ses données n'ont pas été migrés.
+
+
+## Charte graphique éditoriale JP-SERVICES (novembre 2026)
+
+Audit de référence de [la plateforme OpenClassrooms](https://openclassrooms.com/fr/), notamment [les parcours](https://openclassrooms.com/fr/paths), [les offres](https://openclassrooms.com/fr/offers) et leur description de [Classify, le design system](https://openclassrooms.com/fr/courses/5249021-initiez-vous-a-la-methode-atomic-design/5630311-federez-les-collaborateurs-autour-de-votre-nouveau-produit-le-design-system).
+
+**Principes retenus** : organisation éditoriale, clarté des cartes de formation, navigation explicite, mise en avant des catégories, titres et CTA lisibles, fonctionnement sur mobile. **Aucune reproduction de leurs visuels, textes, logos ni palette violette.** Le site étant dynamique, nous n'avons pas prétendu consulter chaque écran ou vérifier la police exacte chargée dans tous les navigateurs.
+
+**Identité propre** :
+- Couleurs JP-SERVICES inchangées : bleu #416FFF, marine #142038 / #11213C, blanc et gris bleuté ; contraste et mode sombre adaptés.
+- Typographie : **Manrope** pour les titres, **DM Sans** pour les composants et le corps. Ce sont nos choix, pas une attribution non vérifiée à OpenClassrooms.
+- Composition : zone d'accueil blanche et bleu pâle, illustrations originales entièrement en CSS, trois axes (Formations, Expertises, Logiciels), catalogue éditorial, prévisualisation SCOLIA Pro conceptuelle et pied de page bleu nuit.
+- Styles répartis entre globals.css (composants fonctionnels et administration) et editorial.css (nouvelle direction graphique).
+- Domaine professionnel : **jp-services.org** ; contact officiel : **contact@jp-services.org**.
+
+Les pages se consultent aux chemins /formations, /services, /logiciels, /projets, /actualites, /a-propos, /contact et /admin/demo sur le **même hôte du déploiement**. Ne pas mettre en service une redirection DNS automatique du domaine officiel vers la préproduction. Sur Render, conserver NEXT_PUBLIC_SITE_URL=https://jp-services-next-preview.onrender.com et l'indexation désactivée ; lors de la vraie bascule, passer NEXT_PUBLIC_SITE_URL=https://jp-services.org seulement après vérification des données et du SSL.
+
+**Contrôles** : GitHub CI + Playwright couvrent maintenant les pages principales en 320, 390 et 1440 px, avec captures des nouveaux parcours graphiques.

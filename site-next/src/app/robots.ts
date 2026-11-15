@@ -1,10 +1,12 @@
 import type { MetadataRoute } from "next";
+import { isPreviewOrigin, siteOrigin } from "@/lib/identity";
 
 export default function robots(): MetadataRoute.Robots {
-  const url = process.env.NEXT_PUBLIC_SITE_URL ?? "";
-  const isPreview = !url || /localhost|127\.0\.0\.1|\.onrender\.com/i.test(url);
+  if (isPreviewOrigin()) {
+    return { rules: { userAgent: "*", disallow: "/" } };
+  }
   return {
-    rules: isPreview ? { userAgent: "*", disallow: "/" } : { userAgent: "*", allow: "/" },
-    ...(!isPreview ? { sitemap: new URL("/sitemap.xml", url).href } : {})
+    rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/api/admin"] },
+    sitemap: new URL("/sitemap.xml", siteOrigin()).href
   };
 }

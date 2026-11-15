@@ -22,6 +22,7 @@ export function siteOrigin(): string {
 }
 
 export function isPreviewOrigin(): boolean {
+  if (!process.env.NEXT_PUBLIC_SITE_URL) return true;
   const origin = siteOrigin();
   return /localhost|127\.0\.0\.1|\.onrender\.com|\.workers\.dev/i.test(origin);
 }

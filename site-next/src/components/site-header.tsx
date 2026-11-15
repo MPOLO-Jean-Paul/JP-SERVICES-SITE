@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, Moon, Sun, X } from "lucide-react";
+import { GlobalSearch } from "@/components/global-search";
 import { useEffect, useState } from "react";
 import { navLinks } from "@/lib/content";
 
@@ -53,6 +54,7 @@ export function SiteHeader() {
           <Link href="/contact" className="nav-contact-mobile">Parlons de votre projet <ArrowUpRight size={16}/></Link>
         </nav>
         <div className="header-actions">
+          <GlobalSearch />
           <button type="button" className="icon-button theme-switch" aria-label={dark ? "Activer le thème clair" : "Activer le thème sombre"} title="Changer le thème" onClick={toggleTheme}>{dark ? <Sun size={18}/> : <Moon size={18}/>}</button>
           <Link className="header-cta" href="/contact">Parlons de votre projet <ArrowUpRight size={16}/></Link>
           <button className="icon-button mobile-menu-button" type="button" aria-expanded={menuOpen} aria-controls="main-nav" aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={22}/> : <Menu size={22}/>}</button>

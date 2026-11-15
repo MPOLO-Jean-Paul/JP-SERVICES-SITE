@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: `${SITE_NAME} — Formations et services digitaux`, template: `%s | ${SITE_NAME}` },
   description: DEFAULT_DESCRIPTION,
+  // Un aperçu public n'est jamais une publication indexable.
+  robots: process.env.JP_PREVIEW_MODE === "1" ? { index: false, follow: false, noarchive: true } : undefined,
   applicationName: SITE_NAME,
   keywords: ["formation", "informatique", "Lubumbashi", "RDC", "logiciels", "gestion scolaire", "SCOLIA", "développement web", "bureautique"],
   authors: [{ name: SITE_NAME }],

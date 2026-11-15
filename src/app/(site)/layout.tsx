@@ -12,6 +12,11 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         {t("skipToContent")}
       </a>
       <SiteHeader />
+      {process.env.JP_PREVIEW_MODE === "1" && (
+        <div role="status" className="border-b border-amber-200 bg-amber-50 px-5 py-3 text-center text-xs font-medium leading-relaxed text-amber-950">
+          Prévisualisation de la refonte JP-Services : les comptes, inscriptions, formulaires et paiements ne sont pas activés sur cette démonstration.
+        </div>
+      )}
       <main id="main-content" className="flex-1">
         {children}
       </main>

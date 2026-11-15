@@ -51,10 +51,10 @@ jobs:
         run: pnpm lint
       - name: Types
         run: pnpm typecheck
-      - name: Tests unitaires
-        run: pnpm test
       - name: Migrer la base PostgreSQL éphémère
         run: pnpm db:migrate
+      - name: Tests unitaires
+        run: pnpm test
       - name: Ajouter les données de test (CI seulement)
         run: pnpm db:seed
         env:

@@ -70,7 +70,7 @@ export async function listUserNotifications(userId: number) {
       dateEnvoi: schema.notifications.dateEnvoi,
       formationId: schema.notifications.formationId,
       formationTitre: schema.formations.titre,
-      lue: sql<number>`IF(${schema.notificationsLues.notificationId} IS NULL, 0, 1)`,
+      lue: sql<number>`CASE WHEN ${schema.notificationsLues.notificationId} IS NULL THEN 0 ELSE 1 END`,
     })
     .from(schema.notifications)
     .innerJoin(schema.abonnements, and(eq(schema.abonnements.formationId, schema.notifications.formationId), eq(schema.abonnements.userId, userId), eq(schema.abonnements.notificationsActive, 1)))

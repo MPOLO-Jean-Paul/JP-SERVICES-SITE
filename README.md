@@ -2,7 +2,7 @@
 
 Site et plateforme de JP-Services (Lubumbashi, RDC) : formations, sessions en direct, médiathèque de logiciels, SCOLIA Pro, projets, forum d’entraide, partenariats, espace membre et console d’administration.
 
-Cette version **remplace entièrement l’ancien site PHP**. Elle est écrite en TypeScript avec Next.js et reste compatible avec la base MySQL de production existante.
+Cette version **remplace entièrement l’ancien site PHP et sa base MySQL**. Elle est écrite en TypeScript avec Next.js, utilise PostgreSQL et se déploie sur **Render** ou **Cloudflare Workers**.
 
 ## Technologies
 
@@ -11,20 +11,21 @@ Cette version **remplace entièrement l’ancien site PHP**. Elle est écrite en
 | Framework | Next.js 16 (App Router, Server Components, Server Actions, Turbopack) |
 | Interface | React 19, Tailwind CSS 4, Radix UI, cmdk, Lucide, Sonner |
 | Typographie | Geist et Geist Mono (auto-hébergées par `next/font`) |
-| Données | MySQL / MariaDB, Drizzle ORM, migrations versionnées |
+| Données | PostgreSQL 16, Drizzle ORM, migrations versionnées, postgres.js |
 | Authentification | Sessions serveur révocables, bcrypt compatible avec les anciens comptes PHP, Google Identity Services |
 | E-mails | Nodemailer (SMTP) |
-| Fichiers | Disque local ou stockage compatible S3 (Cloudflare R2, AWS S3, MinIO) |
+| Fichiers | Cloudflare R2 (compatible S3) ou disque local, servis par la route `/uploads` |
+| Hébergement | Render (Blueprint `render.yaml`) ou Cloudflare Workers (OpenNext, Hyperdrive) |
 | Langues | Français et anglais (next-intl) |
 | Qualité | ESLint, TypeScript strict, Vitest, Playwright, GitHub Actions |
 
 ## Démarrage local
 
-Prérequis : Node.js 22 et pnpm 10, MySQL 8 ou MariaDB 10.11.
+Prérequis : Node.js 22, pnpm 10 et PostgreSQL 16.
 
 ```bash
 pnpm install
-cp .env.example .env          # renseigner DATABASE_URL et APP_SECRET
+cp .env.example .env          # DATABASE_URL, APP_SECRET, et STORAGE_DRIVER=local en local
 pnpm db:migrate               # crée les tables
 SEED_DEMO=1 ADMIN_EMAIL=admin@exemple.test ADMIN_PASSWORD='Admin-Demo-2026' pnpm db:seed
 pnpm dev                      # http://localhost:3000
@@ -44,7 +45,9 @@ Sans SMTP configuré, les codes d’activation et de réinitialisation s’affic
 | `pnpm db:migrate` | Applique les migrations SQL du dossier `drizzle/` |
 | `pnpm db:generate` | Génère une migration après modification du schéma |
 | `pnpm db:seed` | Paramètres, catégories et, en option, administrateur et contenus de démonstration |
-| `pnpm db:upgrade-legacy` | Met à niveau une base de l’ancien site PHP sans perte de données |
+| `pnpm db:import-mysql` | Importe les données de l’ancienne base MySQL dans PostgreSQL |
+| `pnpm storage:upload-r2` | Envoie les fichiers locaux (`uploads/`) vers Cloudflare R2 |
+| `pnpm cf:preview` / `pnpm cf:deploy` | Build Cloudflare (OpenNext), aperçu local workerd, déploiement |
 | `pnpm icons` | Régénère les icônes PWA à partir du monogramme |
 
 ## Organisation du code
@@ -55,16 +58,17 @@ src/
 │  ├─ (site)/        pages publiques et espace membre
 │  ├─ (auth)/        connexion, inscription, activation, mot de passe
 │  ├─ admin/         console d’administration (19 rubriques)
-│  ├─ api/           recherche globale
+│  ├─ api/           recherche globale et sonde /api/health
+│  ├─ uploads/       médias téléversés (disque ou R2)
 │  └─ telecharger/   téléchargements contrôlés des logiciels
 ├─ components/       interface (ui, site, visuals, admin, formulaires)
 ├─ server/
-│  ├─ db/            schéma Drizzle et connexion MySQL
+│  ├─ db/            schéma Drizzle et connexion PostgreSQL (Node ou Workers)
 │  ├─ auth/          sessions, mots de passe, Google
 │  ├─ actions/       Server Actions (formulaires publics et administration)
 │  ├─ services/      requêtes de lecture
 │  ├─ mail/          e-mails transactionnels
-│  └─ storage/       téléversements (local ou S3)
+│  └─ storage/       téléversements (R2/S3 ou disque)
 ├─ i18n/ et messages/  traductions FR / EN
 └─ lib/              utilitaires, SEO, constantes
 ```

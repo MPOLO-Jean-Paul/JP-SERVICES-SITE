@@ -1,6 +1,6 @@
 "use server";
 import { z } from "zod";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { db, schema } from "@/server/db";
@@ -22,7 +22,7 @@ export async function createPostAction(_prev: FormState, formData: FormData): Pr
   const parsed = postSchema.safeParse(raw);
   if (!parsed.success) return { status: "error", message: parsed.error.issues[0]?.message, values: raw };
   if (!(await rateLimit(`post:${user.id}`, 10, 3600))) return { status: "error", message: "Trop de publications récentes. Patientez un peu.", values: raw };
-  const [res] = await db.insert(schema.posts).values({ ...parsed.data, auteurId: user.id }).$returningId();
+  const [res] = await db.insert(schema.posts).values({ ...parsed.data, auteurId: user.id }).returning({ id: schema.posts.id });
   revalidatePath("/forum");
   redirect(`/forum/${res?.id ?? ""}`);
 }
@@ -56,7 +56,7 @@ export async function toggleLikeAction(postId: number): Promise<{ liked: boolean
   const existing = await db.select({ postId: schema.likes.postId }).from(schema.likes).where(and(eq(schema.likes.postId, postId), eq(schema.likes.userId, user.id))).limit(1);
   if (existing.length) await db.delete(schema.likes).where(and(eq(schema.likes.postId, postId), eq(schema.likes.userId, user.id)));
   else await db.insert(schema.likes).values({ postId, userId: user.id }).catch(() => {});
-  const [{ c }] = (await db.select({ c: schema.likes.postId }).from(schema.likes).where(eq(schema.likes.postId, postId))).length ? [{ c: (await db.select().from(schema.likes).where(eq(schema.likes.postId, postId))).length }] : [{ c: 0 }];
+  const c = Number((await db.select({ c: sql<number>`COUNT(*)` }).from(schema.likes).where(eq(schema.likes.postId, postId)))[0]?.c ?? 0);
   revalidatePath("/forum");
   revalidatePath(`/forum/${postId}`);
   return { liked: !existing.length, total: c };

@@ -18,9 +18,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     services:
-      mysql:
-        image: mysql:8.4
+      postgres:
+        image: postgres:16-alpine
         env:
+          POSTGRES_DB: jpservices
+          POSTGRES_USER: jp
+          POSTGRES_PASSWORD: jp_ci_password
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U jp -d jpservices"
+          --health-interval=5s --health-timeout=5s --health-retries=30
+    env:
           MYSQL_DATABASE: jpservices
           MYSQL_USER: jp
           MYSQL_PASSWORD: jp_ci_password
@@ -33,7 +41,7 @@ jobs:
       NODE_ENV: production
       APP_URL: http://localhost:3000
       APP_SECRET: ci-only-secret-0123456789abcdefghijklmnopqrstuvwxyz
-      DATABASE_URL: mysql://jp:jp_ci_password@127.0.0.1:3306/jpservices
+      DATABASE_URL: postgres://jp:jp_ci_password@127.0.0.1:5432/jpservices
       STORAGE_DRIVER: local
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
@@ -47,6 +55,8 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+        env:
+          SKIP_ENV_VALIDATION: "1"
       - name: Migrations et données de démonstration
         run: |
           pnpm db:migrate
@@ -62,3 +72,17 @@ jobs:
           name: playwright-report
           path: playwright-report
           retention-days: 7
+
+  cloudflare:
+    name: Build Cloudflare Workers (OpenNext)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm cf:build

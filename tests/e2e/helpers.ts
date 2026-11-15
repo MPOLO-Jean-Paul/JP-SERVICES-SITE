@@ -1,18 +1,14 @@
 import { createHash } from "node:crypto";
-import mysql from "mysql2/promise";
+import postgres from "postgres";
 import type { Page } from "@playwright/test";
 
 export const ADMIN = { email: process.env.E2E_ADMIN_EMAIL ?? "admin@jp-services.test", password: process.env.E2E_ADMIN_PASSWORD ?? "Admin-Demo-2026" };
 
-export async function dbConnection() {
-  return mysql.createConnection({ uri: process.env.DATABASE_URL ?? "mysql://jp:jp_dev_password@127.0.0.1:3306/jpservices" });
-}
-
 /** Remplace le code d’activation d’une inscription en attente par un code connu (les e-mails ne sont pas lus en test). */
 export async function forceActivationCode(email: string, code = "123456") {
-  const conn = await dbConnection();
-  await conn.execute("UPDATE temp_users SET token = ?, date_demande = NOW() WHERE email = ?", [createHash("sha256").update(code).digest("hex"), email]);
-  await conn.end();
+  const sql = postgres(process.env.DATABASE_URL ?? "postgres://jp:jp_dev_password@127.0.0.1:5432/jpservices", { max: 1, onnotice: () => {} });
+  await sql`UPDATE temp_users SET token = ${createHash("sha256").update(code).digest("hex")}, date_demande = NOW() WHERE email = ${email}`;
+  await sql.end();
   return code;
 }
 

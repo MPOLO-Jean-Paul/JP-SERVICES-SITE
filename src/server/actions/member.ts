@@ -7,7 +7,7 @@ import { getCurrentUser } from "@/server/auth/session";
 export async function markNotificationReadAction(notificationId: number) {
   const user = await getCurrentUser();
   if (!user) return;
-  await db.insert(schema.notificationsLues).values({ userId: user.id, notificationId }).onDuplicateKeyUpdate({ set: { dateLecture: new Date() } }).catch(() => {});
+  await db.insert(schema.notificationsLues).values({ userId: user.id, notificationId }).onConflictDoNothing().catch(() => {});
   revalidatePath("/notifications");
   revalidatePath("/", "layout");
 }
@@ -15,7 +15,7 @@ export async function markNotificationReadAction(notificationId: number) {
 export async function markAllNotificationsReadAction() {
   const user = await getCurrentUser();
   if (!user) return;
-  await db.execute(sql`INSERT IGNORE INTO notifications_lues (user_id, notification_id) SELECT ${user.id}, n.id FROM notifications n JOIN abonnements a ON a.formation_id = n.formation_id AND a.user_id = ${user.id} AND a.notifications_active = 1`);
+  await db.execute(sql`INSERT INTO notifications_lues (user_id, notification_id) SELECT ${user.id}, n.id FROM notifications n JOIN abonnements a ON a.formation_id = n.formation_id AND a.user_id = ${user.id} AND a.notifications_active = 1 ON CONFLICT DO NOTHING`);
   revalidatePath("/notifications");
   revalidatePath("/", "layout");
 }

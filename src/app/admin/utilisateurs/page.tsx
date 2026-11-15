@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { desc, like, or, sql } from "drizzle-orm";
+import { desc, ilike, or, sql } from "drizzle-orm";
 import { UserPlus } from "lucide-react";
 import { AdminPage, DataTable, Panel } from "@/components/admin/ui";
 import { SearchForm } from "@/components/admin/search-form";
@@ -21,7 +21,7 @@ export default async function UsersPage({ searchParams }: { searchParams: Promis
   const sp = await searchParams;
   const q = (sp.q ?? "").trim();
   const page = Math.max(1, Number(sp.page ?? 1) || 1);
-  const where = q ? or(like(schema.users.email, `%${q}%`), like(schema.users.nom, `%${q}%`), like(schema.users.prenom, `%${q}%`)) : undefined;
+  const where = q ? or(ilike(schema.users.email, `%${q}%`), ilike(schema.users.nom, `%${q}%`), ilike(schema.users.prenom, `%${q}%`)) : undefined;
   const [me, rows, total, pending] = await Promise.all([
     getCurrentUser(),
     db.select().from(schema.users).where(where).orderBy(desc(schema.users.dateInscription)).limit(PER_PAGE).offset((page - 1) * PER_PAGE),

@@ -22,7 +22,7 @@ export async function enrollAction(formationId: number): Promise<ActionResult> {
   const user = await requireFormationUser(formationId);
   if (!(await rateLimit(`formation-action:${user.id}`, 20, 300))) return { ok: false, message: "Trop d’actions successives. Patientez quelques instants." };
   try {
-    await db.insert(schema.inscriptions).values({ userId: user.id, formationId }).onDuplicateKeyUpdate({ set: { formationId } });
+    await db.insert(schema.inscriptions).values({ userId: user.id, formationId }).onConflictDoNothing();
     revalidatePath(`/formations/${formationId}`);
     revalidatePath("/abonnements");
     return { ok: true, message: "Votre inscription est confirmée. Vous pouvez maintenant organiser votre programme." };
@@ -62,7 +62,7 @@ export async function toggleAlertsAction(formationId: number, enable: boolean): 
         userAgent: ua,
         notificationsActive: 1,
       })
-      .onDuplicateKeyUpdate({ set: { notificationsActive: 1 } });
+      .onConflictDoUpdate({ target: [schema.abonnements.userId, schema.abonnements.formationId], set: { notificationsActive: 1 } });
     revalidatePath(`/formations/${formationId}`);
     return { ok: true, message: "Vous recevrez les prochaines informations concernant cette formation." };
   } catch (error) {

@@ -11,7 +11,8 @@ export const env = createEnv({
     APP_URL: z.string().url().default("http://localhost:3000"),
     APP_SECRET: z.string().min(32, "APP_SECRET doit contenir au moins 32 caractères aléatoires."),
     APP_TIMEZONE: z.string().default("Africa/Lubumbashi"),
-    DATABASE_URL: z.string().min(1),
+    // Obligatoire sur Render / Docker ; facultatif sur Cloudflare si la liaison HYPERDRIVE est configurée.
+    DATABASE_URL: z.string().min(1).optional(),
     SMTP_HOST: z.string().optional(),
     SMTP_PORT: z.coerce.number().int().positive().default(587),
     SMTP_SECURE: z

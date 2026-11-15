@@ -35,7 +35,7 @@ export async function subscribeNewsletter(_prev: NewsletterState, formData: Form
     await db
       .insert(schema.newsletterSubscribers)
       .values({ email, ipAddress: ip, userAgent: ua, statut: "actif", themes: themesValue })
-      .onDuplicateKeyUpdate({ set: { statut: "actif", themes: themesValue, dateDesinscription: null } });
+      .onConflictDoUpdate({ target: schema.newsletterSubscribers.email, set: { statut: "actif", themes: themesValue, dateDesinscription: null } });
     return { status: "success", message: "Merci ! Vous recevrez nos prochaines nouvelles.", prefsUrl: await prefsUrlFor(email) };
   } catch (error) {
     console.error("newsletter", error);
@@ -57,7 +57,7 @@ export async function updateNewsletterPrefs(_prev: NewsletterState, formData: Fo
     await db
       .insert(schema.newsletterSubscribers)
       .values({ email, statut: "actif", themes: themes.join(",") })
-      .onDuplicateKeyUpdate({ set: { statut: "actif", themes: themes.join(","), dateDesinscription: null } });
+      .onConflictDoUpdate({ target: schema.newsletterSubscribers.email, set: { statut: "actif", themes: themes.join(","), dateDesinscription: null } });
     return { status: "success", message: "Vos préférences sont enregistrées." };
   } catch (error) {
     console.error("newsletter prefs", error);

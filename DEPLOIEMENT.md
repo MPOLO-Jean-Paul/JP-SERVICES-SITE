@@ -1,92 +1,139 @@
 # Mise en production
 
-## 1. Choisir un hébergement Node.js
+Le site est une application **Next.js 16** (TypeScript) avec une base **PostgreSQL**. Il n’y a plus de PHP ni de MySQL. Deux hébergements sont prêts et testés :
 
-L’ancien hébergeur **InfinityFree ne peut pas exécuter ce site** : il ne propose que PHP. Next.js a besoin d’un environnement Node.js 22.
+| | **A. Render** (recommandé) | **B. Cloudflare Workers** |
+|---|---|---|
+| Application | Service web Node.js 22 | Worker (adaptateur OpenNext) |
+| Base de données | Render PostgreSQL, créée par le Blueprint | PostgreSQL externe (Neon, Render…) via Cloudflare Hyperdrive |
+| Fichiers téléversés | Cloudflare R2 | Cloudflare R2 |
+| Mise en place | Un clic avec `render.yaml` | `pnpm cf:deploy` |
+| Coût indicatif | Web Starter + Postgres Basic | Workers Paid (le plan gratuit limite le calcul à 10 ms par requête, insuffisant pour le rendu des pages et le hachage des mots de passe) |
 
-| Option | Pour qui | Base de données | Fichiers téléversés |
-|---|---|---|---|
-| **VPS + Docker** (Hetzner, Contabo, OVH…) | Contrôle complet, coût fixe | MySQL inclus dans `docker-compose.yml` | Volume Docker `uploads` |
-| **Vercel** | Le plus simple, CDN mondial | MySQL externe accessible à distance (Aiven, TiDB Cloud, PlanetScale, ou votre serveur) | `STORAGE_DRIVER=s3` obligatoire (Cloudflare R2 conseillé) |
-| **Render / Railway** | Simple, serveur persistant | MySQL du fournisseur ou externe | Disque persistant ou S3 |
+Dans les deux cas, gardez votre domaine `jp-services.org` sur Cloudflare (DNS, HTTPS, CDN) et stockez les fichiers sur R2.
 
-## 2. Variables d’environnement
+## 1. Préparer Cloudflare R2 (fichiers)
 
-Copiez `.env.example`. Les variables indispensables :
+1. Tableau de bord Cloudflare → **R2** → créer le bucket `jp-services-uploads`.
+2. **R2 → Gérer les jetons d’API** → créer un jeton « Lecture et écriture d’objets » limité à ce bucket.
+3. Notez `S3_ENDPOINT` (`https://<ID_COMPTE>.r2.cloudflarestorage.com`), `S3_ACCESS_KEY_ID` et `S3_SECRET_ACCESS_KEY`.
 
-| Variable | Rôle |
-|---|---|
-| `APP_URL` | Origine HTTPS canonique, par exemple `https://jp-services.org`. Sert aux liens des e-mails, au sitemap et au SEO. |
-| `APP_SECRET` | Au moins 32 caractères aléatoires : `openssl rand -base64 48`. |
-| `DATABASE_URL` | `mysql://utilisateur:motdepasse@hote:3306/base` |
-| `SMTP_*` | Envoi des codes d’activation, réinitialisations et notifications. |
-| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Facultatif. Active « Continuer avec Google ». |
-| `STORAGE_DRIVER`, `S3_*` | `local` sur un serveur, `s3` sur Vercel. |
+Le bucket reste privé : le site sert lui-même les fichiers par la route `/uploads/…`.
 
-Les anciens identifiants MySQL et SMTP présents dans l’archive PHP doivent être considérés comme compromis. Créez-en de nouveaux.
-
-## 3. Base de données
-
-### Base existante de l’ancien site (cas habituel)
-
-1. Faites une sauvegarde complète (export phpMyAdmin ou `mysqldump`).
-2. Pointez `DATABASE_URL` vers cette base.
-3. Lancez :
+Pour transférer les médias historiques (actualités) vers R2, une seule fois :
 
 ```bash
-pnpm db:upgrade-legacy
+S3_ENDPOINT=… S3_ACCESS_KEY_ID=… S3_SECRET_ACCESS_KEY=… S3_BUCKET=jp-services-uploads pnpm storage:upload-r2
 ```
 
-Le script ajoute seulement ce qui manque : colonnes `google_id`, `auth_provider`, `themes`, et tables `sessions`, `rate_limits`, `audit_log`. Il ne supprime et ne modifie aucune donnée. Il peut être relancé sans risque.
+Copiez d’abord dans `uploads/logiciels/` les fichiers de logiciels de l’ancien serveur, s’il y en avait.
 
-Les membres gardent leur mot de passe : les condensats PHP (`$2y$`) sont reconnus, puis renforcés automatiquement à leur prochaine connexion.
+## 2. Option A : Render
 
-### Installation neuve
+1. Poussez le dépôt sur GitHub, branche `main`.
+2. Render → **New → Blueprint** → choisissez le dépôt. Render lit `render.yaml` et crée :
+   - le service web `jp-services` (région Francfort) ;
+   - la base PostgreSQL 16 `jp-services-db`, reliée automatiquement par `DATABASE_URL` ;
+   - un `APP_SECRET` aléatoire.
+3. Renseignez les variables demandées : `APP_URL` (`https://jp-services.org`), les clés R2, le SMTP et, si besoin, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`.
+4. Au démarrage, `pnpm db:migrate` crée les tables, puis le serveur démarre. La sonde `/api/health` vérifie la base.
+5. Créez le premier administrateur depuis le **Shell** du service :
 
 ```bash
-pnpm db:migrate
 ADMIN_EMAIL=vous@domaine.tld ADMIN_PASSWORD='Mot-De-Passe-Solide-2026' pnpm db:seed
 ```
 
-## 4. Déployer
+6. Domaine : Render → **Settings → Custom Domains** → ajoutez `jp-services.org`, puis créez l’enregistrement CNAME indiqué dans le DNS Cloudflare.
 
-### VPS avec Docker
+Le plan gratuit de Render existe mais met le site en veille après 15 minutes et sa base PostgreSQL gratuite expire après 30 jours. Pour un site professionnel, gardez les plans du Blueprint, ou utilisez une base Neon gratuite en remplaçant `DATABASE_URL`.
+
+## 3. Option B : Cloudflare Workers
+
+1. Créez une base PostgreSQL (par exemple Neon, région Europe) et notez son URL.
+2. Créez la liaison Hyperdrive et reportez son identifiant dans `wrangler.jsonc` :
 
 ```bash
-cp .env.example .env     # APP_URL, APP_SECRET, SMTP, DB_PASSWORD, DB_ROOT_PASSWORD, ADMIN_*
-docker compose up -d --build
+npx wrangler hyperdrive create jp-services-db --connection-string="postgres://…"
 ```
 
-Placez un proxy HTTPS devant le port 3000 (Caddy ou Nginx avec Let’s Encrypt). Pour reprendre une base existante, importez la sauvegarde dans le conteneur `db`, puis exécutez `docker compose run --rm migrate pnpm db:upgrade-legacy`.
+3. Ajoutez les secrets :
 
-### Vercel
+```bash
+npx wrangler secret put APP_URL
+npx wrangler secret put APP_SECRET        # openssl rand -base64 48
+npx wrangler secret put S3_ENDPOINT
+npx wrangler secret put S3_ACCESS_KEY_ID
+npx wrangler secret put S3_SECRET_ACCESS_KEY
+npx wrangler secret put SMTP_HOST         # et SMTP_USERNAME, SMTP_PASSWORD, SMTP_FROM_ADDRESS
+```
 
-1. Importez le dépôt GitHub dans Vercel.
-2. Renseignez les variables d’environnement, avec `STORAGE_DRIVER=s3` et les clés R2.
-3. Lancez `pnpm db:upgrade-legacy` ou `pnpm db:migrate` une fois depuis votre poste, avec la `DATABASE_URL` de production.
+4. Appliquez les migrations depuis votre poste, puis déployez :
 
-## 5. Fichiers existants
+```bash
+DATABASE_URL="postgres://…" pnpm db:migrate
+DATABASE_URL="postgres://…" ADMIN_EMAIL=… ADMIN_PASSWORD=… pnpm db:seed
+pnpm cf:deploy
+```
 
-Les images de profil (`images/profils/`) sont conservées dans `public/images/profils/`. Les médias des actualités (`uploads/actualites/`) sont dans `public/uploads/actualites/`. Les fichiers de logiciels hébergés (`uploads/logiciels/`) doivent être copiés depuis l’ancien serveur vers `public/uploads/logiciels/`, ou vers le bucket S3 sous le même chemin.
+5. Cloudflare → Workers → `jp-services` → **Domains & Routes** → ajoutez `jp-services.org`.
 
-Les anciennes images de couverture des formations ne sont plus affichées : une couverture est générée selon le domaine. Téléversez une nouvelle image depuis la console si vous le souhaitez.
+`pnpm cf:preview` lance le Worker en local (workerd) avec les valeurs de `.dev.vars`.
+
+## 4. Reprendre les données de l’ancien site
+
+L’ancienne base MySQL (InfinityFree) est importée dans PostgreSQL en conservant les identifiants, les comptes et leurs mots de passe.
+
+1. Exportez la base depuis phpMyAdmin (format SQL).
+2. Chargez cet export dans un MySQL temporaire sur votre poste :
+
+```bash
+docker run -d --name ancien-mysql -e MYSQL_ROOT_PASSWORD=temp -e MYSQL_DATABASE=ancien -p 3307:3306 mysql:8.4
+docker exec -i ancien-mysql mysql -uroot -ptemp ancien < export.sql
+```
+
+3. Créez les tables dans PostgreSQL, puis importez :
+
+```bash
+DATABASE_URL="postgres://…production…" pnpm db:migrate
+MYSQL_URL="mysql://root:temp@127.0.0.1:3307/ancien" DATABASE_URL="postgres://…production…" pnpm db:import-mysql
+```
+
+Le script affiche, table par table, les lignes lues, importées et ignorées. Il peut être relancé sans créer de doublons. Les membres se connectent ensuite avec leur mot de passe habituel.
+
+## 5. Variables d’environnement
+
+| Variable | Rôle |
+|---|---|
+| `APP_URL` | Origine HTTPS canonique (liens des e-mails, sitemap, SEO). |
+| `APP_SECRET` | 32 caractères aléatoires minimum. |
+| `DATABASE_URL` | URL PostgreSQL. Ajoutez `?sslmode=require` pour une base externe. |
+| `STORAGE_DRIVER` | `s3` (R2) en production ; `local` pour Docker avec volume. |
+| `S3_ENDPOINT`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` | Accès au bucket R2. |
+| `SMTP_*`, `ADMIN_NOTIFICATION_EMAIL` | E-mails transactionnels et notifications internes. |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Facultatif : « Continuer avec Google ». |
+
+Les anciens identifiants MySQL et SMTP présents dans l’archive PHP sont à considérer comme compromis : créez-en de nouveaux.
 
 ## 6. Après la mise en ligne
 
-1. Ouvrez **Administration → Santé du système** : base, migrations, SMTP, stockage et Google doivent être au vert.
+1. **Administration → Santé du système** : base, migrations, SMTP, stockage et Google doivent être au vert.
 2. Envoyez un e-mail de test depuis cette page.
-3. Créez un compte de test, activez-le, connectez-vous, inscrivez-vous à une formation.
-4. Dans Google Cloud Console, ajoutez `APP_URL` aux origines JavaScript autorisées de l’ID client OAuth.
-5. Soumettez `https://votre-domaine/sitemap.xml` dans Google Search Console.
+3. Créez un compte de test, activez-le et inscrivez-vous à une formation.
+4. Dans Google Cloud Console, ajoutez `APP_URL` aux origines JavaScript autorisées.
+5. Soumettez `https://jp-services.org/sitemap.xml` dans Google Search Console.
 
-Les anciennes adresses `.php` sont redirigées de façon permanente vers les nouvelles routes : le référencement est conservé.
+Les anciennes adresses `.php` sont redirigées de façon permanente : le référencement est conservé.
 
-## 7. Sécurité intégrée
+## 7. Autre option : VPS avec Docker
 
-- Sessions stockées en base, cookie `HttpOnly`, `SameSite=Lax`, `Secure` en production, révocation à la réinitialisation du mot de passe.
+`docker compose up -d --build` démarre PostgreSQL, applique les migrations et lance le site sur le port 3000. Les fichiers sont conservés dans un volume (`STORAGE_DRIVER=local`). Placez Caddy ou Nginx devant pour le HTTPS.
+
+## 8. Sécurité intégrée
+
+- Sessions stockées en base, cookie `HttpOnly`, `SameSite=Lax`, `Secure`, révoquées à la réinitialisation du mot de passe.
 - Server Actions protégées par Next.js contre les requêtes d’une autre origine.
 - Limitation des tentatives en base : connexion, inscription, activation, réinitialisation et formulaires publics.
 - Validation stricte des entrées (Zod) et requêtes paramétrées (Drizzle).
-- Téléversements contrôlés par signature binaire, taille limitée et noms aléatoires.
-- En-têtes HSTS, `nosniff`, `X-Frame-Options`, `Referrer-Policy` et `Permissions-Policy`.
+- Téléversements contrôlés par signature binaire, taille limitée et noms aléatoires ; bucket privé.
+- En-têtes HSTS, `nosniff`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`.
 - Journal d’activité des actions d’administration.

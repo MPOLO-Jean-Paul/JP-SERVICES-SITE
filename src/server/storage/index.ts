@@ -9,6 +9,10 @@ export type UploadKind = "image" | "software" | "logo";
 const IMAGE_TYPES: Record<string, string> = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/gif": "gif", "image/avif": "avif" };
 const SOFTWARE_EXT = new Set(["zip", "apk", "exe", "msi", "dmg", "pkg", "deb", "rar", "7z", "pdf"]);
 
+/** Dossier des fichiers téléversés en mode local (hors de public/, servi par la route /uploads). */
+export const UPLOAD_DIR = process.env.UPLOAD_DIR ?? path.join(process.cwd(), "uploads");
+const localPath = (key: string) => path.join(UPLOAD_DIR, key.replace(/^uploads\//, ""));
+
 export const UPLOAD_LIMITS = { image: 5 * 1024 * 1024, logo: 2 * 1024 * 1024, software: 50 * 1024 * 1024 } as const;
 
 function sniffImageType(buf: Buffer): string | null {
@@ -50,7 +54,7 @@ export async function storeUpload(file: File, kind: UploadKind, folder: string):
   if (env.STORAGE_DRIVER === "s3") {
     await s3Put(key, buffer, contentType);
   } else {
-    const dest = path.join(process.cwd(), "public", key);
+    const dest = localPath(key);
     await mkdir(path.dirname(dest), { recursive: true });
     await writeFile(dest, buffer, { mode: 0o644 });
   }
@@ -62,30 +66,30 @@ export async function deleteUpload(key: string | null | undefined): Promise<void
   if (!normalized.startsWith("uploads/") || normalized.includes("..")) return;
   try {
     if (env.STORAGE_DRIVER === "s3") await s3Delete(normalized);
-    else await unlink(path.join(process.cwd(), "public", normalized));
+    else await unlink(localPath(normalized));
   } catch {
     /* fichier déjà absent */
   }
 }
 
-/** URL publique d'un chemin stocké. */
+/** URL publique d'un chemin stocké : toujours servi par la route /uploads (disque local ou S3/R2). */
 export function publicUrl(key: string): string {
   if (/^https?:\/\//i.test(key)) return key;
-  const normalized = key.replace(/^\/+/, "");
-  if (env.STORAGE_DRIVER === "s3" && env.S3_PUBLIC_URL && normalized.startsWith("uploads/")) {
-    return `${env.S3_PUBLIC_URL.replace(/\/$/, "")}/${normalized}`;
-  }
-  return "/" + normalized;
+  return "/" + key.replace(/^\/+/, "");
 }
 
-/** Flux de lecture pour les téléchargements contrôlés (logiciels). */
-export async function readUploadStream(key: string): Promise<{ body: ReadableStream | Buffer; size: number } | null> {
+const MIME: Record<string, string> = { jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png", webp: "image/webp", gif: "image/gif", avif: "image/avif", svg: "image/svg+xml", mp4: "video/mp4", webm: "video/webm", pdf: "application/pdf" };
+export const contentTypeFor = (key: string) => MIME[(key.split(".").pop() ?? "").toLowerCase()] ?? "application/octet-stream";
+
+/** Lecture d’un fichier stocké (local ou S3/R2). `prefix` restreint les dossiers accessibles. */
+export async function readUpload(key: string, prefix = "uploads/"): Promise<{ body: ReadableStream; size: number } | null> {
   const normalized = key.replace(/\\/g, "/").replace(/^\/+/, "");
-  if (!normalized.startsWith("uploads/logiciels/") || normalized.includes("..")) return null;
-  if (env.STORAGE_DRIVER === "s3") return s3Get(normalized);
-  const full = path.join(process.cwd(), "public", normalized);
+  if (!normalized.startsWith(prefix) || normalized.includes("..")) return null;
+  if (env.STORAGE_DRIVER === "s3") return s3Get(normalized).catch(() => null);
   try {
+    const full = localPath(normalized);
     const info = await stat(full);
+    if (!info.isFile()) return null;
     const { createReadStream } = await import("node:fs");
     const { Readable } = await import("node:stream");
     return { body: Readable.toWeb(createReadStream(full)) as ReadableStream, size: info.size };
@@ -93,6 +97,9 @@ export async function readUploadStream(key: string): Promise<{ body: ReadableStr
     return null;
   }
 }
+
+/** Flux de lecture pour les téléchargements contrôlés (logiciels). */
+export const readUploadStream = (key: string) => readUpload(key, "uploads/logiciels/");
 
 /* ───────── S3 / Cloudflare R2 ───────── */
 async function s3Client() {

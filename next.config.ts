@@ -25,6 +25,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   images: {
+    // Sur Cloudflare Workers, les images sont servies telles quelles (pas de sharp).
+    unoptimized: process.env.CLOUDFLARE_BUILD === "1",
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       { protocol: "https", hostname: "**.r2.dev" },

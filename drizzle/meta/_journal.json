@@ -1,11 +1,11 @@
 {
   "version": "7",
-  "dialect": "mysql",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1794691871385,
+      "version": "7",
+      "when": 1794760923305,
       "tag": "0000_initial_schema",
       "breakpoints": true
     }

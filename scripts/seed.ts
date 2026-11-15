@@ -1,8 +1,8 @@
 import "dotenv/config";
 import bcrypt from "bcryptjs";
-import { drizzle } from "drizzle-orm/mysql2";
+import { drizzle } from "drizzle-orm/postgres-js";
 import { sql } from "drizzle-orm";
-import mysql from "mysql2/promise";
+import postgres from "postgres";
 import * as schema from "../src/server/db/schema";
 
 /**
@@ -16,8 +16,8 @@ import * as schema from "../src/server/db/schema";
 async function main() {
   const url = process.env.DATABASE_URL;
   if (!url) throw new Error("DATABASE_URL est requis.");
-  const connection = await mysql.createConnection({ uri: url });
-  const db = drizzle(connection, { schema, mode: "default" });
+  const connection = postgres(url, { max: 1, onnotice: () => {} });
+  const db = drizzle(connection, { schema });
 
   const settings: Array<[string, string]> = [
     ["annonce_texte", "De nouvelles sessions sont ouvertes. Formez-vous à votre rythme avec un accompagnement concret."],
@@ -39,7 +39,7 @@ async function main() {
     ["social_tiktok", ""],
   ];
   for (const [cle, valeur] of settings) {
-    await db.insert(schema.siteSettings).values({ cle, valeur }).onDuplicateKeyUpdate({ set: { cle: sql`cle` } });
+    await db.insert(schema.siteSettings).values({ cle, valeur }).onConflictDoNothing();
   }
 
   const categories = [
@@ -52,7 +52,7 @@ async function main() {
     { id: 7, nom: "Gestion scolaire", slug: "gestion-scolaire", icone: "graduation-cap", ordre: 7 },
   ];
   for (const c of categories) {
-    await db.insert(schema.logicielCategories).values(c).onDuplicateKeyUpdate({ set: { slug: sql`slug` } });
+    await db.insert(schema.logicielCategories).values(c).onConflictDoNothing();
   }
 
   const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase().trim();
@@ -62,7 +62,7 @@ async function main() {
     await db
       .insert(schema.users)
       .values({ nom: "Administrateur", prenom: "JP-Services", email: adminEmail, motDePasse: hash, role: "admin", isActive: 1 })
-      .onDuplicateKeyUpdate({ set: { role: "admin", isActive: 1, motDePasse: hash } });
+      .onConflictDoUpdate({ target: schema.users.email, set: { role: "admin", isActive: 1, motDePasse: hash } });
     console.log(`✔ Administrateur prêt : ${adminEmail}`);
   }
 
@@ -103,6 +103,8 @@ async function main() {
     }
   }
 
+  // Les identifiants insérés explicitement (catégories) ne doivent pas bloquer les prochaines insertions.
+  await connection.unsafe("SELECT setval(pg_get_serial_sequence('logiciel_categories', 'id'), (SELECT COALESCE(MAX(id), 1) FROM logiciel_categories))");
   await connection.end();
   console.log("✔ Seed terminé.");
 }

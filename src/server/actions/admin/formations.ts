@@ -34,7 +34,7 @@ export async function createFormationAction(_p: FormState, fd: FormData): Promis
     const file = fileOrNull(fd, "image");
     if (file) image = await storeUpload(file, "image", "formations");
   } catch (e) { return fail(e instanceof UploadError ? e.message : "Téléversement impossible.", fd); }
-  const [res] = await db.insert(schema.formations).values({ ...parsed.data!, image }).$returningId();
+  const [res] = await db.insert(schema.formations).values({ ...parsed.data!, image }).returning({ id: schema.formations.id });
   await audit("formation.create", `formation:${res?.id}`, { titre: parsed.data!.titre });
   revalidatePath("/formations"); revalidatePath("/");
   redirect(`/admin/formations/${res?.id}?creee=1`);

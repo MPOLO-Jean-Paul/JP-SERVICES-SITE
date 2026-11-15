@@ -22,7 +22,7 @@ export async function saveActualiteAction(id: number | null, _p: FormState, fd: 
   try { const f = fileOrNull(fd, "media"); if (f) { media = await storeUpload(f, "image", "actualites"); if (current?.media.startsWith("uploads/")) await deleteUpload(current.media); } } catch (e) { return fail(e instanceof UploadError ? e.message : "Téléversement impossible.", fd); }
   const externalMedia = str(fd, "media_url", 500); if (externalMedia && /^https?:\/\//i.test(externalMedia)) media = externalMedia;
   if (id) { await db.update(schema.actualites).set({ titre, contenu, media }).where(eq(schema.actualites.id, id)); await audit("actualite.update", `actualite:${id}`); }
-  else { const [r] = await db.insert(schema.actualites).values({ titre, contenu, media }).$returningId(); await audit("actualite.create", `actualite:${r?.id}`); id = r?.id ?? null; }
+  else { const [r] = await db.insert(schema.actualites).values({ titre, contenu, media }).returning({ id: schema.actualites.id }); await audit("actualite.create", `actualite:${r?.id}`); id = r?.id ?? null; }
   revalidateAll("/actualites", "/", "/admin/actualites");
   if (id) revalidatePath(`/actualites/${id}`);
   return ok(id ? "Actualité enregistrée." : "Actualité publiée.");
@@ -52,7 +52,7 @@ export async function saveLogicielAction(id: number | null, _p: FormState, fd: F
   const categorieId = num(fd, "categorie_id", 0) || null;
   const data = { nom, description: str(fd, "description", 10_000) || null, version: str(fd, "version", 40), plateforme: str(fd, "plateforme", 120), licence: str(fd, "licence", 60) || "Gratuit", categorieId, lienExterne, fichier, image, tailleOctets: taille, statut: (str(fd, "statut") === "brouillon" ? "brouillon" : "publie") as "publie" | "brouillon" };
   if (id) { await db.update(schema.logiciels).set(data).where(eq(schema.logiciels.id, id)); await audit("logiciel.update", `logiciel:${id}`); }
-  else { const [r] = await db.insert(schema.logiciels).values(data).$returningId(); await audit("logiciel.create", `logiciel:${r?.id}`); }
+  else { const [r] = await db.insert(schema.logiciels).values(data).returning({ id: schema.logiciels.id }); await audit("logiciel.create", `logiciel:${r?.id}`); }
   revalidateAll("/logiciels", "/", "/admin/logiciels");
   return ok("Logiciel enregistré.");
 }
@@ -261,7 +261,7 @@ export async function saveSettingsAction(_p: FormState, fd: FormData): Promise<F
   await requireAdminAction();
   for (const f of SETTING_FIELDS) {
     const valeur = str(fd, f.key, 5000);
-    await db.insert(schema.siteSettings).values({ cle: f.key, valeur }).onDuplicateKeyUpdate({ set: { valeur } });
+    await db.insert(schema.siteSettings).values({ cle: f.key, valeur }).onConflictDoUpdate({ target: schema.siteSettings.cle, set: { valeur } });
   }
   await audit("settings.update", "site_settings");
   revalidatePath("/", "layout");

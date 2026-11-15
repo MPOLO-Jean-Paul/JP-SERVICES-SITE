@@ -19,9 +19,10 @@ playwright-report/
 test-results/
 blob-report/
 
-# téléversements locaux (servis depuis le stockage configuré)
-/public/uploads/*
-!/public/uploads/.gitkeep
+# téléversements locaux (servis par la route /uploads depuis UPLOAD_DIR ou S3/R2)
+# Les médias historiques déjà suivis par Git restent versionnés.
+/uploads/**
+!/uploads/.gitkeep
 /storage/
 
 # divers
@@ -31,3 +32,8 @@ Thumbs.db
 .vscode/
 *.zip
 *.log
+
+# Cloudflare / OpenNext
+.open-next/
+.wrangler/
+.dev.vars

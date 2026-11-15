@@ -67,7 +67,7 @@ export async function createUserAction(_p: FormState, fd: FormData): Promise<For
 
 export async function purgeExpiredPendingAction() {
   await requireAdminAction();
-  await db.execute(sql`DELETE FROM temp_users WHERE date_demande < (NOW() - INTERVAL 30 MINUTE)`);
+  await db.execute(sql`DELETE FROM temp_users WHERE date_demande < NOW() - INTERVAL '30 minutes'`);
   revalidatePath("/admin/utilisateurs");
   return { ok: true, message: "Demandes expirées supprimées." };
 }

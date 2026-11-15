@@ -20,8 +20,12 @@
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed.ts",
     "db:studio": "drizzle-kit studio",
-    "db:upgrade-legacy": "tsx scripts/upgrade-legacy.ts",
-    "icons": "tsx scripts/generate-icons.ts"
+    "icons": "tsx scripts/generate-icons.ts",
+    "db:import-mysql": "tsx scripts/import-mysql.ts",
+    "storage:upload-r2": "tsx scripts/upload-to-r2.ts",
+    "cf:build": "CLOUDFLARE_BUILD=1 SKIP_ENV_VALIDATION=1 opennextjs-cloudflare build",
+    "cf:preview": "pnpm cf:build && opennextjs-cloudflare preview",
+    "cf:deploy": "pnpm cf:build && opennextjs-cloudflare deploy"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1169.0",
@@ -40,11 +44,11 @@
     "drizzle-orm": "^0.45.4",
     "jose": "^6.2.17",
     "lucide-react": "^1.73.0",
-    "mysql2": "^3.24.6",
     "next": "16.4.6",
     "next-intl": "^4.15.1",
     "next-themes": "^0.4.6",
     "nodemailer": "^10.5.0",
+    "postgres": "^4.1.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "server-only": "^0.0.1",
@@ -54,6 +58,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.20.17",
     "@playwright/test": "1.63.0",
     "@tailwindcss/postcss": "^4.3.5",
     "@types/node": "^22.19.0",
@@ -64,17 +69,20 @@
     "drizzle-kit": "^0.31.11",
     "eslint": "^9.39.0",
     "eslint-config-next": "16.4.6",
+    "mysql2": "^3.24.6",
     "tailwindcss": "^4.3.5",
     "tsx": "^4.23.15",
     "typescript": "~5.9.3",
-    "vitest": "^5.1.0"
+    "vitest": "^5.1.0",
+    "wrangler": "^4.162.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "sharp",
       "esbuild",
       "@tailwindcss/oxide",
-      "unrs-resolver"
+      "unrs-resolver",
+      "workerd"
     ]
   }
 }

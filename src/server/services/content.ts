@@ -1,6 +1,6 @@
 import "server-only";
 import { cache } from "react";
-import { and, asc, desc, eq, gte, inArray, like, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, ilike, inArray, or, sql } from "drizzle-orm";
 import { db, schema } from "@/server/db";
 
 /* ───── Actualités ───── */
@@ -156,10 +156,10 @@ export async function searchSite(query: string, limitPerType = 5): Promise<Searc
   if (q.length < 2) return [];
   const term = `%${q.replace(/[%_]/g, (c) => "\\" + c)}%`;
   const [f, l, a, p] = await Promise.all([
-    db.select({ id: schema.formations.id, title: schema.formations.titre, excerpt: schema.formations.description }).from(schema.formations).where(or(like(schema.formations.titre, term), like(schema.formations.description, term))).limit(limitPerType),
-    db.select({ id: schema.logiciels.id, title: schema.logiciels.nom, excerpt: schema.logiciels.description }).from(schema.logiciels).where(and(eq(schema.logiciels.statut, "publie"), or(like(schema.logiciels.nom, term), like(schema.logiciels.description, term)))).limit(limitPerType),
-    db.select({ id: schema.actualites.id, title: schema.actualites.titre, excerpt: schema.actualites.contenu }).from(schema.actualites).where(or(like(schema.actualites.titre, term), like(schema.actualites.contenu, term))).limit(limitPerType),
-    db.select({ id: schema.posts.id, title: schema.posts.titre, excerpt: schema.posts.contenu }).from(schema.posts).where(or(like(schema.posts.titre, term), like(schema.posts.contenu, term))).limit(limitPerType),
+    db.select({ id: schema.formations.id, title: schema.formations.titre, excerpt: schema.formations.description }).from(schema.formations).where(or(ilike(schema.formations.titre, term), ilike(schema.formations.description, term))).limit(limitPerType),
+    db.select({ id: schema.logiciels.id, title: schema.logiciels.nom, excerpt: schema.logiciels.description }).from(schema.logiciels).where(and(eq(schema.logiciels.statut, "publie"), or(ilike(schema.logiciels.nom, term), ilike(schema.logiciels.description, term)))).limit(limitPerType),
+    db.select({ id: schema.actualites.id, title: schema.actualites.titre, excerpt: schema.actualites.contenu }).from(schema.actualites).where(or(ilike(schema.actualites.titre, term), ilike(schema.actualites.contenu, term))).limit(limitPerType),
+    db.select({ id: schema.posts.id, title: schema.posts.titre, excerpt: schema.posts.contenu }).from(schema.posts).where(or(ilike(schema.posts.titre, term), ilike(schema.posts.contenu, term))).limit(limitPerType),
   ]);
   const clip = (s: string | null) => (s ?? "").replace(/\s+/g, " ").slice(0, 140);
   return [

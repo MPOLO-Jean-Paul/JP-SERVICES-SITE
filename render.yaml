@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: jp-services-next
+    runtime: node
+    rootDir: site-next
+    plan: free
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: CONTACT_RATE_LIMIT_SALT
+        generateValue: true
+      - key: CONTACT_EMAIL
+        sync: false
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false

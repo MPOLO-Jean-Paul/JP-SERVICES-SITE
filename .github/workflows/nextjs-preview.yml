@@ -1,0 +1,26 @@
+name: "JP-SERVICES — Next.js CI"
+on:
+  pull_request:
+    paths:
+      - "site-next/**"
+      - "render.yaml"
+      - ".github/workflows/nextjs-preview.yml"
+  push:
+    branches: [main]
+    paths:
+      - "site-next/**"
+      - "render.yaml"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site-next
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - run: npm run typecheck

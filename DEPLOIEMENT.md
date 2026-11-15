@@ -10,7 +10,7 @@ Le site est une application **Next.js 16** (TypeScript) avec une base **PostgreS
 | Mise en place | Un clic avec `render.yaml` | `pnpm cf:deploy` |
 | Coût indicatif | Web Starter + Postgres Basic | Workers Paid (le plan gratuit limite le calcul à 10 ms par requête, insuffisant pour le rendu des pages et le hachage des mots de passe) |
 
-Dans les deux cas, gardez votre domaine `jp-services.org` sur Cloudflare (DNS, HTTPS, CDN) et stockez les fichiers sur R2.
+Dans les deux cas, le site répond sur le domaine officiel **`jp-services.org`** (DNS, HTTPS et CDN sur Cloudflare, voir section 4) et les fichiers sont stockés sur R2.
 
 ## 1. Préparer Cloudflare R2 (fichiers)
 
@@ -35,7 +35,7 @@ Copiez d’abord dans `uploads/logiciels/` les fichiers de logiciels de l’anci
    - le service web `jp-services` (région Francfort) ;
    - la base PostgreSQL 16 `jp-services-db`, reliée automatiquement par `DATABASE_URL` ;
    - un `APP_SECRET` aléatoire.
-3. Renseignez les variables demandées : `APP_URL` (`https://jp-services.org`), les clés R2, le SMTP et, si besoin, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`.
+3. Renseignez les variables demandées : les clés R2, le SMTP et, si besoin, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`. `APP_URL` vaut déjà `https://jp-services.org`.
 4. Au démarrage, `pnpm db:migrate` crée les tables, puis le serveur démarre. La sonde `/api/health` vérifie la base.
 5. Créez le premier administrateur depuis le **Shell** du service :
 
@@ -43,7 +43,7 @@ Copiez d’abord dans `uploads/logiciels/` les fichiers de logiciels de l’anci
 ADMIN_EMAIL=vous@domaine.tld ADMIN_PASSWORD='Mot-De-Passe-Solide-2026' pnpm db:seed
 ```
 
-6. Domaine : Render → **Settings → Custom Domains** → ajoutez `jp-services.org`, puis créez l’enregistrement CNAME indiqué dans le DNS Cloudflare.
+6. Domaine : `jp-services.org` et `www.jp-services.org` sont déclarés dans `render.yaml` ; il reste à créer les enregistrements DNS (section 4).
 
 Le plan gratuit de Render existe mais met le site en veille après 15 minutes et sa base PostgreSQL gratuite expire après 30 jours. Pour un site professionnel, gardez les plans du Blueprint, ou utilisez une base Neon gratuite en remplaçant `DATABASE_URL`.
 
@@ -75,11 +75,49 @@ DATABASE_URL="postgres://…" ADMIN_EMAIL=… ADMIN_PASSWORD=… pnpm db:seed
 pnpm cf:deploy
 ```
 
-5. Cloudflare → Workers → `jp-services` → **Domains & Routes** → ajoutez `jp-services.org`.
+5. Domaine : `wrangler.jsonc` déclare `jp-services.org` et `www.jp-services.org` comme domaines personnalisés ; `pnpm cf:deploy` crée les enregistrements DNS et le certificat (section 4).
 
 `pnpm cf:preview` lance le Worker en local (workerd) avec les valeurs de `.dev.vars`.
 
-## 4. Partir d’une base vierge (recommandé)
+## 4. Domaine officiel : jp-services.org
+
+Le domaine est déjà inscrit dans la configuration : `APP_URL=https://jp-services.org` (Render et Cloudflare), domaines déclarés dans `render.yaml` et `wrangler.jsonc`, redirection permanente de `www.jp-services.org` vers `jp-services.org` dans `next.config.ts`. Il reste uniquement le DNS.
+
+### 4.1 Placer le DNS du domaine sur Cloudflare (une seule fois)
+
+1. Cloudflare → **Ajouter un domaine** → `jp-services.org` (plan Free suffisant).
+2. Cloudflare importe les enregistrements existants. **Vérifiez que les enregistrements de messagerie sont présents** (`MX`, et les `TXT` SPF / DKIM / DMARC) : sans eux, les adresses e-mail `@jp-services.org` cessent de fonctionner.
+3. Chez le bureau d’enregistrement du domaine, remplacez les serveurs de noms par les deux serveurs indiqués par Cloudflare. La bascule prend de quelques minutes à 24 h.
+4. **SSL/TLS** → mode **Full (strict)**. N’utilisez jamais le mode « Flexible » (boucles de redirection).
+
+### 4.2 Avec Render (option A)
+
+Supprimez d’abord les anciens enregistrements `A` / `AAAA` / `CNAME` de `jp-services.org` et `www` qui pointaient vers l’ancien hébergement PHP, puis créez :
+
+| Type | Nom | Cible | Proxy |
+|---|---|---|---|
+| `CNAME` | `@` | `jp-services.onrender.com` | DNS uniquement (nuage gris) |
+| `CNAME` | `www` | `jp-services.onrender.com` | DNS uniquement (nuage gris) |
+
+Utilisez l’adresse `….onrender.com` exacte affichée par Render (**Settings → Custom Domains**). Cloudflare accepte un `CNAME` à la racine grâce à l’aplatissement CNAME. Cliquez ensuite sur **Verify** dans Render : le certificat HTTPS est émis automatiquement en quelques minutes.
+
+### 4.3 Avec Cloudflare Workers (option B)
+
+Supprimez les anciens enregistrements `@` et `www`, puis lancez `pnpm cf:deploy` : Cloudflare crée lui-même les enregistrements et le certificat des deux domaines personnalisés.
+
+### 4.4 Vérifications
+
+```bash
+curl -I https://jp-services.org/api/health      # 200
+curl -I https://www.jp-services.org/formations  # 308 → https://jp-services.org/formations
+curl -I https://jp-services.org/contact.php     # 308 → /contact (anciennes adresses PHP)
+```
+
+- **Google** : ajoutez `https://jp-services.org` aux origines JavaScript autorisées du client OAuth, puis déclarez le domaine dans Google Search Console.
+- **E-mails** : `SMTP_FROM_ADDRESS` doit être une adresse `@jp-services.org` dont le fournisseur de messagerie est autorisé par les enregistrements SPF et DKIM du domaine, sinon les messages partent en indésirables.
+- **Coordonnées affichées** : l’adresse de contact publique se modifie dans **Administration → Paramètres**.
+
+## 5. Partir d’une base vierge (recommandé)
 
 Une base neuve créée par Render, Neon ou Docker est vierge : au premier démarrage, `pnpm db:migrate` crée toutes les tables, sans aucune donnée. Il suffit ensuite de créer l’administrateur avec `pnpm db:seed` (voir plus haut). Le site affiche alors des pages « en préparation » propres, et le contenu se publie depuis la console d’administration.
 
@@ -93,7 +131,7 @@ La commande efface toutes les données, rejoue les migrations depuis zéro et in
 
 Pour faire évoluer la structure ensuite : modifiez `src/server/db/schema.ts`, lancez `pnpm db:generate` pour créer une nouvelle migration versionnée dans `drizzle/`, puis déployez. Chaque démarrage applique les migrations manquantes.
 
-## 5. Reprendre les données de l’ancien site (facultatif)
+## 6. Reprendre les données de l’ancien site (facultatif)
 
 L’ancienne base MySQL (InfinityFree) est importée dans PostgreSQL en conservant les identifiants, les comptes et leurs mots de passe.
 
@@ -114,7 +152,7 @@ MYSQL_URL="mysql://root:temp@127.0.0.1:3307/ancien" DATABASE_URL="postgres://…
 
 Le script affiche, table par table, les lignes lues, importées et ignorées. Il peut être relancé sans créer de doublons. Les membres se connectent ensuite avec leur mot de passe habituel.
 
-## 6. Variables d’environnement
+## 7. Variables d’environnement
 
 | Variable | Rôle |
 |---|---|
@@ -128,7 +166,7 @@ Le script affiche, table par table, les lignes lues, importées et ignorées. Il
 
 Les anciens identifiants MySQL et SMTP présents dans l’archive PHP sont à considérer comme compromis : créez-en de nouveaux.
 
-## 7. Après la mise en ligne
+## 8. Après la mise en ligne
 
 1. **Administration → Santé du système** : base, migrations, SMTP, stockage et Google doivent être au vert.
 2. Envoyez un e-mail de test depuis cette page.
@@ -138,11 +176,11 @@ Les anciens identifiants MySQL et SMTP présents dans l’archive PHP sont à co
 
 Les anciennes adresses `.php` sont redirigées de façon permanente : le référencement est conservé.
 
-## 8. Autre option : VPS avec Docker
+## 9. Autre option : VPS avec Docker
 
 `docker compose up -d --build` démarre PostgreSQL, applique les migrations et lance le site sur le port 3000. Les fichiers sont conservés dans un volume (`STORAGE_DRIVER=local`). Placez Caddy ou Nginx devant pour le HTTPS.
 
-## 9. Sécurité intégrée
+## 10. Sécurité intégrée
 
 - Sessions stockées en base, cookie `HttpOnly`, `SameSite=Lax`, `Secure`, révoquées à la réinitialisation du mot de passe.
 - Server Actions protégées par Next.js contre les requêtes d’une autre origine.

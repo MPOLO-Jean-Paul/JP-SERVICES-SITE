@@ -71,7 +71,11 @@ const nextConfig: NextConfig = {
       "/ad/solution-digitale-tout-en-un.html": "/solution-digitale",
       "/ad/solution-digitale": "/solution-digitale",
     };
-    return Object.entries(legacy).map(([source, destination]) => ({ source, destination, permanent: true }));
+    return [
+      // Domaine canonique : www.jp-services.org → jp-services.org (même chemin, redirection permanente).
+      { source: "/:path*", has: [{ type: "host" as const, value: "www.jp-services.org" }], destination: "https://jp-services.org/:path*", permanent: true },
+      ...Object.entries(legacy).map(([source, destination]) => ({ source, destination, permanent: true })),
+    ];
   },
 };
 

@@ -1,6 +1,6 @@
 # Blueprint Render : application Next.js + base PostgreSQL gérée.
 # Render → New → Blueprint → sélectionner ce dépôt. Renseigner ensuite les variables
-# marquées « sync: false » (APP_URL, SMTP, Cloudflare R2…).
+# marquées « sync: false » (SMTP, Cloudflare R2…). Domaine officiel : jp-services.org.
 services:
   - type: web
     name: jp-services
@@ -13,6 +13,10 @@ services:
     startCommand: pnpm db:migrate && pnpm start
     healthCheckPath: /api/health
     autoDeploy: true
+    # Domaine officiel ; www.jp-services.org est redirigé vers jp-services.org (next.config.ts).
+    domains:
+      - jp-services.org
+      - www.jp-services.org
     envVars:
       - key: NODE_VERSION
         value: "22"
@@ -27,7 +31,7 @@ services:
       - key: APP_SECRET
         generateValue: true
       - key: APP_URL
-        sync: false
+        value: https://jp-services.org
       - key: APP_TIMEZONE
         value: Africa/Lubumbashi
       # Fichiers téléversés : Cloudflare R2 (le disque Render est effacé à chaque déploiement)

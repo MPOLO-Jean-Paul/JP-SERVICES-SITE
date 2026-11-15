@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     const data = new TextEncoder().encode([secret, result.data.username.toLocaleLowerCase(), address.slice(0, 80)].join(":"));
     const raw = await crypto.subtle.digest("SHA-256", data);
     const fingerprint = Array.from(new Uint8Array(raw)).map(c => c.toString(16).padStart(2, "0")).join("");
-    const attempts = await db.query<{attempts: number}>(
+    const attempts = await db.query(
       "INSERT INTO public.admin_login_limits (fingerprint,window_start,attempts) VALUES ($1,to_timestamp(floor(extract(epoch from now())/900)*900),1) ON CONFLICT (fingerprint,window_start) DO UPDATE SET attempts=public.admin_login_limits.attempts+1 RETURNING attempts",
       [fingerprint]
     );

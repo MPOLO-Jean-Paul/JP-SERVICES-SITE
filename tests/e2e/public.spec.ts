@@ -91,9 +91,9 @@ test("les liens principaux sont accessibles directement au clavier sur ordinateu
   test.skip(isMobile, "Navigation desktop uniquement");
   await page.goto("/");
   const nav = page.getByRole("navigation",{name:"Menu principal"});
-  await expect(nav.getByRole("link",{name:/Formations/i})).toBeVisible();
-  await expect(nav.getByRole("link",{name:/Logiciels/i})).toBeVisible();
-  await nav.getByRole("link",{name:/Projets/i}).click();
+  await expect(nav.getByRole("link",{name:"Formations",exact:true})).toBeVisible();
+  await expect(nav.getByRole("link",{name:"Logiciels",exact:true})).toBeVisible();
+  await nav.getByRole("link",{name:"Projets",exact:true}).click();
   await expect(page).toHaveURL(/\/projets$/);
 });
 

@@ -60,7 +60,7 @@ export async function SiteFooter() {
   ];
 
   return (
-    <footer className="mt-24 border-t bg-canvas-soft">
+    <footer className="jp-site-footer border-t bg-canvas-soft">
       <div className="shell">
         <div className="relative -mt-px grid gap-10 overflow-hidden border-x border-b bg-canvas px-6 py-14 sm:px-10 lg:grid-cols-[1.2fr_1fr] lg:items-end">
           <div className="relative">

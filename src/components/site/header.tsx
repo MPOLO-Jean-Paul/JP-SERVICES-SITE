@@ -28,6 +28,7 @@ export async function SiteHeader() {
           <MobileDrawer user={publicUser} logoutAction={logoutAction} />
           <Link href="/" className="flex items-center gap-2.5" aria-label="JP-Services — Accueil">
             <LogoMark className="size-9" />
+            <span className="hidden text-[11px] font-semibold tracking-[.115em] text-ink xl:inline">JP-SERVICES</span>
           </Link>
           <div className="mx-auto">
             <DesktopNav user={publicUser} />

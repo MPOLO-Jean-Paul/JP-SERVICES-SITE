@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { ArrowLeft, CheckCircle2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { LogoMark } from "@/components/brand/logo";
 import { ThemeMenu } from "@/components/site/theme-menu";
 import { LanguageMenu } from "@/components/site/language-menu";
@@ -9,27 +9,19 @@ import { CookieConsent } from "@/components/site/cookie-consent";
 
 export default async function AuthLayout({ children }: { children: React.ReactNode }) {
   const [t, tc, s] = await Promise.all([getTranslations("auth"), getTranslations("common"), getSettings()]);
-  const points = t.raw("showcasePoints") as string[];
   return (
     <div className="grid min-h-dvh lg:grid-cols-[1.05fr_1fr]">
-      <aside className="relative hidden overflow-hidden bg-brand-950 text-white lg:flex lg:flex-col lg:justify-between lg:p-12" aria-hidden>
-        <div className="bg-grid pointer-events-none absolute inset-0 opacity-60 [--grid-line:rgb(255_255_255/0.05)]" />
-        <div className="pointer-events-none absolute -right-32 -top-32 size-[480px] rounded-full bg-brand-600/35 blur-3xl" />
-        <Link href="/" className="relative flex items-center gap-2.5">
+      <aside className="jp-auth-aside relative hidden overflow-hidden bg-brand-950 text-white lg:flex lg:flex-col lg:justify-between lg:p-12">
+        <Link href="/" className="relative z-10 flex items-center gap-3 text-[12px] font-semibold tracking-[.12em]" aria-label="JP-Services — Accueil">
           <LogoMark className="size-10" />
+          <span>JP-SERVICES</span>
         </Link>
-        <div className="relative max-w-md">
-          <span className="text-[11px] text-brand-300 font-medium">{s.auth_showcase_badge || t("showcaseBadge")}</span>
-          <h2 className="h1 mt-5 text-white">{s.auth_showcase_title || t("showcaseTitle")}</h2>
-          <ul className="mt-8 space-y-3">
-            {points.map((p) => (
-              <li key={p} className="flex items-center gap-3 text-white/85">
-                <CheckCircle2 className="size-4 text-brand-300" /> {p}
-              </li>
-            ))}
-          </ul>
+        <div className="relative z-10 max-w-md">
+          <p className="text-[11px] font-medium uppercase tracking-[.13em] text-brand-300">{s.auth_showcase_badge || t("showcaseBadge")}</p>
+          <h2 className="mt-6 text-[clamp(37px,3.4vw,51px)] font-semibold leading-[1.16] tracking-[-.055em] text-white">{s.auth_showcase_title || t("showcaseTitle")}</h2>
+          <p className="mt-6 max-w-sm text-sm leading-7 text-[#c1cce0]">Un espace pour gérer vos formations, retrouver vos ressources et suivre vos projets.</p>
         </div>
-        <p className="relative text-[11px] text-white/40 font-medium">© {new Date().getFullYear()} JP‑Services · Lubumbashi</p>
+        <p className="relative z-10 text-[11px] font-medium text-white/50">© {new Date().getFullYear()} JP-Services · Lubumbashi</p>
       </aside>
       <div className="flex flex-col">
         <header className="flex items-center justify-between px-6 py-4 sm:px-10">

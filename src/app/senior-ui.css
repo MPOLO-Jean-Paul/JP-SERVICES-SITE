@@ -1,0 +1,174 @@
+/* JP-SERVICES / Editorial refinement.
+   Direction art : typographie, rapports de taille, blancs, lignes et information réelle.
+   Aucune métrique fictive, fausse capture, dégradé décoratif ou effet d'interface inutile. */
+.jp-nav-link:after{content:"";height:2px;background:var(--primary);position:absolute;left:12px;right:12px;bottom:0;transform:scaleX(0);transform-origin:left;transition:transform .22s ease}
+.jp-nav-link:hover:after,.jp-nav-link-active:after{transform:scaleX(1)}
+#mobile-drawer[data-state="open"]{animation:jp-drawer-in .24s cubic-bezier(.21,.76,.29,.98) both}
+@keyframes jp-drawer-in{from{transform:translateX(-18px);opacity:.93}to{transform:translateX(0);opacity:1}}
+.jp-hero,.jp-areas,.jp-learning,.jp-method,.jp-news,.jp-finale{background:var(--canvas);color:var(--ink)}
+.jp-hero{border-bottom:1px solid var(--line-strong)}
+.jp-hero-layout{display:grid;grid-template-columns:minmax(0,1.48fr) minmax(280px,.66fr);gap:clamp(44px,8vw,115px);padding-top:clamp(75px,11vw,150px);padding-bottom:clamp(62px,7vw,100px)}
+.jp-overline{display:flex;flex-wrap:wrap;align-items:center;gap:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.145em;font:700 10px/1.6 var(--font-geist-mono),ui-monospace,monospace}
+.jp-overline-mark{height:7px;width:7px;background:var(--primary);display:inline-block}
+.jp-overline-separator{color:var(--line-strong);font-weight:400}
+.jp-hero-main h1{max-width:950px;font-size:clamp(47px,6.4vw,91px);line-height:1.058;font-weight:650;letter-spacing:-.066em;margin:23px 0 31px;text-wrap:balance}
+.jp-hero-main h1 span{color:var(--primary)}
+.jp-hero-lead{max-width:625px;font-size:clamp(16px,1.52vw,19px);line-height:1.81;color:var(--copy);margin:0}
+.jp-hero-actions,.jp-scolia-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:37px}
+.jp-action{min-height:50px;display:inline-flex;align-items:center;justify-content:space-between;gap:26px;padding:0 20px;font-size:13px;font-weight:650;letter-spacing:-.01em;transition:background-color .22s,color .22s,border-color .22s}
+.jp-action svg,.jp-inline-link svg,.jp-finale-link svg{transition:transform .22s ease}
+.jp-action:hover svg,.jp-inline-link:hover svg,.jp-finale-link:hover svg{transform:translate(2px,-2px)}
+.jp-action-primary{background:var(--ink);color:var(--canvas);border:1px solid var(--ink);border-radius:4px}
+.jp-action-primary:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.jp-action-text{padding:0 3px;color:var(--ink);border-bottom:1px solid var(--line-strong)}
+.jp-action-text:hover{border-color:var(--ink)}
+.jp-hero-support{display:flex;align-items:center;gap:9px;margin-top:54px;font-size:11px;color:var(--muted)}
+.jp-hero-support svg{color:var(--primary)}
+.jp-hero-guide{align-self:end;border-top:2px solid var(--ink);padding-top:21px;min-width:0}
+.jp-guide-label{font:700 10px var(--font-geist-mono),monospace;letter-spacing:.125em;color:var(--muted);text-transform:uppercase;margin-bottom:24px}
+.jp-guide-row{display:grid;grid-template-columns:35px minmax(0,1fr) 19px;gap:12px;align-items:center;min-height:76px;border-bottom:1px solid var(--line);transition:padding-left .2s ease,color .2s}
+.jp-guide-row:hover{padding-left:7px;color:var(--primary)}
+.jp-guide-row>span{font:600 11px var(--font-geist-mono),monospace;color:var(--muted)}
+.jp-guide-row strong{font-size:clamp(13px,1.25vw,16px);font-weight:600;letter-spacing:-.025em}
+.jp-guide-row svg{color:var(--muted)}
+.jp-guide-row:hover svg{color:var(--primary)}
+.jp-guide-footnote{font-size:11px;color:var(--muted);margin:21px 0 0;line-height:1.6}
+.jp-hero-signature{display:flex;gap:30px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:21px;padding-bottom:21px}
+.jp-hero-signature span{font:650 10px var(--font-geist-mono),monospace;letter-spacing:.17em;color:var(--muted)}
+.jp-section{padding-top:clamp(85px,10vw,140px);padding-bottom:clamp(85px,10vw,140px)}
+.jp-areas-layout{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(40px,8vw,150px)}
+.jp-sticky-intro{align-self:start;position:sticky;top:110px}
+.jp-sticky-intro h2,.jp-section-heading h2{font-size:clamp(35px,3.7vw,55px);line-height:1.17;font-weight:640;letter-spacing:-.055em;max-width:700px;margin:25px 0 18px}
+.jp-sticky-intro h2 em,.jp-section-heading h2 em{font-style:normal;color:var(--primary)}
+.jp-sticky-intro>p:last-child{font-size:14px;line-height:1.85;color:var(--copy);max-width:370px}
+.jp-areas-list{border-top:1px solid var(--line-strong)}
+.jp-area-link{display:grid;grid-template-columns:44px minmax(0,1fr) 25px;gap:18px;align-items:start;border-bottom:1px solid var(--line);padding:31px 7px 34px 0;transition:padding-left .2s ease}
+.jp-area-link:hover{padding-left:9px}
+.jp-area-number{font:600 12px var(--font-geist-mono),monospace;color:var(--muted);padding-top:5px}
+.jp-area-kicker,.jp-course-domain{font:700 10px var(--font-geist-mono),monospace;letter-spacing:.08em;color:var(--primary)}
+.jp-area-link h3{font-size:clamp(22px,2.5vw,35px);font-weight:630;line-height:1.25;letter-spacing:-.05em;margin:10px 0 11px}
+.jp-area-link p{font-size:13px;line-height:1.85;color:var(--copy);margin:0;max-width:500px}
+.jp-area-arrow{color:var(--muted);margin-top:4px;transition:transform .2s,color .2s}
+.jp-area-link:hover .jp-area-arrow{transform:translate(3px,-3px);color:var(--primary)}
+.jp-learning{background:var(--canvas-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.jp-section-heading{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:44px}
+.jp-section-heading h2{margin-bottom:0}
+.jp-inline-link{display:inline-flex;align-items:center;gap:9px;color:var(--ink);font-size:13px;font-weight:650;border-bottom:1px solid var(--line-strong);padding-bottom:9px;flex:none}
+.jp-inline-link:hover{color:var(--primary);border-color:var(--primary)}
+.jp-course-list{border-top:1px solid var(--line-strong)}
+.jp-course-row{display:grid;grid-template-columns:38px minmax(0,1.3fr) minmax(150px,.55fr) 23px;align-items:center;gap:21px;padding:28px 6px 31px 0;border-bottom:1px solid var(--line);transition:padding-left .2s ease}
+.jp-course-row:hover{padding-left:8px}
+.jp-course-index{font:600 11px var(--font-geist-mono),monospace;color:var(--muted)}
+.jp-course-primary h3{font-size:clamp(20px,2vw,27px);font-weight:630;letter-spacing:-.046em;margin:8px 0 8px}
+.jp-course-primary p{font-size:12px;color:var(--copy);line-height:1.7;margin:0;max-width:510px}
+.jp-course-detail{display:flex;flex-direction:column;align-items:start;gap:9px;color:var(--muted);font-size:11px}
+.jp-course-detail>span{display:flex;align-items:center;gap:8px}
+.jp-course-detail strong{font-size:12px;color:var(--ink)}
+.jp-course-arrow{color:var(--muted);transition:transform .2s}
+.jp-course-row:hover .jp-course-arrow{transform:translate(3px,-3px);color:var(--primary)}
+.jp-learning-empty{min-height:178px;border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line);padding:37px 0;display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:23px;align-items:center}
+.jp-empty-symbol{height:54px;width:54px;display:grid;place-items:center;border:1px solid var(--line-strong);border-radius:3px;color:var(--primary)}
+.jp-learning-empty h3{font-size:21px;font-weight:600;letter-spacing:-.04em;margin:0 0 9px}
+.jp-learning-empty p{max-width:540px;color:var(--copy);font-size:13px;line-height:1.75;margin:0}
+.jp-method .jp-section-aside{max-width:348px;color:var(--copy);font-size:13px;line-height:1.8;margin:0}
+.jp-method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line-strong)}
+.jp-method-step{padding:27px 36px 0 0;min-width:0}
+.jp-method-step>span{font:700 12px var(--font-geist-mono),monospace;color:var(--primary)}
+.jp-method-rule{height:1px;background:var(--line);margin:40px 0 22px}
+.jp-method-step h3{font-size:27px;line-height:1.3;font-weight:620;letter-spacing:-.05em}
+.jp-method-step p{font-size:13px;color:var(--copy);line-height:1.8;margin:15px 0 0;max-width:330px}
+.jp-scolia-section{background:#101c2e;color:#f5f7ff;padding:clamp(80px,9vw,115px) 0}
+.jp-scolia-grid{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);gap:clamp(50px,9vw,120px);align-items:center}
+.jp-scolia-main .jp-overline{color:#9fb2d0}
+.jp-scolia-status{border:1px solid #5b7196;color:#cad8f2;font:600 9px var(--font-geist-mono),monospace;padding:5px 7px;letter-spacing:.05em;margin-left:8px}
+.jp-scolia-main h2{font-size:clamp(38px,4.55vw,61px);font-weight:620;line-height:1.14;letter-spacing:-.06em;margin:26px 0}
+.jp-scolia-main h2 em{font-style:normal;color:#a6beff}
+.jp-scolia-main>p:not(.jp-overline){font-size:14px;color:#b8c4d8;line-height:1.9;max-width:570px}
+.jp-scolia-actions{margin-top:32px}
+.jp-action-light{background:#f5f7ff;color:#14203a;border:1px solid #f5f7ff;border-radius:3px}
+.jp-action-light:hover{background:#d7e4ff;border-color:#d7e4ff}
+.jp-action-light-text{border:1px solid #506178;color:#f5f7ff;border-radius:3px}
+.jp-action-light-text:hover{border-color:#becde9}
+.jp-scolia-index{border-top:1px solid #6e7e9b;border-bottom:1px solid #6e7e9b}
+.jp-scolia-index-top,.jp-scolia-index-bottom{display:flex;justify-content:space-between;gap:10px;padding:18px 0;color:#9dacbf;font:600 9px var(--font-geist-mono),monospace;letter-spacing:.08em}
+.jp-scolia-index-row{display:grid;grid-template-columns:38px minmax(0,1fr) 21px;align-items:center;gap:15px;padding:23px 0;border-top:1px solid #ffffff22}
+.jp-scolia-index-row>span{font:600 11px var(--font-geist-mono),monospace;color:#8598b6}
+.jp-scolia-index-row strong{font-size:17px;font-weight:550;letter-spacing:-.025em}
+.jp-scolia-index-row svg{color:#b5c9fc}
+.jp-scolia-index-bottom{border-top:1px solid #ffffff22;gap:20px}
+.jp-news-list{border-top:1px solid var(--line-strong)}
+.jp-news-row{display:grid;grid-template-columns:160px minmax(0,1fr) 25px;align-items:center;gap:25px;border-bottom:1px solid var(--line);padding:26px 0;transition:padding-left .2s ease}
+.jp-news-row:hover{padding-left:8px}
+.jp-news-row>span{font-size:11px;color:var(--muted)}
+.jp-news-row h3{font-size:18px;font-weight:620;letter-spacing:-.03em}
+.jp-news-row svg{color:var(--muted)}
+.jp-finale{border-top:1px solid var(--line);padding:80px 0 105px}
+.jp-finale-layout{display:flex;align-items:end;justify-content:space-between;gap:30px}
+.jp-finale h2{font-size:clamp(40px,6vw,76px);font-weight:620;letter-spacing:-.065em;line-height:1.16;margin:24px 0 0}
+.jp-finale h2 em{font-style:normal;color:var(--primary)}
+.jp-finale-link{display:flex;align-items:center;justify-content:space-between;gap:36px;border-bottom:2px solid var(--ink);padding:0 0 17px;font-size:16px;font-weight:600;flex:none}
+.jp-finale-link:hover{color:var(--primary);border-color:var(--primary)}
+@media(max-width:1080px){
+  .jp-hero-layout{grid-template-columns:minmax(0,1.1fr) minmax(245px,.85fr);gap:45px}
+  .jp-hero-main h1{font-size:clamp(43px,6.4vw,70px)}
+  .jp-areas-layout{gap:45px}
+  .jp-scolia-grid{gap:40px}
+}
+@media(max-width:800px){
+  .jp-hero-layout,.jp-areas-layout,.jp-scolia-grid{grid-template-columns:1fr}
+  .jp-hero-layout{gap:50px;padding-top:75px}
+  .jp-hero-main h1{font-size:clamp(46px,8.5vw,70px)}
+  .jp-hero-guide{max-width:none}
+  .jp-guide-row{min-height:61px}
+  .jp-sticky-intro{position:static}
+  .jp-section-heading{align-items:start;flex-direction:column}
+  .jp-learning-empty{grid-template-columns:54px minmax(0,1fr)}
+  .jp-learning-empty .jp-inline-link{grid-column:2;justify-self:start}
+  .jp-scolia-index{margin-top:5px}
+}
+@media(max-width:620px){
+  .jp-hero-layout{padding-top:54px;padding-bottom:55px;gap:46px}
+  .jp-hero-main h1{font-size:clamp(42px,11.7vw,62px);letter-spacing:-.07em;margin:22px 0}
+  .jp-hero-lead{font-size:15px;line-height:1.75}
+  .jp-hero-actions{align-items:stretch;flex-direction:column;margin-top:27px}
+  .jp-action{min-height:49px;justify-content:space-between;width:100%}
+  .jp-action-text{width:max-content;max-width:100%;padding:0 3px}
+  .jp-hero-support{margin-top:29px}
+  .jp-guide-row{grid-template-columns:27px minmax(0,1fr) 18px;gap:9px}
+  .jp-hero-signature{gap:12px;flex-wrap:wrap}
+  .jp-hero-signature span{font-size:9px}
+  .jp-section{padding-top:72px;padding-bottom:82px}
+  .jp-sticky-intro h2,.jp-section-heading h2{font-size:clamp(34px,9vw,43px)}
+  .jp-area-link{grid-template-columns:29px minmax(0,1fr) 20px;gap:10px;padding:24px 0}
+  .jp-area-link h3{font-size:24px}
+  .jp-area-link p{font-size:12px}
+  .jp-course-row{grid-template-columns:27px minmax(0,1fr) 20px;gap:12px;padding:22px 0}
+  .jp-course-detail{grid-column:2;grid-row:2;flex-direction:row;flex-wrap:wrap}
+  .jp-course-arrow{grid-column:3;grid-row:1}
+  .jp-learning-empty{grid-template-columns:1fr;gap:16px}
+  .jp-learning-empty .jp-inline-link{grid-column:1}
+  .jp-method-grid{grid-template-columns:1fr}
+  .jp-method-step{padding:25px 0;border-bottom:1px solid var(--line)}
+  .jp-method-rule{margin:18px 0}
+  .jp-method-step h3{font-size:25px}
+  .jp-scolia-section{padding:72px 0}
+  .jp-scolia-main h2{font-size:clamp(35px,9vw,47px)}
+  .jp-scolia-main>p:not(.jp-overline){font-size:13px}
+  .jp-scolia-main .jp-overline{gap:8px}
+  .jp-scolia-status{margin:0}
+  .jp-scolia-actions{flex-direction:column;align-items:stretch}
+  .jp-scolia-index-row{padding:19px 0;grid-template-columns:27px minmax(0,1fr) 19px;gap:9px}
+  .jp-scolia-index-row strong{font-size:14px}
+  .jp-news-row{grid-template-columns:1fr 21px;gap:10px}
+  .jp-news-date{grid-column:1}
+  .jp-news-row h3{grid-column:1;font-size:16px}
+  .jp-news-row svg{grid-column:2;grid-row:2}
+  .jp-finale{padding:65px 0 84px}
+  .jp-finale-layout{align-items:start;flex-direction:column;gap:34px}
+  .jp-finale h2{font-size:clamp(39px,10vw,52px)}
+  .jp-finale-link{width:100%;font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  #mobile-drawer[data-state="open"]{animation:none}
+  .jp-nav-link:after,.jp-guide-row,.jp-area-link,.jp-course-row,.jp-news-row,.jp-action,.jp-finale-link,.jp-inline-link svg,.jp-finale-link svg{transition:none}
+}

@@ -11,10 +11,10 @@ export async function GET() {
   if (!db) return apiError("Base de données indisponible.", 503);
   try {
     const [stats, messages] = await Promise.all([
-      db.query<{total: number; published: number; drafts: number}>(
+      db.query(
         "SELECT count(*)::int AS total, count(*) FILTER (WHERE published)::int AS published, count(*) FILTER (WHERE NOT published)::int AS drafts FROM public.catalogue_items"
       ),
-      db.query<{total: number; unread: number}>(
+      db.query(
         "SELECT count(*)::int AS total, count(*) FILTER (WHERE read_at IS NULL)::int AS unread FROM public.contact_messages"
       )
     ]);

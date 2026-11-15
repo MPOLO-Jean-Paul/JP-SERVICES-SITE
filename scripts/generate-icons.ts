@@ -3,10 +3,10 @@ import path from "node:path";
 import sharp from "sharp";
 
 /** Génère les icônes PWA / Apple à partir du symbole vectoriel « Élan » (viewBox 64). */
-const LOGO = `<rect x="8" y="34" width="9" height="16" rx="3" fill="#FF4D3D"/>
-    <rect x="21" y="24" width="9" height="26" rx="3" fill="#7B4DFF"/>
-    <path d="M38.5 10v29.5a10.5 10.5 0 0 1-10.5 10.5" fill="none" stroke="#2F5BFF" stroke-width="9" stroke-linecap="round"/>
-    <circle cx="51" cy="14" r="5" fill="#2F5BFF"/>`;
+const LOGO = `<rect x="9" y="36" width="8" height="16" rx="4" fill="#FF4D3D"/>
+    <path d="M21 46.71V24a4 4 0 0 1 8 0v20h-2a8 8 0 0 0-6 2.71z" fill="#7B4DFF"/>
+    <path d="M37 12v30a10 10 0 0 1-10 10" fill="none" stroke="#2F5BFF" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="50" cy="12" r="5" fill="#2F5BFF"/>`;
 const mark = (size: number, padding: number, rounded: boolean) => {
   const inner = size - padding * 2;
   const s = (inner * 0.8) / 64;

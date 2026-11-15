@@ -3,6 +3,8 @@
 declare(strict_types=1);
 require_once __DIR__ . '/includes/connexion_db.php';
 
+$publicContactEmail = jp_contact_email($conn);
+
 $message = '';
 $messageType = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -49,7 +51,7 @@ include __DIR__ . '/includes/header.php';
 <?php if ($message !== ''): ?><div class="alert alert-<?= e($messageType) ?>"><?= e($message) ?></div><?php endif; ?>
 <form class="jp-contact-form" action="<?= e(url('/contact')) ?>" method="post"><div class="row g-3"><div class="col-md-6"><label class="form-label" for="nom">Nom complet</label><input class="form-control" id="nom" name="nom" maxlength="120" autocomplete="name" required value="<?= e($_POST['nom'] ?? '') ?>"></div><div class="col-md-6"><label class="form-label" for="email">Adresse e-mail</label><input class="form-control" id="email" type="email" name="email" maxlength="254" autocomplete="email" required value="<?= e($_POST['email'] ?? '') ?>"></div><div class="col-12"><label class="form-label" for="sujet">Sujet</label><input class="form-control" id="sujet" name="sujet" maxlength="180" required value="<?= e($_POST['sujet'] ?? '') ?>"></div><div class="col-12"><label class="form-label" for="message">Message</label><textarea class="form-control" id="message" name="message" rows="7" minlength="20" maxlength="10000" required><?= e($_POST['message'] ?? '') ?></textarea></div></div><div class="text-end mt-4"><button class="jp-btn jp-btn-primary" type="submit">Envoyer le message <i class="fas fa-arrow-right"></i></button></div></form>
 </div></div>
-<div class="col-lg-5"><div class="card p-4"><h3 class="h4">Coordonnées</h3><p class="text-muted">Notre équipe est basée à Lubumbashi et intervient sur des projets de formation et de transformation digitale.</p><div class="d-grid gap-3"><a href="tel:+243977152825"><i class="fas fa-phone me-2 text-primary"></i>+243 977 152 825</a><a href="mailto:contact@jp-services.com"><i class="fas fa-envelope me-2 text-primary"></i>contact@jp-services.com</a><a href="https://wa.me/243860951131" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp me-2 text-primary"></i>WhatsApp</a><span><i class="fas fa-location-dot me-2 text-primary"></i>Lubumbashi, RDC</span></div></div></div>
+<div class="col-lg-5"><div class="card p-4"><h3 class="h4">Coordonnées</h3><p class="text-muted">Notre équipe est basée à Lubumbashi et intervient sur des projets de formation et de transformation digitale.</p><div class="d-grid gap-3"><a href="tel:+243977152825"><i class="fas fa-phone me-2 text-primary"></i>+243 977 152 825</a><a href="mailto:<?= e($publicContactEmail) ?>"><i class="fas fa-envelope me-2 text-primary"></i><?= e($publicContactEmail) ?></a><a href="https://wa.me/243860951131" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp me-2 text-primary"></i>WhatsApp</a><span><i class="fas fa-location-dot me-2 text-primary"></i>Lubumbashi, RDC</span></div></div></div>
 </div></div></section>
 </main>
 <?php include __DIR__ . '/includes/footer.php'; ?>

@@ -7,7 +7,9 @@ require_admin();
 require_once '../includes/connexion_db.php';
 
 $editableSettings = [
-    'contact_email' => ['Adresse e-mail professionnelle de contact', 'Visible sur la page Contact. Laisser vide pour utiliser CONTACT_EMAIL défini dans le fichier .env.', 'email'],
+    'contact_email' => ['Adresse e-mail professionnelle de contact', 'Visible sur la page Contact et en pied de page. Vide : utiliser CONTACT_EMAIL du .env.', 'email'],
+    'contact_phone' => ['Téléphone public', 'Numéro international conseillé (ex. +243 977 152 825). Vide : valeur CONTACT_PHONE ou numéro actuel.', 'tel'],
+    'contact_whatsapp' => ['WhatsApp professionnel', 'Numéro international avec indicatif (ex. +243 860 951 131). Vide : valeur CONTACT_WHATSAPP ou numéro actuel.', 'tel'],
     'annonce_texte' => ['Bandeau d’annonce — texte', 'Texte affiché dans le bandeau en haut de toutes les pages. Laisser vide pour masquer le bandeau.', 'text'],
     'annonce_url' => ['Bandeau d’annonce — lien', 'Adresse du lien du bandeau (ex. /formations ou https://…).', 'text'],
     'annonce_lien_label' => ['Bandeau d’annonce — libellé du lien', 'Texte du bouton du bandeau.', 'text'],
@@ -18,16 +20,25 @@ $editableSettings = [
 $saveError = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contactEmail = trim((string)($_POST['contact_email'] ?? ''));
+    $contactPhone = trim((string)($_POST['contact_phone'] ?? ''));
+    $contactWhatsapp = trim((string)($_POST['contact_whatsapp'] ?? ''));
     if ($contactEmail !== '' && (strlen($contactEmail) > 254 || !filter_var($contactEmail, FILTER_VALIDATE_EMAIL))) {
         $saveError = 'Veuillez saisir une adresse e-mail de contact valide.';
+    } elseif ($contactPhone !== '' && !jp_valid_public_phone($contactPhone)) {
+        $saveError = 'Le numéro de téléphone public est invalide.';
+    } elseif ($contactWhatsapp !== '' && jp_normalize_whatsapp($contactWhatsapp) === null) {
+        $saveError = 'Saisissez un numéro WhatsApp international valide.';
     } else {
         try {
             $conn->beginTransaction();
             $stmt = $conn->prepare('INSERT INTO site_settings (cle, valeur) VALUES (:cle, :valeur) ON DUPLICATE KEY UPDATE valeur = VALUES(valeur)');
             foreach ($editableSettings as $key => $meta) {
-                $value = $key === 'contact_email'
-                    ? $contactEmail
-                    : mb_substr(trim((string)($_POST[$key] ?? '')), 0, 2000, 'UTF-8');
+                $value = match ($key) {
+                    'contact_email' => $contactEmail,
+                    'contact_phone' => $contactPhone,
+                    'contact_whatsapp' => $contactWhatsapp !== '' ? jp_normalize_whatsapp($contactWhatsapp) : '',
+                    default => mb_substr(trim((string)($_POST[$key] ?? '')), 0, 2000, 'UTF-8'),
+                };
                 $stmt->execute([':cle' => $key, ':valeur' => $value]);
             }
             $conn->commit();
@@ -75,12 +86,15 @@ include '../includes/header_admin.php';
     </div>
 
     <form class="jp-admin-card jp-admin-form" method="post" data-testid="admin-parametres-form">
+        <h2 class="h5">Coordonnées professionnelles</h2>
+        <p class="text-muted">Mettez à jour les coordonnées publiques sans toucher aux identifiants de messagerie SMTP.</p>
         <?php foreach ($editableSettings as $key => [$label, $help, $kind]): ?>
+        <?php if ($key === 'annonce_texte'): ?><h2 class="h5 mt-4">Contenus et annonces</h2><?php endif; ?>
         <label for="setting-<?= e($key) ?>"><?= e($label) ?></label>
         <?php if ($kind === 'textarea'): ?>
             <textarea id="setting-<?= e($key) ?>" name="<?= e($key) ?>" rows="3" maxlength="2000"><?= e((string)($values[$key] ?? '')) ?></textarea>
         <?php else: ?>
-            <input id="setting-<?= e($key) ?>" type="<?= $kind === 'email' ? 'email' : 'text' ?>" name="<?= e($key) ?>" maxlength="<?= $kind === 'email' ? '254' : '500' ?>" value="<?= e((string)($values[$key] ?? '')) ?>">
+            <input id="setting-<?= e($key) ?>" type="<?= $kind === 'email' ? 'email' : ($kind === 'tel' ? 'tel' : 'text') ?>" name="<?= e($key) ?>" maxlength="<?= $kind === 'email' ? '254' : ($kind === 'tel' ? '35' : '500') ?>" value="<?= e((string)($values[$key] ?? '')) ?>">
         <?php endif; ?>
         <small><?= e($help) ?></small>
         <?php endforeach; ?>

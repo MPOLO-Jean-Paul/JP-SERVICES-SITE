@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { ArrowDown, ArrowRight, CalendarCheck, Rows3, SearchCheck, Video } from "lucide-react";
+import { ArrowDown, ArrowRight, CalendarCheck, GraduationCap, Rows3, SearchCheck, Video } from "lucide-react";
+import { EmptyState } from "@/components/ui/empty-state";
 import { buttonVariants } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { PageHero } from "@/components/site/page-hero";
@@ -68,7 +69,7 @@ export default async function FormationsPage() {
                 </div>
               ))}
             </div>
-            <dl className="grid grid-cols-3 divide-x border-t">
+            {formations.length ? <dl className="grid grid-cols-3 divide-x border-t">
               {[
                 [formations.length, "formations"],
                 [domainMap.size, "domaines"],
@@ -79,16 +80,30 @@ export default async function FormationsPage() {
                   <dt className="font-mono text-[10px] uppercase tracking-wider text-muted">{label as string}</dt>
                 </div>
               ))}
-            </dl>
+            </dl> : null}
           </div>
         }
       />
 
       <section className="section">
         <div className="shell">
-          <Suspense fallback={null}>
-            <Catalog items={items} domains={Array.from(domainMap.values()).sort((a, b) => a.label.localeCompare(b.label, "fr"))} levels={levels} />
-          </Suspense>
+          {items.length ? (
+            <Suspense fallback={null}>
+              <Catalog items={items} domains={Array.from(domainMap.values()).sort((a, b) => a.label.localeCompare(b.label, "fr"))} levels={levels} />
+            </Suspense>
+          ) : (
+            <EmptyState
+              icon={GraduationCap}
+              title="Le catalogue est en préparation"
+              text="Les premières formations seront publiées très bientôt. Créez votre compte ou écrivez-nous pour être informé dès l’ouverture des inscriptions."
+              action={
+                <div className="flex flex-wrap justify-center gap-3">
+                  <Link href="/inscription" className={buttonVariants({ variant: "dark" })}>Créer mon compte</Link>
+                  <Link href="/contact" className={buttonVariants({ variant: "outline" })}>Nous contacter</Link>
+                </div>
+              }
+            />
+          )}
         </div>
       </section>
 

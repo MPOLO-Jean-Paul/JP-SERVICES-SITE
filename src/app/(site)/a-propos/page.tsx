@@ -32,7 +32,7 @@ export default async function AProposPage() {
               <Link href="/formations" className={buttonVariants({ variant: "dark", size: "lg" })}>Découvrir nos formations <ArrowRight /></Link>
               <Link href="/contact" className={buttonVariants({ variant: "outline", size: "lg" })}>Nous contacter</Link>
             </div>
-            {stats ? (
+            {stats && stats.formations + stats.logiciels > 0 ? (
               <dl className="mt-10 grid grid-cols-3 gap-6 border-t pt-8">
                 {[[stats.formations, "formations"], [stats.membres, "membres"], [stats.logiciels, "logiciels"]].map(([n, l]) => (
                   <div key={l as string}><dd className="font-display text-3xl font-semibold tracking-tight">{n as number}</dd><dt className="font-mono text-[10px] uppercase tracking-wider text-muted">{l as string}</dt></div>

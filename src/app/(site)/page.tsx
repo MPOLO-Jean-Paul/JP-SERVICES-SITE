@@ -128,9 +128,11 @@ export default async function HomePage() {
               </span>
               <h3 className="h3 mt-6">Logiciels vérifiés</h3>
               <p className="mt-2 text-sm text-copy">Version, taille, plateforme et licence sur chaque fiche. Fichiers contrôlés avant publication.</p>
-              <p className="mt-5 font-mono text-xs text-muted">
-                <CountUp value={stats.telechargements} /> téléchargements
-              </p>
+              {stats.telechargements > 0 ? (
+                <p className="mt-5 font-mono text-xs text-muted">
+                  <CountUp value={stats.telechargements} /> téléchargements
+                </p>
+              ) : null}
             </Link>
             {/* Projets */}
             <Link href="/projets" className="card card-hover group p-7 md:col-span-2">
@@ -154,9 +156,11 @@ export default async function HomePage() {
               </span>
               <h3 className="h3 mt-6">Forum d’entraide</h3>
               <p className="mt-2 text-sm text-copy">Posez vos questions, partagez vos ressources et aidez les autres membres à progresser.</p>
-              <p className="mt-5 font-mono text-xs text-muted">
-                <CountUp value={stats.membres} /> membres actifs
-              </p>
+              {stats.membres > 0 ? (
+                <p className="mt-5 font-mono text-xs text-muted">
+                  <CountUp value={stats.membres} /> membres actifs
+                </p>
+              ) : null}
             </Link>
             {/* Programme */}
             <div className="card relative overflow-hidden p-7 md:col-span-3">
@@ -192,7 +196,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ───────── Chiffres ───────── */}
+      {/* ───────── Chiffres (affichés dès que la plateforme a du contenu) ───────── */}
+      {stats.formations + stats.logiciels > 0 ? (
       <section className="border-y bg-canvas-soft">
         <div className="shell">
           <dl className="grid grid-cols-2 divide-x divide-y border-x lg:grid-cols-4 lg:divide-y-0">
@@ -212,6 +217,7 @@ export default async function HomePage() {
           </dl>
         </div>
       </section>
+      ) : null}
 
       {/* ───────── Méthode ───────── */}
       <section className="section">

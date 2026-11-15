@@ -23,7 +23,7 @@ export default async function ForumPage({ searchParams }: { searchParams: Promis
       <PageHero
         eyebrow="Communauté d’entraide"
         title="Demandez, partagez, progressez ensemble."
-        text={`${posts.length} publication${posts.length > 1 ? "s" : ""} pour échanger conseils, projets et questions numériques avec la communauté JP-Services.`}
+        text={posts.length ? `${posts.length} publication${posts.length > 1 ? "s" : ""} pour échanger conseils, projets et questions numériques avec la communauté JP-Services.` : "Posez vos questions, partagez vos ressources et aidez les autres membres à progresser. Lancez la première discussion de la communauté JP-Services."}
         actions={user ? <Link href="/forum/nouveau" className={buttonVariants({ variant: "dark", size: "lg" })}><Plus /> Nouvelle publication</Link> : <Link href="/connexion?redirect_to=/forum" className={buttonVariants({ variant: "dark", size: "lg" })}><LogIn /> Se connecter pour participer</Link>}
         aside={<ThreadPreview />}
       />

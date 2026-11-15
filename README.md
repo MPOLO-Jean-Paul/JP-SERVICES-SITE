@@ -26,8 +26,10 @@ Prérequis : Node.js 22, pnpm 10 et PostgreSQL 16.
 ```bash
 pnpm install
 cp .env.example .env          # DATABASE_URL, APP_SECRET, et STORAGE_DRIVER=local en local
-pnpm db:migrate               # crée les tables
-SEED_DEMO=1 ADMIN_EMAIL=admin@exemple.test ADMIN_PASSWORD='Admin-Demo-2026' pnpm db:seed
+# Base vierge (tables vides + paramètres du site + premier administrateur)
+ADMIN_EMAIL=admin@exemple.test ADMIN_PASSWORD='Admin-Demo-2026' pnpm db:reset --yes
+# Facultatif : contenus de démonstration (formations, actualités, logiciels…)
+SEED_DEMO=1 pnpm db:seed
 pnpm dev                      # http://localhost:3000
 ```
 
@@ -44,6 +46,7 @@ Sans SMTP configuré, les codes d’activation et de réinitialisation s’affic
 | `pnpm test:e2e` | Tests de bout en bout (Playwright) |
 | `pnpm db:migrate` | Applique les migrations SQL du dossier `drizzle/` |
 | `pnpm db:generate` | Génère une migration après modification du schéma |
+| `pnpm db:reset --yes` | Recrée une base vierge : efface tout, rejoue les migrations, installe la configuration de base |
 | `pnpm db:seed` | Paramètres, catégories et, en option, administrateur et contenus de démonstration |
 | `pnpm db:import-mysql` | Importe les données de l’ancienne base MySQL dans PostgreSQL |
 | `pnpm storage:upload-r2` | Envoie les fichiers locaux (`uploads/`) vers Cloudflare R2 |

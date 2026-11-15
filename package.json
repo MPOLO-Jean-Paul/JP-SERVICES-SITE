@@ -25,7 +25,8 @@
     "storage:upload-r2": "tsx scripts/upload-to-r2.ts",
     "cf:build": "CLOUDFLARE_BUILD=1 SKIP_ENV_VALIDATION=1 opennextjs-cloudflare build",
     "cf:preview": "pnpm cf:build && opennextjs-cloudflare preview",
-    "cf:deploy": "pnpm cf:build && opennextjs-cloudflare deploy"
+    "cf:deploy": "pnpm cf:build && opennextjs-cloudflare deploy",
+    "db:reset": "tsx scripts/reset-db.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1169.0",

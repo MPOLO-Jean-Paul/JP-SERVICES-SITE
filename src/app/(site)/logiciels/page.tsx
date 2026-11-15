@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/site/page-hero";
 import { DownloadsPreview } from "@/components/visuals/mockups";
 import Link from "next/link";
-import { ArrowDown, BadgeCheck, FileSearch, RefreshCcw } from "lucide-react";
+import { ArrowDown, BadgeCheck, Download, FileSearch, RefreshCcw } from "lucide-react";
+import { EmptyState } from "@/components/ui/empty-state";
 import { buttonVariants } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SoftwareCatalog, type CategoryChip, type SoftwareItem } from "@/components/logiciels/software-catalog";
@@ -33,15 +34,15 @@ export default async function LogicielsPage() {
             <Link href="/scolia" className={buttonVariants({ variant: "outline", size: "lg" })}>Découvrir SCOLIA Pro</Link>
           </>
         }
-        aside={<DownloadsPreview total={total} />}
+        aside={<DownloadsPreview total={total || undefined} />}
       >
-        <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
+        {items.length ? <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
           {[[items.length, "logiciels"], [chips.length, "catégories"], [total, "téléchargements"]].map(([n, l]) => (
             <div key={l as string}><dd className="font-display text-3xl font-semibold tracking-tight">{(n as number).toLocaleString("fr-FR")}</dd><dt className="font-mono text-[10px] uppercase tracking-wider text-muted">{l as string}</dt></div>
           ))}
-        </dl>
+        </dl> : null}
       </PageHero>
-      <section className="section"><div className="shell"><SoftwareCatalog items={items} categories={chips} platforms={platforms} /></div></section>
+      <section className="section"><div className="shell">{items.length ? <SoftwareCatalog items={items} categories={chips} platforms={platforms} /> : <EmptyState icon={Download} title="La médiathèque est en préparation" text="Les premiers logiciels vérifiés seront publiés prochainement. Vous pouvez déjà nous suggérer un outil utile à votre formation." action={<Link href="/contact" className={buttonVariants({ variant: "dark" })}>Suggérer un logiciel</Link>} />}</div></section>
       <section className="section border-t bg-canvas-soft">
         <div className="shell">
           <SectionHeading kicker="Télécharger en confiance" title="Des fichiers vérifiés et des informations claires." text="Chaque logiciel publié est contrôlé par l’équipe JP-Services avant sa mise en ligne." />

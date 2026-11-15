@@ -79,7 +79,21 @@ pnpm cf:deploy
 
 `pnpm cf:preview` lance le Worker en local (workerd) avec les valeurs de `.dev.vars`.
 
-## 4. Reprendre les données de l’ancien site
+## 4. Partir d’une base vierge (recommandé)
+
+Une base neuve créée par Render, Neon ou Docker est vierge : au premier démarrage, `pnpm db:migrate` crée toutes les tables, sans aucune donnée. Il suffit ensuite de créer l’administrateur avec `pnpm db:seed` (voir plus haut). Le site affiche alors des pages « en préparation » propres, et le contenu se publie depuis la console d’administration.
+
+Pour remettre une base à zéro :
+
+```bash
+ADMIN_EMAIL=vous@domaine.tld ADMIN_PASSWORD='Mot-De-Passe-Solide-2026' pnpm db:reset --yes
+```
+
+La commande efface toutes les données, rejoue les migrations depuis zéro et installe uniquement les paramètres du site et les catégories de logiciels. Sur une base distante, elle refuse de s’exécuter sans `ALLOW_REMOTE_RESET=1`, pour éviter tout effacement accidentel de la production.
+
+Pour faire évoluer la structure ensuite : modifiez `src/server/db/schema.ts`, lancez `pnpm db:generate` pour créer une nouvelle migration versionnée dans `drizzle/`, puis déployez. Chaque démarrage applique les migrations manquantes.
+
+## 5. Reprendre les données de l’ancien site (facultatif)
 
 L’ancienne base MySQL (InfinityFree) est importée dans PostgreSQL en conservant les identifiants, les comptes et leurs mots de passe.
 
@@ -100,7 +114,7 @@ MYSQL_URL="mysql://root:temp@127.0.0.1:3307/ancien" DATABASE_URL="postgres://…
 
 Le script affiche, table par table, les lignes lues, importées et ignorées. Il peut être relancé sans créer de doublons. Les membres se connectent ensuite avec leur mot de passe habituel.
 
-## 5. Variables d’environnement
+## 6. Variables d’environnement
 
 | Variable | Rôle |
 |---|---|
@@ -114,7 +128,7 @@ Le script affiche, table par table, les lignes lues, importées et ignorées. Il
 
 Les anciens identifiants MySQL et SMTP présents dans l’archive PHP sont à considérer comme compromis : créez-en de nouveaux.
 
-## 6. Après la mise en ligne
+## 7. Après la mise en ligne
 
 1. **Administration → Santé du système** : base, migrations, SMTP, stockage et Google doivent être au vert.
 2. Envoyez un e-mail de test depuis cette page.
@@ -124,11 +138,11 @@ Les anciens identifiants MySQL et SMTP présents dans l’archive PHP sont à co
 
 Les anciennes adresses `.php` sont redirigées de façon permanente : le référencement est conservé.
 
-## 7. Autre option : VPS avec Docker
+## 8. Autre option : VPS avec Docker
 
 `docker compose up -d --build` démarre PostgreSQL, applique les migrations et lance le site sur le port 3000. Les fichiers sont conservés dans un volume (`STORAGE_DRIVER=local`). Placez Caddy ou Nginx devant pour le HTTPS.
 
-## 8. Sécurité intégrée
+## 9. Sécurité intégrée
 
 - Sessions stockées en base, cookie `HttpOnly`, `SameSite=Lax`, `Secure`, révoquées à la réinitialisation du mot de passe.
 - Server Actions protégées par Next.js contre les requêtes d’une autre origine.

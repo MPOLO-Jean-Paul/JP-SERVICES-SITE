@@ -159,7 +159,8 @@ test("le sélecteur de langue du pied de page ouvre un petit menu ancré, jamais
   expect(triggerBox).not.toBeNull();
   expect(menuBox).not.toBeNull();
   expect(menuBox!.y + menuBox!.height, "Le menu doit apparaître au-dessus du déclencheur").toBeLessThanOrEqual(triggerBox!.y + 4);
-  expect(Math.abs(menuBox!.x + menuBox!.width - triggerBox!.x - triggerBox!.width), "Le menu doit rester aligné au sélecteur").toBeLessThanOrEqual(20);
+  const horizontalOverlap = Math.min(menuBox!.x + menuBox!.width, triggerBox!.x + triggerBox!.width) - Math.max(menuBox!.x, triggerBox!.x);
+  expect(horizontalOverlap, "Le menu doit rester à la verticale du sélecteur même lorsque Radix évite le bord de l’écran").toBeGreaterThan(Math.min(80,triggerBox!.width*.55));
   expect(menuBox!.x).toBeGreaterThanOrEqual(0);
   expect(menuBox!.x + menuBox!.width).toBeLessThanOrEqual(391);
 

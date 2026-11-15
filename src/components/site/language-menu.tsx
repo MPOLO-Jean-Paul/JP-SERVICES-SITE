@@ -50,7 +50,7 @@ export function LanguageMenu({
       <MenuContent
         data-testid={isFooter ? "footer-language-popover" : "language-popover"}
         side={isFooter ? "top" : "bottom"}
-        align={isFooter ? "end" : "center"}
+        align={isFooter ? "start" : "center"}
         sideOffset={6}
         collisionPadding={12}
         avoidCollisions

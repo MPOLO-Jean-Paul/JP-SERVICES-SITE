@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
   try {
     // position(...) réalise une recherche littérale sans interpréter %, _, ou des expressions SQL.
     const rows = await db.query(
-      "SELECT id::text, type AS kind, category, title, description, coalesce(detail, '') AS detail, coalesce(status, '') AS status FROM public.catalogue_items WHERE published = true AND position(lower($1) in lower(title || ' ' || description || ' ' || category || ' ' || coalesce(detail, ''))) > 0 ORDER BY sort_order ASC, created_at DESC LIMIT 12",
+      "SELECT id::text, slug, type AS kind, category, title, description, coalesce(detail, '') AS detail, coalesce(status, '') AS status FROM public.catalogue_items WHERE published = true AND position(lower($1) in lower(title || ' ' || description || ' ' || category || ' ' || coalesce(detail, ''))) > 0 ORDER BY sort_order ASC, created_at DESC LIMIT 12",
       [query]
     );
     return NextResponse.json({ source: "database", items: rows }, { headers: { "Cache-Control": "no-store" } });

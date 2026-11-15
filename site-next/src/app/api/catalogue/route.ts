@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
   }
   try {
     const rows = await db.query(
-      "SELECT id::text, type AS kind, category, title, description, coalesce(detail, '') AS detail, coalesce(status, '') AS status FROM public.catalogue_items WHERE published = true AND type = $1 ORDER BY sort_order ASC, created_at DESC LIMIT 48",
+      "SELECT id::text, slug, type AS kind, category, title, description, coalesce(detail, '') AS detail, coalesce(status, '') AS status FROM public.catalogue_items WHERE published = true AND type = $1 ORDER BY sort_order ASC, created_at DESC LIMIT 48",
       [kind]
     );
     return NextResponse.json({ source: "database", items: rows }, {headers:{"Cache-Control":"public, max-age=15, s-maxage=30"}});

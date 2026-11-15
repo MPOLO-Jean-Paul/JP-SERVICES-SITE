@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowUpRight, ChevronDown, RotateCcw, Search } from "lucide-react";
 import Link from "next/link";
 import type { CatalogueItem, Kind } from "@/lib/content";
+import { formationDetailHref } from "@/lib/formation-programs";
 
 type SourceState = "loading" | "preview" | "database" | "error";
 
@@ -77,6 +78,7 @@ export function CatalogueExplorer({ items, kind }: { items: CatalogueItem[]; kin
         <article className="catalogue-card" key={item.kind+item.id}>
           <div className="catalogue-card-top"><span>{item.category}</span><span>{String(index+1).padStart(2,"0")}</span></div>
           <h2>{item.title}</h2><p>{item.description}</p>
+          {item.kind === "formation" && formationDetailHref(item) && <Link className="catalogue-course-link" href={formationDetailHref(item)!}>Découvrir le parcours <ArrowUpRight size={16} aria-hidden="true"/></Link>}
           {item.detail && <details className="catalogue-detail"><summary>En savoir plus <ChevronDown size={16} aria-hidden="true"/></summary><p>{item.detail}</p></details>}
           <div className="catalogue-card-bottom"><span>{item.status || "À découvrir"}</span><Link href={"/contact?subject="+encodeURIComponent(item.title)} aria-label={"Nous contacter à propos de "+item.title} title="Nous contacter"><ArrowUpRight size={19}/></Link></div>
         </article>

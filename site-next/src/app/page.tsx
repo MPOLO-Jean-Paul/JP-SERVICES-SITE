@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowDown, ArrowRight, ArrowUpRight, BookOpenCheck, BookOpenText, Braces, Check, ChevronRight, Code2, Database, GraduationCap, Layers3, Lightbulb, MonitorSmartphone, MoveUpRight, PencilRuler, ShieldCheck, Sparkles, Workflow } from "lucide-react";
 import { offerings } from "@/lib/content";
+import { formationDetailHref } from "@/lib/formation-programs";
 
 const worlds = [
   { number:"01", icon:GraduationCap, title:"Se former", label:"FORMATIONS", desc:"Renforcer ses compétences à travers des domaines concrets et des approches pratiques.",link:"/formations",action:"Découvrir les formations", className:"e-world-learning" },
@@ -78,7 +79,7 @@ export default function Home() {
         </div>
         <div className="e-program-grid">{programs.map((item,index) => {
           const Icon = programIcons[index] ?? BookOpenText;
-          return <Link href={"/formations?q="+encodeURIComponent(item.title)+"#catalogue"} className="e-program-card" key={item.id}>
+          return <Link href={formationDetailHref(item) || "/formations"} className="e-program-card" key={item.id}>
             <div className={"e-program-art "+programThemes[index%programThemes.length]}><span className="e-program-art-index">JP / {String(index+1).padStart(2,"0")}</span><span className="e-program-art-outline" aria-hidden="true"/><span className="e-program-art-icon"><Icon size={36} strokeWidth={1.35}/></span><span className="e-program-art-caption">FORMATIONS · JP-SERVICES</span></div>
             <div className="e-program-content"><span className="e-program-category">{item.category}</span><h3>{item.title}</h3><p>{item.description}</p><div className="e-program-bottom"><span>{item.status || "Modalités sur demande"}</span><ArrowUpRight size={19}/></div></div>
           </Link>;

@@ -5,6 +5,7 @@ import { ArrowUpRight, Command, Search, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { offerings, type CatalogueItem, type Kind } from "@/lib/content";
+import { formationDetailHref } from "@/lib/formation-programs";
 
 const pageByKind: Record<Kind, string> = {
   service: "/services",
@@ -132,7 +133,7 @@ export function GlobalSearch() {
             <div className="global-search-input-row">
               <Search size={22} aria-hidden="true" />
               <h2 id="global-search-heading" className="sr-only">Rechercher sur JP-SERVICES</h2>
-              <input ref={inputRef} aria-label="Rechercher sur toutes les rubriques" placeholder="Rechercher une expertise, un projet, une formation…" value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => { if (event.key === "Enter" && shown.length > 0 && (state === "ready" || state === "suggestions")) { event.preventDefault(); const item = shown[0]; window.location.assign(pageByKind[item.kind] + "?q=" + encodeURIComponent(item.title) + "#catalogue"); } }} maxLength={80} />
+              <input ref={inputRef} aria-label="Rechercher sur toutes les rubriques" placeholder="Rechercher une expertise, un projet, une formation…" value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => { if (event.key === "Enter" && shown.length > 0 && (state === "ready" || state === "suggestions")) { event.preventDefault(); const item = shown[0]; window.location.assign(formationDetailHref(item) || (pageByKind[item.kind] + "?q=" + encodeURIComponent(item.title) + "#catalogue")); } }} maxLength={80} />
               <button type="button" aria-label="Fermer la recherche" onClick={() => setOpen(false)} className="search-close"><X size={19}/></button>
             </div>
           </div>
@@ -147,7 +148,7 @@ export function GlobalSearch() {
               </p>
             )}
             {(state === "suggestions" || state === "ready") && shown.map(item =>
-              <Link key={item.kind + item.id} className="global-result" onClick={() => setOpen(false)} href={pageByKind[item.kind] + "?q=" + encodeURIComponent(item.title) + "#catalogue"}>
+              <Link key={item.kind + item.id} className="global-result" onClick={() => setOpen(false)} href={formationDetailHref(item) || (pageByKind[item.kind] + "?q=" + encodeURIComponent(item.title) + "#catalogue")}>
                 <span className="result-glyph"><Command size={17}/></span>
                 <span className="result-text"><strong>{item.title}</strong><small>{names[item.kind]} · {item.category}</small></span>
                 <ArrowUpRight size={18} className="result-arrow" aria-hidden="true"/>

@@ -62,22 +62,23 @@ export async function SiteFooter() {
   return (
     <footer className="jp-site-footer border-t bg-canvas-soft">
       <div className="shell">
-        <div className="relative -mt-px grid gap-10 overflow-hidden border-x border-b bg-canvas px-6 py-14 sm:px-10 lg:grid-cols-[1.2fr_1fr] lg:items-end">
+        <div className="jp-footer-intro grid gap-12 border-b py-14 sm:py-16 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
           <div className="relative">
-            <h2 className="h2 max-w-xl">{t("ctaTitle")}</h2>
-            <p className="mt-3 max-w-lg text-copy">{t("ctaText")}</p>
+            <p className="jp-overline">JP-SERVICES / RESTONS EN CONTACT</p>
+            <h2 className="jp-footer-title mt-5 max-w-xl">{t("ctaTitle")}</h2>
+            <p className="mt-4 max-w-lg text-sm leading-7 text-copy">{t("ctaText")}</p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link href={user ? "/formations" : "/inscription"} className="inline-flex h-11 items-center gap-2 rounded-lg bg-ink px-5 text-sm font-medium text-canvas shadow-sm transition hover:bg-ink/85">
+              <Link href={user ? "/formations" : "/inscription"} className="inline-flex h-11 items-center gap-2 rounded-md bg-ink px-5 text-[13px] font-medium text-canvas transition-colors hover:bg-primary hover:text-white">
                 {user ? t("ctaPrimaryLogged") : t("ctaPrimary")} <ArrowRight className="size-4" />
               </Link>
-              <Link href="/contact" className="inline-flex h-11 items-center rounded-lg border border-line-strong bg-panel px-5 text-sm font-medium transition hover:bg-panel-2">
+              <Link href="/contact" className="inline-flex h-11 items-center rounded-md border border-line-strong bg-panel px-5 text-[13px] font-medium transition-colors hover:border-primary hover:text-primary">
                 {t("ctaSecondary")}
               </Link>
             </div>
           </div>
-          <div id="newsletter" className="relative rounded-xl border bg-panel p-5 shadow-xs">
-            <p className="kicker">{t("newsletterKicker")}</p>
-            <p className="mt-2 font-semibold tracking-tight">{t("newsletterTitle")}</p>
+          <div id="newsletter" className="jp-footer-newsletter">
+            <p className="jp-overline">{t("newsletterKicker")}</p>
+            <p className="mt-3 max-w-sm text-[15px] font-semibold tracking-tight">{t("newsletterTitle")}</p>
             <div className="mt-4">
               <NewsletterForm />
             </div>
@@ -85,10 +86,11 @@ export async function SiteFooter() {
         </div>
       </div>
 
-      <div className="shell grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
-        <div>
-          <Link href="/" className="flex items-center gap-2.5" aria-label="JP-Services — Accueil">
+      <div className="shell jp-footer-directory grid grid-cols-2 gap-x-7 gap-y-10 py-12 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-x-12 lg:py-16">
+        <div className="col-span-2 lg:col-span-1">
+          <Link href="/" className="inline-flex items-center gap-3" aria-label="JP-Services — Accueil">
             <LogoMark className="size-9" />
+            <span className="text-[12px] font-semibold tracking-[.1em] text-ink">JP-SERVICES</span>
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-copy">{t("brandText")}</p>
           <p className="mt-4 text-[11px] text-muted font-medium">{s.contact_adresse}</p>
@@ -106,12 +108,12 @@ export async function SiteFooter() {
           </div>
         </div>
         {cols.map((col) => (
-          <nav key={col.title} aria-label={col.title}>
-            <p className="text-sm font-medium text-ink">{col.title}</p>
-            <ul className="mt-4 space-y-2.5">
+          <nav className="jp-footer-navigation" key={col.title} aria-label={col.title}>
+            <p className="border-b pb-3 text-[12px] font-semibold text-ink">{col.title}</p>
+            <ul className="mt-3 space-y-1">
               {col.links.map((l) => (
                 <li key={l.href + l.label}>
-                  <Link href={l.href} className="group inline-flex items-center gap-1 text-sm text-copy transition hover:text-ink">
+                  <Link href={l.href} className="group inline-flex min-h-9 items-center gap-1 py-1 text-[12px] leading-[1.45] text-copy transition-colors hover:text-primary">
                     {l.label}
                     <ArrowUpRight className="size-3 opacity-0 transition group-hover:opacity-100" aria-hidden />
                   </Link>
@@ -123,11 +125,11 @@ export async function SiteFooter() {
       </div>
 
       <div className="border-t">
-        <div className="shell flex flex-col gap-4 py-6 text-xs text-muted md:flex-row md:items-center md:justify-between">
+        <div className="shell jp-footer-bottom flex flex-col gap-5 py-6 text-xs text-muted lg:flex-row lg:items-center lg:justify-between">
           <p>
             © {year} JP‑Services · {t("rights")}
           </p>
-          <div className="flex flex-wrap gap-x-5 gap-y-2">
+          <div className="jp-footer-legal flex flex-wrap gap-x-5 gap-y-3">
             <Link href="/conditions" className="hover:text-ink">
               {t("terms")}
             </Link>
@@ -142,7 +144,7 @@ export async function SiteFooter() {
               {tn("contact")}
             </Link>
           </div>
-          <LanguageMenu variant="select" />
+          <div className="jp-footer-language flex items-center gap-2"><LanguageMenu variant="select" /></div>
         </div>
       </div>
     </footer>

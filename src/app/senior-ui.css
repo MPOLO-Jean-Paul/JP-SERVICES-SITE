@@ -225,3 +225,31 @@
 .jp-language-option svg:last-child{color:var(--primary)}
 @keyframes jp-language-appear{from{opacity:0;transform:translateY(5px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(prefers-reduced-motion:reduce){.jp-language-popover{animation:none}.jp-language-option{transition:none}}
+
+
+/* Pied de page éditorial : informations structurées et interfaces localisées. */
+.jp-footer-intro{border-color:var(--line-strong)}
+.jp-footer-title{font-size:clamp(31px,3.4vw,47px);line-height:1.18;font-weight:630;letter-spacing:-.053em}
+.jp-footer-newsletter{border-left:1px solid var(--line-strong);padding:6px 0 9px clamp(28px,5vw,66px);min-width:0}
+.jp-footer-newsletter input{max-width:100%}
+.jp-footer-directory{border-bottom:1px solid var(--line)}
+.jp-footer-directory .jp-footer-navigation{min-width:0}
+.jp-footer-directory .jp-footer-navigation a{word-break:normal}
+.jp-footer-directory .jp-footer-navigation a svg{flex-shrink:0}
+.jp-footer-bottom{min-width:0}
+.jp-footer-legal{line-height:1.7}
+.jp-footer-legal a,.jp-footer-legal button{transition:color .15s}
+.jp-footer-legal a:hover,.jp-footer-legal button:hover{color:var(--primary)}
+.jp-footer-language{flex:none}
+@media(min-width:640px) and (max-width:1023px){.jp-footer-directory{grid-template-columns:repeat(3,minmax(0,1fr))}.jp-footer-directory>div:first-child{grid-column:1 / -1}}
+@media(max-width:820px){.jp-footer-newsletter{border-left:0;border-top:1px solid var(--line-strong);padding:27px 0 0}.jp-footer-intro{gap:30px}}
+@media(max-width:620px){
+ .jp-footer-intro{padding-top:48px;padding-bottom:47px}
+ .jp-footer-title{font-size:clamp(31px,8.8vw,43px)}
+ .jp-footer-directory{gap:32px 17px;padding-top:42px;padding-bottom:48px}
+ .jp-footer-directory .jp-footer-navigation a{font-size:12px}
+ .jp-footer-navigation{min-width:0}
+ .jp-footer-bottom{padding-top:24px;padding-bottom:34px}
+ .jp-footer-language{justify-content:flex-start}
+ .jp-footer-legal{gap:10px 18px}
+}

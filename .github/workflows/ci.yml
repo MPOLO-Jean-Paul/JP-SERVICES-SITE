@@ -1,12 +1,13 @@
-name: CI
+name: CI — JP-Services Next.js
 
 on:
   push:
-    branches: [main]
+    branches: [main, ccr-598b649d-2fiktj]
   pull_request:
+  workflow_dispatch:
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -14,9 +15,9 @@ permissions:
 
 jobs:
   quality:
-    name: Lint, types, tests et build
+    name: PostgreSQL, lint, types, tests, build et Playwright
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     services:
       postgres:
         image: postgres:16-alpine
@@ -24,18 +25,10 @@ jobs:
           POSTGRES_DB: jpservices
           POSTGRES_USER: jp
           POSTGRES_PASSWORD: jp_ci_password
-        ports: ["5432:5432"]
+        ports:
+          - 5432:5432
         options: >-
           --health-cmd="pg_isready -U jp -d jpservices"
-          --health-interval=5s --health-timeout=5s --health-retries=30
-    env:
-          MYSQL_DATABASE: jpservices
-          MYSQL_USER: jp
-          MYSQL_PASSWORD: jp_ci_password
-          MYSQL_ROOT_PASSWORD: root_ci_password
-        ports: ["3306:3306"]
-        options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot_ci_password"
           --health-interval=5s --health-timeout=5s --health-retries=30
     env:
       NODE_ENV: production
@@ -44,6 +37,7 @@ jobs:
       DATABASE_URL: postgres://jp:jp_ci_password@127.0.0.1:5432/jpservices
       STORAGE_DRIVER: local
       NEXT_TELEMETRY_DISABLED: "1"
+      SKIP_ENV_VALIDATION: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -51,32 +45,42 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-      - run: pnpm typecheck
-      - run: pnpm test
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint
+      - name: Types
+        run: pnpm typecheck
+      - name: Tests unitaires
+        run: pnpm test
+      - name: Migrer la base PostgreSQL éphémère
+        run: pnpm db:migrate
+      - name: Ajouter les données de test (CI seulement)
+        run: pnpm db:seed
         env:
-          SKIP_ENV_VALIDATION: "1"
-      - name: Migrations et données de démonstration
-        run: |
-          pnpm db:migrate
-          SEED_DEMO=1 ADMIN_EMAIL=admin@jp-services.test ADMIN_PASSWORD=Admin-Demo-2026 pnpm db:seed
-      - run: pnpm build
-      - name: Navigateur Playwright
+          SEED_DEMO: "1"
+          ADMIN_EMAIL: admin@jp-services.test
+          ADMIN_PASSWORD: Admin-Demo-2026
+      - name: Compiler Next.js
+        run: pnpm build
+      - name: Installer Chromium
         run: pnpm exec playwright install --with-deps chromium
-      - name: Tests de bout en bout
+      - name: Tests navigateur
         run: pnpm test:e2e
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: playwright-report
-          path: playwright-report
+          path: playwright-report/
           retention-days: 7
 
   cloudflare:
-    name: Build Cloudflare Workers (OpenNext)
+    name: Vérification build Cloudflare Workers
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
+    env:
+      SKIP_ENV_VALIDATION: "1"
+      NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

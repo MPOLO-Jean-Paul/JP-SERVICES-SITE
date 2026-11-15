@@ -1,0 +1,22 @@
+export type AdminNavItem = { href: string; label: string; icon: string; group: string; description: string };
+export const ADMIN_NAV: AdminNavItem[] = [
+  { href: "/admin", label: "Tableau de bord", icon: "chart", group: "Pilotage", description: "Vue d’ensemble et accès rapides" },
+  { href: "/admin/utilisateurs", label: "Utilisateurs", icon: "users", group: "Communauté", description: "Comptes, rôles et activation" },
+  { href: "/admin/formations", label: "Formations", icon: "graduation-cap", group: "Catalogue", description: "Publier et modifier les formations" },
+  { href: "/admin/horaires", label: "Horaires et plannings", icon: "calendar-check", group: "Catalogue", description: "Valider les programmes demandés" },
+  { href: "/admin/abonnements", label: "Abonnements et notifications", icon: "bell", group: "Catalogue", description: "Alertes envoyées aux inscrits" },
+  { href: "/admin/live", label: "Formations en ligne", icon: "video", group: "Catalogue", description: "Sessions de visioconférence" },
+  { href: "/admin/logiciels", label: "Logiciels", icon: "download", group: "Contenus", description: "Médiathèque et catégories" },
+  { href: "/admin/actualites", label: "Actualités", icon: "newspaper", group: "Contenus", description: "Articles et médias" },
+  { href: "/admin/produits", label: "Produits", icon: "boxes", group: "Contenus", description: "Inventaire et prestations" },
+  { href: "/admin/projets", label: "Projets", icon: "folder-kanban", group: "Communauté", description: "Analyse des projets soumis" },
+  { href: "/admin/forum", label: "Publications du forum", icon: "messages-square", group: "Communauté", description: "Modération des discussions" },
+  { href: "/admin/partenariats", label: "Partenariats", icon: "handshake", group: "Communauté", description: "Partenaires et demandes" },
+  { href: "/admin/messages", label: "Messages", icon: "send", group: "Relation", description: "Boîte de réception du contact" },
+  { href: "/admin/support", label: "Support", icon: "life-buoy", group: "Relation", description: "Demandes d’assistance" },
+  { href: "/admin/newsletter", label: "Newsletter", icon: "mail", group: "Relation", description: "Abonnés et thèmes" },
+  { href: "/admin/equipe", label: "Équipe JP-Services", icon: "id-card", group: "Site", description: "Membres affichés sur À propos" },
+  { href: "/admin/parametres", label: "Paramètres du site", icon: "settings", group: "Site", description: "Annonce, textes et coordonnées" },
+  { href: "/admin/sante", label: "Santé du système", icon: "heart-pulse", group: "Site", description: "Diagnostic, SMTP et stockage" },
+  { href: "/admin/journal", label: "Journal d’activité", icon: "scroll", group: "Site", description: "Actions des administrateurs" },
+];

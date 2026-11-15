@@ -1,12 +1,33 @@
+# dépendances
+node_modules/
+.pnpm-store/
+
+# next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# environnement et secrets
 .env
 .env.local
 .env.*.local
-*.zip
-/storage/logs/*.log
-/storage/cache/*
-/storage/sessions/*
+
+# tests
+coverage/
+playwright-report/
+test-results/
+blob-report/
+
+# téléversements locaux (servis depuis le stockage configuré)
+/public/uploads/*
+!/public/uploads/.gitkeep
+/storage/
+
+# divers
 .DS_Store
 Thumbs.db
 .idea/
 .vscode/
-
+*.zip
+*.log

@@ -1,0 +1,45 @@
+# Déploiement autonome sur un VPS : MySQL + application + migrations.
+#   cp .env.example .env   (renseigner APP_URL, APP_SECRET, SMTP…)
+#   docker compose up -d --build
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: jpservices
+      MYSQL_USER: jp
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Définir DB_PASSWORD dans .env}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Définir DB_ROOT_PASSWORD dans .env}
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    volumes: ["mysql-data:/var/lib/mysql"]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${DB_ROOT_PASSWORD}"]
+      interval: 5s
+      retries: 30
+
+  # Étape « build » de l’image : contient les sources et outils (tsx, drizzle) pour migrer puis initialiser.
+  migrate:
+    build: { context: ., target: build }
+    depends_on: { db: { condition: service_healthy } }
+    env_file: .env
+    environment:
+      DATABASE_URL: mysql://jp:${DB_PASSWORD}@db:3306/jpservices
+    command: ["sh", "-c", "pnpm db:migrate && pnpm db:seed"]
+    restart: "no"
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+    env_file: .env
+    environment:
+      DATABASE_URL: mysql://jp:${DB_PASSWORD}@db:3306/jpservices
+      STORAGE_DRIVER: local
+    ports: ["3000:3000"]
+    volumes: ["uploads:/app/public/uploads"]
+
+volumes:
+  mysql-data:
+  uploads:

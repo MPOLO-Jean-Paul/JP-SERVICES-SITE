@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.env
+.env.*
+!.env.example
+test-results
+playwright-report
+coverage
+public/uploads/*
+!public/uploads/.gitkeep
+*.log

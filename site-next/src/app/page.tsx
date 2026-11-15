@@ -1,75 +1,116 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Blocks, Code2, DatabaseZap, GraduationCap, MoveUpRight, ShieldCheck, Smartphone } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpRight, BookOpenCheck, BookOpenText, Braces, Check, ChevronRight, Code2, Database, GraduationCap, Layers3, Lightbulb, MonitorSmartphone, MoveUpRight, PencilRuler, ShieldCheck, Sparkles, Workflow } from "lucide-react";
 import { offerings } from "@/lib/content";
 
-const strengths = [
-  { icon: Code2, number: "01", title: "Développement sur mesure", desc: "Des interfaces précises et des architectures qui tiennent dans la durée." },
-  { icon: Smartphone, number: "02", title: "Produits multiplateformes", desc: "Une même exigence d'ergonomie sur le web, mobile et desktop." },
-  { icon: DatabaseZap, number: "03", title: "Données & intégrations", desc: "Des informations structurées, accessibles et protégées." },
-  { icon: GraduationCap, number: "04", title: "Formation & accompagnement", desc: "Transmettre les compétences nécessaires pour avancer en autonomie." }
+const worlds = [
+  { number:"01", icon:GraduationCap, title:"Se former", label:"FORMATIONS", desc:"Renforcer ses compétences à travers des domaines concrets et des approches pratiques.",link:"/formations",action:"Découvrir les formations", className:"e-world-learning" },
+  { number:"02", icon:Code2, title:"Créer une solution", label:"DÉVELOPPEMENT", desc:"Concevoir un site, une application ou une interface à la mesure de son activité.",link:"/services",action:"Explorer nos expertises", className:"e-world-building" },
+  { number:"03", icon:Layers3, title:"Simplifier son travail", label:"LOGICIELS MÉTIERS", desc:"Mieux organiser ses opérations avec des outils adaptés à ses besoins.",link:"/logiciels",action:"Découvrir nos logiciels", className:"e-world-solutions" }
 ];
 
+const programIcons = [Braces, Database, BookOpenText];
+const programThemes = ["e-program-code", "e-program-data", "e-program-tools"];
+const programs = offerings.filter(item => item.kind === "formation");
+
+const method = [
+  {n:"01",icon:Lightbulb,title:"Comprendre",desc:"Nous échangeons pour cerner votre situation, vos priorités et vos objectifs."},
+  {n:"02",icon:PencilRuler,title:"Concevoir",desc:"Nous définissons une expérience claire, cohérente et adaptée au terrain."},
+  {n:"03",icon:Workflow,title:"Construire",desc:"Nous développons avec rigueur, puis testons les parcours essentiels."},
+  {n:"04",icon:Sparkles,title:"Faire évoluer",desc:"Nous améliorons la solution avec les usages et les retours concrets."}
+];
+
+function EditorialVisual() {
+  return <div className="e-hero-visual" aria-label="Illustration originale des formations et solutions JP-SERVICES">
+    <div className="e-visual-ambient" aria-hidden="true"/>
+    <div className="e-visual-grid" aria-hidden="true"/>
+    <div className="e-visual-orbit e-visual-orbit-one" aria-hidden="true"/>
+    <div className="e-visual-orbit e-visual-orbit-two" aria-hidden="true"/>
+    <div className="e-visual-main-card">
+      <div className="e-visual-card-head"><div className="e-visual-mini-logo">JP<span>.</span></div><span>ESPACE CRÉATIF</span><span className="e-live-dot" aria-hidden="true"/></div>
+      <div className="e-visual-card-body">
+        <div className="e-visual-meta">VOTRE PROCHAINE ÉTAPE</div>
+        <h2>Apprendre.<br/><em>Créer.</em><br/>Évoluer.</h2>
+        <div className="e-visual-dashes"><span/><span/><span/></div>
+        <div className="e-visual-mini-progress"><div className="e-visual-progress-text"><span>Un chemin, des possibilités</span><Sparkles size={14}/></div><div className="e-visual-progress-track"><i/></div></div>
+      </div>
+      <div className="e-visual-card-bottom"><span>JP-SERVICES / STUDIO</span><ArrowUpRight size={17}/></div>
+    </div>
+    <div className="e-visual-floating e-visual-floating-top"><div className="e-floating-icon"><BookOpenCheck size={21}/></div><div><span>APPRENDRE</span><strong>Compétences utiles</strong></div><Check size={15} className="e-floating-check"/></div>
+    <div className="e-visual-floating e-visual-floating-bottom"><div className="e-floating-icon e-floating-laptop"><MonitorSmartphone size={22}/></div><div><span>CONSTRUIRE</span><strong>Solutions sur mesure</strong></div><ArrowUpRight size={15}/></div>
+    <div className="e-visual-signature">01 — DESIGN AVEC INTENTION</div>
+  </div>;
+}
+
 export default function Home() {
-  return (
-    <>
-      <section className="hero">
-        <div className="shell hero-grid">
-          <div className="hero-content">
-            <div className="eyebrow"><span className="eyebrow-dot"/> STUDIO NUMÉRIQUE · LUBUMBASHI</div>
-            <h1>Des idées fortes.<br/><span>Des produits</span><br/>remarquables<span className="hero-period">.</span></h1>
-            <p className="hero-copy">Nous allions stratégie, design et technologie pour créer des expériences numériques efficaces, intuitives et durables.</p>
-            <div className="hero-actions">
-              <Link href="/contact" className="btn btn-primary">Démarrer un projet <ArrowUpRight size={18}/></Link>
-              <Link href="/services" className="btn btn-text">Découvrir nos expertises <ArrowRight size={17}/></Link>
-            </div>
-            <div className="hero-footnote"><span className="footnote-line"/> CONCEPTION EXIGEANTE · IMPACT CONCRET</div>
-          </div>
-          <div className="hero-showcase" aria-label="Aperçu de notre méthode de conception">
-            <div className="showcase-top"><span className="window-dots"><i/><i/><i/></span><span>JP / WORKSPACE</span><span>● LIVE CONCEPT</span></div>
-            <div className="showcase-body">
-              <div className="showcase-index">01 / 03 — DE L'IDÉE À L'IMPACT</div>
-              <h2>Créer avec<br/><em>intention.</em></h2>
-              <p>Chaque détail compte. Chaque interaction doit être évidente.</p>
-              <div className="showcase-preview">
-                <div className="preview-title"><span className="preview-icon"><Blocks size={17}/></span><span>Notre méthode</span><span className="preview-signal">Active</span></div>
-                <div className="preview-line"><span><b>01</b> Comprendre le besoin</span><i className="step-complete">Validé</i></div>
-                <div className="preview-line"><span><b>02</b> Concevoir l'expérience</span><i className="step-complete">Validé</i></div>
-                <div className="preview-line"><span><b>03</b> Construire & améliorer</span><i className="step-current">En continu</i></div>
-              </div>
-            </div>
-            <div className="showcase-footer"><span>DESIGN · TECH · PRODUIT</span><span>JP-SERVICES ©</span></div>
-          </div>
+  return <>
+    <section className="e-hero">
+      <div className="shell e-hero-layout">
+        <div className="e-hero-content">
+          <div className="e-hero-chip"><span className="e-chip-spark">✳</span> STUDIO & ACADÉMIE NUMÉRIQUE <span className="e-chip-divider"/> LUBUMBASHI</div>
+          <h1>Des idées fortes.<br/><span>Des compétences</span><br/>pour aller plus loin<span className="e-title-dot">.</span></h1>
+          <p>Apprenez, innovez et donnez vie à vos ambitions avec des formations pratiques et des solutions numériques pensées pour le monde réel.</p>
+          <div className="e-hero-actions"><Link className="e-button e-button-primary" href="/formations">Explorer les formations <ArrowUpRight size={18}/></Link><Link href="/services" className="e-button e-button-minimal">Nos expertises <ArrowRight size={18}/></Link></div>
+          <div className="e-hero-caption"><span className="e-caption-rule"/><span>APPRENDRE AVEC MÉTHODE · CONSTRUIRE AVEC EXIGENCE</span></div>
         </div>
-        <div className="shell hero-bottom"><div className="hero-bottom-rule"/><span>CONSEIL</span><span>DESIGN</span><span>DÉVELOPPEMENT</span><span>ACCOMPAGNEMENT</span></div>
-      </section>
+        <EditorialVisual />
+      </div>
+      <div className="shell e-hero-foot"><span>DÉVELOPPEMENT WEB</span><i/><span>APPLICATIONS MÉTIERS</span><i/><span>FORMATION</span><i/><span>DESIGN & INNOVATION</span><ArrowDown size={17} aria-hidden="true"/></div>
+    </section>
 
-      <section className="section section-expertise shell">
-        <div className="section-header"><div><div className="eyebrow eyebrow-dark">CE QUE NOUS FAISONS</div><h2>Des expertises complémentaires.<br/><span>Une seule vision.</span></h2></div><Link className="underlined-link" href="/services">Voir toutes nos expertises <ArrowUpRight size={18}/></Link></div>
-        <div className="expertise-grid">{strengths.map(item => <Link href="/services" className="expertise-card" key={item.number}><div className="card-upper"><item.icon size={27} strokeWidth={1.6}/><span>{item.number}</span></div><h3>{item.title}</h3><p>{item.desc}</p><MoveUpRight className="card-arrow" size={21}/></Link>)}</div>
-      </section>
+    <section className="e-section e-discover shell">
+      <div className="e-section-heading">
+        <div><span className="e-label"><span/> CE QUE NOUS VOUS PROPOSONS</span><h2>Une ambition.<br/><em>Plusieurs façons d'avancer.</em></h2></div>
+        <p>Parce que chaque projet commence différemment, nous réunissons les compétences, les outils et l'accompagnement au même endroit.</p>
+      </div>
+      <div className="e-world-grid">{worlds.map(item => <Link href={item.link} className={"e-world-card "+item.className} key={item.number}>
+        <div className="e-world-top"><span>{item.label}</span><span>{item.number} / 03</span></div>
+        <div className="e-world-icon"><item.icon size={29} strokeWidth={1.7}/></div>
+        <h3>{item.title}</h3><p>{item.desc}</p>
+        <div className="e-world-bottom"><span>{item.action}</span><span className="e-circle-arrow"><MoveUpRight size={20}/></span></div>
+      </Link>)}</div>
+    </section>
 
-      <section className="section featured-section">
-        <div className="shell featured-grid">
-          <div className="featured-intro"><div className="eyebrow eyebrow-dark">PRODUITS & PROJETS</div><h2>Des solutions<br/>qui répondent<br/><span>au réel.</span></h2><p>Nous concevons des outils à partir des besoins du terrain, avec une attention particulière à la simplicité d'usage.</p><Link href="/projets" className="btn btn-outline">Découvrir nos projets <ArrowUpRight size={17}/></Link></div>
-          <div className="feature-product">
-            <div className="feature-meta"><span>PRODUIT À LA UNE</span><span>01 / 01</span></div>
-            <div className="product-art" aria-hidden="true"><div className="product-app"><div className="product-app-top"><span className="mini-symbol">JP</span><span>SCOLIA PRO</span><span className="mock-pills"><i/><i/></span></div><div className="product-app-body"><div className="mock-sidebar"><i/><i/><i/><i/></div><div className="mock-workspace"><span className="mock-title-line"/><span className="mock-desc-line"/><div className="mock-stat-grid"><span/><span/><span/></div><div className="mock-row"/><div className="mock-row"/><div className="mock-row"/></div></div></div></div>
-            <div className="product-desc"><div><span className="mini-label">GESTION SCOLAIRE · EN DÉVELOPPEMENT</span><h3>SCOLIA Pro</h3><p>Une expérience de gestion scolaire pensée pour les établissements et leurs équipes.</p></div><Link href="/logiciels" aria-label="En savoir plus sur SCOLIA Pro" className="round-arrow"><ArrowUpRight size={22}/></Link></div>
-          </div>
+    <section className="e-section e-courses">
+      <div className="shell">
+        <div className="e-section-heading">
+          <div><span className="e-label"><span/> EXPLORER LES FORMATIONS</span><h2>Apprendre aujourd'hui.<br/><em>Faire la différence demain.</em></h2></div>
+          <div className="e-heading-aside"><p>Découvrez les domaines que nous souhaitons vous faire explorer, avec une approche orientée pratique.</p><Link className="e-text-link" href="/formations">Tout le catalogue <ArrowUpRight size={17}/></Link></div>
         </div>
-      </section>
+        <div className="e-program-grid">{programs.map((item,index) => {
+          const Icon = programIcons[index] ?? BookOpenText;
+          return <Link href={"/formations?q="+encodeURIComponent(item.title)+"#catalogue"} className="e-program-card" key={item.id}>
+            <div className={"e-program-art "+programThemes[index%programThemes.length]}><span className="e-program-art-index">JP / {String(index+1).padStart(2,"0")}</span><span className="e-program-art-outline" aria-hidden="true"/><span className="e-program-art-icon"><Icon size={36} strokeWidth={1.35}/></span><span className="e-program-art-caption">FORMATIONS · JP-SERVICES</span></div>
+            <div className="e-program-content"><span className="e-program-category">{item.category}</span><h3>{item.title}</h3><p>{item.description}</p><div className="e-program-bottom"><span>{item.status || "Modalités sur demande"}</span><ArrowUpRight size={19}/></div></div>
+          </Link>;
+        })}</div>
+        <p className="e-courses-notice">Ces domaines sont présentés à titre indicatif. Programmes, disponibilités et inscriptions à confirmer directement auprès de JP-SERVICES.</p>
+      </div>
+    </section>
 
-      <section className="section shell process-section">
-        <div className="section-header"><div><div className="eyebrow eyebrow-dark">NOTRE APPROCHE</div><h2>La rigueur de la méthode.<br/><span>La liberté de créer.</span></h2></div><p className="section-aside">Des décisions claires, une exécution structurée et une attention constante à l'expérience.</p></div>
-        <div className="process-list">{[
-          {num:"01",name:"Comprendre",desc:"Écouter, observer et traduire les objectifs en besoins vérifiables."},
-          {num:"02",name:"Dessiner",desc:"Prototyper des interfaces cohérentes avant d'écrire la solution."},
-          {num:"03",name:"Construire",desc:"Développer, tester et sécuriser chaque composant de l'application."},
-          {num:"04",name:"Faire évoluer",desc:"Améliorer le produit avec les retours du terrain et les usages réels."}
-        ].map(item=><div className="process-row" key={item.num}><span>{item.num} /</span><h3>{item.name}</h3><p>{item.desc}</p><ArrowUpRight size={19}/></div>)}</div>
-      </section>
+    <section className="e-section e-feature-section shell">
+      <div className="e-feature-copy"><span className="e-label"><span/> NOTRE PRODUIT À LA UNE</span><div className="e-feature-chip">LOGICIEL EN DÉVELOPPEMENT</div>
+        <h2>La gestion scolaire,<br/><em>repensée pour vous.</em></h2>
+        <p>SCOLIA Pro est notre projet de solution pour simplifier les opérations scolaires et rendre les processus plus clairs pour les établissements et leurs équipes.</p>
+        <div className="e-feature-checks"><span><Check size={16}/> Gestion structurée des informations</span><span><Check size={16}/> Interfaces adaptées aux usages</span><span><Check size={16}/> Évolution progressive du produit</span></div>
+        <Link className="e-button e-button-primary" href="/logiciels">Découvrir SCOLIA Pro <ArrowUpRight size={17}/></Link>
+      </div>
+      <div className="e-product-stage" aria-label="Illustration conceptuelle originale de l'interface SCOLIA Pro">
+        <div className="e-product-halo" aria-hidden="true"/>
+        <div className="e-product-window">
+          <div className="e-product-window-head"><span className="e-product-mark">S</span><strong>SCOLIA <em>Pro</em></strong><span className="e-product-window-status">APERÇU CONCEPTUEL</span></div>
+          <div className="e-product-window-body"><div className="e-product-sidebar"><span/><span/><span/><span/><span/><span/></div><div className="e-product-main"><div className="e-product-greeting">Bienvenue dans votre espace</div><div className="e-product-description">Un tableau de bord clair pour votre quotidien.</div><div className="e-product-tiles"><div><span/><i/></div><div><span/><i/></div><div><span/><i/></div></div><div className="e-product-list"><div/><div/><div/><div/></div></div></div>
+        </div>
+        <div className="e-product-float"><ShieldCheck size={19}/><span>DESIGN PENSÉ POUR LE TERRAIN</span></div>
+      </div>
+    </section>
 
-      <section className="cta-section"><div className="shell cta-inner"><div className="eyebrow">ET MAINTENANT ?</div><h2>Votre prochaine idée mérite<br/><span>un vrai partenaire.</span></h2><p>Parlons de votre projet, de vos enjeux et de ce que nous pouvons construire ensemble.</p><Link className="btn btn-light" href="/contact">Échanger avec nous <ArrowUpRight size={18}/></Link><div className="cta-decor" aria-hidden="true">JP</div></div></section>
-    </>
-  );
+    <section className="e-section e-method">
+      <div className="shell">
+        <div className="e-section-heading"><div><span className="e-label"><span/> NOTRE MÉTHODE</span><h2>Une idée claire.<br/><em>Une exécution soignée.</em></h2></div><p>Pas de complexité inutile : une démarche structurée, de la première conversation jusqu'aux améliorations.</p></div>
+        <div className="e-method-grid">{method.map(item=><div className="e-method-step" key={item.n}><span className="e-method-number">{item.n} / 04</span><div className="e-method-icon"><item.icon size={24}/></div><h3>{item.title}</h3><p>{item.desc}</p></div>)}</div>
+      </div>
+    </section>
+
+    <section className="e-final-cta"><div className="shell e-final-inner"><div><span className="e-label"><span/> ET SI ON ALLAIT PLUS LOIN ?</span><h2>La prochaine étape<br/><em>commence ici.</em></h2><p>Une idée à concrétiser, un logiciel à imaginer ou une compétence à développer ? Construisons votre prochaine étape.</p><Link className="e-button e-button-light" href="/contact">Parlons de votre projet <ArrowUpRight size={18}/></Link></div><div className="e-final-decoration" aria-hidden="true"><div className="e-final-decoration-circle"/><span>JP<span>.</span></span></div></div></section>
+  </>;
 }

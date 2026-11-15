@@ -2,6 +2,7 @@ export type Kind = "service" | "formation" | "logiciel" | "projet" | "actualite"
 
 export type CatalogueItem = {
   id: string;
+  slug?: string;
   kind: Kind;
   category: string;
   title: string;

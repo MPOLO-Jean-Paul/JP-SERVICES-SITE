@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { getDatabase } from "@/lib/db";
 
 export const SESSION_COOKIE = "jp_services_admin";
 const SESSION_SECONDS = 8 * 60 * 60;
@@ -59,34 +60,62 @@ export async function issueSession(): Promise<string | null> {
   const payload = toBase64Url(encoder.encode(JSON.stringify({
     sub: username,
     exp: Math.floor(Date.now() / 1000) + SESSION_SECONDS,
+    jti: crypto.randomUUID(),
     ver: 1
   })));
   const signature = new Uint8Array(await crypto.subtle.sign("HMAC", key, encoder.encode(payload)));
   return payload + "." + toBase64Url(signature);
 }
 
-export async function verifySession(token: string | undefined): Promise<boolean> {
-  if (!token || token.length > 1800 || !isAdminConfigured()) return false;
+export type VerifiedClaims = { sub: string; exp: number; jti: string; ver: 1 };
+
+export async function sessionClaims(token: string | undefined): Promise<VerifiedClaims | null> {
+  if (!token || token.length > 1800 || !isAdminConfigured()) return null;
   const parts = token.split(".");
-  if (parts.length !== 2) return false;
+  if (parts.length !== 2) return null;
   const bytes = fromBase64Url(parts[0]), signature = fromBase64Url(parts[1]);
   const key = await getKey();
-  if (!bytes || !signature || !key || signature.length !== 32) return false;
+  if (!bytes || !signature || !key || signature.length !== 32) return null;
   const valid = await crypto.subtle.verify("HMAC", key, Uint8Array.from(signature), encoder.encode(parts[0]));
-  if (!valid) return false;
+  if (!valid) return null;
   try {
     const payload: unknown = JSON.parse(new TextDecoder().decode(bytes));
-    if (!payload || typeof payload !== "object") return false;
-    const value = payload as { sub?: unknown; exp?: unknown; ver?: unknown };
+    if (!payload || typeof payload !== "object") return null;
+    const value = payload as { sub?: unknown; exp?: unknown; jti?: unknown; ver?: unknown };
     const now = Math.floor(Date.now() / 1000);
-    return value.ver === 1 && value.sub === process.env.ADMIN_USERNAME?.trim() &&
-      typeof value.exp === "number" && Number.isInteger(value.exp) && value.exp > now && value.exp <= now + SESSION_SECONDS;
-  } catch { return false; }
+    if (value.ver !== 1 || value.sub !== process.env.ADMIN_USERNAME?.trim() ||
+        typeof value.exp !== "number" || !Number.isInteger(value.exp) ||
+        value.exp <= now || value.exp > now + SESSION_SECONDS ||
+        typeof value.jti !== "string" || !/^[0-9a-f-]{36}$/i.test(value.jti)) return null;
+    return value as VerifiedClaims;
+  } catch { return null; }
 }
 
 export async function isAuthenticated(): Promise<boolean> {
   const jar = await cookies();
-  return verifySession(jar.get(SESSION_COOKIE)?.value);
+  const claims = await sessionClaims(jar.get(SESSION_COOKIE)?.value);
+  const db = getDatabase();
+  if (!claims || !db) return false;
+  try {
+    const rows = await db.query(
+      "SELECT id FROM public.admin_sessions WHERE id=$1::uuid AND username=$2 AND expires_at > now() LIMIT 1",
+      [claims.jti, claims.sub]
+    );
+    return rows.length === 1;
+  } catch { return false; }
+}
+
+export async function revokeCurrentSession(): Promise<void> {
+  const jar = await cookies();
+  const claims = await sessionClaims(jar.get(SESSION_COOKIE)?.value);
+  const db = getDatabase();
+  if (!claims || !db) return;
+  try {
+    await db.query("DELETE FROM public.admin_sessions WHERE id=$1::uuid AND username=$2", [claims.jti, claims.sub]);
+  } catch {
+    // Si PostgreSQL est inaccessible, le jeton ne peut pas être révoqué côté serveur.
+    // Sa validité résiduelle ne dépasse pas huit heures.
+  }
 }
 
 export function getSessionCookieOptions() {

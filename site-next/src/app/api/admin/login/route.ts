@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getDatabase } from "@/lib/db";
-import { getSessionCookieOptions, isAdminConfigured, issueSession, SESSION_COOKIE, validSameOrigin, verifyPassword } from "@/lib/admin-auth";
+import { getSessionCookieOptions, isAdminConfigured, issueSession, SESSION_COOKIE, sessionClaims, validSameOrigin, verifyPassword } from "@/lib/admin-auth";
 import { apiError, noCache } from "@/lib/admin-api";
 
 export const dynamic = "force-dynamic";
@@ -45,6 +45,14 @@ export async function POST(request: NextRequest) {
   if (!usernameMatches || !passwordMatches) return apiError("Identifiants incorrects.", 401);
   const session = await issueSession();
   if (!session) return apiError("Configuration de sécurité manquante.", 503);
+  const claims = await sessionClaims(session);
+  if (!claims) return apiError("Impossible de créer la session.", 503);
+  try {
+    await db.query(
+      "INSERT INTO public.admin_sessions (id,username,expires_at) VALUES ($1::uuid,$2,to_timestamp($3))",
+      [claims.jti, claims.sub, claims.exp]
+    );
+  } catch { return apiError("Enregistrement de session impossible.", 503); }
   const response = NextResponse.json({ authenticated: true }, { headers: noCache });
   response.cookies.set(SESSION_COOKIE, session, getSessionCookieOptions());
   return response;

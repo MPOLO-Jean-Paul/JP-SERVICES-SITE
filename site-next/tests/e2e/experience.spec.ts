@@ -158,3 +158,63 @@ test("L'identité officielle est cohérente dans la navigation et les contacts",
   await expect(page.getByRole("heading",{level:1})).toContainText("Développez des compétences");
   await expect(page.locator(".catalogue-card")).toHaveCount(3);
 });
+
+
+test("Les parcours de formation sont consultables, accessibles et lisibles à toutes les tailles", async ({page}, testInfo) => {
+  test.setTimeout(90000);
+  const slugs = [
+    "developpement-applications",
+    "bases-donnees-sql",
+    "outils-numeriques-professionnels"
+  ];
+  for (const [width,height,label] of [
+    [320,650,"compact"],[390,844,"mobile"],[820,1024,"tablette"],[1440,900,"desktop"]
+  ] as const) {
+    await page.setViewportSize({width,height});
+    for (const slug of slugs) {
+      const response = await page.goto("/formations/"+slug);
+      expect(response?.status()).toBe(200);
+      await expect(page.locator("h1")).toBeVisible();
+      await expect(page.getByText("Présentation indicative", {exact:false})).toBeVisible();
+      await expect(page.locator(".course-module")).toHaveCount(4);
+      await expect(page.locator(".course-module").first()).toHaveAttribute("open", "");
+      await page.locator(".course-module summary").nth(1).click();
+      await expect(page.locator(".course-module").nth(1)).toHaveAttribute("open", "");
+      const layout = await page.evaluate(() => ({
+        width: document.documentElement.scrollWidth,
+        viewport: window.innerWidth
+      }));
+      expect(layout.width, "Débordement "+label+" "+slug).toBeLessThanOrEqual(layout.viewport + 1);
+      if ((label==="mobile" || label==="desktop") && slug === "developpement-applications") {
+        await testInfo.attach("formation-"+label, {
+          body:await page.screenshot({fullPage:true}), contentType:"image/png"
+        });
+      }
+    }
+  }
+});
+
+test("Du catalogue à la fiche de formation puis au formulaire de contact", async ({page, request}) => {
+  await page.goto("/formations");
+  const programs = page.getByRole("link", {name:"Découvrir le parcours"});
+  await expect(programs).toHaveCount(3);
+  await programs.first().click();
+  await expect(page).toHaveURL(/\/formations\/developpement-applications$/);
+  await page.getByRole("link",{name:/Demander des renseignements/}).click();
+  await expect(page).toHaveURL(/\/contact\?subject=/);
+  await expect(page.locator("#contact-subject")).toHaveValue(/Développement d.applications/);
+  const unknown = await request.get("/formations/programme-inconnu");
+  expect(unknown.status()).toBe(404);
+});
+
+test("Les formations indicatives ne s'affichent pas comme offres certifiées", async ({page, request}) => {
+  await page.goto("/formations/bases-donnees-sql");
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content",/noindex/);
+  await expect(page.getByText("Aucun certificat ni diplôme n'est annoncé",{exact:false})).toHaveCount(1);
+  const sitemap = await request.get("/sitemap.xml");
+  expect(sitemap.status()).toBe(200);
+  const xml = await sitemap.text();
+  expect(xml).toContain("formations/developpement-applications");
+  expect(xml).toContain("formations/bases-donnees-sql");
+  expect(xml).toContain("formations/outils-numeriques-professionnels");
+});

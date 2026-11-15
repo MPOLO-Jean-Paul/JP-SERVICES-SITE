@@ -93,3 +93,19 @@ Audit de référence de [la plateforme OpenClassrooms](https://openclassrooms.co
 Les pages se consultent aux chemins /formations, /services, /logiciels, /projets, /actualites, /a-propos, /contact et /admin/demo sur le **même hôte du déploiement**. Ne pas mettre en service une redirection DNS automatique du domaine officiel vers la préproduction. Sur Render, conserver NEXT_PUBLIC_SITE_URL=https://jp-services-next-preview.onrender.com et l'indexation désactivée ; lors de la vraie bascule, passer NEXT_PUBLIC_SITE_URL=https://jp-services.org seulement après vérification des données et du SSL.
 
 **Contrôles** : GitHub CI + Playwright couvrent maintenant les pages principales en 320, 390 et 1440 px, avec captures des nouveaux parcours graphiques.
+
+
+## Parcours de formation détaillés (phase 4)
+
+Les fiches pédagogiques de présentation disposent maintenant de pages :
+- /formations/developpement-applications
+- /formations/bases-donnees-sql
+- /formations/outils-numeriques-professionnels
+
+Chaque page comprend une introduction, des objectifs **indicatifs**, quatre modules dépliables, un exemple d'atelier, une FAQ, les informations pratiques et un accès au formulaire de contact avec sujet prérempli. Les liens sont intégrés à l'accueil, au catalogue et à la recherche globale.
+
+Les données de démonstration sont décrites dans src/lib/formation-programs.ts. **Il ne s'agit pas d'un programme officiel finalisé.** Aucune durée, date, disponibilité, inscription, tarif, attestation, certificat ou diplôme n'est annoncé sans validation. Les pages de démonstration sont marquées noindex.
+
+Quand DATABASE_URL est configuré, seules les formations réellement **publiées** dans public.catalogue_items sont accessibles à /formations/<slug>, et aucune fiche fictive ne remplace un contenu absent. Les fiches PostgreSQL sans programme structuré affichent une présentation factuelle avec invitation à demander le programme détaillé. Le catalogue et la recherche API exposent désormais le champ slug, compatible avec la création de fiches dans la console. Le sitemap n'annonce que les slugs publiés lorsqu'une base réelle est connectée. Les requêtes en erreur ne sont pas silencieusement remplacées par des exemples.
+
+Les tests Playwright vérifient le rendu à 320/390/820/1440 px, le fonctionnement des modules, les liens catalogue → fiche → contact, les slugs invalides et les métadonnées de préproduction. La migration vers un catalogue réellement administrable et le suivi des inscriptions restent distincts de cette phase.

@@ -31,6 +31,9 @@ APP_KEY=generez-ici-une-cle-aleatoire-longue
 APP_TIMEZONE=Africa/Lubumbashi
 APP_BASE_PATH=
 APP_URL=https://votre-domaine.tld
+CONTACT_EMAIL=contact@votre-domaine.tld
+CONTACT_PHONE=
+CONTACT_WHATSAPP=
 SESSION_NAME=jp_session
 SESSION_IDLE_TIMEOUT=7200
 SESSION_ROTATE_INTERVAL=900
@@ -67,6 +70,10 @@ Exemple :
 ```dotenv
 APP_URL=https://jp-services.cd
 ```
+
+### Adresse e-mail publique de contact
+
+L’adresse affichée sur la page **Contact**, ainsi que dans le pied de page des écrans disposant d’une connexion à la base, peut être modifiée dans **Administration → Paramètres du site** sans redéployer le site. À défaut de valeur en base, elle utilise `CONTACT_EMAIL` dans `.env`. Le téléphone et le numéro WhatsApp peuvent être définis dans la même interface (valeurs de secours : `CONTACT_PHONE` et `CONTACT_WHATSAPP`). Si rien n’est défini, les anciennes coordonnées restent affichées pour compatibilité. L’adresse SMTP (`SMTP_FROM_ADDRESS`) est indépendante et n’est pas publiée automatiquement. Vérifier que les coordonnées professionnelles sont réelles avant leur mise en ligne.
 
 ### `APP_BASE_PATH`
 

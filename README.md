@@ -51,7 +51,7 @@ Sans SMTP configuré, les codes d’activation et de réinitialisation s’affic
 | `pnpm db:import-mysql` | Importe les données de l’ancienne base MySQL dans PostgreSQL |
 | `pnpm storage:upload-r2` | Envoie les fichiers locaux (`uploads/`) vers Cloudflare R2 |
 | `pnpm cf:preview` / `pnpm cf:deploy` | Build Cloudflare (OpenNext), aperçu local workerd, déploiement |
-| `pnpm icons` | Régénère les icônes PWA à partir du monogramme |
+| `pnpm icons` | Régénère les icônes PWA à partir du symbole « Élan » |
 
 ## Organisation du code
 

@@ -1,0 +1,26 @@
+name: "JP-SERVICES — Vérification PHP"
+
+on:
+  push:
+    branches:
+      - main
+      - 'continuation/**'
+  pull_request:
+
+jobs:
+  php-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+      - name: Configurer PHP 8.1
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: none
+      - name: Vérifier la syntaxe PHP
+        shell: bash
+        run: |
+          find . -type f -name '*.php' -print0 | xargs -0 -n 1 php -l
+      - name: Vérifier l'adresse de contact
+        run: php tests/contact_email_test.php

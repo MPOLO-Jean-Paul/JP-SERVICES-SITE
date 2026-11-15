@@ -22,7 +22,11 @@
             </a>
             <p>Formation, accompagnement digital et communauté pour transformer les ambitions en compétences et en projets utiles.</p>
             <a class="jp-footer-contact-link" href="<?= e(url('/contact')) ?>">Nous contacter <i class="fas fa-arrow-right"></i></a>
-            <a class="jp-footer-contact-link" href="mailto:<?= e(jp_contact_email(isset($conn) && $conn instanceof PDO ? $conn : null)) ?>"><i class="fas fa-envelope" aria-hidden="true"></i> <?= e(jp_contact_email(isset($conn) && $conn instanceof PDO ? $conn : null)) ?></a>
+            <?php // Ne pas montrer de coordonnées de repli périmées sans accès aux paramètres publics. ?>
+            <?php if (isset($conn) && $conn instanceof PDO): ?>
+                <?php $jpFooterContactEmail = jp_contact_email($conn); ?>
+                <a class="jp-footer-contact-link" href="mailto:<?= e($jpFooterContactEmail) ?>"><i class="fas fa-envelope" aria-hidden="true"></i> <?= e($jpFooterContactEmail) ?></a>
+            <?php endif; ?>
             <button type="button" class="jp-footer-contact-link jp-footer-install" data-pwa-install hidden data-testid="pwa-install-footer-btn" style="border:0;background:none;padding:0;font:inherit;cursor:pointer"><i class="fas fa-arrow-down-to-bracket"></i> Installer l’application</button>
         </div>
 

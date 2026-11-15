@@ -22,7 +22,7 @@ export default async function SectionPage({params}: {params: Promise<{section:st
   const items = offerings.filter(item=>item.kind===config.kind);
   return <div className="inner-page">
     <section className="inner-hero"><div className="shell"><div className="eyebrow"><span className="eyebrow-dot"/>{config.eyebrow}</div><h1>{config.title}</h1><p>{config.subtitle}</p><div className="inner-hero-index">JP-SERVICES / {section.toUpperCase()}</div></div></section>
-    <section className="shell catalogue-section"><div className="section-header compact"><div><div className="eyebrow eyebrow-dark">EXPLORER</div><h2>Découvrez notre <span>approche.</span></h2></div><p className="section-aside">Sélectionnez une catégorie ou recherchez un sujet qui vous intéresse.</p></div><CatalogueExplorer items={items}/></section>
+    <section className="shell catalogue-section"><div className="section-header compact"><div><div className="eyebrow eyebrow-dark">EXPLORER</div><h2>Découvrez notre <span>approche.</span></h2></div><p className="section-aside">Sélectionnez une catégorie ou recherchez un sujet qui vous intéresse.</p></div><CatalogueExplorer items={items} kind={config.kind}/></section>
     <section className="shell inner-bottom-cta"><div><h2>Une question sur votre projet ?</h2><p>Nous étudions chaque demande avec attention.</p></div><Link href="/contact" className="btn btn-primary">Parlons-en <ArrowUpRight size={17}/></Link></section>
   </div>;
 }

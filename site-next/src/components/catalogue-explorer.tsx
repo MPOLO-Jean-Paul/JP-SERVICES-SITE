@@ -1,22 +1,38 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowUpRight, Search } from "lucide-react";
 import Link from "next/link";
-import type { CatalogueItem } from "@/lib/content";
+import type { CatalogueItem, Kind } from "@/lib/content";
 
-export function CatalogueExplorer({ items }: { items: CatalogueItem[] }) {
+export function CatalogueExplorer({ items, kind }: { items: CatalogueItem[]; kind: Kind }) {
+  const [entries, setEntries] = useState(items);
+  const [source, setSource] = useState<"presentation" | "database">("presentation");
   const [query, setQuery] = useState("");
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/catalogue?kind=" + encodeURIComponent(kind), { signal: controller.signal })
+      .then(response => response.ok ? response.json() : null)
+      .then((result: { source?: string; items?: CatalogueItem[] } | null) => {
+        if (result?.source === "database" && Array.isArray(result.items) && result.items.length > 0) {
+          setEntries(result.items);
+          setSource("database");
+        }
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, [kind]);
   const [category, setCategory] = useState("Tout");
-  const categories = ["Tout", ...Array.from(new Set(items.map(item => item.category)))];
-  const filtered = useMemo(() => items.filter(item => {
+  const categories = ["Tout", ...Array.from(new Set(entries.map(item => item.category)))];
+  const filtered = useMemo(() => entries.filter(item => {
     const matchCategory = category === "Tout" || item.category === category;
     const searchable = [item.title, item.description, item.category].join(" ").toLocaleLowerCase("fr");
     return matchCategory && searchable.includes(query.trim().toLocaleLowerCase("fr"));
-  }), [items, category, query]);
+  }), [entries, category, query]);
 
   return (
     <>
+      <p className="catalogue-source">{source === "database" ? "Catalogue publié" : "Sélection de présentation · informations à confirmer"}</p>
       <div className="catalogue-toolbar">
         <div className="filter-tabs" role="group" aria-label="Filtrer par catégorie">{categories.map(c => <button type="button" key={c} className={category===c?"filter-tab active":"filter-tab"} aria-pressed={category===c} onClick={()=>setCategory(c)}>{c}</button>)}</div>
         <label className="catalogue-search"><Search size={18}/><span className="sr-only">Rechercher</span><input placeholder="Rechercher…" value={query} onChange={event=>setQuery(event.target.value)}/></label>

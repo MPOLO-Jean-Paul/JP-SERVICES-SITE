@@ -183,3 +183,5 @@ img,svg{max-width:100%}
 .catalogue-card-bottom{margin-top:16px}
 @media(max-width:900px){.search-shortcut{display:none}.global-search-button{min-width:39px}}
 @media(max-width:620px){.global-search-button{padding:0;width:39px}.search-backdrop{padding:76px 10px 12px}.global-search-dialog{border-radius:12px}.global-search-input-row{padding:15px 12px}.global-search-input-row input{font-size:13px}.global-search-results{padding:8px;max-height:60vh}.global-search-footer{padding:11px}.global-search-footer span{font-size:9px}}
+
+.contact-heading{font:800 clamp(27px,3vw,38px)/1.25 Manrope,system-ui,sans-serif;letter-spacing:-.05em;margin:15px 0 28px}

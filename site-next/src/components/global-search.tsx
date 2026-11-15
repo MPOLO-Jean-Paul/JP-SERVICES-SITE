@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Command, Search, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { offerings, type CatalogueItem, type Kind } from "@/lib/content";
 
 const pageByKind: Record<Kind, string> = {
@@ -124,14 +125,14 @@ export function GlobalSearch() {
       <Search size={18} />
       <span className="search-shortcut" aria-hidden="true">⌘ K</span>
     </button>
-    {open && (
+    {open && createPortal(
       <div className="search-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setOpen(false); }}>
         <div ref={dialogRef} className="global-search-dialog" role="dialog" aria-modal="true" aria-labelledby="global-search-heading">
           <div className="global-search-top">
             <div className="global-search-input-row">
               <Search size={22} aria-hidden="true" />
               <h2 id="global-search-heading" className="sr-only">Rechercher sur JP-SERVICES</h2>
-              <input ref={inputRef} aria-label="Rechercher sur toutes les rubriques" placeholder="Rechercher une expertise, un projet, une formation…" value={query} onChange={event => setQuery(event.target.value)} maxLength={80} />
+              <input ref={inputRef} aria-label="Rechercher sur toutes les rubriques" placeholder="Rechercher une expertise, un projet, une formation…" value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => { if (event.key === "Enter" && shown.length > 0 && (state === "ready" || state === "suggestions")) { event.preventDefault(); const item = shown[0]; window.location.assign(pageByKind[item.kind] + "?q=" + encodeURIComponent(item.title) + "#catalogue"); } }} maxLength={80} />
               <button type="button" aria-label="Fermer la recherche" onClick={() => setOpen(false)} className="search-close"><X size={19}/></button>
             </div>
           </div>
@@ -156,7 +157,7 @@ export function GlobalSearch() {
           </div>
           <div className="global-search-footer"><span><kbd>Échap</kbd> pour fermer</span><span><kbd>↵</kbd> choisir un résultat</span></div>
         </div>
-      </div>
+      </div>, document.body
     )}
   </>;
 }

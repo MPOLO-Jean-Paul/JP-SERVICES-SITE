@@ -7,6 +7,7 @@ require_admin();
 require_once '../includes/connexion_db.php';
 
 $editableSettings = [
+    'contact_email' => ['Adresse e-mail professionnelle de contact', 'Visible sur la page Contact. Laisser vide pour utiliser CONTACT_EMAIL défini dans le fichier .env.', 'email'],
     'annonce_texte' => ['Bandeau d’annonce — texte', 'Texte affiché dans le bandeau en haut de toutes les pages. Laisser vide pour masquer le bandeau.', 'text'],
     'annonce_url' => ['Bandeau d’annonce — lien', 'Adresse du lien du bandeau (ex. /formations ou https://…).', 'text'],
     'annonce_lien_label' => ['Bandeau d’annonce — libellé du lien', 'Texte du bouton du bandeau.', 'text'],
@@ -14,19 +15,41 @@ $editableSettings = [
     'partenariat_intro' => ['Page Partenariat — introduction', 'Texte d’introduction affiché en haut de la page Partenariat.', 'textarea'],
 ];
 
+$saveError = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    try {
-        $stmt = $conn->prepare('INSERT INTO site_settings (cle, valeur) VALUES (:cle, :valeur) ON DUPLICATE KEY UPDATE valeur = VALUES(valeur)');
-        foreach ($editableSettings as $key => $meta) {
-            $stmt->execute([':cle' => $key, ':valeur' => mb_substr(trim((string)($_POST[$key] ?? '')), 0, 2000, 'UTF-8')]);
+    $contactEmail = trim((string)($_POST['contact_email'] ?? ''));
+    if ($contactEmail !== '' && (strlen($contactEmail) > 254 || !filter_var($contactEmail, FILTER_VALIDATE_EMAIL))) {
+        $saveError = 'Veuillez saisir une adresse e-mail de contact valide.';
+    } else {
+        try {
+            $conn->beginTransaction();
+            $stmt = $conn->prepare('INSERT INTO site_settings (cle, valeur) VALUES (:cle, :valeur) ON DUPLICATE KEY UPDATE valeur = VALUES(valeur)');
+            foreach ($editableSettings as $key => $meta) {
+                $value = $key === 'contact_email'
+                    ? $contactEmail
+                    : mb_substr(trim((string)($_POST[$key] ?? '')), 0, 2000, 'UTF-8');
+                $stmt->execute([':cle' => $key, ':valeur' => $value]);
+            }
+            $conn->commit();
+            redirect('/admin/parametres?saved=1');
+        } catch (Throwable $exception) {
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+            error_log('Paramètres site: ' . $exception->getMessage());
+            $saveError = 'Enregistrement impossible. Veuillez réessayer.';
         }
-        redirect('/admin/parametres?saved=1');
-    } catch (Throwable $exception) {
-        error_log('Paramètres site: ' . $exception->getMessage());
     }
 }
 
 $values = jp_settings_all($conn);
+if ($saveError !== '') {
+    foreach (array_keys($editableSettings) as $key) {
+        if (isset($_POST[$key]) && is_string($_POST[$key])) {
+            $values[$key] = $_POST[$key];
+        }
+    }
+}
 
 $page_title = 'Paramètres du site';
 include '../includes/header_admin.php';
@@ -43,7 +66,8 @@ include '../includes/header_admin.php';
         <div><h1 data-testid="admin-parametres-title">Paramètres du site</h1><p class="text-muted">Les contenus éditoriaux ci-dessous alimentent directement les pages publiques.</p></div>
     </div>
 
-    <?php if (isset($_GET['saved'])): ?><div class="alert alert-success" data-testid="admin-parametres-flash">Paramètres enregistrés.</div><?php endif; ?>
+    <?php if ($saveError !== ''): ?><div class="alert alert-danger" role="alert"><?= e($saveError) ?></div><?php endif; ?>
+    <?php if (isset($_GET['saved']) && $saveError === ''): ?><div class="alert alert-success" data-testid="admin-parametres-flash">Paramètres enregistrés.</div><?php endif; ?>
 
     <div style="margin:0 0 18px;display:flex;gap:10px;flex-wrap:wrap">
         <a class="jp-btn jp-btn-secondary" href="<?= e(url('/admin/smtp-test')) ?>" data-testid="admin-parametres-smtp-link"><i class="fas fa-envelope-circle-check"></i> Tester la configuration SMTP</a>
@@ -56,7 +80,7 @@ include '../includes/header_admin.php';
         <?php if ($kind === 'textarea'): ?>
             <textarea id="setting-<?= e($key) ?>" name="<?= e($key) ?>" rows="3" maxlength="2000"><?= e((string)($values[$key] ?? '')) ?></textarea>
         <?php else: ?>
-            <input id="setting-<?= e($key) ?>" type="text" name="<?= e($key) ?>" maxlength="500" value="<?= e((string)($values[$key] ?? '')) ?>">
+            <input id="setting-<?= e($key) ?>" type="<?= $kind === 'email' ? 'email' : 'text' ?>" name="<?= e($key) ?>" maxlength="<?= $kind === 'email' ? '254' : '500' ?>" value="<?= e((string)($values[$key] ?? '')) ?>">
         <?php endif; ?>
         <small><?= e($help) ?></small>
         <?php endforeach; ?>

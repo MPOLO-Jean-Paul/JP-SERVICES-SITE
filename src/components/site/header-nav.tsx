@@ -7,7 +7,7 @@ import { ArrowRight, ChevronDown, LogOut, Menu as MenuIcon, Shield, UserRound, X
 import { MEGA_MENUS } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import { Icon } from "./icon";
-import { LogoMark, Wordmark } from "@/components/brand/logo";
+import { LogoMark } from "@/components/brand/logo";
 import { Avatar } from "@/components/ui/avatar";
 import { Menu, MenuContent, MenuItem, MenuLabel, MenuSeparator, MenuTrigger } from "@/components/ui/dropdown";
 import { LanguageMenu } from "./language-menu";
@@ -227,7 +227,7 @@ export function MobileDrawer({ user, logoutAction }: Props) {
       <div className={cn("fixed inset-0 z-50 bg-black/55 backdrop-blur-sm transition-opacity lg:hidden", open ? "opacity-100" : "pointer-events-none opacity-0")} onClick={() => setOpen(false)} aria-hidden />
       <aside id="mobile-drawer" aria-hidden={!open} className={cn("fixed inset-y-0 left-0 z-50 flex w-[min(22rem,88vw)] flex-col bg-panel shadow-lg transition-transform duration-300 ease-out-expo lg:hidden", open ? "translate-x-0" : "-translate-x-full")}>
         <div className="flex items-center justify-between border-b px-4 py-3">
-          <span className="flex items-center gap-2"><LogoMark className="size-7 text-ink" /><Wordmark /></span>
+          <span className="flex items-center gap-2"><LogoMark className="size-9" /></span>
           <button type="button" onClick={() => setOpen(false)} aria-label={tc("closeMenu")} className="inline-flex size-9 items-center justify-center rounded-full hover:bg-panel-2">
             <X className="size-5" />
           </button>

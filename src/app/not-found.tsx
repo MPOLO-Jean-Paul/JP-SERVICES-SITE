@@ -9,7 +9,7 @@ export default async function NotFound() {
   return (
     <main className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden px-6 text-center">
       <div className="bg-grid fade-mask pointer-events-none absolute inset-0" aria-hidden />
-      <LogoMark className="relative size-10 text-ink" />
+      <LogoMark className="relative size-14" />
       <p className="relative mt-8 font-mono text-sm uppercase tracking-[0.2em] text-muted">Erreur 404</p>
       <h1 className="h1 relative mt-3">{t("notFoundTitle")}</h1>
       <p className="relative mt-3 max-w-md text-copy">{t("notFoundText")}</p>

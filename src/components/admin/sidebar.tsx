@@ -28,7 +28,7 @@ export function AdminSidebar({ user, logoutAction }: { user: { displayName: stri
   const content = (
     <div className="flex h-full flex-col">
       <div className="flex items-center justify-between px-4 py-4">
-        <Link href="/admin" className="flex items-center gap-2.5"><LogoMark className="size-8 text-ink" /><span className="text-sm font-semibold tracking-tight">Console <span className="text-muted">d’administration</span></span></Link>
+        <Link href="/admin" className="flex items-center gap-2.5"><LogoMark className="size-8" /><span className="text-sm font-semibold tracking-tight">Console <span className="text-muted">d’administration</span></span></Link>
         <button type="button" onClick={() => setOpen(false)} className="inline-flex size-9 items-center justify-center rounded-full hover:bg-panel-2 lg:hidden" aria-label="Fermer"><X className="size-5" /></button>
       </div>
       <label className="relative mx-3 block"><Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" /><input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher une rubrique…" className="field h-9 pl-9 text-sm" aria-label="Rechercher une rubrique" /></label>

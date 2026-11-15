@@ -1,5 +1,5 @@
 /* Service worker JP-Services : cache des ressources statiques + page hors connexion. */
-const VERSION = "jp-v3-2026-11";
+const VERSION = "jp-v4-2026-11";
 const OFFLINE_URL = "/offline.html";
 const PRECACHE = [OFFLINE_URL, "/icons/icon-192.png", "/icons/icon-512.png"];
 

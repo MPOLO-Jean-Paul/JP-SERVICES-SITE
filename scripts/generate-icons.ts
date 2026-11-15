@@ -2,16 +2,19 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 
-/** Génère les icônes PWA / Apple à partir du monogramme vectoriel. */
+/** Génère les icônes PWA / Apple à partir du symbole vectoriel « Élan » (viewBox 64). */
+const LOGO = `<rect x="8" y="34" width="9" height="16" rx="3" fill="#FF4D3D"/>
+    <rect x="21" y="24" width="9" height="26" rx="3" fill="#7B4DFF"/>
+    <path d="M38.5 10v29.5a10.5 10.5 0 0 1-10.5 10.5" fill="none" stroke="#2F5BFF" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="51" cy="14" r="5" fill="#2F5BFF"/>`;
 const mark = (size: number, padding: number, rounded: boolean) => {
   const inner = size - padding * 2;
-  const s = inner / 32;
+  const s = (inner * 0.8) / 64;
+  const offset = padding + inner * 0.1;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-  <rect width="${size}" height="${size}" rx="${rounded ? size * 0.22 : 0}" fill="#09090b"/>
-  <g transform="translate(${padding} ${padding}) scale(${s})">
-    <path d="M12.5 8.5v10.25a4.25 4.25 0 0 1-4.25 4.25H7.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M17 23.5v-15h4.25a4.25 4.25 0 0 1 0 8.5H17" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="25" cy="23" r="1.9" fill="#3d63ff"/>
+  <rect width="${size}" height="${size}" rx="${rounded ? size * 0.22 : 0}" fill="#0b0d1a"/>
+  <g transform="translate(${offset} ${offset}) scale(${s})">
+    ${LOGO}
   </g></svg>`;
 };
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
-import { LogoMark, Wordmark } from "@/components/brand/logo";
+import { LogoMark } from "@/components/brand/logo";
 import { ThemeMenu } from "@/components/site/theme-menu";
 import { LanguageMenu } from "@/components/site/language-menu";
 import { getSettings } from "@/server/services/settings";
@@ -16,8 +16,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
         <div className="bg-grid pointer-events-none absolute inset-0 opacity-60 [--grid-line:rgb(255_255_255/0.05)]" />
         <div className="pointer-events-none absolute -right-32 -top-32 size-[480px] rounded-full bg-brand-600/35 blur-3xl" />
         <Link href="/" className="relative flex items-center gap-2.5">
-          <LogoMark className="size-8 text-white [--canvas:#070a18]" />
-          <Wordmark className="text-white [&>span]:text-white/50" />
+          <LogoMark className="size-10" />
         </Link>
         <div className="relative max-w-md">
           <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-brand-300">{s.auth_showcase_badge || t("showcaseBadge")}</span>
@@ -39,7 +38,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
           </Link>
           <div className="flex items-center gap-1">
             <Link href="/" className="mr-2 flex items-center gap-2 lg:hidden" aria-label="JP-Services">
-              <LogoMark className="size-7 text-ink" />
+              <LogoMark className="size-9" />
             </Link>
             <LanguageMenu />
             <ThemeMenu />

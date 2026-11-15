@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { LogoMark, Wordmark } from "@/components/brand/logo";
+import { LogoMark } from "@/components/brand/logo";
 import { Facebook, Linkedin, TikTok, Youtube } from "@/components/brand/social-icons";
 import { getCurrentUser } from "@/server/auth/session";
 import { getSettings } from "@/server/services/settings";
@@ -90,8 +90,7 @@ export async function SiteFooter() {
       <div className="shell grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
         <div>
           <Link href="/" className="flex items-center gap-2.5" aria-label="JP-Services — Accueil">
-            <LogoMark className="size-7 text-ink" />
-            <Wordmark />
+            <LogoMark className="size-9" />
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-copy">{t("brandText")}</p>
           <p className="mt-4 font-mono text-[11px] uppercase tracking-wider text-muted">{s.contact_adresse}</p>

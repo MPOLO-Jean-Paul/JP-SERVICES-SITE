@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { CircleHelp } from "lucide-react";
-import { LogoMark, Wordmark } from "@/components/brand/logo";
+import { LogoMark } from "@/components/brand/logo";
 import { getCurrentUser } from "@/server/auth/session";
 import { getSettings } from "@/server/services/settings";
 import { countUnreadNotifications } from "@/server/services/formations";
@@ -27,8 +27,7 @@ export async function SiteHeader() {
         <div className="shell flex h-16 items-center gap-3">
           <MobileDrawer user={publicUser} logoutAction={logoutAction} />
           <Link href="/" className="flex items-center gap-2.5" aria-label="JP-Services — Accueil">
-            <LogoMark className="size-7 text-ink" />
-            <Wordmark />
+            <LogoMark className="size-9" />
           </Link>
           <div className="mx-auto">
             <DesktopNav user={publicUser} />

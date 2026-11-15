@@ -6,7 +6,7 @@ import { Field, Input, Textarea } from "@/components/ui/form";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { Alert } from "@/components/ui/alert";
 
-export function ContactForm() {
+export function ContactForm({ initialSubject = "" }: { initialSubject?: string }) {
   const [state, action] = useActionState<FormState, FormData>(contactAction, { status: "idle" });
   const v = state.values ?? {};
   return (
@@ -22,7 +22,7 @@ export function ContactForm() {
         </Field>
       </div>
       <Field label="Sujet" htmlFor="sujet">
-        <Input id="sujet" name="sujet" required maxLength={180} defaultValue={v.sujet} />
+        <Input id="sujet" name="sujet" required maxLength={180} defaultValue={v.sujet ?? initialSubject} />
       </Field>
       <Field label="Message" htmlFor="message" hint="Entre 20 et 10 000 caractères.">
         <Textarea id="message" name="message" rows={7} required minLength={20} maxLength={10000} defaultValue={v.message} />

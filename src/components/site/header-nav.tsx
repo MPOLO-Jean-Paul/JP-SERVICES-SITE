@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { ArrowRight, ChevronDown, LogOut, Menu as MenuIcon, Shield, UserRound, X } from "lucide-react";
-import { MEGA_MENUS } from "@/lib/navigation";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 import { Icon } from "./icon";
 import { LogoMark } from "@/components/brand/logo";
@@ -20,93 +20,28 @@ type Props = { user: Pick<SessionUser, "displayName" | "email" | "isAdmin" | "ph
 export function DesktopNav({ user }: { user: Props["user"] }) {
   const t = useTranslations("nav");
   const pathname = usePathname();
-  const [open, setOpen] = useState<string | null>(null);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const navRef = useRef<HTMLElement>(null);
-  const [seenPath, setSeenPath] = useState(pathname);
-  if (seenPath !== pathname) {
-    setSeenPath(pathname);
-    setOpen(null);
-  }
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(null);
-    const onClick = (e: MouseEvent) => navRef.current && !navRef.current.contains(e.target as Node) && setOpen(null);
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("pointerdown", onClick);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("pointerdown", onClick);
-    };
-  }, []);
-
-  const scheduleClose = () => {
-    closeTimer.current = setTimeout(() => setOpen(null), 160);
-  };
-  const cancelClose = () => closeTimer.current && clearTimeout(closeTimer.current);
-
+  const links = [
+    { href: "/formations", label: t("formations") },
+    { href: "/formations-en-ligne", label: t("live") },
+    { href: "/logiciels", label: t("software") },
+    { href: "/projets", label: t("projects") },
+    { href: "/a-propos", label: t("about") },
+  ];
   return (
-    <nav ref={navRef} className="relative hidden items-center gap-1 lg:flex" aria-label="Menu principal" onMouseLeave={scheduleClose} onMouseEnter={cancelClose}>
-      {MEGA_MENUS.map((menu) => {
-        const isActive = menu.activePrefixes.some((p) => pathname.startsWith(p));
-        const isOpen = open === menu.id;
-        return (
-          <div key={menu.id} onMouseEnter={() => setOpen(menu.id)}>
-            <button
-              type="button"
-              aria-expanded={isOpen}
-              aria-controls={`menu-${menu.id}`}
-              onClick={() => setOpen(isOpen ? null : menu.id)}
-              className={cn("relative inline-flex h-9 items-center gap-1 whitespace-nowrap rounded-md px-3 text-[14px] font-medium text-copy transition hover:text-ink", (isActive || isOpen) && "text-ink")}
-            >
-              {t(menu.label)}
-              <ChevronDown className={cn("size-3.5 text-muted transition-transform duration-200", isOpen && "rotate-180")} aria-hidden />
-              {isActive ? <span className="absolute -bottom-[17px] left-3 right-3 h-px bg-ink" aria-hidden /> : null}
-            </button>
-            <div
-              id={`menu-${menu.id}`}
-              role="region"
-              aria-hidden={!isOpen}
-              className={cn("absolute left-1/2 top-[calc(100%+14px)] z-50 w-[min(820px,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl border bg-panel p-2 shadow-lg transition-all duration-200 ease-out-expo", isOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0")}
-            >
-              <div className="grid grid-cols-[1fr_1fr_1.05fr] gap-1">
-                {menu.groups.map((group) => (
-                  <div key={group.label} className="p-3">
-                    <p className="px-3 pb-2 text-[11px] font-medium text-muted">{t(group.label)}</p>
-                    <ul className="space-y-0.5">
-                      {group.links
-                        .filter((l) => !l.authOnly || user)
-                        .map((link) => (
-                          <li key={link.href + link.title}>
-                            <Link href={link.href} className="group/link flex items-start gap-3 rounded-xl p-3 transition hover:bg-panel-2">
-                              <span className="icon-box size-9 group-hover/link:border-line-strong">
-                                <Icon name={link.icon} />
-                              </span>
-                              <span className="min-w-0">
-                                <span className="block text-sm font-medium text-ink">{t(link.title)}</span>
-                                <span className="block text-xs leading-relaxed text-muted">{t(link.text)}</span>
-                              </span>
-                            </Link>
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                ))}
-                <div className="bg-grid relative flex flex-col justify-between overflow-hidden rounded-xl border bg-canvas-soft p-6">
-                  
-                  <div className="relative">
-                    <span className="kicker">{t(menu.intro.kicker)}</span>
-                    <p className="mt-3 text-lg font-semibold leading-snug tracking-tight">{t(menu.intro.title)}</p>
-                    <p className="mt-2 text-sm text-copy">{t(menu.intro.text)}</p>
-                  </div>
-                  <Link href={menu.intro.ctaHref} className="relative mt-6 inline-flex w-fit items-center gap-2 rounded-lg bg-ink px-3.5 py-2 text-sm font-medium text-canvas transition hover:bg-ink/85">
-                    {t(menu.intro.ctaLabel)} <ArrowRight className="size-4" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
+    <nav className="hidden items-center gap-1 lg:flex" aria-label="Menu principal">
+      {links.map(link => {
+        const active = pathname === link.href || pathname.startsWith(link.href + "/");
+        return <Link
+          href={link.href}
+          key={link.href}
+          aria-current={active ? "page" : undefined}
+          className={cn(
+            "jp-nav-link relative inline-flex min-h-10 items-center whitespace-nowrap px-3 text-[13px] font-medium text-copy transition-colors hover:text-ink",
+            active && "jp-nav-link-active text-ink",
+          )}
+        >{link.label}</Link>;
       })}
+      {user ? <Link href="/profil" className="sr-only">Mon espace</Link> : null}
     </nav>
   );
 }
@@ -206,104 +141,85 @@ export function MobileDrawer({ user, logoutAction }: Props) {
     setSeenPath(pathname);
     setOpen(false);
   }
-  useEffect(() => {
-    document.documentElement.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.documentElement.style.overflow = "";
-    };
-  }, [open]);
 
   const sections = [
-    { label: t("learn"), links: [{ href: "/formations", title: t("catalog"), icon: "graduation-cap" }, { href: "/formations-en-ligne", title: t("live"), icon: "video" }, ...(user ? [{ href: "/abonnements", title: t("myTrainings"), icon: "book-open" }] : [])] },
-    { label: t("resources"), links: [{ href: "/logiciels", title: t("software"), icon: "download" }, { href: "/scolia", title: t("scolia"), icon: "school" }, { href: "/aide", title: t("help"), icon: "life-buoy" }, { href: "/partenariat", title: t("partnership"), icon: "handshake" }] },
-    { label: t("exploreSection"), links: [{ href: "/projets", title: t("projects"), icon: "rocket" }, { href: "/actualites", title: t("news"), icon: "newspaper" }, { href: "/forum", title: t("forum"), icon: "messages-square" }, { href: "/a-propos", title: t("about"), icon: "users" }, { href: "/contact", title: t("contact"), icon: "send" }] },
+    { label: t("learn"), links: [
+      { href: "/formations", title: t("catalog") },
+      { href: "/formations-en-ligne", title: t("live") },
+      ...(user ? [{ href: "/abonnements", title: t("myTrainings") }] : []),
+    ] },
+    { label: t("resources"), links: [
+      { href: "/logiciels", title: t("software") },
+      { href: "/scolia", title: t("scolia") },
+      { href: "/aide", title: t("help") },
+    ] },
+    { label: t("exploreSection"), links: [
+      { href: "/projets", title: t("projects") },
+      { href: "/actualites", title: t("news") },
+      { href: "/forum", title: t("forum") },
+      { href: "/partenariat", title: t("partnership") },
+      { href: "/a-propos", title: t("about") },
+      { href: "/contact", title: t("contact") },
+    ] },
   ];
+  const close = () => setOpen(false);
 
-  return (
-    <>
-      <button type="button" onClick={() => setOpen(true)} aria-label={tc("openMenu")} aria-expanded={open} aria-controls="mobile-drawer" className="inline-flex size-10 items-center justify-center rounded-full text-ink transition hover:bg-panel-2 lg:hidden">
-        <MenuIcon className="size-5" />
+  return <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
+    <DialogPrimitive.Trigger asChild>
+      <button type="button" aria-label={tc("openMenu")} aria-controls="mobile-drawer" aria-expanded={open}
+        className="inline-flex size-11 shrink-0 items-center justify-center rounded-md text-ink transition-colors hover:bg-panel-2 lg:hidden">
+        <MenuIcon className="size-[21px]" aria-hidden="true" />
       </button>
-      <div className={cn("fixed inset-0 z-50 bg-black/55 backdrop-blur-sm transition-opacity lg:hidden", open ? "opacity-100" : "pointer-events-none opacity-0")} onClick={() => setOpen(false)} aria-hidden />
-      <aside id="mobile-drawer" aria-hidden={!open} className={cn("fixed inset-y-0 left-0 z-50 flex w-[min(22rem,88vw)] flex-col bg-panel shadow-lg transition-transform duration-300 ease-out-expo lg:hidden", open ? "translate-x-0" : "-translate-x-full")}>
-        <div className="flex items-center justify-between border-b px-4 py-3">
-          <span className="flex items-center gap-2"><LogoMark className="size-9" /></span>
-          <button type="button" onClick={() => setOpen(false)} aria-label={tc("closeMenu")} className="inline-flex size-9 items-center justify-center rounded-full hover:bg-panel-2">
-            <X className="size-5" />
-          </button>
+    </DialogPrimitive.Trigger>
+    {/* Portal indispensable : le backdrop-filter de l'en-tête est un contenant
+        pour position:fixed, ce qui tronquait auparavant le tiroir mobile. */}
+    <DialogPrimitive.Portal>
+      <DialogPrimitive.Overlay className="fixed inset-0 z-[110] bg-[#0e1829]/65 data-[state=open]:animate-fade-in lg:hidden" />
+      <DialogPrimitive.Content id="mobile-drawer" aria-describedby="mobile-drawer-description"
+        className="fixed inset-y-0 left-0 z-[111] flex w-[min(360px,92vw)] max-w-full flex-col overflow-hidden border-r bg-panel shadow-lg outline-none data-[state=open]:animate-slide-in-left lg:hidden">
+        <DialogPrimitive.Title className="sr-only">{tc("openMenu")}</DialogPrimitive.Title>
+        <DialogPrimitive.Description id="mobile-drawer-description" className="sr-only">Choisissez une rubrique de JP-Services.</DialogPrimitive.Description>
+        <div className="flex shrink-0 items-center justify-between border-b px-5 py-4">
+          <Link href="/" onClick={close} aria-label="JP-Services — Accueil" className="flex items-center gap-3">
+            <LogoMark className="size-9" />
+            <span className="text-[13px] font-semibold tracking-tight">JP-SERVICES</span>
+          </Link>
+          <DialogPrimitive.Close asChild>
+            <button type="button" aria-label={tc("closeMenu")} className="inline-flex size-10 items-center justify-center rounded-md hover:bg-panel-2">
+              <X className="size-5" />
+            </button>
+          </DialogPrimitive.Close>
         </div>
-        <div className="flex-1 overflow-y-auto px-3 py-4 scrollbar-thin">
-          {user ? (
-            <div className="mb-4 flex items-center gap-3 rounded-lg bg-panel-2 p-3">
-              <Avatar name={user.displayName} src={user.photoProfil} size={40} />
-              <div className="min-w-0">
-                <p className="truncate text-sm font-semibold">{user.displayName}</p>
-                <p className="truncate text-xs text-muted">{user.isAdmin ? t("administrator") : t("member")}</p>
-              </div>
-            </div>
-          ) : (
-            <div className="bg-grid mb-4 rounded-xl border bg-brand-950 p-4 text-white">
-              <p className="text-[11px] text-white/60 font-medium">{t("drawerKicker")}</p>
-              <p className="mt-1 text-lg font-semibold leading-snug tracking-tight">{t("drawerTitle")}</p>
-              <p className="mt-1 text-sm text-white/80">{t("drawerText")}</p>
-              <div className="mt-3 flex gap-2">
-                <Link href="/inscription" className="rounded-md bg-white px-3 py-2 text-xs font-semibold text-brand-950">
-                  {t("signup")}
-                </Link>
-                <Link href="/connexion" className="rounded-md border border-white/40 px-3 py-2 text-xs font-semibold">
-                  {t("login")}
-                </Link>
-              </div>
-            </div>
-          )}
-          {sections.map((s) => (
-            <div key={s.label} className="mb-4">
-              <p className="px-3 pb-1 text-[11px] font-medium text-muted">{s.label}</p>
-              <ul>
-                {s.links.map((l) => (
-                  <li key={l.href + l.title}>
-                    <Link href={l.href} className={cn("flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-copy hover:bg-panel-2 hover:text-ink", pathname === l.href && "bg-panel-2 text-ink")}>
-                      <Icon name={l.icon} className="size-4" /> {l.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-          {user ? (
-            <div className="mb-4">
-              <p className="px-3 pb-1 text-[11px] font-medium text-muted">{t("mySpace")}</p>
-              <ul>
-                {[
-                  { href: "/profil", title: t("profile") },
-                  { href: "/profil/modifier", title: t("settings") },
-                  { href: "/mes-projets", title: t("myProjects") },
-                  { href: "/notifications", title: t("notifications") },
-                  ...(user.isAdmin ? [{ href: "/admin", title: t("admin") }] : []),
-                ].map((l) => (
-                  <li key={l.href}>
-                    <Link href={l.href} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-copy hover:bg-panel-2 hover:text-ink">
-                      {l.title}
-                    </Link>
-                  </li>
-                ))}
-                <li>
-                  <form action={logoutAction}>
-                    <button type="submit" className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-danger hover:bg-panel-2">
-                      <LogOut className="size-4" /> {t("logout")}
-                    </button>
-                  </form>
-                </li>
-              </ul>
-            </div>
-          ) : null}
+        <div className="flex-1 overflow-y-auto overscroll-contain px-5 py-5 scrollbar-thin" data-testid="mobile-navigation">
+          {sections.map((section, index) => <section key={section.label} className="mb-7">
+            <p className="mb-2 flex gap-3 border-b pb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted">
+              <span className="font-mono">{String(index + 1).padStart(2, "0")}</span>{section.label}
+            </p>
+            <nav aria-label={section.label}>
+              {section.links.map(link => <Link key={link.href} href={link.href} onClick={close}
+                aria-current={pathname === link.href ? "page" : undefined}
+                className={cn("group flex min-h-11 items-center justify-between rounded-sm px-2 text-[14px] font-medium text-copy transition-colors hover:bg-panel-2 hover:text-ink", pathname === link.href && "bg-panel-2 text-ink")}>
+                {link.title}<ArrowRight aria-hidden="true" className="size-4 text-muted transition-transform group-hover:translate-x-0.5" />
+              </Link>)}
+            </nav>
+          </section>)}
+          {user ? <section className="mb-7">
+            <p className="mb-2 border-b pb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted">{t("mySpace")}</p>
+            <Link href="/profil" onClick={close} className="flex min-h-11 items-center px-2 text-sm font-medium">{user.displayName}</Link>
+            <Link href="/notifications" onClick={close} className="flex min-h-11 items-center px-2 text-sm">{t("notifications")}</Link>
+            {user.isAdmin ? <Link href="/admin" onClick={close} className="flex min-h-11 items-center px-2 text-sm">{t("admin")}</Link> : null}
+            <form action={logoutAction}><button type="submit" className="flex min-h-11 items-center gap-2 px-2 text-sm text-danger"><LogOut className="size-4"/>{t("logout")}</button></form>
+          </section> : null}
         </div>
-        <div className="flex items-center justify-between border-t px-4 py-3">
-          <LanguageMenu />
-          <ThemeMenu />
+        <div className="shrink-0 border-t px-5 py-4">
+          {!user ? <div className="mb-4 grid grid-cols-2 gap-2">
+            <Link href="/connexion" onClick={close} className="inline-flex min-h-11 items-center justify-center rounded-md border px-3 text-xs font-semibold">{t("login")}</Link>
+            <Link href="/inscription" onClick={close} className="inline-flex min-h-11 items-center justify-center rounded-md bg-ink px-3 text-xs font-semibold text-canvas">{t("signup")}</Link>
+          </div> : null}
+          <div className="flex items-center justify-between"><LanguageMenu /><ThemeMenu /></div>
+          <p className="mt-3 text-[11px] text-muted">{t("location")}</p>
         </div>
-        <p className="border-t px-4 py-2 text-[11px] text-muted">{t("location")}</p>
-      </aside>
-    </>
-  );
+      </DialogPrimitive.Content>
+    </DialogPrimitive.Portal>
+  </DialogPrimitive.Root>;
 }

@@ -10,8 +10,9 @@ import { ContactForm } from "./contact-form";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = pageMetadata({ title: "Contact", description: "Une question, une proposition ou un besoin d’accompagnement ? Contactez l’équipe JP-Services à Lubumbashi.", path: "/contact" });
 
-export default async function ContactPage() {
-  const s = await getSettings();
+export default async function ContactPage({ searchParams }: { searchParams: Promise<{ sujet?: string }> }) {
+  const [s, sp] = await Promise.all([getSettings(), searchParams]);
+  const initialSubject = (sp.sujet ?? "").slice(0, 180);
   const tel = s.contact_telephone ?? "";
   return (
     <>
@@ -24,7 +25,7 @@ export default async function ContactPage() {
             <h2 className="h2 mt-2">Écrivez-nous</h2>
             <p className="mt-2 text-copy">Nous répondons généralement sous 48 heures ouvrées.</p>
             <div className="mt-8">
-              <ContactForm />
+              <ContactForm initialSubject={initialSubject} />
             </div>
           </div>
           <div className="space-y-6">

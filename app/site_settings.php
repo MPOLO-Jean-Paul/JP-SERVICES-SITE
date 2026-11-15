@@ -30,3 +30,25 @@ function jp_setting(PDO $conn, string $key, string $default = ''): string
     $value = trim((string)($settings[$key] ?? ''));
     return $value !== '' ? $value : $default;
 }
+
+/**
+ * Adresse publique configurée par l'administration, sinon par CONTACT_EMAIL.
+ * L'adresse SMTP n'est pas exposée automatiquement : elle peut être privée.
+ */
+function jp_contact_email(?PDO $conn = null): string
+{
+    $candidates = [];
+    if ($conn instanceof PDO) {
+        $candidates[] = jp_setting($conn, 'contact_email');
+    }
+    $candidates[] = (string)env('CONTACT_EMAIL', '');
+    $candidates[] = 'contact@jp-services.com';
+
+    foreach ($candidates as $candidate) {
+        $candidate = trim($candidate);
+        if (strlen($candidate) <= 254 && filter_var($candidate, FILTER_VALIDATE_EMAIL)) {
+            return $candidate;
+        }
+    }
+    return 'contact@jp-services.com';
+}

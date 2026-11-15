@@ -1,50 +1,76 @@
 "use client";
+
 import { useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Check, Globe } from "lucide-react";
-import { Menu, MenuContent, MenuLabel, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "@/components/ui/dropdown";
+import { Check, ChevronDown, Globe } from "lucide-react";
+import { Menu, MenuContent, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "@/components/ui/dropdown";
 import { locales, localeLabels } from "@/i18n/config";
 import { setLocale } from "@/server/actions/locale";
 import { cn } from "@/lib/utils";
 
-export function LanguageMenu({ className, variant = "icon" }: { className?: string; variant?: "icon" | "select" }) {
+/**
+ * Un même menu ancré sur mobile, tablette et desktop.
+ * Ne pas utiliser <select> ici : Android l'affiche comme un dialogue
+ * système centré et détaché de la position du déclencheur.
+ */
+export function LanguageMenu({
+  className,
+  variant = "icon",
+}: {
+  className?: string;
+  variant?: "icon" | "select";
+}) {
   const t = useTranslations("nav");
   const locale = useLocale();
   const [pending, startTransition] = useTransition();
-  if (variant === "select") {
-    return (
-      <label className="inline-flex items-center gap-2 text-sm text-copy">
-        <Globe className="size-4" aria-hidden />
-        <span className="sr-only">{t("language")}</span>
-        <select className="rounded-md border bg-panel px-2 py-1.5 text-sm" value={locale} disabled={pending} onChange={(e) => startTransition(() => setLocale(e.target.value))}>
-          {locales.map((l) => (
-            <option key={l} value={l}>
-              {localeLabels[l].label}
-            </option>
-          ))}
-        </select>
-      </label>
-    );
-  }
+  const isFooter = variant === "select";
+  const label = localeLabels[locale as keyof typeof localeLabels];
+
   return (
     <Menu modal={false}>
       <MenuTrigger asChild>
-        <button type="button" aria-label={t("language")} title={t("language")} className={cn("inline-flex h-10 items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-copy transition hover:bg-panel-2 hover:text-ink", className)}>
-          <Globe className="size-[1.1rem]" aria-hidden />
-          <span>{localeLabels[locale as keyof typeof localeLabels]?.short ?? "FR"}</span>
+        <button
+          type="button"
+          disabled={pending}
+          aria-label={t("language")}
+          title={t("language")}
+          data-testid={isFooter ? "footer-language-trigger" : "language-trigger"}
+          className={cn(
+            isFooter
+              ? "jp-language-trigger inline-flex min-h-11 items-center gap-3 rounded-md border border-line-strong bg-panel px-3.5 text-[13px] font-medium text-ink transition-colors hover:bg-panel-2 data-[state=open]:border-primary"
+              : "inline-flex h-10 items-center gap-1.5 rounded-md px-3 text-sm font-medium text-copy transition-colors hover:bg-panel-2 hover:text-ink",
+            className,
+          )}
+        >
+          <Globe className="size-[17px] shrink-0" aria-hidden="true" />
+          <span>{isFooter ? label?.label ?? "Français" : label?.short ?? "FR"}</span>
+          {isFooter ? <ChevronDown className="ml-2 size-3.5 shrink-0 text-muted transition-transform data-[state=open]:rotate-180" aria-hidden="true" /> : null}
         </button>
       </MenuTrigger>
-      <MenuContent>
-        <MenuLabel>{t("language")}</MenuLabel>
-        <MenuRadioGroup value={locale} onValueChange={(v) => startTransition(() => setLocale(v))}>
-          {locales.map((l) => (
-            <MenuRadioItem key={l} value={l}>
-              <span className="w-7 text-xs font-bold">{localeLabels[l].short}</span>
-              <span className="flex flex-1 flex-col">
-                <span className="font-medium text-ink">{localeLabels[l].label}</span>
-                <span className="text-xs text-muted">{localeLabels[l].description}</span>
+      <MenuContent
+        data-testid={isFooter ? "footer-language-popover" : "language-popover"}
+        side={isFooter ? "top" : "bottom"}
+        align={isFooter ? "end" : "center"}
+        sideOffset={6}
+        collisionPadding={12}
+        avoidCollisions
+        className="jp-language-popover min-w-[188px] rounded-md border border-line-strong bg-panel p-1 shadow-lg"
+      >
+        <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[.12em] text-muted">{t("language")}</p>
+        <MenuRadioGroup value={locale} onValueChange={(nextLocale) => {
+          if (nextLocale !== locale) startTransition(() => setLocale(nextLocale));
+        }}>
+          {locales.map((value) => (
+            <MenuRadioItem
+              key={value}
+              value={value}
+              className="jp-language-option flex min-h-11 items-center justify-between gap-3 rounded-sm px-3 py-2.5 text-[13px] data-[state=checked]:bg-primary-soft data-[state=checked]:text-primary"
+            >
+              <span className="flex min-w-0 flex-1 items-center gap-3">
+                <span className="w-6 shrink-0 font-mono text-[10px] font-semibold text-muted">{localeLabels[value].short}</span>
+                <span className="font-medium">{localeLabels[value].label}</span>
               </span>
-              {locale === l ? <Check /> : null}
+              <Check className={cn("size-4 shrink-0", locale === value ? "opacity-100" : "opacity-0")} aria-hidden="true" />
             </MenuRadioItem>
           ))}
         </MenuRadioGroup>

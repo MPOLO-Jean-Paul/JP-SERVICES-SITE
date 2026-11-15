@@ -138,3 +138,46 @@ test("les liens internes visibles sur les rubriques publiques ne retournent pas 
     expect(response.status(), "Lien invalide : "+href).toBeLessThan(400);
   }
 });
+
+
+test("le sélecteur de langue du pied de page ouvre un petit menu ancré, jamais un dialogue Android", async ({page}) => {
+  await page.setViewportSize({width:390,height:844});
+  await page.goto("/");
+  const trigger = page.getByTestId("footer-language-trigger");
+  await trigger.scrollIntoViewIfNeeded();
+  await expect(trigger).toBeVisible();
+  await expect(page.locator("footer select")).toHaveCount(0);
+  await trigger.click();
+
+  const menu = page.getByTestId("footer-language-popover");
+  await expect(menu).toBeVisible();
+  await expect(menu.getByRole("menuitemradio")).toHaveCount(2);
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+
+  const triggerBox = await trigger.boundingBox();
+  const menuBox = await menu.boundingBox();
+  expect(triggerBox).not.toBeNull();
+  expect(menuBox).not.toBeNull();
+  expect(menuBox!.y + menuBox!.height, "Le menu doit apparaître au-dessus du déclencheur").toBeLessThanOrEqual(triggerBox!.y + 4);
+  expect(Math.abs(menuBox!.x + menuBox!.width - triggerBox!.x - triggerBox!.width), "Le menu doit rester aligné au sélecteur").toBeLessThanOrEqual(20);
+  expect(menuBox!.x).toBeGreaterThanOrEqual(0);
+  expect(menuBox!.x + menuBox!.width).toBeLessThanOrEqual(391);
+
+  await page.keyboard.press("Escape");
+  await expect(menu).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+});
+
+test("le choix de langue se fait depuis le menu contextuel avec mise à jour de la page", async ({page}) => {
+  await page.goto("/");
+  const trigger=page.getByTestId("footer-language-trigger");
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.click();
+  await page.getByTestId("footer-language-popover").getByRole("menuitemradio",{name:/English/}).click();
+  await expect(page.locator("html")).toHaveAttribute("lang","en");
+  await expect(trigger).toContainText("English");
+  await trigger.click();
+  await page.getByTestId("footer-language-popover").getByRole("menuitemradio",{name:/Français/}).click();
+  await expect(page.locator("html")).toHaveAttribute("lang","fr");
+  await expect(trigger).toContainText("Français");
+});

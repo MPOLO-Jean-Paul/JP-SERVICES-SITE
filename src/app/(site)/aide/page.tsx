@@ -61,7 +61,7 @@ export default function AidePage() {
               <div className="mt-4 flex gap-3 rounded-lg border bg-canvas-soft p-3 text-sm text-copy">
                 <Lock className="mt-0.5 size-4 shrink-0" />
                 <span>
-                  <strong className="text-ink">Votre sécurité compte.</strong> L’équipe JP-Services ne vous demandera jamais votre mot de passe ni un code de validation.
+                  <strong className="text-ink">Sécurité du compte :</strong> L’équipe JP-Services ne vous demandera jamais votre mot de passe ni un code de validation.
                 </span>
               </div>
               <div className="mt-6">

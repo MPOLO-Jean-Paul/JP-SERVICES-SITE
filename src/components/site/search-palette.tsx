@@ -104,7 +104,7 @@ export function SearchPalette({ triggerClassName, compact }: { triggerClassName?
               {query.trim().length >= 2 && !loading && results.length === 0 ? <Command.Empty className="px-4 py-10 text-center text-sm text-muted">{t("empty")}</Command.Empty> : null}
               {(["formations", "logiciels", "actualites", "posts"] as const).map((type) =>
                 grouped[type]?.length ? (
-                  <Command.Group key={type} heading={t(`sections.${type}`)} className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[11px] [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wider [&_[cmdk-group-heading]]:text-muted">
+                  <Command.Group key={type} heading={t(`sections.${type}`)} className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[11px] [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted">
                     {grouped[type]!.map((r) => {
                       const Icon = typeIcon[r.type];
                       return (
@@ -123,7 +123,7 @@ export function SearchPalette({ triggerClassName, compact }: { triggerClassName?
                 ) : null,
               )}
               {query.trim().length < 2 ? (
-                <Command.Group heading={t("sections.pages")} className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[11px] [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wider [&_[cmdk-group-heading]]:text-muted">
+                <Command.Group heading={t("sections.pages")} className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[11px] [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted">
                   {PAGES.map(({ href, label, Icon }) => (
                     <Command.Item key={href} value={href} onSelect={() => go(href)} className="flex cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm data-[selected=true]:bg-panel-2">
                       <Icon className="size-4 text-muted" />

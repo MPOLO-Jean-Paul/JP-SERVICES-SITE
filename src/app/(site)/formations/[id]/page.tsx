@@ -42,10 +42,10 @@ export default async function FormationPage({ params }: { params: Promise<{ id: 
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd({ "@type": "Course", name: f.titre, description: excerpt(f.description, 300), provider: { "@type": "Organization", name: "JP-Services", url: SITE_URL }, offers: { "@type": "Offer", price: price, priceCurrency: "USD", availability: "https://schema.org/InStock" }, hasCourseInstance: f.dateDebut ? { "@type": "CourseInstance", courseMode: "blended", startDate: f.dateDebut, location: { "@type": "Place", name: "JP-Services, Lubumbashi" } } : undefined })} />
       <section className="relative overflow-hidden border-b">
         <div className="bg-grid fade-mask pointer-events-none absolute inset-0" aria-hidden />
-        <div className="glow pointer-events-none absolute inset-x-0 top-0 h-96" aria-hidden />
+        
         <div className="shell relative grid gap-12 py-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-20">
           <div>
-            <nav aria-label="Fil d’Ariane" className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-muted">
+            <nav aria-label="Fil d’Ariane" className="flex items-center gap-1.5 text-[11px] text-muted font-medium">
               <Link href="/formations" className="hover:text-ink">Formations</Link>
               <ChevronRight className="size-3" />
               <span>{f.domain.label}</span>
@@ -61,7 +61,7 @@ export default async function FormationPage({ params }: { params: Promise<{ id: 
                 const Ic = I as typeof Clock;
                 return (
                   <div key={k as string} className="p-4">
-                    <dt className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-muted"><Ic className="size-3.5" /> {k as string}</dt>
+                    <dt className="flex items-center gap-1.5 text-[11px] text-muted font-medium"><Ic className="size-3.5" /> {k as string}</dt>
                     <dd className="mt-1 text-sm font-semibold">{v as string}</dd>
                   </div>
                 );
@@ -160,7 +160,7 @@ export default async function FormationPage({ params }: { params: Promise<{ id: 
                 {modules.map((m, i) => (
                   <details key={m} open={i === 0} className="group">
                     <summary className="flex cursor-pointer list-none items-center gap-4 p-5 [&::-webkit-details-marker]:hidden">
-                      <span className="font-mono text-[11px] uppercase tracking-wider text-muted">Module {String(i + 1).padStart(2, "0")}</span>
+                      <span className="text-[11px] text-muted font-medium">Module {String(i + 1).padStart(2, "0")}</span>
                       <strong className="flex-1">{m}</strong>
                       <Plus className="size-4 text-muted transition-transform group-open:rotate-45" />
                     </summary>
@@ -182,7 +182,7 @@ export default async function FormationPage({ params }: { params: Promise<{ id: 
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               {related.map((r) => (
                 <article key={r.id} className="card card-hover reveal overflow-hidden"><Cover seed={r.id} palette={r.domain.slug} className="h-24" /><div className="p-6">
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-muted">{r.domain.label}</span>
+                  <span className="text-[11px] text-muted font-medium">{r.domain.label}</span>
                   <h3 className="h3 mt-2">
                     <Link href={`/formations/${r.id}`} className="hover:text-primary">
                       {r.titre}

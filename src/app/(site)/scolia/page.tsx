@@ -26,7 +26,7 @@ export default function ScoliaPage() {
         <div className="pointer-events-none absolute -right-40 -top-40 size-[560px] rounded-full bg-brand-600/30 blur-3xl" aria-hidden />
         <div className="shell relative py-20 lg:py-28">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/[0.06] px-3 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-white/70 ring-1 ring-white/10"><School className="size-3.5" /> Logiciel de gestion scolaire</span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/[0.06] px-3 py-1 text-[11px] text-white/70 ring-1 ring-white/10 font-medium"><School className="size-3.5" /> Logiciel de gestion scolaire</span>
             <h1 className="h-display mt-7 text-white">SCOLIA Pro. <span className="text-brand-300">L’école, sans Excel.</span></h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-white/70">Secrétariat, caisse, recouvrement, scolarité, personnel et paie dans un seul logiciel fiable, conçu pour les complexes scolaires privés de la République démocratique du Congo.</p>
             <div className="mt-9 flex flex-wrap justify-center gap-3">

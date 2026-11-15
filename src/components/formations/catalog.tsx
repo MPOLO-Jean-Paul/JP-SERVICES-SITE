@@ -123,7 +123,7 @@ export function Catalog({ items, domains, levels }: { items: CatalogItem[]; doma
                 {uploadedImage(f.image) ? <Image src={uploadedImage(f.image)!} alt="" fill sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" /> : <Cover seed={f.id} palette={f.domainSlug} label={f.domainLabel} className="size-full transition-transform duration-700 group-hover:scale-[1.03]" />}
               </Link>
               <div className="flex flex-1 flex-col p-6">
-                <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-wider text-muted">
+                <div className="flex items-center justify-between text-[11px] text-muted font-medium">
                   <span>{f.niveau}</span>
                   <span>{f.duree || "Durée à confirmer"}</span>
                 </div>

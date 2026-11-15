@@ -21,7 +21,7 @@ export function EnrollCard({ formationId, priceLabel, isFree, duration, level, s
     <aside className="card sticky top-32 p-6 shadow-md" aria-label="Inscription à la formation">
       <div className="flex items-end justify-between">
         <div>
-          <span className="font-mono text-[11px] uppercase tracking-wider text-muted">Tarif de la formation</span>
+          <span className="text-[11px] text-muted font-medium">Tarif de la formation</span>
           <p className={cn("mt-1 font-display text-3xl font-semibold tracking-tight", isFree && "text-success")}>{priceLabel}</p>
         </div>
         <ShieldCheck className="size-6 text-muted" aria-hidden />

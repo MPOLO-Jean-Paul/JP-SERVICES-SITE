@@ -54,7 +54,7 @@ export default async function PartenariatPage() {
                 <article key={p.id} className="card card-hover reveal flex flex-col p-7">
                   <div className="flex items-center gap-4">
                     {uploadedImage(p.logo) ? <span className="relative inline-flex size-14 shrink-0 overflow-hidden rounded-xl border bg-white"><Image src={uploadedImage(p.logo)!} alt="" fill sizes="56px" className="object-contain p-1.5" /></span> : <AppTile name={p.nom} className="size-14" />}
-                    <div className="min-w-0"><h3 className="h3 truncate">{p.nom}</h3>{p.typePartenariat ? <span className="font-mono text-[10px] uppercase tracking-wider text-muted">{p.typePartenariat}</span> : null}</div>
+                    <div className="min-w-0"><h3 className="h3 truncate">{p.nom}</h3>{p.typePartenariat ? <span className="text-[11px] text-muted font-medium">{p.typePartenariat}</span> : null}</div>
                   </div>
                   {p.description ? <p className="mt-4 flex-1 text-sm text-copy">{p.description}</p> : null}
                   {p.siteWeb ? <a href={p.siteWeb} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">Visiter le site <ExternalLink className="size-3.5" /></a> : null}

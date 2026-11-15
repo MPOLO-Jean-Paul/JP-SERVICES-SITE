@@ -20,7 +20,7 @@ export function AnnouncementBar({ text, href, label }: { text: string; href: str
   return (
     <aside className="relative z-30 border-b bg-brand-950 text-white" aria-label="Annonce">
       <div className="shell flex items-center gap-3 py-2 text-[13px]">
-        <span className="hidden shrink-0 rounded-full bg-white/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-white/80 ring-1 ring-white/15 sm:inline">Nouveau</span>
+        <span className="hidden shrink-0 rounded-full bg-white/10 px-2 py-0.5 text-[11px] text-white/80 ring-1 ring-white/15 sm:inline font-medium">Nouveau</span>
         <p className="min-w-0 flex-1 truncate text-white/85">{text}</p>
         {external ? (
           <a href={href} className="hidden shrink-0 items-center gap-1 font-semibold underline-offset-4 hover:underline sm:inline-flex" target="_blank" rel="noopener noreferrer">

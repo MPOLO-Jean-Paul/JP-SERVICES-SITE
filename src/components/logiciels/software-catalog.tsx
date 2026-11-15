@@ -61,7 +61,7 @@ export function SoftwareCatalog({ items, categories, platforms }: { items: Softw
                 )}
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2"><h3 className="h3 truncate">{l.nom}</h3>{l.version ? <Badge tone="brand">v{l.version}</Badge> : null}</div>
-                  <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-muted">{l.categorieNom}</p>
+                  <p className="mt-0.5 text-[11px] text-muted font-medium">{l.categorieNom}</p>
                 </div>
               </div>
               <p className="mt-4 flex-1 text-sm text-copy">{l.description || "Fiche en préparation."}</p>

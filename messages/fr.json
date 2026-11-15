@@ -133,8 +133,8 @@
     "location": "Lubumbashi · République démocratique du Congo"
   },
   "footer": {
-    "ctaTitle": "Apprendre. Créer. Progresser.",
-    "ctaText": "JP-Services réunit formations, logiciels et communauté pour transformer vos ambitions numériques en résultats concrets.",
+    "ctaTitle": "Prêt à commencer ?",
+    "ctaText": "Créez votre compte gratuitement, choisissez une formation et suivez vos progrès depuis un seul espace.",
     "ctaPrimary": "Créer mon compte gratuitement",
     "ctaPrimaryLogged": "Explorer les formations",
     "ctaSecondary": "Nous contacter",
@@ -165,7 +165,7 @@
     "backToTop": "Retour en haut"
   },
   "cookies": {
-    "title": "Votre vie privée compte",
+    "title": "Cookies",
     "text": "Nous utilisons des cookies essentiels au fonctionnement du site et, avec votre accord, une mesure d’audience anonyme.",
     "accept": "Tout accepter",
     "refuse": "Refuser",

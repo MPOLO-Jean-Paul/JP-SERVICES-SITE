@@ -23,10 +23,10 @@ export default async function SolutionPage() {
     <>
       <section className="relative overflow-hidden border-b">
         <div className="bg-grid fade-mask absolute inset-0" aria-hidden />
-        <div className="glow absolute inset-x-0 top-0 h-96" aria-hidden />
+        
         <div className="shell relative py-20 text-center lg:py-28">
           <span className="eyebrow">Plateforme tout-en-un</span>
-          <h1 className="h-display reveal mx-auto mt-6 max-w-3xl">Votre élan numérique, <span className="text-gradient">dans un même espace.</span></h1>
+          <h1 className="h-display reveal mx-auto mt-6 max-w-3xl">Votre élan numérique, dans un même espace.</h1>
           <p className="lead reveal mx-auto mt-6 max-w-2xl">Construisez des compétences utiles, accédez à des ressources sélectionnées et avancez avec une communauté qui partage vos ambitions.</p>
           <ul className="reveal mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-copy">{["À votre rythme", "Ressources vérifiées", "Accompagnement humain"].map((p) => <li key={p} className="inline-flex items-center gap-2"><CheckCircle2 className="size-4" /> {p}</li>)}</ul>
           <div className="reveal mt-8 flex flex-wrap justify-center gap-3"><Link href={user ? "/formations" : "/inscription"} className={buttonVariants({ variant: "dark", size: "xl" })}>{user ? "Explorer les formations" : "Créer mon espace gratuit"} <ArrowRight /></Link><Link href="/a-propos" className={buttonVariants({ variant: "outline", size: "xl" })}>Découvrir JP-Services</Link></div>

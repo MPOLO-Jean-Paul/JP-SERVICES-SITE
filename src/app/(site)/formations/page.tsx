@@ -77,7 +77,7 @@ export default async function FormationsPage() {
               ].map(([n, label]) => (
                 <div key={label as string} className="p-4">
                   <dd className="font-display text-2xl font-semibold">{n as number}</dd>
-                  <dt className="font-mono text-[10px] uppercase tracking-wider text-muted">{label as string}</dt>
+                  <dt className="text-[11px] text-muted font-medium">{label as string}</dt>
                 </div>
               ))}
             </dl> : null}

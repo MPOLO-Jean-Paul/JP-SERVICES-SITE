@@ -54,7 +54,7 @@ export function PlatformPreview({ className }: { className?: string }) {
         <div className="space-y-4 p-4 sm:p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-widest text-muted">Mon espace</p>
+              <p className="text-[11px] text-muted font-medium">Mon espace</p>
               <p className="text-sm font-semibold">Bonjour, Grace</p>
             </div>
             <span className="flex h-8 items-center gap-2 rounded-lg border px-2.5 text-[11px] text-muted">
@@ -64,7 +64,7 @@ export function PlatformPreview({ className }: { className?: string }) {
           <div className="grid gap-3 sm:grid-cols-[1.35fr_1fr]">
             <div className="rounded-xl border p-4">
               <div className="flex items-center justify-between text-[11px]">
-                <span className="font-mono uppercase tracking-wider text-muted">En cours</span>
+                <span className="text-muted font-medium">En cours</span>
                 <span className="rounded-full bg-primary-soft px-2 py-0.5 font-medium text-primary">Module 3 / 5</span>
               </div>
               <p className="mt-2 text-sm font-semibold leading-snug">Développement web moderne</p>
@@ -82,7 +82,7 @@ export function PlatformPreview({ className }: { className?: string }) {
               </ul>
             </div>
             <div className="flex flex-col rounded-xl border bg-brand-950 p-4 text-white">
-              <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-white/60">
+              <span className="flex items-center gap-1.5 text-[11px] text-white/60 font-medium">
                 <i className="size-1.5 animate-pulse-soft rounded-full bg-accent-500" /> En direct à 18:00
               </span>
               <p className="mt-2 text-sm font-semibold leading-snug">Atelier : créer sa première page web</p>
@@ -98,7 +98,7 @@ export function PlatformPreview({ className }: { className?: string }) {
           </div>
           <div className="grid gap-3 sm:grid-cols-[1fr_1.2fr]">
             <div className="rounded-xl border p-4">
-              <p className="font-mono text-[10px] uppercase tracking-wider text-muted">Heures cette semaine</p>
+              <p className="text-[11px] text-muted font-medium">Heures cette semaine</p>
               <div className="mt-3 flex h-16 items-end gap-1.5">
                 {[38, 62, 45, 80, 54, 92, 30].map((v, i) => (
                   <span key={i} className={cn("flex-1 rounded-sm", i === 5 ? "bg-primary" : "bg-panel-2")} style={{ height: `${v}%` }} />
@@ -111,7 +111,7 @@ export function PlatformPreview({ className }: { className?: string }) {
               </div>
             </div>
             <div className="rounded-xl border p-4">
-              <p className="font-mono text-[10px] uppercase tracking-wider text-muted">Ressources</p>
+              <p className="text-[11px] text-muted font-medium">Ressources</p>
               <ul className="mt-2 divide-y text-[11px]">
                 {[
                   ["Visual Studio Code", "Windows · macOS"],
@@ -142,7 +142,7 @@ export function LiveRoomPreview({ className }: { className?: string }) {
     <Window bar={false} className={cn("bg-brand-950 text-white", className)}>
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
         <span className="flex items-center gap-2 text-xs font-medium">
-          <span className="flex items-center gap-1.5 rounded-full bg-accent-500 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider">
+          <span className="flex items-center gap-1.5 rounded-full bg-accent-500 px-2 py-0.5 text-[11px] font-medium">
             <CircleDot className="size-3" /> Live
           </span>
           Atelier découverte — HTML & CSS
@@ -230,7 +230,7 @@ export function PipelinePreview({ className }: { className?: string }) {
       <div className="p-5">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-wider text-muted">Projet #0142</p>
+            <p className="text-[11px] text-muted font-medium">Projet #0142</p>
             <p className="mt-1 text-sm font-semibold">Plateforme de suivi scolaire</p>
           </div>
           <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">En analyse</span>
@@ -261,7 +261,7 @@ export function ThreadPreview({ className }: { className?: string }) {
     <Window title="Forum d’entraide" className={className}>
       <div className="space-y-4 p-5">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-wider text-muted">Question · Excel</p>
+          <p className="text-[11px] text-muted font-medium">Question · Excel</p>
           <p className="mt-1 text-sm font-semibold">Comment calculer un total par mois avec un tableau croisé ?</p>
         </div>
         {[
@@ -297,7 +297,7 @@ export function PartnershipPreview({ className }: { className?: string }) {
           {[["4", "Formats"], ["3", "Étapes"], ["48 h", "Premier retour"]].map(([v, l]) => (
             <div key={l} className="rounded-lg border p-3">
               <p className="font-display text-lg font-semibold">{v}</p>
-              <p className="font-mono text-[9px] uppercase tracking-wider text-muted">{l}</p>
+              <p className="text-[11px] text-muted font-medium">{l}</p>
             </div>
           ))}
         </div>

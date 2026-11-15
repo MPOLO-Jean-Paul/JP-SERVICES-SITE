@@ -19,7 +19,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
           <LogoMark className="size-10" />
         </Link>
         <div className="relative max-w-md">
-          <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-brand-300">{s.auth_showcase_badge || t("showcaseBadge")}</span>
+          <span className="text-[11px] text-brand-300 font-medium">{s.auth_showcase_badge || t("showcaseBadge")}</span>
           <h2 className="h1 mt-5 text-white">{s.auth_showcase_title || t("showcaseTitle")}</h2>
           <ul className="mt-8 space-y-3">
             {points.map((p) => (
@@ -29,7 +29,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
             ))}
           </ul>
         </div>
-        <p className="relative font-mono text-[11px] uppercase tracking-wider text-white/40">© {new Date().getFullYear()} JP‑Services · Lubumbashi</p>
+        <p className="relative text-[11px] text-white/40 font-medium">© {new Date().getFullYear()} JP‑Services · Lubumbashi</p>
       </aside>
       <div className="flex flex-col">
         <header className="flex items-center justify-between px-6 py-4 sm:px-10">

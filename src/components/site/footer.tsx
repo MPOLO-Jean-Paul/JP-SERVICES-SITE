@@ -63,10 +63,8 @@ export async function SiteFooter() {
     <footer className="mt-24 border-t bg-canvas-soft">
       <div className="shell">
         <div className="relative -mt-px grid gap-10 overflow-hidden border-x border-b bg-canvas px-6 py-14 sm:px-10 lg:grid-cols-[1.2fr_1fr] lg:items-end">
-          <div className="bg-grid fade-mask pointer-events-none absolute inset-0" aria-hidden />
           <div className="relative">
-            <span className="eyebrow">JP-Services</span>
-            <h2 className="h2 mt-4 max-w-xl">{t("ctaTitle")}</h2>
+            <h2 className="h2 max-w-xl">{t("ctaTitle")}</h2>
             <p className="mt-3 max-w-lg text-copy">{t("ctaText")}</p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link href={user ? "/formations" : "/inscription"} className="inline-flex h-11 items-center gap-2 rounded-lg bg-ink px-5 text-sm font-medium text-canvas shadow-sm transition hover:bg-ink/85">
@@ -93,7 +91,7 @@ export async function SiteFooter() {
             <LogoMark className="size-9" />
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-copy">{t("brandText")}</p>
-          <p className="mt-4 font-mono text-[11px] uppercase tracking-wider text-muted">{s.contact_adresse}</p>
+          <p className="mt-4 text-[11px] text-muted font-medium">{s.contact_adresse}</p>
           {socials.length ? (
             <div className="mt-6 flex gap-1.5" aria-label={t("followCol")}>
               {socials.map(({ href, label, Icon }) => (
@@ -109,7 +107,7 @@ export async function SiteFooter() {
         </div>
         {cols.map((col) => (
           <nav key={col.title} aria-label={col.title}>
-            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-muted">{col.title}</p>
+            <p className="text-sm font-medium text-ink">{col.title}</p>
             <ul className="mt-4 space-y-2.5">
               {col.links.map((l) => (
                 <li key={l.href + l.label}>
@@ -126,7 +124,7 @@ export async function SiteFooter() {
 
       <div className="border-t">
         <div className="shell flex flex-col gap-4 py-6 text-xs text-muted md:flex-row md:items-center md:justify-between">
-          <p className="font-mono">
+          <p>
             © {year} JP‑Services · {t("rights")}
           </p>
           <div className="flex flex-wrap gap-x-5 gap-y-2">

@@ -38,7 +38,7 @@ export default async function LogicielsPage() {
       >
         {items.length ? <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
           {[[items.length, "logiciels"], [chips.length, "catégories"], [total, "téléchargements"]].map(([n, l]) => (
-            <div key={l as string}><dd className="font-display text-3xl font-semibold tracking-tight">{(n as number).toLocaleString("fr-FR")}</dd><dt className="font-mono text-[10px] uppercase tracking-wider text-muted">{l as string}</dt></div>
+            <div key={l as string}><dd className="font-display text-3xl font-semibold tracking-tight">{(n as number).toLocaleString("fr-FR")}</dd><dt className="text-[11px] text-muted font-medium">{l as string}</dt></div>
           ))}
         </dl> : null}
       </PageHero>

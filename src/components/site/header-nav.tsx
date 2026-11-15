@@ -71,7 +71,7 @@ export function DesktopNav({ user }: { user: Props["user"] }) {
               <div className="grid grid-cols-[1fr_1fr_1.05fr] gap-1">
                 {menu.groups.map((group) => (
                   <div key={group.label} className="p-3">
-                    <p className="px-3 pb-2 font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-muted">{t(group.label)}</p>
+                    <p className="px-3 pb-2 text-[11px] font-medium text-muted">{t(group.label)}</p>
                     <ul className="space-y-0.5">
                       {group.links
                         .filter((l) => !l.authOnly || user)
@@ -92,7 +92,7 @@ export function DesktopNav({ user }: { user: Props["user"] }) {
                   </div>
                 ))}
                 <div className="bg-grid relative flex flex-col justify-between overflow-hidden rounded-xl border bg-canvas-soft p-6">
-                  <div className="glow pointer-events-none absolute inset-0" aria-hidden />
+                  
                   <div className="relative">
                     <span className="kicker">{t(menu.intro.kicker)}</span>
                     <p className="mt-3 text-lg font-semibold leading-snug tracking-tight">{t(menu.intro.title)}</p>
@@ -243,7 +243,7 @@ export function MobileDrawer({ user, logoutAction }: Props) {
             </div>
           ) : (
             <div className="bg-grid mb-4 rounded-xl border bg-brand-950 p-4 text-white">
-              <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/60">{t("drawerKicker")}</p>
+              <p className="text-[11px] text-white/60 font-medium">{t("drawerKicker")}</p>
               <p className="mt-1 text-lg font-semibold leading-snug tracking-tight">{t("drawerTitle")}</p>
               <p className="mt-1 text-sm text-white/80">{t("drawerText")}</p>
               <div className="mt-3 flex gap-2">
@@ -258,7 +258,7 @@ export function MobileDrawer({ user, logoutAction }: Props) {
           )}
           {sections.map((s) => (
             <div key={s.label} className="mb-4">
-              <p className="px-3 pb-1 font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-muted">{s.label}</p>
+              <p className="px-3 pb-1 text-[11px] font-medium text-muted">{s.label}</p>
               <ul>
                 {s.links.map((l) => (
                   <li key={l.href + l.title}>
@@ -272,7 +272,7 @@ export function MobileDrawer({ user, logoutAction }: Props) {
           ))}
           {user ? (
             <div className="mb-4">
-              <p className="px-3 pb-1 font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-muted">{t("mySpace")}</p>
+              <p className="px-3 pb-1 text-[11px] font-medium text-muted">{t("mySpace")}</p>
               <ul>
                 {[
                   { href: "/profil", title: t("profile") },

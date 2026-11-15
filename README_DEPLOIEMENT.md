@@ -31,6 +31,7 @@ APP_KEY=generez-ici-une-cle-aleatoire-longue
 APP_TIMEZONE=Africa/Lubumbashi
 APP_BASE_PATH=
 APP_URL=https://votre-domaine.tld
+CONTACT_EMAIL=contact@votre-domaine.tld
 SESSION_NAME=jp_session
 SESSION_IDLE_TIMEOUT=7200
 SESSION_ROTATE_INTERVAL=900
@@ -67,6 +68,10 @@ Exemple :
 ```dotenv
 APP_URL=https://jp-services.cd
 ```
+
+### Adresse e-mail publique de contact
+
+L’adresse affichée sur la page **Contact** peut être modifiée dans **Administration → Paramètres du site** sans redéployer le site. À défaut de valeur en base, elle utilise `CONTACT_EMAIL` dans `.env`. L’adresse SMTP (`SMTP_FROM_ADDRESS`) est indépendante et n’est pas publiée automatiquement. Vérifier que l’adresse professionnelle est réelle et reçoit les courriels avant de l’afficher.
 
 ### `APP_BASE_PATH`
 

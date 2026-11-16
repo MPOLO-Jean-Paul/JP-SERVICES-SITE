@@ -1,28 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { CrispPhoto, type PhotoCategory } from "@/components/ui/crisp-photo";
 import { MaterialIcon } from "@/components/ui/material-symbol";
 
-const slides = [
+const slides: ReadonlyArray<{ label: string; heading: string; category: PhotoCategory; alt: string; icon: string }> = [
   {
     label: "Formation",
     heading: "FORMATION NUMÉRIQUE",
-    src: "/media/atelier-numerique.webp",
+    category: "formation",
     alt: "Illustration d'un atelier de formation informatique avec un formateur et des participants",
     icon: "school",
   },
   {
     label: "Logiciels",
     heading: "OUTILS NUMÉRIQUES",
-    src: "/media/developpement-logiciel.webp",
+    category: "logiciels",
     alt: "Illustration du développement de logiciels et d'outils numériques",
     icon: "apps",
   },
   {
     label: "Projets",
     heading: "SOLUTIONS MÉTIERS",
-    src: "/media/travail-equipe.webp",
+    category: "projets",
     alt: "Illustration d'une équipe travaillant sur un projet numérique",
     icon: "workspaces",
   },
@@ -34,15 +34,15 @@ export function HeroShowcase() {
   return (
     <div className="jp-hero-showcase" data-testid="hero-showcase">
       <figure className="jp-hero-photo">
-        <Image
-          key={slide.src}
+        <CrispPhoto
+          key={slide.category}
+          category={slide.category}
           className="jp-showcase-image"
-          src={slide.src}
-          width={960}
-          height={540}
+          width={1280}
+          height={780}
           alt={slide.alt}
           priority={active === 0}
-          sizes="(max-width:800px) 92vw, (max-width:1280px) 40vw, 33vw"
+          sizes="(max-width:800px) 92vw, (max-width:1280px) 50vw, 40vw"
         />
         <figcaption aria-live="polite">
           <span>{slide.heading}</span>

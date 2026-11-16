@@ -359,7 +359,7 @@ test("Material 3 : le visiteur peut parcourir les visuels sans quitter l'accueil
   await page.getByTestId("hero-slide-1").click();
   await expect(page.getByTestId("hero-slide-1")).toHaveAttribute("aria-pressed", "true");
   await expect(showcase.locator("figcaption")).toContainText("OUTILS NUMÉRIQUES");
-  await expect(showcase.locator(".jp-hero-photo img")).toHaveAttribute("src", /developpement-logiciel/);
+  await expect(showcase.locator(".jp-hero-photo img")).toHaveAttribute("src", /photo-1618477388954-7852f32655ec|developpement-logiciel/);
   await page.getByTestId("hero-slide-2").click();
   await expect(showcase.locator("figcaption")).toContainText("SOLUTIONS MÉTIERS");
 });
@@ -383,4 +383,21 @@ test("Flutter motion : les mouvements désactivés respectent les préférences 
   await expect(page.locator(".jp-scroll-progress")).toBeAttached();
   const animation = await page.locator(".jp-showcase-image").evaluate(el => getComputedStyle(el).animationDuration);
   expect(parseFloat(animation)).toBeLessThanOrEqual(.001);
+});
+
+test("les photographies HD chargent en qualité élevée sans filtre flou", async ({page}) => {
+  await page.goto("/");
+  const photo = page.locator(".jp-hero-photo img");
+  await expect(photo).toBeVisible();
+  const metrics = await photo.evaluate((img) => {
+    const node = img as HTMLImageElement;
+    return {
+      src: node.currentSrc || node.src,
+      filter: getComputedStyle(img).filter,
+    };
+  });
+  expect(metrics.src).toMatch(/photo-1758270705317|atelier-numerique/);
+  expect(metrics.filter).toBe("none");
+  await page.getByTestId("hero-slide-1").click();
+  await expect(photo).toHaveAttribute("src", /photo-1618477388954|developpement-logiciel/);
 });

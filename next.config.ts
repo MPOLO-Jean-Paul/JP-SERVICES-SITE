@@ -28,7 +28,9 @@ const nextConfig: NextConfig = {
     // Sur Cloudflare Workers, les images sont servies telles quelles (pas de sharp).
     unoptimized: process.env.CLOUDFLARE_BUILD === "1",
     formats: ["image/avif", "image/webp"],
+    qualities: [75, 90],
     remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "**.r2.dev" },
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
     ],

@@ -374,3 +374,22 @@ body :where(.field, input[type="search"], input[type="email"], input[type="text"
   .jp-md3-fab, .jp-method-step { transition: none !important; }
   .jp-method-step:hover, .jp-area-link:hover .jp-area-visual img { transform: none !important; }
 }
+
+/* HD photography: preserve natural edges, remove blur/soft-focus animations. */
+.jp-showcase-image, .jp-hero-photo img, .jp-area-visual img, .jp-scolia-photo img {
+  filter: none !important;
+  image-rendering: auto;
+  backface-visibility: visible;
+  transform: none;
+}
+.jp-showcase-image { animation: jp-hd-photo-enter .36s var(--md3-motion) both; }
+@keyframes jp-hd-photo-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.jp-hero-photo:hover img, .jp-area-link:hover .jp-area-visual img {
+  transform: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .jp-showcase-image { animation: none !important; }
+}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ArrowUpRight, CalendarDays, Check, ChevronRight, Clock3, GraduationCap, MapPin } from "lucide-react";
 import { getCurrentUser } from "@/server/auth/session";
 import { listActualites } from "@/server/services/content";
@@ -12,17 +13,17 @@ const areas = [
   {
     number: "01", name: "Formations numériques", label: "APPRENDRE",
     description: "Des contenus organisés par compétences, des exercices et un parcours à construire étape par étape.",
-    href: "/formations",
+    href: "/formations", image: "/media/atelier-numerique.webp",
   },
   {
     number: "02", name: "Logiciels & outils", label: "UTILISER",
     description: "Retrouvez les ressources numériques publiées et les outils utiles à votre activité.",
-    href: "/logiciels",
+    href: "/logiciels", image: "/media/developpement-logiciel.webp",
   },
   {
     number: "03", name: "Solutions & projets", label: "RÉALISER",
     description: "Des solutions pensées pour les besoins des organisations, de l'idée à sa mise en œuvre.",
-    href: "/projets",
+    href: "/projets", image: "/media/travail-equipe.webp",
   },
 ];
 
@@ -55,8 +56,8 @@ export default async function HomePage() {
         <div className="shell jp-hero-layout">
           <div className="jp-hero-main">
             <p className="jp-overline"><span className="jp-overline-mark" /> JP-SERVICES <span className="jp-overline-separator">/</span> LUBUMBASHI · RDC</p>
-            <h1 id="home-title">Des compétences qui deviennent <span>des réalisations.</span></h1>
-            <p className="jp-hero-lead">Apprendre, créer et faire avancer les projets numériques. Des formations pratiques, des ressources fiables et un accompagnement ancré dans les besoins réels.</p>
+            <h1 id="home-title">Le numérique <span>en action.</span></h1>
+            <p className="jp-hero-lead">Formations pratiques, logiciels et solutions numériques pour apprendre, créer et concrétiser vos projets.</p>
             <div className="jp-hero-actions">
               <Link href="/formations" className="jp-action jp-action-primary">Explorer les formations <ArrowUpRight size={18} aria-hidden="true" /></Link>
               <Link href={memberLink} className="jp-action jp-action-text">{memberLabel} <ArrowRight size={17} aria-hidden="true" /></Link>
@@ -64,6 +65,10 @@ export default async function HomePage() {
             <p className="jp-hero-support"><MapPin size={15} aria-hidden="true"/> À Lubumbashi et accessible en ligne</p>
           </div>
           <aside className="jp-hero-guide" aria-labelledby="home-guide-title">
+            <figure className="jp-hero-photo">
+              <Image src="/media/atelier-numerique.webp" width={960} height={540} alt="Illustration d'un atelier de formation informatique avec un formateur et des participants" priority sizes="(max-width:800px) 92vw, (max-width:1280px) 40vw, 33vw" />
+              <figcaption><span>FORMATION NUMÉRIQUE</span><span>01 / 03</span></figcaption>
+            </figure>
             <p id="home-guide-title" className="jp-guide-label">Votre point de départ</p>
             <Link href="/formations" className="jp-guide-row">
               <span>01</span><strong>Développer une compétence</strong><ArrowUpRight size={19} aria-hidden="true"/>
@@ -87,13 +92,14 @@ export default async function HomePage() {
         <div className="shell jp-areas-layout">
           <div className="jp-sticky-intro">
             <p className="jp-overline">01 / NOS DOMAINES</p>
-            <h2 id="areas-title">Des solutions adaptées à <em>ce que vous faites.</em></h2>
+            <h2 id="areas-title">Un savoir-faire, <em>plusieurs solutions.</em></h2>
             <p>Chaque besoin a son propre parcours. Choisissez une direction et accédez directement aux contenus correspondants.</p>
           </div>
           <div className="jp-areas-list">
             {areas.map(area => <Link href={area.href} key={area.number} className="jp-area-link">
               <span className="jp-area-number">{area.number}</span>
               <div><span className="jp-area-kicker">{area.label}</span><h3>{area.name}</h3><p>{area.description}</p></div>
+              <span className="jp-area-visual"><Image src={area.image} width={240} height={160} alt="" loading="lazy" sizes="(max-width:620px) 78px, 120px" /></span>
               <ArrowUpRight className="jp-area-arrow" size={21} aria-hidden="true"/>
             </Link>)}
           </div>
@@ -103,7 +109,7 @@ export default async function HomePage() {
       <section className="jp-section jp-learning" aria-labelledby="learning-title">
         <div className="shell">
           <div className="jp-section-heading">
-            <div><p className="jp-overline">02 / SE FORMER</p><h2 id="learning-title">Les prochaines <em>occasions d&apos;apprendre.</em></h2></div>
+            <div><p className="jp-overline">02 / SE FORMER</p><h2 id="learning-title">Les prochaines <em>formations.</em></h2></div>
             <Link href="/formations" className="jp-inline-link">Consulter le catalogue <ArrowUpRight size={18} aria-hidden="true"/></Link>
           </div>
           {formations.length ? <div className="jp-course-list">
@@ -132,7 +138,7 @@ export default async function HomePage() {
       <section className="jp-section jp-method" aria-labelledby="method-title">
         <div className="shell">
           <div className="jp-section-heading">
-            <div><p className="jp-overline">03 / NOTRE APPROCHE</p><h2 id="method-title">Moins de théorie isolée. <em>Plus d&apos;application.</em></h2></div>
+            <div><p className="jp-overline">03 / NOTRE APPROCHE</p><h2 id="method-title">Apprendre <em>par la pratique.</em></h2></div>
             <p className="jp-section-aside">Une méthode simple pour garder le cap : comprendre un problème, travailler concrètement et mesurer la progression.</p>
           </div>
           <div className="jp-method-grid">{method.map(step=><div key={step.number} className="jp-method-step">
@@ -145,7 +151,7 @@ export default async function HomePage() {
         <div className="shell jp-scolia-grid">
           <div className="jp-scolia-main">
             <p className="jp-overline">04 / LOGICIEL MÉTIER <span className="jp-scolia-status">EN DÉVELOPPEMENT</span></p>
-            <h2 id="scolia-title">SCOLIA Pro.<br/><em>L&apos;administration scolaire, simplifiée.</em></h2>
+            <h2 id="scolia-title">SCOLIA Pro. <em>La gestion scolaire simplifiée.</em></h2>
             <p>Un projet logiciel conçu autour des opérations quotidiennes des établissements : suivi des apprenants, encaissements, organisation de la scolarité et pilotage des informations.</p>
             <div className="jp-scolia-actions">
               <Link href="/scolia" className="jp-action jp-action-light">Découvrir le projet <ArrowUpRight size={18}/></Link>
@@ -153,6 +159,9 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="jp-scolia-index" aria-label="Domaines couverts par le projet">
+            <figure className="jp-scolia-photo">
+              <Image src="/media/travail-equipe.webp" width={760} height={440} alt="Illustration d'une équipe travaillant ensemble sur un projet numérique" loading="lazy" sizes="(max-width:800px) 92vw, 40vw" />
+            </figure>
             <div className="jp-scolia-index-top"><span>SCOLIA / DOMAINES</span><span>VERSION EN CONSTRUCTION</span></div>
             {["Gestion des apprenants","Finances & encaissements","Scolarité & évaluations","Rapports & administration"].map((name,i)=><div key={name} className="jp-scolia-index-row">
               <span>{String(i+1).padStart(2,"0")}</span><strong>{name}</strong><Check size={17} aria-hidden="true"/>
@@ -176,7 +185,7 @@ export default async function HomePage() {
 
       <section className="jp-finale" aria-labelledby="finale-title">
         <div className="shell jp-finale-layout">
-          <div><p className="jp-overline">PARLONS DE VOTRE PROCHAINE ÉTAPE</p><h2 id="finale-title">Un projet en tête ?<br/><em>Parlons-en.</em></h2></div>
+          <div><p className="jp-overline">PARLONS DE VOTRE PROCHAINE ÉTAPE</p><h2 id="finale-title">Un projet ? <em>Parlons-en.</em></h2></div>
           <Link href="/contact" className="jp-finale-link">Contacter JP-SERVICES <ArrowUpRight size={22} aria-hidden="true"/></Link>
         </div>
       </section>

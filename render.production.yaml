@@ -9,7 +9,7 @@ services:
     plan: 0.5c-512mb
     branch: ccr-598b649d-2fiktj
     buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
-    startCommand: pnpm db:migrate && pnpm start
+    startCommand: pnpm exec tsx scripts/check-production-env.ts && pnpm db:migrate && pnpm start
     healthCheckPath: /api/health
     autoDeployTrigger: off
     domains:

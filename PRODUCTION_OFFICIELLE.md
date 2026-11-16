@@ -57,3 +57,24 @@ ne pas en faire la base du site officiel. La production reçoit une base sépar�
   mise en veille, absence de Shell et ports SMTP bloqués.
 - Render n'offre aucun outil direct de modification des DNS Cloudflare ici.
   Les changements DNS nécessitent une action dans le tableau de bord Cloudflare.
+
+
+## Renforcement des contrôles avant le domaine officiel (16/11/2026)
+
+- La validation Render utilise désormais son **URL réelle**
+  `https://jp-services-db-validation-75v5.onrender.com` comme `APP_URL`.
+  Cela évite d'émettre de mauvais liens de retour dans les courriers et
+  métadonnées. Mettre à jour la configuration Render par une synchronisation
+  manuelle du Blueprint pour appliquer cette modification.
+- La route `/api/health` teste désormais à la fois la connexion PostgreSQL
+  et l'accès en lecture à trois tables réelles : `site_settings`, `users`,
+  `messages`. Un défaut de schéma ou de base donne **HTTP 503** et bloque
+  la readiness (sans révéler de mot de passe ni le détail des erreurs).
+- En production uniquement, le démarrage exécute
+  `scripts/check-production-env.ts` avant les migrations. Ce précontrôle
+  exige les secrets d'application, SMTP et R2 et l'URL HTTPS canonique.
+  Il ne vérifie pas l'envoi réel d'e-mails : un test transactionnel sur
+  le domaine officiel reste nécessaire après mise en route.
+- Ne pas brancher `jp-services.org` sur une offre gratuite ni sur la base
+  de validation : sa fin de validité est annoncée pour le **15/12/2026**.
+- Le basculement DNS et la facturation ne sont pas automatisés par ces fichiers.

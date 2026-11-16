@@ -55,6 +55,15 @@ test("la recherche globale s’ouvre au clavier", async ({ page, isMobile }) => 
   await expect(page.getByRole("option").first()).toBeVisible();
 });
 
+test("la sonde de production vérifie aussi les tables du site", async ({request}) => {
+  const response = await request.get("/api/health");
+  expect(response.status()).toBe(200);
+  const data = await response.json();
+  expect(data).toMatchObject({status:"ok",database:"ok",schema:"ok"});
+  expect(response.headers()["cache-control"]).toContain("no-store");
+  expect(JSON.stringify(data)).not.toMatch(/password|secret|postgres:\\/\\//i);
+});
+
 test("SEO : robots, sitemap et manifeste", async ({ request }) => {
   expect((await request.get("/robots.txt")).status()).toBe(200);
   const sitemap = await request.get("/sitemap.xml");

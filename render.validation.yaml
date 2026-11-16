@@ -20,7 +20,7 @@ services:
       - key: NEXT_TELEMETRY_DISABLED
         value: "1"
       - key: APP_URL
-        value: https://jp-services-db-validation.onrender.com
+        value: https://jp-services-db-validation-75v5.onrender.com
       - key: APP_TIMEZONE
         value: Africa/Lubumbashi
       - key: JP_PREVIEW_MODE

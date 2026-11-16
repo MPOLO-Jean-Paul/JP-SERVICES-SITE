@@ -17,7 +17,7 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
       {state.error ? <Alert tone="danger">{state.error}</Alert> : null}
       <input type="hidden" name="redirect_to" value={redirectTo} />
       <Field label={t("email")} htmlFor="email">
-        <Input id="email" name="email" type="email" autoComplete="email" required maxLength={254} defaultValue={state.values?.email} inputMode="email" />
+        <Input id="email" name="email" type="email" autoComplete="email" placeholder="nom@exemple.com" required maxLength={254} defaultValue={state.values?.email} inputMode="email" />
       </Field>
       <Field label={t("password")} htmlFor="mot_de_passe">
         <PasswordInput id="mot_de_passe" name="mot_de_passe" autoComplete="current-password" required maxLength={512} />

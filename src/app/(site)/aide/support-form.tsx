@@ -23,10 +23,10 @@ export function SupportForm() {
       {state.status === "success" ? <Alert tone="success">{state.message}</Alert> : null}
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Votre nom" htmlFor="support-nom">
-          <Input id="support-nom" name="nom" required maxLength={120} autoComplete="name" defaultValue={v.nom} />
+          <Input id="support-nom" name="nom" required maxLength={120} autoComplete="name" placeholder="Votre nom" defaultValue={v.nom} />
         </Field>
         <Field label="Adresse e-mail" htmlFor="support-email">
-          <Input id="support-email" name="email" type="email" required maxLength={254} autoComplete="email" defaultValue={v.email} />
+          <Input id="support-email" name="email" type="email" required maxLength={254} autoComplete="email" placeholder="nom@exemple.com" defaultValue={v.email} />
         </Field>
       </div>
       <Field label="Sujet" htmlFor="support-sujet">

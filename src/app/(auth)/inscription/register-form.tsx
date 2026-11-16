@@ -19,14 +19,14 @@ export function RegisterForm() {
       {state.success ? <Alert tone="success">{state.success}</Alert> : null}
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Prénom" htmlFor="prenom" optional>
-          <Input id="prenom" name="prenom" autoComplete="given-name" maxLength={100} defaultValue={state.values?.prenom} />
+          <Input id="prenom" name="prenom" autoComplete="given-name" placeholder="Votre prénom" maxLength={100} defaultValue={state.values?.prenom} />
         </Field>
         <Field label="Nom" htmlFor="nom" optional>
-          <Input id="nom" name="nom" autoComplete="family-name" maxLength={100} defaultValue={state.values?.nom} />
+          <Input id="nom" name="nom" autoComplete="family-name" placeholder="Votre nom" maxLength={100} defaultValue={state.values?.nom} />
         </Field>
       </div>
       <Field label={t("email")} htmlFor="email">
-        <Input id="email" name="email" type="email" autoComplete="email" required maxLength={254} defaultValue={state.values?.email} inputMode="email" />
+        <Input id="email" name="email" type="email" autoComplete="email" placeholder="nom@exemple.com" required maxLength={254} defaultValue={state.values?.email} inputMode="email" />
       </Field>
       <Field label={t("password")} htmlFor="mot_de_passe" hint={t("policyHint")}>
         <PasswordInput id="mot_de_passe" name="mot_de_passe" autoComplete="new-password" required minLength={10} maxLength={128} />

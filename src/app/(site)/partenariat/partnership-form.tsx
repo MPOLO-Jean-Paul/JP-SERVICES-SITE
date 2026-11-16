@@ -16,10 +16,10 @@ export function PartnershipForm({ types }: { types: string[] }) {
       {state.status === "error" ? <Alert tone="danger">{state.message}</Alert> : null}
       {state.status === "success" ? <Alert tone="success">{state.message}</Alert> : null}
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Organisation ou structure" htmlFor="organisation"><Input id="organisation" name="organisation" required maxLength={180} autoComplete="organization" defaultValue={v.organisation} /></Field>
-        <Field label="Nom du contact" htmlFor="contact_nom"><Input id="contact_nom" name="contact_nom" required maxLength={160} autoComplete="name" defaultValue={v.contact_nom} /></Field>
-        <Field label="Adresse e-mail" htmlFor="p-email"><Input id="p-email" name="email" type="email" required maxLength={190} autoComplete="email" defaultValue={v.email} /></Field>
-        <Field label="Téléphone" htmlFor="telephone" optional><Input id="telephone" name="telephone" type="tel" maxLength={40} autoComplete="tel" defaultValue={v.telephone} /></Field>
+        <Field label="Organisation ou structure" htmlFor="organisation"><Input id="organisation" name="organisation" required maxLength={180} autoComplete="organization" placeholder="Nom de la structure" defaultValue={v.organisation} /></Field>
+        <Field label="Nom du contact" htmlFor="contact_nom"><Input id="contact_nom" name="contact_nom" required maxLength={160} autoComplete="name" placeholder="Nom du responsable" defaultValue={v.contact_nom} /></Field>
+        <Field label="Adresse e-mail" htmlFor="p-email"><Input id="p-email" name="email" type="email" required maxLength={190} autoComplete="email" placeholder="nom@exemple.com" defaultValue={v.email} /></Field>
+        <Field label="Téléphone" htmlFor="telephone" optional><Input id="telephone" name="telephone" type="tel" maxLength={40} autoComplete="tel" placeholder="+243 ..." defaultValue={v.telephone} /></Field>
       </div>
       <Field label="Type de partenariat envisagé" htmlFor="type_partenariat">
         <Select id="type_partenariat" name="type_partenariat" required defaultValue={v.type_partenariat ?? ""}>

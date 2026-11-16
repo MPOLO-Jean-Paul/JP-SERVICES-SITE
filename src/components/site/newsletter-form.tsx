@@ -2,7 +2,7 @@
 import { useActionState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import { subscribeNewsletter, type NewsletterState } from "@/server/actions/newsletter";
 import { Alert } from "@/components/ui/alert";
 import { SubmitButton } from "@/components/ui/submit-button";
@@ -33,11 +33,11 @@ export function NewsletterForm() {
           ) : null}
         </Alert>
       ) : null}
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2 sm:flex-nowrap">
         <label className="sr-only" htmlFor="newsletter-email">
           {t("newsletterEmail")}
         </label>
-        <input id="newsletter-email" type="email" name="email" required maxLength={254} autoComplete="email" placeholder={t("newsletterEmail")} className="field h-10 flex-1" />
+        <div className="jp-field-shell min-w-0 flex-1"><Mail aria-hidden="true" size={18} className="jp-field-leading" /><input id="newsletter-email" type="email" name="email" required maxLength={254} autoComplete="email" placeholder={t("newsletterEmail")} className="field jp-field-with-icon h-10 min-w-0" /></div>
         <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
         <SubmitButton variant="dark" className="h-10">
           {t("newsletterSubmit")} <ArrowRight />

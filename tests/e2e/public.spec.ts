@@ -401,3 +401,35 @@ test("les photographies HD chargent en qualité élevée sans filtre flou", asyn
   await page.getByTestId("hero-slide-1").click();
   await expect(photo).toHaveAttribute("src", /photo-1618477388954|developpement-logiciel/);
 });
+
+test("le panneau mobile change le thème sans menu imbriqué",async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ await page.goto("/");
+ await page.locator('button[aria-controls="mobile-drawer"]').click();
+ await page.getByTestId("drawer-theme-trigger").click();
+ await page.getByTestId("drawer-theme-dark").click();
+ await expect(page.locator("html")).toHaveAttribute("data-theme","dark");
+ const dark=await page.locator(".jp-learning").evaluate(el=>getComputedStyle(el).backgroundColor);
+ await page.getByTestId("drawer-theme-light").click();
+ await expect(page.locator("html")).toHaveAttribute("data-theme","light");
+ const light=await page.locator(".jp-learning").evaluate(el=>getComputedStyle(el).backgroundColor);
+ expect(dark).not.toBe(light);
+});
+test("le panneau mobile change la langue sans popover bloqué",async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ await page.goto("/");
+ await page.locator('button[aria-controls="mobile-drawer"]').click();
+ await page.getByTestId("drawer-language-trigger").click();
+ await page.getByTestId("drawer-language-en").click();
+ await expect(page.locator("html")).toHaveAttribute("lang","en");
+});
+test("les champs de contact ont des icônes sans masquer la saisie",async({page})=>{
+ await page.goto("/contact");
+ for(const id of ["nom","email","sujet","message"]){
+  const input=page.locator("#"+id);
+  await expect(input).toBeVisible();
+  await expect(input.locator("xpath=..").locator("svg.jp-field-leading")).toBeVisible();
+  const padding=await input.evaluate(el=>parseFloat(getComputedStyle(el).paddingLeft));
+  expect(padding).toBeGreaterThanOrEqual(40);
+ }
+});

@@ -350,3 +350,37 @@ test("les animations de l'accueil respectent la préférence de mouvement rédui
   const duration=await page.locator(".jp-hero-photo").evaluate(el=>getComputedStyle(el).animationDuration);
   expect(parseFloat(duration), "Le mouvement réduit doit supprimer les animations visibles").toBeLessThanOrEqual(0.001);
 });
+
+test("Material 3 : le visiteur peut parcourir les visuels sans quitter l'accueil", async ({page}) => {
+  await page.goto("/");
+  const showcase = page.getByTestId("hero-showcase");
+  await expect(showcase.locator(".jp-hero-photo img")).toHaveCount(1);
+  await expect(page.getByTestId("hero-slide-0")).toHaveAttribute("aria-pressed", "true");
+  await page.getByTestId("hero-slide-1").click();
+  await expect(page.getByTestId("hero-slide-1")).toHaveAttribute("aria-pressed", "true");
+  await expect(showcase.locator("figcaption")).toContainText("OUTILS NUMÉRIQUES");
+  await expect(showcase.locator(".jp-hero-photo img")).toHaveAttribute("src", /developpement-logiciel/);
+  await page.getByTestId("hero-slide-2").click();
+  await expect(showcase.locator("figcaption")).toContainText("SOLUTIONS MÉTIERS");
+});
+
+test("Material 3 : le guide interactif oriente vers des pages existantes", async ({page}) => {
+  await page.goto("/");
+  const finder = page.locator(".jp-path-finder");
+  await expect(finder.getByRole("button")).toHaveCount(3);
+  await expect(page.getByTestId("path-choice-0")).toHaveAttribute("aria-pressed", "true");
+  await page.getByTestId("path-choice-2").click();
+  await expect(page.getByTestId("path-choice-2")).toHaveAttribute("aria-pressed", "true");
+  await expect(finder).toContainText("Concrétisez un projet");
+  await expect(finder.locator('a[href="/projets"]')).toBeVisible();
+  await page.getByTestId("path-choice-1").click();
+  await expect(finder.locator('a[href="/logiciels"]')).toBeVisible();
+});
+
+test("Flutter motion : les mouvements désactivés respectent les préférences système", async ({page}) => {
+  await page.emulateMedia({reducedMotion: "reduce"});
+  await page.goto("/");
+  await expect(page.locator(".jp-scroll-progress")).toBeAttached();
+  const animation = await page.locator(".jp-showcase-image").evaluate(el => getComputedStyle(el).animationDuration);
+  expect(parseFloat(animation)).toBeLessThanOrEqual(.001);
+});

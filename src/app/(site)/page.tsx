@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MaterialIcon } from "@/components/ui/material-symbol";
+import { HeroShowcase } from "@/components/home/hero-showcase";
+import { PathFinder } from "@/components/home/path-finder";
 import { getCurrentUser } from "@/server/auth/session";
 import { listActualites } from "@/server/services/content";
 import { listUpcomingFormations } from "@/server/services/formations";
@@ -65,10 +67,7 @@ export default async function HomePage() {
             <p className="jp-hero-support"><MaterialIcon name="location_on" size={15} /> À Lubumbashi et accessible en ligne</p>
           </div>
           <aside className="jp-hero-guide" aria-labelledby="home-guide-title">
-            <figure className="jp-hero-photo">
-              <Image src="/media/atelier-numerique.webp" width={960} height={540} alt="Illustration d'un atelier de formation informatique avec un formateur et des participants" priority sizes="(max-width:800px) 92vw, (max-width:1280px) 40vw, 33vw" />
-              <figcaption><span>FORMATION NUMÉRIQUE</span><span>01 / 03</span></figcaption>
-            </figure>
+            <HeroShowcase />
             <p id="home-guide-title" className="jp-guide-label">Votre point de départ</p>
             <Link href="/formations" className="jp-guide-row">
               <span>01</span><strong>Développer une compétence</strong><MaterialIcon name="north_east" size={19} />
@@ -94,6 +93,7 @@ export default async function HomePage() {
             <p className="jp-overline">01 / NOS DOMAINES</p>
             <h2 id="areas-title">Un savoir-faire, <em>plusieurs solutions.</em></h2>
             <p>Chaque besoin a son propre parcours. Choisissez une direction et accédez directement aux contenus correspondants.</p>
+            <PathFinder />
           </div>
           <div className="jp-areas-list">
             {areas.map(area => <Link href={area.href} key={area.number} className="jp-area-link">

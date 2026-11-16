@@ -1,0 +1,280 @@
+/*
+ * JP-SERVICES — Fluid typography & motion.
+ * 320–1920 px: restrained editorial scale, no enormous mobile titles.
+ * Loaded after globals.css and senior-ui.css; original brand colors preserved.
+ * Changes are scoped to the public-facing site and authentication views.
+ */
+:root {
+  --jp-type-hero: clamp(2rem, 1.22rem + 2.35vw, 3.68rem);
+  --jp-type-page: clamp(1.8rem, 1.16rem + 2.05vw, 3.12rem);
+  --jp-type-section: clamp(1.5rem, 1.13rem + 1.32vw, 2.58rem);
+  --jp-type-subsection: clamp(1.23rem, 1.04rem + 0.69vw, 1.8rem);
+  --jp-type-card: clamp(1.06rem, 0.99rem + 0.38vw, 1.31rem);
+  --jp-type-lead: clamp(0.9rem, 0.845rem + 0.21vw, 1.06rem);
+  --jp-section-space: clamp(3.5rem, 5.8vw, 6.5rem);
+  --jp-hero-space: clamp(3.3rem, 6.3vw, 7rem);
+}
+html { scroll-padding-top: 100px; }
+
+/* Shared editorial tokens. Keep ordinary paragraph text readable; scale headings,
+   not inputs, browser zoom, or account administration. */
+#main-content .h-display {
+  font-size: var(--jp-type-hero);
+  line-height: 1.13;
+  letter-spacing: -0.045em;
+}
+#main-content .h1 {
+  font-size: var(--jp-type-page);
+  line-height: 1.2;
+  letter-spacing: -0.042em;
+}
+#main-content .h2 {
+  font-size: var(--jp-type-section);
+  line-height: 1.24;
+  letter-spacing: -0.037em;
+}
+#main-content .h3 {
+  font-size: var(--jp-type-card);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+#main-content .lead {
+  font-size: var(--jp-type-lead);
+  line-height: 1.75;
+}
+#main-content .section {
+  padding-top: var(--jp-section-space);
+  padding-bottom: var(--jp-section-space);
+}
+#main-content :is(h1, h2, h3) {
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+#main-content :is(p, li) {
+  overflow-wrap: break-word;
+}
+#main-content .eyebrow,
+#main-content .kicker {
+  font-size: clamp(0.75rem, 0.72rem + 0.12vw, 0.875rem);
+}
+#main-content .jp-section .jp-overline {
+  max-width: 100%;
+}
+#main-content .reveal {
+  transition-duration: .22s;
+}
+
+/* Homepage: distinctly scaled without a 90px title or cramped 320px viewport. */
+.jp-hero-layout {
+  padding-top: var(--jp-hero-space);
+  padding-bottom: clamp(2.9rem, 5.6vw, 5.9rem);
+  gap: clamp(1.8rem, 4vw, 4.8rem);
+}
+.jp-hero-main h1 {
+  font-size: var(--jp-type-hero);
+  line-height: 1.15;
+  letter-spacing: -.043em;
+  max-width: 19.5ch;
+  margin: clamp(1rem, 2vw, 1.5rem) 0 clamp(1rem, 2vw, 1.7rem);
+}
+.jp-hero-lead {
+  font-size: var(--jp-type-lead);
+  line-height: 1.77;
+  max-width: 59ch;
+}
+.jp-hero-support { margin-top: clamp(1.5rem, 3vw, 2.8rem); }
+.jp-hero-actions { margin-top: clamp(1.35rem, 2.2vw, 2rem); }
+.jp-section {
+  padding-top: var(--jp-section-space);
+  padding-bottom: var(--jp-section-space);
+}
+.jp-sticky-intro h2,
+.jp-section-heading h2 {
+  font-size: var(--jp-type-section);
+  line-height: 1.24;
+  letter-spacing: -.04em;
+  margin-top: clamp(1rem, 1.7vw, 1.4rem);
+  margin-bottom: clamp(.85rem, 1.35vw, 1.2rem);
+}
+.jp-section-heading { margin-bottom: clamp(1.4rem, 3vw, 2.6rem); }
+.jp-areas-layout { gap: clamp(2rem, 5vw, 6rem); }
+.jp-area-link h3 {
+  font-size: var(--jp-type-subsection);
+  letter-spacing: -.028em;
+  line-height: 1.3;
+}
+.jp-course-primary h3 { font-size: var(--jp-type-subsection); letter-spacing: -.027em; }
+.jp-method-step h3 { font-size: var(--jp-type-subsection); letter-spacing: -.025em; }
+.jp-learning-empty h3 { font-size: var(--jp-type-card); }
+.jp-news-row h3 { font-size: var(--jp-type-card); }
+.jp-scolia-section {
+  padding-top: var(--jp-section-space);
+  padding-bottom: var(--jp-section-space);
+}
+.jp-scolia-main h2 {
+  font-size: var(--jp-type-section);
+  letter-spacing: -.04em;
+  line-height: 1.23;
+  margin: 1.25rem 0;
+}
+.jp-scolia-main > p:not(.jp-overline) {
+  font-size: var(--jp-type-lead);
+  line-height: 1.78;
+  max-width: 57ch;
+}
+.jp-finale { padding-top: var(--jp-section-space); padding-bottom: var(--jp-section-space); }
+.jp-finale h2 { font-size: var(--jp-type-page); line-height: 1.2; letter-spacing: -.04em; }
+
+/* Inner page hero, breadcrumbs and headings. */
+.jp-inner-hero-layout {
+  padding-top: clamp(2.8rem, 5.8vw, 5.3rem);
+  padding-bottom: clamp(3rem, 5.8vw, 5.8rem);
+  gap: clamp(1.6rem, 4vw, 4.5rem);
+}
+.jp-inner-hero-copy h1 {
+  font-size: var(--jp-type-page);
+  line-height: 1.18;
+  letter-spacing: -.042em;
+  max-width: 22ch;
+  margin-top: clamp(1rem, 1.8vw, 1.4rem);
+  margin-bottom: clamp(.8rem, 1.6vw, 1.2rem);
+}
+.jp-inner-hero-lead,
+.jp-page-heading-lead {
+  font-size: var(--jp-type-lead);
+  line-height: 1.78;
+  max-width: 64ch;
+}
+.jp-page-heading-layout {
+  padding-top: clamp(2rem, 4vw, 3.4rem);
+  padding-bottom: clamp(2.3rem, 4.8vw, 4.6rem);
+}
+.jp-page-heading h1 {
+  font-size: var(--jp-type-page);
+  line-height: 1.18;
+  letter-spacing: -.042em;
+  margin-top: clamp(.9rem, 1.8vw, 1.3rem);
+}
+.jp-page-heading-lead { margin-top: clamp(.7rem, 1.5vw, 1.1rem); }
+.jp-inner-hero-actions { margin-top: clamp(1.1rem, 2vw, 1.8rem); }
+
+/* Structured directories: allow the title to breathe but never dominate data. */
+.jp-catalogue-content .h3,
+.jp-software-item .jp-catalogue-content .h3 {
+  font-size: var(--jp-type-subsection);
+  line-height: 1.32;
+  letter-spacing: -.028em;
+}
+.jp-directory-step .h3 { font-size: var(--jp-type-card); letter-spacing: -.022em; }
+.jp-directory-guide > p {
+  font-size: clamp(.92rem, .83rem + .43vw, 1.17rem);
+  line-height: 1.56;
+}
+.jp-catalogue-item { padding-top: clamp(1.2rem, 2.4vw, 1.8rem); padding-bottom: clamp(1.3rem, 2.5vw, 1.9rem); }
+
+/* Product and contact editorial panels: same typographic voice as homepage. */
+.jp-product-hero-layout {
+  padding-top: var(--jp-hero-space);
+  padding-bottom: var(--jp-hero-space);
+  gap: clamp(2rem, 4vw, 5rem);
+}
+.jp-product-hero h1 {
+  font-size: var(--jp-type-hero);
+  line-height: 1.15;
+  letter-spacing: -.044em;
+  max-width: 21ch;
+  margin: 1.2rem 0;
+}
+.jp-product-hero-lead { font-size: var(--jp-type-lead); line-height: 1.78; max-width: 60ch; }
+.jp-product-module h3 { font-size: var(--jp-type-card); letter-spacing: -.025em; }
+.jp-contact-section { padding-top: var(--jp-section-space); padding-bottom: var(--jp-section-space); }
+.jp-contact-main h2,
+.jp-contact-aside h2 {
+  font-size: var(--jp-type-section);
+  line-height: 1.23;
+  letter-spacing: -.037em;
+  margin: 1rem 0 .8rem;
+}
+.jp-contact-layout { gap: clamp(2rem, 4.2vw, 4.8rem); }
+
+/* Footer and log-in view: part of the same experience. */
+.jp-footer-title {
+  font-size: var(--jp-type-section);
+  line-height: 1.24;
+  letter-spacing: -.038em;
+}
+.jp-auth-aside h2 {
+  font-size: var(--jp-type-page);
+  line-height: 1.22;
+  letter-spacing: -.04em;
+}
+#main-content .reveal,
+#main-content .card-hover,
+.jp-area-link,
+.jp-course-row,
+.jp-guide-row,
+.jp-news-row {
+  transition-duration: .2s;
+  transition-timing-function: cubic-bezier(.22,1,.36,1);
+}
+
+/* Compact screens retain generous touch targets without huge headings/whitespace.
+   These rules follow all historical breakpoints to override fixed mobile sizes. */
+@media (max-width: 800px) {
+  .jp-hero-layout { gap: 2rem; }
+  .jp-hero-guide { margin-top: 0; }
+  .jp-hero-main h1 { font-size: var(--jp-type-hero); }
+  .jp-sticky-intro h2,
+  .jp-section-heading h2,
+  .jp-scolia-main h2 { font-size: var(--jp-type-section); }
+}
+@media (max-width: 620px) {
+  .jp-hero-layout { padding-top: clamp(2.65rem, 8vw, 3.4rem); padding-bottom: 3rem; gap: 2rem; }
+  .jp-hero-main h1 {
+    font-size: var(--jp-type-hero);
+    letter-spacing: -.04em;
+    margin: 1rem 0 1.15rem;
+  }
+  .jp-inner-hero-copy h1,
+  .jp-page-heading h1 { font-size: var(--jp-type-page); }
+  .jp-product-hero h1 { font-size: var(--jp-type-hero); }
+  .jp-contact-main h2,
+  .jp-contact-aside h2,
+  .jp-footer-title { font-size: var(--jp-type-section); }
+  .jp-areas-layout { gap: 1.9rem; }
+  .jp-section { padding-top: clamp(3rem, 9vw, 3.9rem); padding-bottom: clamp(3rem, 9vw, 3.9rem); }
+  #main-content .section { padding-top: clamp(3rem, 9vw, 3.9rem); padding-bottom: clamp(3rem, 9vw, 3.9rem); }
+  .jp-scolia-section,
+  .jp-finale,
+  .jp-contact-section { padding-top: 3.2rem; padding-bottom: 3.4rem; }
+  .jp-product-hero-layout { padding-top: 3.3rem; padding-bottom: 3.4rem; gap: 2.1rem; }
+  .jp-hero-lead { font-size: var(--jp-type-lead); line-height: 1.76; }
+  .jp-sticky-intro h2,.jp-section-heading h2 { font-size: var(--jp-type-section); }
+  .jp-finale h2 { font-size: var(--jp-type-page); }
+  .jp-area-link h3,.jp-course-primary h3 { font-size: var(--jp-type-subsection); }
+  .jp-method-step h3 { font-size: var(--jp-type-subsection); }
+  .jp-page-heading-layout { gap: 1rem; }
+  .jp-catalogue-content .h3 { font-size: var(--jp-type-subsection); }
+  .jp-hero-support { margin-top: 1.4rem; }
+  .jp-hero-actions { margin-top: 1.35rem; }
+}
+@media (max-width: 360px) {
+  .jp-overline { letter-spacing: .09em; font-size: 9px; }
+  .jp-directory-guide-row { gap: 9px; }
+  .jp-hero-main h1 { max-width: 100%; }
+}
+@media (hover: none) {
+  .jp-guide-row:hover,
+  .jp-area-link:hover,
+  .jp-course-row:hover,
+  .jp-news-row:hover,
+  .jp-catalogue-action:hover { padding-left: 0; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #main-content .reveal,
+  #main-content .card-hover,
+  .jp-area-link,
+  .jp-course-row,
+  .jp-guide-row,
+  .jp-news-row { transition: none; }
+}

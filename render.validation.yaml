@@ -1,0 +1,35 @@
+# Validation technique gratuite avant activation du site officiel.
+# N'est PAS une offre de production : service en veille, SMTP bloqué,
+# PostgreSQL gratuit expirant au 15/12/2026, fichiers locaux non persistants.
+services:
+  - type: web
+    name: jp-services-db-validation
+    runtime: node
+    region: frankfurt
+    plan: free
+    branch: ccr-598b649d-2fiktj
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
+    startCommand: pnpm db:migrate && pnpm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: off
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: COREPACK_ENABLE_DOWNLOAD_PROMPT
+        value: "0"
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: APP_URL
+        value: https://jp-services-db-validation.onrender.com
+      - key: APP_TIMEZONE
+        value: Africa/Lubumbashi
+      - key: JP_PREVIEW_MODE
+        value: "1"
+      - key: APP_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: jp-services-claude-preview-db
+          property: connectionString
+      - key: STORAGE_DRIVER
+        value: local

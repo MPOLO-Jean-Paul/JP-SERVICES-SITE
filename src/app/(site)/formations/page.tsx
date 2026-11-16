@@ -43,6 +43,7 @@ export default async function FormationsPage() {
   return (
     <>
       <PageHero
+        asideOnMobile
         eyebrow="Catalogue des formations"
         title="Développez vos compétences. Donnez-leur une application concrète."
         text="Explorez les formations publiées par JP-SERVICES. Comparez les programmes et les informations disponibles pour choisir avec précision."

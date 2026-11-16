@@ -373,3 +373,10 @@ a.jp-contact-line:hover{color:var(--primary);padding-left:5px}
  .jp-product-module{padding:23px 0}
 }
 @media(prefers-reduced-motion:reduce){.jp-contact-line{transition:none}}
+
+
+/* Les guides éditoriaux restent accessibles en petit écran (pas les faux aperçus). */
+@media(max-width:620px) {
+ .jp-inner-hero-aside.jp-inner-hero-aside-mobile {display:block;max-width:100%;margin-top:30px;padding-top:0;border-top:0}
+ .jp-inner-hero-aside.jp-inner-hero-aside-mobile .jp-directory-guide {padding-top:19px}
+}

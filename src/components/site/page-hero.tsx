@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
  * En-tête éditorial commun : aucune illustration générique ajoutée par défaut.
  * L'illustration fournie par une rubrique reste secondaire au contenu.
  */
-export function PageHero({ eyebrow, title, text, actions, aside, children, center, className }: {
+export function PageHero({ eyebrow, title, text, actions, aside, children, center, className, asideOnMobile = false }: {
   eyebrow?: string;
   title: React.ReactNode;
   text?: React.ReactNode;
@@ -13,6 +13,7 @@ export function PageHero({ eyebrow, title, text, actions, aside, children, cente
   children?: React.ReactNode;
   center?: boolean;
   className?: string;
+  asideOnMobile?: boolean;
 }) {
   return <section className={cn("jp-inner-hero border-b", center && "jp-inner-hero-centered", aside && "jp-inner-hero-with-aside", className)}>
     <div className={cn("shell jp-inner-hero-layout",aside && "jp-inner-hero-split")}>
@@ -23,7 +24,7 @@ export function PageHero({ eyebrow, title, text, actions, aside, children, cente
         {actions ? <div className="jp-inner-hero-actions">{actions}</div> : null}
         {children}
       </div>
-      {aside ? <div className="jp-inner-hero-aside">{aside}</div> : null}
+      {aside ? <div className={cn("jp-inner-hero-aside", asideOnMobile && "jp-inner-hero-aside-mobile")}>{aside}</div> : null}
     </div>
   </section>;
 }

@@ -22,6 +22,7 @@ export default async function ProjetsPage() {
   return (
     <>
       <PageHero
+        asideOnMobile
         eyebrow="Atelier de projets"
         title="Transformons votre idée en projet structuré."
         text="Décrivez votre initiative, transmettez-la de manière sécurisée et suivez son analyse depuis votre espace, jusqu’au retour de l’équipe."

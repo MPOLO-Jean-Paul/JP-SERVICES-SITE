@@ -24,6 +24,7 @@ export default async function LogicielsPage() {
   return (
     <>
       <PageHero
+        asideOnMobile
         eyebrow="Médiathèque JP-Services"
         title="Les bons outils, au bon endroit."
         text={intro}

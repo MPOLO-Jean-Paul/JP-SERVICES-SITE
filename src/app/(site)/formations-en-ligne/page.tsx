@@ -18,6 +18,7 @@ export default async function LivePage() {
   return (
     <>
       <PageHero
+        asideOnMobile
         eyebrow="Formations en ligne"
         title="Rejoignez une formation en direct, où que vous soyez."
         text="Explorez les sessions publiées, vérifiez leurs horaires et les modalités d’accès, puis rejoignez la salle lorsque la session est disponible."

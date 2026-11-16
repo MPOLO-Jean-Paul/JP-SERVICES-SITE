@@ -212,7 +212,10 @@ test("les pages publiques raffinées restent sans débordement sur mobile et ord
       await page.goto(path);
       await expect(page.locator("h1")).toBeVisible();
       const size=await page.evaluate(()=>({width:document.documentElement.scrollWidth,screen:window.innerWidth}));
-      expect(size.width, "Débordement "+name+" "+path).toBeLessThanOrEqual(size.screen+1);
+      const overflow = size.width>size.screen+1 ? await page.evaluate(() => [...document.querySelectorAll<HTMLElement>("body *")]
+        .filter(el => {const r=el.getBoundingClientRect();return r.width>0 && r.right>window.innerWidth+2 && getComputedStyle(el).display!=="none";})
+        .slice(0,18).map(el => ({tag:el.tagName,cls:typeof el.className==="string"?el.className.slice(0,120):"",text:(el.textContent||"").trim().slice(0,55),right:Math.round(el.getBoundingClientRect().right),width:Math.round(el.getBoundingClientRect().width)}))) : [];
+      expect(size.width, "Débordement "+name+" "+path+" : "+JSON.stringify(overflow)).toBeLessThanOrEqual(size.screen+1);
       if ((name === "phone" || name === "desktop") && (path === "/formations" || path === "/contact")) {
         await testInfo.attach("jp-"+name+"-"+path.replace("/",""),{body:await page.screenshot({fullPage:true}),contentType:"image/png"});
       }

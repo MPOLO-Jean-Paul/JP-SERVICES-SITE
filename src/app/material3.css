@@ -1,0 +1,172 @@
+/*
+ * JP-Services — Material Design 3 adaptation.
+ * Material Symbols Rounded, tonal surfaces, states and accessible motion.
+ * Keep the cobalt identity and existing responsive/editorial layout intact.
+ */
+:root {
+  --md3-primary: #2b4ef0;
+  --md3-on-primary: #fff;
+  --md3-primary-container: #e1e8ff;
+  --md3-on-primary-container: #1735a9;
+  --md3-secondary-container: #e9eef9;
+  --md3-on-secondary-container: #273e61;
+  --md3-surface-container: #f6f8fd;
+  --md3-surface-container-high: #eef2fa;
+  --md3-outline-variant: rgba(36, 58, 91, .15);
+  --md3-shadow: 0 3px 10px rgba(21, 40, 76, .07), 0 16px 38px -28px rgba(21, 40, 76, .25);
+  --md3-motion: cubic-bezier(.2, 0, 0, 1);
+}
+[data-theme="dark"] {
+  --md3-primary: #9bb3ff;
+  --md3-on-primary: #092277;
+  --md3-primary-container: #263e8b;
+  --md3-on-primary-container: #e4eaff;
+  --md3-secondary-container: #29334a;
+  --md3-on-secondary-container: #e6edfc;
+  --md3-surface-container: #171a23;
+  --md3-surface-container-high: #222633;
+  --md3-outline-variant: rgba(202, 215, 248, .2);
+  --md3-shadow: 0 8px 28px rgba(0, 0, 0, .24);
+}
+/* Material Symbols support both outlined and active filled states. */
+.jp-md3-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  font-family: "Material Symbols Rounded";
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "liga";
+  user-select: none;
+}
+#site-header {
+  border-color: var(--md3-outline-variant);
+  background: var(--header-glass);
+}
+.jp-nav-link {
+  gap: 7px;
+  border-radius: 999px;
+  transition: background-color .22s var(--md3-motion), color .22s ease;
+}
+.jp-nav-link:after { display: none; }
+.jp-nav-link:hover, .jp-nav-link-active {
+  background: var(--md3-secondary-container);
+  color: var(--md3-on-secondary-container);
+}
+.jp-nav-link-active .jp-md3-icon { font-variation-settings: "FILL" 1, "wght" 500, "opsz" 20 !important; }
+#mobile-drawer {
+  border-color: var(--md3-outline-variant);
+  border-radius: 0 28px 28px 0;
+  background: var(--panel);
+}
+.jp-md3-drawer-link {
+  border-radius: 16px;
+  transition: background-color .2s var(--md3-motion), color .2s ease;
+}
+.jp-md3-drawer-link:hover,
+.jp-md3-drawer-link[aria-current="page"] {
+  background: var(--md3-secondary-container);
+  color: var(--md3-on-secondary-container);
+}
+.jp-md3-drawer-link[aria-current="page"] .jp-md3-icon:first-child {
+  font-variation-settings: "FILL" 1, "wght" 500, "opsz" 20 !important;
+}
+.jp-action, .jp-finale-link, .jp-site-footer .jp-footer-intro a,
+.jp-footer-cta a {
+  border-radius: 999px;
+  transition: background-color .24s var(--md3-motion), border-color .24s var(--md3-motion),
+    box-shadow .24s var(--md3-motion), transform .24s var(--md3-motion);
+}
+.jp-action-primary { background: var(--md3-primary); color: var(--md3-on-primary); border-color: var(--md3-primary); }
+.jp-action-primary:hover { box-shadow: 0 7px 20px rgba(43, 78, 240, .2); }
+.jp-action-text { border-radius: 999px; padding-inline: 16px; border: 1px solid var(--md3-outline-variant); }
+.jp-action:focus-visible, .jp-nav-link:focus-visible, .jp-md3-drawer-link:focus-visible,
+.jp-area-link:focus-visible, .jp-guide-row:focus-visible, .jp-course-row:focus-visible {
+  outline: 3px solid var(--md3-primary);
+  outline-offset: 3px;
+}
+.jp-hero-photo { border-radius: 24px; }
+.jp-area-visual, .jp-scolia-photo { border-radius: 14px; }
+.jp-guide-row {
+  min-height: 60px;
+  border-radius: 14px;
+  padding-inline: 12px;
+  border-bottom-color: transparent;
+  transition: background-color .2s var(--md3-motion), color .2s ease, transform .2s var(--md3-motion);
+}
+.jp-guide-row:hover { padding-left: 12px; background: var(--md3-secondary-container); }
+.jp-guide-row:hover .jp-md3-icon { color: var(--md3-on-secondary-container); }
+.jp-area-link, .jp-course-row {
+  border: 1px solid var(--md3-outline-variant);
+  background: var(--panel);
+  border-radius: 22px;
+  margin-block: 10px;
+  padding: clamp(16px, 2vw, 24px);
+  box-shadow: var(--md3-shadow);
+  transition: transform .28s var(--md3-motion), box-shadow .28s var(--md3-motion),
+    border-color .2s ease, background-color .2s ease;
+}
+.jp-area-link:hover, .jp-course-row:hover {
+  padding-left: clamp(16px, 2vw, 24px);
+  transform: translateY(-2px);
+  border-color: var(--md3-primary);
+  background: var(--md3-surface-container);
+  box-shadow: 0 12px 28px rgba(15, 40, 94, .12);
+}
+.jp-method-grid { gap: 14px; }
+.jp-method-step {
+  padding: clamp(17px, 2.5vw, 26px);
+  border: 1px solid var(--md3-outline-variant);
+  border-radius: 22px;
+  background: var(--md3-surface-container);
+}
+.jp-method-rule { margin: 25px 0 20px; }
+.jp-learning-empty { border-radius: 22px; }
+.jp-empty-symbol {
+  background: var(--md3-primary-container);
+  color: var(--md3-on-primary-container);
+  border-radius: 18px;
+}
+.jp-scolia-section .jp-scolia-photo { border-radius: 20px; }
+.jp-scolia-section .jp-action-light { border-radius: 999px; }
+.jp-scolia-index-row .jp-md3-icon { color: #b7e6ca; }
+.jp-md3-button {
+  border-radius: 999px;
+  transition: background-color .22s var(--md3-motion), box-shadow .22s var(--md3-motion), transform .18s var(--md3-motion);
+}
+.jp-md3-button:not(:disabled):active { transform: scale(.985); }
+.jp-md3-button:focus-visible {
+  outline: 3px solid var(--md3-primary);
+  outline-offset: 3px;
+}
+.jp-md3-button[data-variant="secondary"] {
+  background: var(--md3-secondary-container);
+  color: var(--md3-on-secondary-container);
+}
+body :where(.field, input[type="search"], input[type="email"], input[type="text"], textarea, select):focus-visible {
+  outline-offset: 2px;
+}
+@media (max-width: 620px) {
+  .jp-area-link, .jp-course-row { padding: 15px; border-radius: 18px; }
+  .jp-area-link:hover, .jp-course-row:hover { padding-left: 15px; transform: none; }
+  .jp-method-step { border-radius: 18px; }
+  .jp-hero-photo { border-radius: 18px; }
+  #mobile-drawer { border-radius: 0 24px 24px 0; }
+}
+@media (hover: none) {
+  .jp-area-link:hover, .jp-course-row:hover { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :where(.jp-action, .jp-nav-link, .jp-md3-drawer-link, .jp-guide-row,
+    .jp-area-link, .jp-course-row, .jp-md3-button) { transition: none !important; transform: none !important; }
+}

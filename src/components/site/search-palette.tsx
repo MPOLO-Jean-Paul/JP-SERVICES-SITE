@@ -4,21 +4,21 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Command } from "cmdk";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { ArrowRight, BookOpen, Download, FileText, GraduationCap, Handshake, LifeBuoy, MessagesSquare, Newspaper, Search, Video, X } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/material-symbol";
 import { cn } from "@/lib/utils";
 
 type Result = { type: "formations" | "logiciels" | "actualites" | "posts"; id: number; title: string; excerpt: string; href: string };
-const typeIcon = { formations: GraduationCap, logiciels: Download, actualites: Newspaper, posts: MessagesSquare } as const;
+const typeIcon = { formations: "school", logiciels: "download", actualites: "newspaper", posts: "forum" } as const;
 
 const PAGES = [
-  { href: "/formations", label: "Formations", Icon: GraduationCap },
-  { href: "/formations-en-ligne", label: "Formations en ligne", Icon: Video },
-  { href: "/logiciels", label: "Logiciels", Icon: Download },
-  { href: "/scolia", label: "SCOLIA Pro", Icon: BookOpen },
-  { href: "/projets", label: "Projets digitaux", Icon: FileText },
-  { href: "/forum", label: "Forum d’entraide", Icon: MessagesSquare },
-  { href: "/partenariat", label: "Partenariat", Icon: Handshake },
-  { href: "/aide", label: "Centre d’aide", Icon: LifeBuoy },
+  { href: "/formations", label: "Formations", icon: "school" },
+  { href: "/formations-en-ligne", label: "Formations en ligne", icon: "videocam" },
+  { href: "/logiciels", label: "Logiciels", icon: "download" },
+  { href: "/scolia", label: "SCOLIA Pro", icon: "menu_book" },
+  { href: "/projets", label: "Projets digitaux", icon: "folder_open" },
+  { href: "/forum", label: "Forum d’entraide", icon: "forum" },
+  { href: "/partenariat", label: "Partenariat", icon: "handshake" },
+  { href: "/aide", label: "Centre d’aide", icon: "help" },
 ];
 
 export function SearchPalette({ triggerClassName, compact }: { triggerClassName?: string; compact?: boolean }) {
@@ -77,7 +77,7 @@ export function SearchPalette({ triggerClassName, compact }: { triggerClassName?
     <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
       <DialogPrimitive.Trigger asChild>
         <button type="button" aria-label={tn("searchLabel")} title={`${tn("searchLabel")} (Ctrl+K)`} className={cn("inline-flex h-10 items-center gap-2 rounded-full text-copy transition hover:bg-panel-2 hover:text-ink", compact ? "size-10 justify-center" : "border px-3.5 pr-2 text-sm", triggerClassName)}>
-          <Search className="size-[1.1rem]" aria-hidden />
+          <MaterialIcon name="search" size={20} />
           {compact ? null : (
             <>
               <span className="hidden lg:inline">{tn("searchLabel")}</span>
@@ -93,11 +93,11 @@ export function SearchPalette({ triggerClassName, compact }: { triggerClassName?
           <DialogPrimitive.Description className="sr-only">{t("hint")}</DialogPrimitive.Description>
           <Command shouldFilter={false} label={tn("searchLabel")}>
             <div className="flex items-center gap-3 border-b px-4">
-              <Search className="size-5 text-muted" aria-hidden />
+              <MaterialIcon name="search" size={22} className="text-muted" />
               <Command.Input value={query} onValueChange={setQuery} placeholder={t("placeholder")} className="h-14 w-full bg-transparent text-base outline-none placeholder:text-muted focus-visible:ring-0 focus-visible:ring-offset-0" autoFocus />
               {loading ? <span className="size-4 animate-spin rounded-full border-2 border-primary border-t-transparent" aria-hidden /> : null}
               <DialogPrimitive.Close className="inline-flex size-8 items-center justify-center rounded-full text-muted hover:bg-panel-2" aria-label="Fermer">
-                <X className="size-4" />
+                <MaterialIcon name="close" size={19} />
               </DialogPrimitive.Close>
             </div>
             <Command.List className="max-h-[60vh] overflow-y-auto p-2 scrollbar-thin">
@@ -106,11 +106,11 @@ export function SearchPalette({ triggerClassName, compact }: { triggerClassName?
                 grouped[type]?.length ? (
                   <Command.Group key={type} heading={t(`sections.${type}`)} className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[11px] [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted">
                     {grouped[type]!.map((r) => {
-                      const Icon = typeIcon[r.type];
+                      const icon = typeIcon[r.type];
                       return (
                         <Command.Item key={`${r.type}-${r.id}`} value={`${r.type}-${r.id}`} onSelect={() => go(r.href)} className="flex cursor-pointer items-start gap-3 rounded-md px-3 py-2.5 text-sm data-[selected=true]:bg-panel-2">
                           <span className="icon-box mt-0.5 size-8">
-                            <Icon />
+                            <MaterialIcon name={icon} size={19} />
                           </span>
                           <span className="min-w-0">
                             <span className="block truncate font-medium text-ink">{r.title}</span>
@@ -124,9 +124,9 @@ export function SearchPalette({ triggerClassName, compact }: { triggerClassName?
               )}
               {query.trim().length < 2 ? (
                 <Command.Group heading={t("sections.pages")} className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[11px] [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted">
-                  {PAGES.map(({ href, label, Icon }) => (
+                  {PAGES.map(({ href, label, icon }) => (
                     <Command.Item key={href} value={href} onSelect={() => go(href)} className="flex cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm data-[selected=true]:bg-panel-2">
-                      <Icon className="size-4 text-muted" />
+                      <MaterialIcon name={icon} size={19} className="text-muted" />
                       <span className="font-medium text-ink">{label}</span>
                     </Command.Item>
                   ))}
@@ -134,7 +134,7 @@ export function SearchPalette({ triggerClassName, compact }: { triggerClassName?
               ) : null}
               {query.trim().length >= 2 ? (
                 <Command.Item value="__all" onSelect={() => go(`/recherche?q=${encodeURIComponent(query.trim())}`)} className="mt-1 flex cursor-pointer items-center justify-between rounded-md border-t px-3 py-3 text-sm font-medium text-ink data-[selected=true]:bg-panel-2">
-                  {t("seeAllResults")} <ArrowRight className="size-4" />
+                  {t("seeAllResults")} <MaterialIcon name="arrow_forward" size={19} />
                 </Command.Item>
               ) : null}
             </Command.List>

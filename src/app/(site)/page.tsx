@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight, CalendarDays, Check, ChevronRight, Clock3, GraduationCap, MapPin } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/material-symbol";
 import { getCurrentUser } from "@/server/auth/session";
 import { listActualites } from "@/server/services/content";
 import { listUpcomingFormations } from "@/server/services/formations";
@@ -59,10 +59,10 @@ export default async function HomePage() {
             <h1 id="home-title">Le numérique <span>en action.</span></h1>
             <p className="jp-hero-lead">Formations pratiques, logiciels et solutions numériques pour apprendre, créer et concrétiser vos projets.</p>
             <div className="jp-hero-actions">
-              <Link href="/formations" className="jp-action jp-action-primary">Explorer les formations <ArrowUpRight size={18} aria-hidden="true" /></Link>
-              <Link href={memberLink} className="jp-action jp-action-text">{memberLabel} <ArrowRight size={17} aria-hidden="true" /></Link>
+              <Link href="/formations" className="jp-action jp-action-primary">Explorer les formations <MaterialIcon name="north_east" size={18} /></Link>
+              <Link href={memberLink} className="jp-action jp-action-text">{memberLabel} <MaterialIcon name="arrow_forward" size={17} /></Link>
             </div>
-            <p className="jp-hero-support"><MapPin size={15} aria-hidden="true"/> À Lubumbashi et accessible en ligne</p>
+            <p className="jp-hero-support"><MaterialIcon name="location_on" size={15} /> À Lubumbashi et accessible en ligne</p>
           </div>
           <aside className="jp-hero-guide" aria-labelledby="home-guide-title">
             <figure className="jp-hero-photo">
@@ -71,16 +71,16 @@ export default async function HomePage() {
             </figure>
             <p id="home-guide-title" className="jp-guide-label">Votre point de départ</p>
             <Link href="/formations" className="jp-guide-row">
-              <span>01</span><strong>Développer une compétence</strong><ArrowUpRight size={19} aria-hidden="true"/>
+              <span>01</span><strong>Développer une compétence</strong><MaterialIcon name="north_east" size={19} />
             </Link>
             <Link href="/logiciels" className="jp-guide-row">
-              <span>02</span><strong>Découvrir un outil</strong><ArrowUpRight size={19} aria-hidden="true"/>
+              <span>02</span><strong>Découvrir un outil</strong><MaterialIcon name="north_east" size={19} />
             </Link>
             <Link href="/scolia" className="jp-guide-row">
-              <span>03</span><strong>Explorer SCOLIA Pro</strong><ArrowUpRight size={19} aria-hidden="true"/>
+              <span>03</span><strong>Explorer SCOLIA Pro</strong><MaterialIcon name="north_east" size={19} />
             </Link>
             <Link href="/contact" className="jp-guide-row">
-              <span>04</span><strong>Parler d&apos;un projet</strong><ArrowUpRight size={19} aria-hidden="true"/>
+              <span>04</span><strong>Parler d&apos;un projet</strong><MaterialIcon name="north_east" size={19} />
             </Link>
             <p className="jp-guide-footnote">Des parcours utiles, sans complexité inutile.</p>
           </aside>
@@ -100,7 +100,7 @@ export default async function HomePage() {
               <span className="jp-area-number">{area.number}</span>
               <div><span className="jp-area-kicker">{area.label}</span><h3>{area.name}</h3><p>{area.description}</p></div>
               <span className="jp-area-visual"><Image src={area.image} width={240} height={160} alt="" loading="lazy" sizes="(max-width:620px) 78px, 120px" /></span>
-              <ArrowUpRight className="jp-area-arrow" size={21} aria-hidden="true"/>
+              <MaterialIcon name="north_east" size={21} className="jp-area-arrow" />
             </Link>)}
           </div>
         </div>
@@ -110,7 +110,7 @@ export default async function HomePage() {
         <div className="shell">
           <div className="jp-section-heading">
             <div><p className="jp-overline">02 / SE FORMER</p><h2 id="learning-title">Les prochaines <em>formations.</em></h2></div>
-            <Link href="/formations" className="jp-inline-link">Consulter le catalogue <ArrowUpRight size={18} aria-hidden="true"/></Link>
+            <Link href="/formations" className="jp-inline-link">Consulter le catalogue <MaterialIcon name="north_east" size={18} /></Link>
           </div>
           {formations.length ? <div className="jp-course-list">
             {formations.map((formation, index) => <Link href={"/formations/" + formation.id} className="jp-course-row" key={formation.id}>
@@ -121,16 +121,16 @@ export default async function HomePage() {
                 <p>{excerpt(formation.description, 138)}</p>
               </div>
               <div className="jp-course-detail">
-                {formation.duree ? <span><Clock3 size={14} aria-hidden="true"/>{formation.duree}</span> : null}
-                {formation.dateDebut ? <span><CalendarDays size={14} aria-hidden="true"/>{formatDate(formation.dateDebut, "fr", { day:"numeric", month:"short", year:"numeric" })}</span> : null}
+                {formation.duree ? <span><MaterialIcon name="schedule" size={14} />{formation.duree}</span> : null}
+                {formation.dateDebut ? <span><MaterialIcon name="calendar_month" size={14} />{formatDate(formation.dateDebut, "fr", { day:"numeric", month:"short", year:"numeric" })}</span> : null}
                 <strong>{formatPrice(Number(formation.prix))}</strong>
               </div>
-              <ArrowUpRight className="jp-course-arrow" size={21} aria-hidden="true"/>
+              <MaterialIcon name="north_east" size={21} className="jp-course-arrow" />
             </Link>)}
           </div> : <div className="jp-learning-empty">
-            <span className="jp-empty-symbol"><GraduationCap size={31} strokeWidth={1.25} aria-hidden="true"/></span>
+            <span className="jp-empty-symbol"><MaterialIcon name="school" size={31} /></span>
             <div><h3>Le programme se construit.</h3><p>Aucune session annoncée pour le moment. Parcourez les domaines ou contactez-nous pour présenter vos objectifs.</p></div>
-            <Link href="/formations" className="jp-inline-link">Voir les domaines <ArrowRight size={18}/></Link>
+            <Link href="/formations" className="jp-inline-link">Voir les domaines <MaterialIcon name="arrow_forward" size={18} /></Link>
           </div>}
         </div>
       </section>
@@ -154,8 +154,8 @@ export default async function HomePage() {
             <h2 id="scolia-title">SCOLIA Pro. <em>La gestion scolaire simplifiée.</em></h2>
             <p>Un projet logiciel conçu autour des opérations quotidiennes des établissements : suivi des apprenants, encaissements, organisation de la scolarité et pilotage des informations.</p>
             <div className="jp-scolia-actions">
-              <Link href="/scolia" className="jp-action jp-action-light">Découvrir le projet <ArrowUpRight size={18}/></Link>
-              <Link href="/contact?sujet=SCOLIA%20Pro" className="jp-action jp-action-light-text">Poser une question <ArrowRight size={18}/></Link>
+              <Link href="/scolia" className="jp-action jp-action-light">Découvrir le projet <MaterialIcon name="north_east" size={18} /></Link>
+              <Link href="/contact?sujet=SCOLIA%20Pro" className="jp-action jp-action-light-text">Poser une question <MaterialIcon name="arrow_forward" size={18} /></Link>
             </div>
           </div>
           <div className="jp-scolia-index" aria-label="Domaines couverts par le projet">
@@ -164,7 +164,7 @@ export default async function HomePage() {
             </figure>
             <div className="jp-scolia-index-top"><span>SCOLIA / DOMAINES</span><span>VERSION EN CONSTRUCTION</span></div>
             {["Gestion des apprenants","Finances & encaissements","Scolarité & évaluations","Rapports & administration"].map((name,i)=><div key={name} className="jp-scolia-index-row">
-              <span>{String(i+1).padStart(2,"0")}</span><strong>{name}</strong><Check size={17} aria-hidden="true"/>
+              <span>{String(i+1).padStart(2,"0")}</span><strong>{name}</strong><MaterialIcon name="check" size={17} />
             </div>)}
             <div className="jp-scolia-index-bottom"><span>UN ÉTABLISSEMENT, UNE VUE D&apos;ENSEMBLE</span><span>JP—SERVICES</span></div>
           </div>
@@ -174,11 +174,11 @@ export default async function HomePage() {
       {actualites.length > 0 ? <section className="jp-section jp-news" aria-labelledby="news-title">
         <div className="shell">
           <div className="jp-section-heading"><div><p className="jp-overline">05 / JOURNAL</p><h2 id="news-title">Les dernières <em>publications.</em></h2></div>
-            <Link href="/actualites" className="jp-inline-link">Toutes les actualités <ArrowUpRight size={18}/></Link>
+            <Link href="/actualites" className="jp-inline-link">Toutes les actualités <MaterialIcon name="north_east" size={18} /></Link>
           </div>
           <div className="jp-news-list">{actualites.map(a=><Link key={a.id} href={"/actualites/"+a.id} className="jp-news-row">
             <span className="jp-news-date">{formatDate(a.datePublication,"fr",{day:"numeric",month:"short",year:"numeric"})}</span>
-            <h3>{a.titre}</h3><ChevronRight size={20} aria-hidden="true"/>
+            <h3>{a.titre}</h3><MaterialIcon name="chevron_right" size={20} />
           </Link>)}</div>
         </div>
       </section> : null}
@@ -186,7 +186,7 @@ export default async function HomePage() {
       <section className="jp-finale" aria-labelledby="finale-title">
         <div className="shell jp-finale-layout">
           <div><p className="jp-overline">PARLONS DE VOTRE PROCHAINE ÉTAPE</p><h2 id="finale-title">Un projet ? <em>Parlons-en.</em></h2></div>
-          <Link href="/contact" className="jp-finale-link">Contacter JP-SERVICES <ArrowUpRight size={22} aria-hidden="true"/></Link>
+          <Link href="/contact" className="jp-finale-link">Contacter JP-SERVICES <MaterialIcon name="north_east" size={22} /></Link>
         </div>
       </section>
     </>

@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { ArrowRight, ChevronDown, LogOut, Menu as MenuIcon, Shield, UserRound, X } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/material-symbol";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 import { Icon } from "./icon";
@@ -15,17 +15,24 @@ import { ThemeMenu } from "./theme-menu";
 import type { SessionUser } from "@/server/auth/session";
 
 
+const NAV_ICONS: Record<string, string> = {
+  "/formations": "school", "/formations-en-ligne": "videocam", "/logiciels": "apps",
+  "/projets": "workspaces", "/a-propos": "info", "/abonnements": "menu_book",
+  "/scolia": "account_tree", "/aide": "help", "/actualites": "newspaper",
+  "/forum": "forum", "/partenariat": "handshake", "/contact": "mail",
+};
+
 type Props = { user: Pick<SessionUser, "displayName" | "email" | "isAdmin" | "photoProfil"> | null; logoutAction: () => Promise<void>; unread?: number };
 
 export function DesktopNav({ user }: { user: Props["user"] }) {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const links = [
-    { href: "/formations", label: t("formations") },
-    { href: "/formations-en-ligne", label: t("live") },
-    { href: "/logiciels", label: t("software") },
-    { href: "/projets", label: t("projects") },
-    { href: "/a-propos", label: t("about") },
+    { href: "/formations", icon: "school", label: t("formations") },
+    { href: "/formations-en-ligne", icon: "videocam", label: t("live") },
+    { href: "/logiciels", icon: "apps", label: t("software") },
+    { href: "/projets", icon: "workspaces", label: t("projects") },
+    { href: "/a-propos", icon: "info", label: t("about") },
   ];
   return (
     <nav className="hidden items-center gap-1 xl:flex" aria-label="Menu principal">
@@ -39,7 +46,7 @@ export function DesktopNav({ user }: { user: Props["user"] }) {
             "jp-nav-link relative inline-flex min-h-10 items-center whitespace-nowrap px-3 text-[13px] font-medium text-copy transition-colors hover:text-ink",
             active && "jp-nav-link-active text-ink",
           )}
-        >{link.label}</Link>;
+        ><MaterialIcon name={link.icon} size={17} filled={active} />{link.label}</Link>;
       })}
       {user ? <Link href="/profil" className="sr-only">Mon espace</Link> : null}
     </nav>
@@ -66,7 +73,7 @@ export function AccountMenu({ user, logoutAction, unread = 0 }: Props) {
         <button type="button" className="relative inline-flex h-9 items-center gap-2 rounded-full border pl-0.5 pr-2.5 text-sm font-medium text-ink transition hover:bg-panel-2" aria-label={t("mySpace")}>
           <Avatar name={user.displayName} src={user.photoProfil} size={30} />
           <span className="hidden max-w-32 truncate md:inline">{user.displayName}</span>
-          <ChevronDown className="size-3.5 text-muted" aria-hidden />
+          <MaterialIcon name="keyboard_arrow_down" size={20} className="size-3.5 text-muted" />
           {unread > 0 ? <span className="absolute -right-0.5 -top-0.5 inline-flex min-w-5 items-center justify-center rounded-full bg-accent-500 px-1 text-[10px] font-bold text-white">{unread}</span> : null}
         </button>
       </MenuTrigger>
@@ -82,12 +89,12 @@ export function AccountMenu({ user, logoutAction, unread = 0 }: Props) {
         <MenuLabel>{t("mySpace")}</MenuLabel>
         <MenuItem asChild>
           <Link href="/profil">
-            <UserRound /> {t("profile")}
+            <MaterialIcon name="account_circle" size={20} /> {t("profile")}
           </Link>
         </MenuItem>
         <MenuItem asChild>
           <Link href="/profil/modifier">
-            <Icon name="circle-help" className="size-4" /> {t("settings")}
+            <Icon name="settings" className="size-4" /> {t("settings")}
           </Link>
         </MenuItem>
         <MenuItem asChild>
@@ -103,7 +110,7 @@ export function AccountMenu({ user, logoutAction, unread = 0 }: Props) {
         <MenuItem asChild>
           <Link href="/notifications" className="justify-between">
             <span className="flex items-center gap-3">
-              <Icon name="newspaper" className="size-4" /> {t("notifications")}
+              <Icon name="notifications" className="size-4" /> {t("notifications")}
             </span>
             {unread > 0 ? <span className="rounded-full bg-accent-500 px-1.5 text-[10px] font-bold text-white">{unread}</span> : null}
           </Link>
@@ -113,7 +120,7 @@ export function AccountMenu({ user, logoutAction, unread = 0 }: Props) {
             <MenuSeparator />
             <MenuItem asChild>
               <Link href="/admin">
-                <Shield /> {t("admin")}
+                <MaterialIcon name="shield" size={20} /> {t("admin")}
               </Link>
             </MenuItem>
           </>
@@ -122,7 +129,7 @@ export function AccountMenu({ user, logoutAction, unread = 0 }: Props) {
         <form action={logoutAction}>
           <MenuItem asChild>
             <button type="submit" className="w-full text-danger data-[highlighted]:text-danger">
-              <LogOut /> {t("logout")}
+              <MaterialIcon name="logout" size={20} /> {t("logout")}
             </button>
           </MenuItem>
         </form>
@@ -168,7 +175,7 @@ export function MobileDrawer({ user, logoutAction }: Props) {
     <DialogPrimitive.Trigger asChild>
       <button type="button" aria-label={tc("openMenu")} aria-controls="mobile-drawer" aria-expanded={open}
         className="inline-flex size-11 shrink-0 items-center justify-center rounded-md text-ink transition-colors hover:bg-panel-2 xl:hidden">
-        <MenuIcon className="size-[21px]" aria-hidden="true" />
+        <MaterialIcon name="menu" size={20} className="size-[21px]" />
       </button>
     </DialogPrimitive.Trigger>
     {/* Portal indispensable : le backdrop-filter de l'en-tête est un contenant
@@ -186,7 +193,7 @@ export function MobileDrawer({ user, logoutAction }: Props) {
           </Link>
           <DialogPrimitive.Close asChild>
             <button type="button" aria-label={tc("closeMenu")} className="inline-flex size-10 items-center justify-center rounded-md hover:bg-panel-2">
-              <X className="size-5" />
+              <MaterialIcon name="close" size={20} className="size-5" />
             </button>
           </DialogPrimitive.Close>
         </div>
@@ -198,8 +205,8 @@ export function MobileDrawer({ user, logoutAction }: Props) {
             <nav aria-label={section.label}>
               {section.links.map(link => <Link key={link.href} href={link.href} onClick={close}
                 aria-current={pathname === link.href ? "page" : undefined}
-                className={cn("group flex min-h-11 items-center justify-between rounded-sm px-2 text-[14px] font-medium text-copy transition-colors hover:bg-panel-2 hover:text-ink", pathname === link.href && "bg-panel-2 text-ink")}>
-                {link.title}<ArrowRight aria-hidden="true" className="size-4 text-muted transition-transform group-hover:translate-x-0.5" />
+                className={cn("jp-md3-drawer-link group flex min-h-11 items-center justify-between rounded-2xl px-3 text-[14px] font-medium text-copy transition-colors hover:bg-panel-2 hover:text-ink", pathname === link.href && "bg-panel-2 text-ink")}>
+                <span className="flex min-w-0 items-center gap-3"><MaterialIcon name={NAV_ICONS[link.href] ?? "arrow_forward"} size={20} />{link.title}</span><MaterialIcon name="arrow_forward" size={18} className="text-muted transition-transform group-hover:translate-x-0.5" />
               </Link>)}
             </nav>
           </section>)}
@@ -208,7 +215,7 @@ export function MobileDrawer({ user, logoutAction }: Props) {
             <Link href="/profil" onClick={close} className="flex min-h-11 items-center px-2 text-sm font-medium">{user.displayName}</Link>
             <Link href="/notifications" onClick={close} className="flex min-h-11 items-center px-2 text-sm">{t("notifications")}</Link>
             {user.isAdmin ? <Link href="/admin" onClick={close} className="flex min-h-11 items-center px-2 text-sm">{t("admin")}</Link> : null}
-            <form action={logoutAction}><button type="submit" className="flex min-h-11 items-center gap-2 px-2 text-sm text-danger"><LogOut className="size-4"/>{t("logout")}</button></form>
+            <form action={logoutAction}><button type="submit" className="flex min-h-11 items-center gap-2 px-2 text-sm text-danger"><MaterialIcon name="logout" size={20} className="size-4" />{t("logout")}</button></form>
           </section> : null}
         </div>
         <div className="shrink-0 border-t px-5 py-4">

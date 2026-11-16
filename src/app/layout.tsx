@@ -8,6 +8,7 @@ import "./globals.css";
 import "./senior-ui.css";
 import "./responsive-type.css";
 import "./visual-polish.css";
+import "./material3.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
@@ -44,6 +45,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const [locale, messages] = await Promise.all([getLocale(), getMessages()]);
   return (
     <html lang={locale} suppressHydrationWarning className={`${geist.variable} ${geistMono.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL@20..48,100..700,0..1&display=swap" />
+      </head>
       <body className="min-h-dvh flex flex-col">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>

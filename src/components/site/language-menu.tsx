@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Check, ChevronDown, Globe } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/material-symbol";
 import { Menu, MenuContent, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "@/components/ui/dropdown";
 import { locales, localeLabels } from "@/i18n/config";
 import { setLocale } from "@/server/actions/locale";
@@ -42,9 +42,9 @@ export function LanguageMenu({
             className,
           )}
         >
-          <Globe className="size-[17px] shrink-0" aria-hidden="true" />
+          <MaterialIcon name="language" size={18} className="size-[17px] shrink-0" />
           <span>{isFooter ? label?.label ?? "Français" : label?.short ?? "FR"}</span>
-          {isFooter ? <ChevronDown className="ml-2 size-3.5 shrink-0 text-muted transition-transform data-[state=open]:rotate-180" aria-hidden="true" /> : null}
+          {isFooter ? <MaterialIcon name="keyboard_arrow_down" size={18} className="ml-2 size-3.5 shrink-0 text-muted transition-transform data-[state=open]:rotate-180" /> : null}
         </button>
       </MenuTrigger>
       <MenuContent
@@ -70,7 +70,7 @@ export function LanguageMenu({
                 <span className="w-6 shrink-0 font-mono text-[10px] font-semibold text-muted">{localeLabels[value].short}</span>
                 <span className="font-medium">{localeLabels[value].label}</span>
               </span>
-              <Check className={cn("size-4 shrink-0", locale === value ? "opacity-100" : "opacity-0")} aria-hidden="true" />
+              <MaterialIcon name="check" size={18} />
             </MenuRadioItem>
           ))}
         </MenuRadioGroup>

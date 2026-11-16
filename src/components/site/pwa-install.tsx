@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { ArrowDownToLine } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/material-symbol";
 import { cn } from "@/lib/utils";
 
 type BeforeInstallPromptEvent = Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: "accepted" | "dismissed" }> };
@@ -41,7 +41,7 @@ export function PwaInstall({ className, variant = "icon" }: { className?: string
   };
   return (
     <button type="button" onClick={install} aria-label={t("install")} title={t("install")} className={cn(variant === "icon" ? "inline-flex size-10 items-center justify-center rounded-full text-copy transition hover:bg-panel-2 hover:text-ink" : "inline-flex items-center gap-2 text-sm font-medium text-copy hover:text-ink", className)}>
-      <ArrowDownToLine className="size-[1.1rem]" aria-hidden />
+      <MaterialIcon name="download" size={20} />
       {variant === "text" ? t("install") : null}
     </button>
   );

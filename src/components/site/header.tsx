@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { CircleHelp } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/material-symbol";
 import { LogoMark } from "@/components/brand/logo";
 import { getCurrentUser } from "@/server/auth/session";
 import { getSettings } from "@/server/services/settings";
@@ -36,7 +36,7 @@ export async function SiteHeader() {
           <div className="flex items-center gap-1">
             <SearchPalette compact />
             <Link href="/aide" aria-label={t("help")} title={t("help")} className="hidden size-10 items-center justify-center rounded-full text-copy transition hover:bg-panel-2 hover:text-ink md:inline-flex">
-              <CircleHelp className="size-[1.15rem]" aria-hidden />
+              <MaterialIcon name="help" size={20} />
             </Link>
             <PwaInstall className="hidden md:inline-flex" />
             <LanguageMenu className="hidden sm:inline-flex" />

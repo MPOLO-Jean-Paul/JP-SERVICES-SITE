@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { MaterialIcon } from "@/components/ui/material-symbol";
 import { LogoMark } from "@/components/brand/logo";
 import { Facebook, Linkedin, TikTok, Youtube } from "@/components/brand/social-icons";
 import { getCurrentUser } from "@/server/auth/session";
@@ -69,7 +69,7 @@ export async function SiteFooter() {
             <p className="mt-4 max-w-lg text-sm leading-7 text-copy">{t("ctaText")}</p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link href={user ? "/formations" : "/inscription"} className="inline-flex h-11 items-center gap-2 rounded-md bg-ink px-5 text-[13px] font-medium text-canvas transition-colors hover:bg-primary hover:text-white">
-                {user ? t("ctaPrimaryLogged") : t("ctaPrimary")} <ArrowRight className="size-4" />
+                {user ? t("ctaPrimaryLogged") : t("ctaPrimary")} <MaterialIcon name="arrow_forward" size={20} className="size-4" />
               </Link>
               <Link href="/contact" className="inline-flex h-11 items-center rounded-md border border-line-strong bg-panel px-5 text-[13px] font-medium transition-colors hover:border-primary hover:text-primary">
                 {t("ctaSecondary")}
@@ -115,7 +115,7 @@ export async function SiteFooter() {
                 <li key={l.href + l.label}>
                   <Link href={l.href} className="group inline-flex min-h-9 items-center gap-1 py-1 text-[12px] leading-[1.45] text-copy transition-colors hover:text-primary">
                     {l.label}
-                    <ArrowUpRight className="size-3 opacity-0 transition group-hover:opacity-100" aria-hidden />
+                    <MaterialIcon name="north_east" size={20} className="size-3 opacity-0 transition group-hover:opacity-100" />
                   </Link>
                 </li>
               ))}

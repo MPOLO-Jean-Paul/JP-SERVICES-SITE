@@ -28,7 +28,7 @@ export function DesktopNav({ user }: { user: Props["user"] }) {
     { href: "/a-propos", label: t("about") },
   ];
   return (
-    <nav className="hidden items-center gap-1 lg:flex" aria-label="Menu principal">
+    <nav className="hidden items-center gap-1 xl:flex" aria-label="Menu principal">
       {links.map(link => {
         const active = pathname === link.href || pathname.startsWith(link.href + "/");
         return <Link
@@ -167,16 +167,16 @@ export function MobileDrawer({ user, logoutAction }: Props) {
   return <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
     <DialogPrimitive.Trigger asChild>
       <button type="button" aria-label={tc("openMenu")} aria-controls="mobile-drawer" aria-expanded={open}
-        className="inline-flex size-11 shrink-0 items-center justify-center rounded-md text-ink transition-colors hover:bg-panel-2 lg:hidden">
+        className="inline-flex size-11 shrink-0 items-center justify-center rounded-md text-ink transition-colors hover:bg-panel-2 xl:hidden">
         <MenuIcon className="size-[21px]" aria-hidden="true" />
       </button>
     </DialogPrimitive.Trigger>
     {/* Portal indispensable : le backdrop-filter de l'en-tête est un contenant
         pour position:fixed, ce qui tronquait auparavant le tiroir mobile. */}
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-[110] bg-[#0e1829]/65 data-[state=open]:animate-fade-in lg:hidden" />
+      <DialogPrimitive.Overlay className="fixed inset-0 z-[110] bg-[#0e1829]/65 data-[state=open]:animate-fade-in xl:hidden" />
       <DialogPrimitive.Content id="mobile-drawer" aria-describedby="mobile-drawer-description"
-        className="fixed inset-y-0 left-0 z-[111] flex w-[min(360px,92vw)] max-w-full flex-col overflow-hidden border-r bg-panel shadow-lg outline-none data-[state=open]:animate-slide-in-left lg:hidden">
+        className="fixed inset-y-0 left-0 z-[111] flex w-[min(360px,92vw)] max-w-full flex-col overflow-hidden border-r bg-panel shadow-lg outline-none data-[state=open]:animate-slide-in-left xl:hidden">
         <DialogPrimitive.Title className="sr-only">{tc("openMenu")}</DialogPrimitive.Title>
         <DialogPrimitive.Description id="mobile-drawer-description" className="sr-only">Choisissez une rubrique de JP-Services.</DialogPrimitive.Description>
         <div className="flex shrink-0 items-center justify-between border-b px-5 py-4">

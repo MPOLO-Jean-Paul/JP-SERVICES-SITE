@@ -249,7 +249,12 @@ test("typographie fluide : titres plus petits sur téléphone, lisibles sur tabl
       }));
       expect(metrics.size, "Titre illisible "+path+" à "+width+"px").toBeGreaterThanOrEqual(27);
       expect(metrics.size, "Titre disproportionné "+path+" à "+width+"px").toBeLessThanOrEqual(width<=390?41:width<=768?50:64);
-      expect(metrics.overflow, "Débordement horizontal "+path+" à "+width+"px").toBeLessThanOrEqual(1);
+      const culprits = metrics.overflow > 1 ? await page.evaluate(() => [...document.querySelectorAll<HTMLElement>("body *")].filter(el => {
+        const rect=el.getBoundingClientRect();
+        const style=getComputedStyle(el);
+        return rect.width > 0 && rect.right > window.innerWidth + 2 && style.display !== "none" && style.visibility !== "hidden";
+      }).slice(0,10).map(el => ({tag:el.tagName,cls:typeof el.className==="string"?el.className.slice(0,95):"",right:Math.round(el.getBoundingClientRect().right)}))) : [];
+      expect(metrics.overflow, "Débordement horizontal "+path+" à "+width+"px : "+JSON.stringify(culprits)).toBeLessThanOrEqual(1);
       expect(metrics.textWidth, "Titre trop large "+path+" à "+width+"px").toBeLessThanOrEqual(width);
       measurements.push({width,size:metrics.size,overflow:metrics.overflow});
       if((path==="/" || path==="/formations") && (width===320 || width===390 || width===1440)){
@@ -282,4 +287,20 @@ test("typographie de section et mouvement réduit", async ({page,isMobile}) => {
   expect(large).toBeLessThanOrEqual(44);
   const transition=await page.locator(".jp-area-link").first().evaluate(el=>getComputedStyle(el).transitionDuration);
   expect(parseFloat(transition)).toBeLessThanOrEqual(.01);
+});
+
+
+test("à 1024 px, la navigation reste compacte et accessible", async ({page,isMobile}) => {
+  test.skip(isMobile, "Le scénario simule le viewport tablette sur ordinateur");
+  await page.setViewportSize({width:1024,height:800});
+  await page.goto("/");
+  const mobileTrigger=page.locator('button[aria-controls="mobile-drawer"]');
+  await expect(mobileTrigger).toBeVisible();
+  await expect(page.getByRole("navigation",{name:"Menu principal"})).toBeHidden();
+  await mobileTrigger.click();
+  await expect(page.locator("#mobile-drawer")).toBeVisible();
+  await page.locator('#mobile-drawer a[href="/formations"]').click();
+  await expect(page).toHaveURL(/\/formations$/);
+  const width=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+  expect(width).toBeLessThanOrEqual(1);
 });

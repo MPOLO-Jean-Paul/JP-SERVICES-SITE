@@ -72,10 +72,10 @@ export default function ScoliaPage() {
 
       <section className="section pt-0">
         <div className="shell">
-          <div className="reveal grid gap-8 rounded-2xl border bg-panel p-8 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:p-12">
+          <div className="jp-product-license reveal grid min-w-0 gap-8 rounded-md border bg-panel p-5 sm:p-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-center lg:p-12">
             <div><span className="eyebrow">Licence établissement</span><h2 className="h2 mt-2">Un abonnement clair, des données qui restent à l’école.</h2><p className="mt-3 text-copy">La licence est gérée par JP-Services sans accès à vos données : les apprenants, paiements et bulletins restent sur votre serveur. En cas de suspension, l’accès passe en lecture seule ; rien n’est supprimé.</p>
               <ul className="mt-5 grid gap-2 text-sm text-copy sm:grid-cols-2">{["Période d’essai", "Renouvellement annuel", "Assistance et mises à jour incluses", "Tarification selon la taille de l’école"].map((p) => <li key={p} className="flex items-center gap-2"><BadgeCheck className="size-4 text-emerald-600" /> {p}</li>)}</ul></div>
-            <div className="flex flex-col gap-3 rounded-xl border bg-canvas-soft p-6"><BookOpenCheck className="size-6" /><h3 className="h3">Parlons de votre établissement</h3><p className="text-sm text-copy">Nous organisons une démonstration en visioconférence ou sur site à Lubumbashi.</p><Link href="/contact?sujet=SCOLIA%20Pro" className={buttonVariants({ variant: "dark", size: "lg" })}>Demander une démonstration <ArrowRight /></Link><Link href="/formations-en-ligne" className={buttonVariants({ variant: "ghost" })}>Voir les sessions de présentation</Link></div>
+            <div className="jp-product-license-contact flex min-w-0 flex-col gap-3 rounded-md border bg-canvas-soft p-4 sm:p-6"><BookOpenCheck className="size-6" /><h3 className="h3">Parlons de votre établissement</h3><p className="text-sm text-copy">Nous organisons une démonstration en visioconférence ou sur site à Lubumbashi.</p><Link href="/contact?sujet=SCOLIA%20Pro" className={buttonVariants({ variant: "dark", size: "lg", className: "min-h-12 max-w-full whitespace-normal px-3 py-2 text-center leading-snug" })}>Demander une démonstration <ArrowRight /></Link><Link href="/formations-en-ligne" className={buttonVariants({ variant: "ghost", className: "min-h-11 max-w-full whitespace-normal px-3 py-2 text-center leading-snug" })}>Voir les sessions de présentation</Link></div>
           </div>
         </div>
       </section>

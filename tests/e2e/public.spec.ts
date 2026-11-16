@@ -472,3 +472,17 @@ test("les CTA et le bandeau de démonstration sont lisibles sur mobile",async({p
    expect(rectangles[1]!.top).toBeGreaterThanOrEqual(rectangles[0]!.bottom+8);
  }
 });
+
+test("la recherche reste utile si le serveur de contenus est temporairement indisponible", async ({page}) => {
+  await page.route("**/api/recherche?*", route => route.fulfill({status:503,contentType:"application/json",body:'{"results":[],"error":"temporarily_unavailable"}'}));
+  await page.goto("/");
+  await page.getByRole("button", {name:/recherch/i}).first().click();
+  await page.getByPlaceholder(/Rechercher une formation/).fill("scolia");
+  await expect(page.getByRole("option", {name:/SCOLIA Pro/})).toBeVisible();
+  await expect(page.getByRole("status").filter({hasText:/recherche en direct|live results/i})).toBeVisible();
+});
+test("l'API de recherche refuse les requêtes trop longues", async ({request}) => {
+  const r=await request.get("/api/recherche?q="+encodeURIComponent("a".repeat(120)));
+  expect(r.status()).toBe(400);
+  expect((await r.json()).error).toBe("invalid_query");
+});

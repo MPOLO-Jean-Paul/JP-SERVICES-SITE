@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Command } from "cmdk";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { MaterialIcon } from "@/components/ui/material-symbol";
@@ -11,24 +11,28 @@ type Result = { type: "formations" | "logiciels" | "actualites" | "posts"; id: n
 const typeIcon = { formations: "school", logiciels: "download", actualites: "newspaper", posts: "forum" } as const;
 
 const PAGES = [
-  { href: "/formations", label: "Formations", icon: "school" },
-  { href: "/formations-en-ligne", label: "Formations en ligne", icon: "videocam" },
-  { href: "/logiciels", label: "Logiciels", icon: "download" },
-  { href: "/scolia", label: "SCOLIA Pro", icon: "menu_book" },
-  { href: "/projets", label: "Projets digitaux", icon: "folder_open" },
-  { href: "/forum", label: "Forum d’entraide", icon: "forum" },
-  { href: "/partenariat", label: "Partenariat", icon: "handshake" },
-  { href: "/aide", label: "Centre d’aide", icon: "help" },
+  { href: "/formations", label: "Formations", icon: "school", keywords: "formation cours compétence apprendre programme" },
+  { href: "/formations-en-ligne", label: "Formations en ligne", icon: "videocam", keywords: "distance vidéo web en direct cours" },
+  { href: "/logiciels", label: "Logiciels", icon: "download", keywords: "logiciel outil télécharger application numérique" },
+  { href: "/scolia", label: "SCOLIA Pro", icon: "menu_book", keywords: "schoolia école gestion scolaire élèves apprenants finances" },
+  { href: "/projets", label: "Projets digitaux", icon: "folder_open", keywords: "projet digital services solutions" },
+  { href: "/forum", label: "Forum d’entraide", icon: "forum", keywords: "entraide communauté discussion" },
+  { href: "/partenariat", label: "Partenariat", icon: "handshake", keywords: "collaboration partenaires" },
+  { href: "/aide", label: "Centre d’aide", icon: "help", keywords: "assistance support problème contact" },
 ];
+
+const normalizeSearch = (text: string) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 export function SearchPalette({ triggerClassName, compact }: { triggerClassName?: string; compact?: boolean }) {
   const t = useTranslations("search");
   const tn = useTranslations("nav");
+  const locale = useLocale();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Result[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
@@ -43,24 +47,35 @@ export function SearchPalette({ triggerClassName, compact }: { triggerClassName?
   }, []);
 
   useEffect(() => {
-    if (!open) return;
-    const q = query.trim();
-    if (q.length < 2) {
-      const clear = setTimeout(() => setResults([]), 0);
-      return () => clearTimeout(clear);
-    }
     abortRef.current?.abort();
+    if (!open) return;
+    const q = query.trim().slice(0, 100);
     const controller = new AbortController();
     abortRef.current = controller;
-    const id = setTimeout(() => {
+    const timer = window.setTimeout(async () => {
+      if (q.length < 2) {
+        setResults([]);
+        setLoading(false);
+        setError(false);
+        return;
+      }
       setLoading(true);
-      fetch(`/api/recherche?q=${encodeURIComponent(q)}`, { signal: controller.signal })
-        .then((r) => r.json())
-        .then((d: { results: Result[] }) => setResults(d.results ?? []))
-        .catch(() => {})
-        .finally(() => setLoading(false));
-    }, 180);
-    return () => clearTimeout(id);
+      setError(false);
+      try {
+        const response = await fetch(`/api/recherche?q=${encodeURIComponent(q)}`, { signal: controller.signal });
+        if (!response.ok) throw new Error("Search unavailable");
+        const data: { results?: Result[] } = await response.json();
+        if (!controller.signal.aborted) setResults(Array.isArray(data.results) ? data.results : []);
+      } catch {
+        if (!controller.signal.aborted) {
+          setResults([]);
+          setError(true);
+        }
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    }, q.length < 2 ? 0 : 180);
+    return () => { window.clearTimeout(timer); controller.abort(); };
   }, [query, open]);
 
   const go = useCallback(
@@ -71,6 +86,8 @@ export function SearchPalette({ triggerClassName, compact }: { triggerClassName?
     [router],
   );
 
+  const typed = query.trim().slice(0, 100);
+  const pageMatches = typed.length < 2 ? PAGES : PAGES.filter((page) => normalizeSearch(`${page.label} ${page.keywords}`).includes(normalizeSearch(typed))).slice(0, 5);
   const grouped = results.reduce<Record<string, Result[]>>((acc, r) => ((acc[r.type] ??= []).push(r), acc), {});
 
   return (
@@ -101,7 +118,8 @@ export function SearchPalette({ triggerClassName, compact }: { triggerClassName?
               </DialogPrimitive.Close>
             </div>
             <Command.List className="max-h-[60vh] overflow-y-auto p-2 scrollbar-thin">
-              {query.trim().length >= 2 && !loading && results.length === 0 ? <Command.Empty className="px-4 py-10 text-center text-sm text-muted">{t("empty")}</Command.Empty> : null}
+              {typed.length >= 2 && !loading && !error && results.length === 0 && pageMatches.length === 0 ? <Command.Empty className="px-4 py-10 text-center text-sm text-muted">{t("empty")}</Command.Empty> : null}
+              {error ? <div role="status" className="jp-search-status mx-2 my-2 rounded-lg px-3 py-3 text-xs text-copy">{locale === "en" ? "Live results are temporarily unavailable. You can still open the pages below." : "La recherche en direct est momentanément indisponible. Vous pouvez toujours ouvrir les rubriques proposées."}</div> : null}
               {(["formations", "logiciels", "actualites", "posts"] as const).map((type) =>
                 grouped[type]?.length ? (
                   <Command.Group key={type} heading={t(`sections.${type}`)} className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[11px] [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted">
@@ -122,9 +140,9 @@ export function SearchPalette({ triggerClassName, compact }: { triggerClassName?
                   </Command.Group>
                 ) : null,
               )}
-              {query.trim().length < 2 ? (
+              {pageMatches.length > 0 ? (
                 <Command.Group heading={t("sections.pages")} className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[11px] [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted">
-                  {PAGES.map(({ href, label, icon }) => (
+                  {pageMatches.map(({ href, label, icon }) => (
                     <Command.Item key={href} value={href} onSelect={() => go(href)} className="flex cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm data-[selected=true]:bg-panel-2">
                       <MaterialIcon name={icon} size={19} className="text-muted" />
                       <span className="font-medium text-ink">{label}</span>
@@ -132,8 +150,8 @@ export function SearchPalette({ triggerClassName, compact }: { triggerClassName?
                   ))}
                 </Command.Group>
               ) : null}
-              {query.trim().length >= 2 ? (
-                <Command.Item value="__all" onSelect={() => go(`/recherche?q=${encodeURIComponent(query.trim())}`)} className="mt-1 flex cursor-pointer items-center justify-between rounded-md border-t px-3 py-3 text-sm font-medium text-ink data-[selected=true]:bg-panel-2">
+              {typed.length >= 2 ? (
+                <Command.Item value="__all" onSelect={() => go(`/recherche?q=${encodeURIComponent(typed)}`)} className="mt-1 flex cursor-pointer items-center justify-between rounded-md border-t px-3 py-3 text-sm font-medium text-ink data-[selected=true]:bg-panel-2">
                   {t("seeAllResults")} <MaterialIcon name="arrow_forward" size={19} />
                 </Command.Item>
               ) : null}

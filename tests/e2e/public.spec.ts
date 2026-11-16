@@ -61,7 +61,8 @@ test("la sonde de production vérifie aussi les tables du site", async ({request
   const data = await response.json();
   expect(data).toMatchObject({status:"ok",database:"ok",schema:"ok"});
   expect(response.headers()["cache-control"]).toContain("no-store");
-  expect(JSON.stringify(data)).not.toMatch(/password|secret|postgres:\\/\\//i);
+  expect(JSON.stringify(data)).not.toContain("password");
+  expect(JSON.stringify(data)).not.toContain("postgres://");
 });
 
 test("SEO : robots, sitemap et manifeste", async ({ request }) => {

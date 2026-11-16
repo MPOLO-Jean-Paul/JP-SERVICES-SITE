@@ -38,7 +38,7 @@ try {
 const storageUrl = process.env.S3_ENDPOINT;
 if (storageUrl && !storageUrl.startsWith("https://")) invalid.push("S3_ENDPOINT (HTTPS requis)");
 const fromAddress = process.env.SMTP_FROM_ADDRESS;
-if (fromAddress && !/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(fromAddress)) invalid.push("SMTP_FROM_ADDRESS (adresse invalide)");
+if (fromAddress && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(fromAddress)) invalid.push("SMTP_FROM_ADDRESS (adresse invalide)");
 
 if (missing.length || invalid.length) {
   console.error(

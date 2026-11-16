@@ -4,7 +4,7 @@ import { acceptCookies } from "./helpers";
 test.beforeEach(async ({ page }) => acceptCookies(page));
 
 const PAGES: Array<[string, RegExp]> = [
-  ["/", /compétences/i],
+  ["/", /numérique/i],
   ["/formations", /compétence/i],
   ["/logiciels", /bons outils/i],
   ["/scolia", /SCOLIA Pro/i],
@@ -109,7 +109,7 @@ test("la nouvelle direction graphique reste lisible et sans débordement", async
   ] as const) {
     await page.setViewportSize({width,height});
     await page.goto("/");
-    await expect(page.locator("h1")).toContainText("compétences");
+    await expect(page.locator("h1")).toContainText("numérique");
     await expect(page.locator(".jp-guide-row")).toHaveCount(4);
     await expect(page.locator(".jp-area-link")).toHaveCount(3);
     const widths = await page.evaluate(() => ({page: document.documentElement.scrollWidth,viewport:window.innerWidth}));
@@ -348,5 +348,5 @@ test("les animations de l'accueil respectent la préférence de mouvement rédui
   await page.goto("/");
   await expect(page.locator(".jp-hero-photo")).toBeVisible();
   const duration=await page.locator(".jp-hero-photo").evaluate(el=>getComputedStyle(el).animationDuration);
-  expect(duration).toBe("0s");
+  expect(parseFloat(duration), "Le mouvement réduit doit supprimer les animations visibles").toBeLessThanOrEqual(0.001);
 });

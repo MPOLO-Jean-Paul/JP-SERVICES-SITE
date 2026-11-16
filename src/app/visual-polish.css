@@ -198,3 +198,22 @@
   .jp-hero-photo img,.jp-area-visual img,.jp-scolia-photo img,
   .jp-action,.jp-guide-row,.jp-area-link,.jp-course-row,.jp-news-row {transition:none!important}
 }
+
+
+/* Contraste lisible sur fond clair, y compris pour les libellés secondaires. */
+:root {
+  --copy:#293445;
+  --muted:#535f70;
+  --canvas-soft:#f6f8fc;
+  --line:rgb(24 38 59 / .13);
+  --line-strong:rgb(24 38 59 / .23);
+}
+[data-theme="dark"] {
+  --copy:#d1dbea;
+  --muted:#a8b6c7;
+  --line:rgb(229 235 245 / .16);
+  --line-strong:rgb(229 235 245 / .27);
+}
+.jp-hero-main h1 span {color:var(--primary)}
+.jp-hero-photo figcaption {text-shadow:0 1px 7px rgb(0 0 0 / .45)}
+.jp-area-visual,.jp-hero-photo,.jp-scolia-photo {border:1px solid var(--line)}

@@ -304,3 +304,49 @@ test("à 1024 px, la navigation reste compacte et accessible", async ({page,isMo
   const width=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
   expect(width).toBeLessThanOrEqual(1);
 });
+
+
+test("accueil : photographies des trois activités présentes et chargées", async ({page,isMobile}) => {
+  test.skip(isMobile, "Contrôles de dimensions réalisés sur plusieurs viewports");
+  test.setTimeout(100000);
+  for(const width of [320,390,820,1024,1440]){
+    await page.setViewportSize({width,height:850});
+    await page.goto("/");
+    const images=page.locator(".jp-hero-photo img, .jp-area-visual img, .jp-scolia-photo img");
+    await expect(images).toHaveCount(5);
+    for(let i=0;i<await images.count();i++){
+      const photo=images.nth(i);
+      await photo.scrollIntoViewIfNeeded();
+      await expect.poll(async()=>photo.evaluate(img=>{
+        const image=img as HTMLImageElement;
+        return image.complete && image.naturalWidth>0;
+      }),{timeout:12000,message:"Photographie indisponible à "+width+"px, image "+i}).toBe(true);
+    }
+    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+    expect(overflow,"Les visuels provoquent un débordement à "+width+"px").toBeLessThanOrEqual(1);
+  }
+});
+
+test("accueil : titres resserrés et lecture facile sur téléphone",async ({page,isMobile})=>{
+  test.skip(isMobile,"Viewport redéfini dans ce scénario");
+  for(const width of [320,390,768,1440]){
+    await page.setViewportSize({width,height:850});
+    await page.goto("/");
+    const m=await page.locator(".jp-hero-main h1").evaluate(el=>{
+      const style=getComputedStyle(el),rect=el.getBoundingClientRect();
+      const font=parseFloat(style.fontSize),line=parseFloat(style.lineHeight);
+      return {lines:rect.height/line,font,lineHeight:line,contentWidth:rect.width};
+    });
+    expect(m.lines,"Titre trop long à "+width+"px").toBeLessThanOrEqual(2.25);
+    expect(m.font,"Titre trop grand à "+width+"px").toBeLessThanOrEqual(width<=390?36:width>=1200?58:45);
+    expect(m.lineHeight/m.font,"Interligne trop élevé à "+width+"px").toBeLessThanOrEqual(1.26);
+  }
+});
+
+test("les animations de l'accueil respectent la préférence de mouvement réduit", async ({page}) => {
+  await page.emulateMedia({reducedMotion:"reduce"});
+  await page.goto("/");
+  await expect(page.locator(".jp-hero-photo")).toBeVisible();
+  const duration=await page.locator(".jp-hero-photo").evaluate(el=>getComputedStyle(el).animationDuration);
+  expect(duration).toBe("0s");
+});

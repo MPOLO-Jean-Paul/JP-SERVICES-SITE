@@ -23,7 +23,7 @@ export function PageHero({ eyebrow, title, text, actions, aside, children, cente
         {actions ? <div className="jp-inner-hero-actions">{actions}</div> : null}
         {children}
       </div>
-      {aside ? <div className="jp-inner-hero-aside"><p className="jp-inner-aside-caption">APERÇU DU SERVICE</p>{aside}</div> : null}
+      {aside ? <div className="jp-inner-hero-aside">{aside}</div> : null}
     </div>
   </section>;
 }

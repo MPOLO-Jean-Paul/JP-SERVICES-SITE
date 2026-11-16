@@ -253,3 +253,50 @@
  .jp-footer-language{justify-content:flex-start}
  .jp-footer-legal{gap:10px 18px}
 }
+
+
+/* JP-SERVICES : annuaires éditoriaux sobres, inspirés de la clarté des plateformes produit modernes. */
+.jp-directory-guide{border-top:2px solid var(--ink);padding-top:19px;background:var(--canvas)}
+.jp-directory-guide>span{display:block;color:var(--primary);font:700 10px/1.6 var(--font-geist-mono),monospace;letter-spacing:.11em}
+.jp-directory-guide>p{font-size:clamp(17px,1.65vw,21px);line-height:1.5;font-weight:570;letter-spacing:-.02em;max-width:390px;margin:21px 0 25px}
+.jp-directory-guide-row{display:grid;grid-template-columns:35px minmax(0,1fr);gap:13px;align-items:center;min-height:58px;border-top:1px solid var(--line)}
+.jp-directory-guide-row small{font:650 11px var(--font-geist-mono),monospace;color:var(--muted)}
+.jp-directory-guide-row strong{font-size:13px;font-weight:600;line-height:1.5}
+.jp-directory-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line-strong);gap:0}
+.jp-directory-step{padding:27px clamp(15px,2.2vw,35px) 20px 0;min-width:0}
+.jp-directory-step>div:first-child{display:flex;align-items:center;justify-content:space-between}
+.jp-directory-step svg{width:19px;height:19px;color:var(--primary)}
+.jp-directory-step .h3{font-size:clamp(17px,1.5vw,21px);font-weight:610;letter-spacing:-.035em;margin-top:26px}
+.jp-directory-step p{font-size:13px;line-height:1.8;color:var(--copy);margin-top:11px;max-width:345px}
+.jp-catalogue-results{display:flex;flex-direction:column;border-top:1px solid var(--line-strong)}
+.jp-catalogue-item{display:grid;grid-template-columns:68px minmax(0,1fr);gap:25px;align-items:start;border-bottom:1px solid var(--line);padding:30px 0 34px;min-width:0}
+.jp-catalogue-number{font:650 11px var(--font-geist-mono),monospace;color:var(--muted);padding:7px 0}
+.jp-catalogue-content{min-width:0}
+.jp-catalogue-content .h3{font-size:clamp(22px,2.1vw,29px);font-weight:630;line-height:1.35;letter-spacing:-.048em;white-space:normal}
+.jp-catalogue-content>p{max-width:790px;line-height:1.8}
+.jp-catalogue-metadata{max-width:950px;border-color:var(--line)}
+.jp-catalogue-metadata>div{min-width:0}
+.jp-catalogue-metadata dd{overflow-wrap:anywhere}
+.jp-catalogue-footer{max-width:950px}
+.jp-catalogue-action{flex:none;white-space:nowrap}
+.jp-catalogue-action svg{transition:transform .2s ease}
+.jp-catalogue-action:hover svg{transform:translate(2px,-2px)}
+.jp-software-item .jp-catalogue-content .h3{font-size:clamp(22px,2vw,27px)}
+.jp-software-item .jp-catalogue-content>p{margin-top:16px}
+#catalogue,#catalogue-logiciels{scroll-margin-top:150px}
+.jp-catalogue-results article:focus-within{background:var(--canvas-soft)}
+@media(max-width:700px){
+  .jp-directory-steps{grid-template-columns:1fr}
+  .jp-directory-step{border-bottom:1px solid var(--line);padding:24px 0}
+  .jp-directory-step .h3{margin-top:20px}
+  .jp-catalogue-item{grid-template-columns:26px minmax(0,1fr);gap:10px;padding:24px 0 28px}
+  .jp-catalogue-number{font-size:10px}
+  .jp-catalogue-content .h3{font-size:21px}
+  .jp-catalogue-metadata{gap:9px}
+  .jp-catalogue-metadata dt,.jp-catalogue-metadata dd{font-size:10px}
+  .jp-catalogue-footer{align-items:start;gap:12px}
+  .jp-catalogue-action{white-space:normal}
+  .jp-directory-guide{max-width:100%}
+}
+@media(max-width:350px){.jp-catalogue-item{grid-template-columns:22px minmax(0,1fr);gap:7px}.jp-catalogue-footer{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){.jp-catalogue-action svg{transition:none}}

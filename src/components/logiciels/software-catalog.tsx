@@ -74,6 +74,7 @@ export function SoftwareCatalog({ items, categories, platforms }: { items: Softw
                   <span className="text-xs text-muted">Bientôt disponible</span>
                 )}
               </div>
+              </div>
             </article>
           ))}
         </div>

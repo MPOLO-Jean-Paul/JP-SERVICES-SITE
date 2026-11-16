@@ -13,7 +13,7 @@ Cette version **remplace entièrement l’ancien site PHP et sa base MySQL**. El
 | Typographie | Geist et Geist Mono (auto-hébergées par `next/font`) |
 | Données | PostgreSQL 16, Drizzle ORM, migrations versionnées, postgres.js |
 | Authentification | Sessions serveur révocables, bcrypt compatible avec les anciens comptes PHP, Google Identity Services |
-| E-mails | Nodemailer (SMTP) |
+| E-mails | API HTTPS Resend (Render Free) ou Nodemailer (SMTP sur hébergement compatible) |
 | Fichiers | Cloudflare R2 (compatible S3) ou disque local, servis par la route `/uploads` |
 | Hébergement | Render (Blueprint `render.yaml`) ou Cloudflare Workers (OpenNext, Hyperdrive) |
 | Langues | Français et anglais (next-intl) |

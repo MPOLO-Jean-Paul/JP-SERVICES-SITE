@@ -1,0 +1,54 @@
+# Architecture gratuite prévue pour JP-Services — NE PAS synchroniser avant
+# création de Neon Free et vérification du stockage + domaine d'envoi Resend.
+# Ne crée aucune base Render payante. Ne remplace pas le site public existant.
+# Un service Render Free s'endort après inactivité et partage les quotas du workspace.
+services:
+  - type: web
+    name: jp-services-official-free
+    runtime: node
+    region: frankfurt
+    plan: free
+    branch: ccr-598b649d-2fiktj
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
+    startCommand: pnpm exec tsx scripts/check-production-env.ts && pnpm db:migrate && pnpm start
+    healthCheckPath: /api/readiness
+    autoDeployTrigger: off
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: APP_URL
+        value: https://jp-services.org
+      - key: APP_TIMEZONE
+        value: Africa/Lubumbashi
+      - key: JP_PREVIEW_MODE
+        value: "0"
+      - key: APP_SECRET
+        generateValue: true
+      # URI PostgreSQL TLS fournie par le tableau de bord Neon, secret Render
+      - key: DATABASE_URL
+        sync: false
+      # Resend API HTTPS — ne pas saisir de mot de passe SMTP
+      - key: RESEND_API_KEY
+        sync: false
+      - key: SMTP_FROM_ADDRESS
+        value: contact@jp-services.org
+      - key: SMTP_FROM_NAME
+        value: JP-Services
+      - key: ADMIN_NOTIFICATION_EMAIL
+        value: contact@jp-services.org
+      # Le stockage local Render Free n'est PAS persistant.
+      # Neon Object Storage (S3) : endpoint, région, bucket, identifiants
+      - key: STORAGE_DRIVER
+        value: s3
+      - key: S3_ENDPOINT
+        sync: false
+      - key: S3_REGION
+        sync: false
+      - key: S3_BUCKET
+        sync: false
+      - key: S3_ACCESS_KEY_ID
+        sync: false
+      - key: S3_SECRET_ACCESS_KEY
+        sync: false

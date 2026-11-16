@@ -78,3 +78,9 @@ ne pas en faire la base du site officiel. La production reçoit une base sépar�
 - Ne pas brancher `jp-services.org` sur une offre gratuite ni sur la base
   de validation : sa fin de validité est annoncée pour le **15/12/2026**.
 - Le basculement DNS et la facturation ne sont pas automatisés par ces fichiers.
+
+## Variante sans carte bancaire
+Le fichier `render.free-official.yaml` et le guide `DEPLOIEMENT_GRATUIT.md`
+préparent un service Render gratuit branché sur Neon Free (PostgreSQL et stockage
+objet) et Resend Free par API HTTPS. **N'activer le domaine qu'après une validation
+de bout en bout.** Render Free et Neon Free restent soumis aux quotas.

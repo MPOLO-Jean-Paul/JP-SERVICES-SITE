@@ -267,8 +267,7 @@ html { scroll-padding-top: 100px; }
   .jp-guide-row:hover,
   .jp-area-link:hover,
   .jp-course-row:hover,
-  .jp-news-row:hover,
-  .jp-catalogue-action:hover { padding-left: 0; transform: none; }
+  .jp-news-row:hover { padding-left: 0; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   #main-content .reveal,

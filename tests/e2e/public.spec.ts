@@ -222,3 +222,64 @@ test("les pages publiques raffinées restent sans débordement sur mobile et ord
     }
   }
 });
+
+
+test("typographie fluide : titres plus petits sur téléphone, lisibles sur tablette et ordinateur", async ({page,isMobile},testInfo) => {
+  test.skip(isMobile, "Le scénario simule plusieurs tailles d'écran");
+  test.setTimeout(165000);
+  const routes = [
+    {path:"/",selector:".jp-hero-main h1"},
+    {path:"/formations",selector:".jp-inner-hero-copy h1"},
+    {path:"/contact",selector:".jp-page-heading h1"},
+    {path:"/scolia",selector:".jp-product-hero h1"},
+  ];
+  const sizes = [320,390,768,1024,1440,1920] as const;
+  for (const {path,selector} of routes) {
+    const measurements: Array<{width:number,size:number,overflow:number}> = [];
+    for(const width of sizes){
+      await page.setViewportSize({width,height:width<500?780:900});
+      const response = await page.goto(path);
+      expect(response?.status(),"Page "+path+" à "+width+"px").toBe(200);
+      const heading=page.locator(selector);
+      await expect(heading).toBeVisible();
+      const metrics=await heading.evaluate((element) => ({
+        size:parseFloat(getComputedStyle(element).fontSize),
+        overflow: document.documentElement.scrollWidth - window.innerWidth,
+        textWidth:element.getBoundingClientRect().width,
+      }));
+      expect(metrics.size, "Titre illisible "+path+" à "+width+"px").toBeGreaterThanOrEqual(27);
+      expect(metrics.size, "Titre disproportionné "+path+" à "+width+"px").toBeLessThanOrEqual(width<=390?41:width<=768?50:64);
+      expect(metrics.overflow, "Débordement horizontal "+path+" à "+width+"px").toBeLessThanOrEqual(1);
+      expect(metrics.textWidth, "Titre trop large "+path+" à "+width+"px").toBeLessThanOrEqual(width);
+      measurements.push({width,size:metrics.size,overflow:metrics.overflow});
+      if((path==="/" || path==="/formations") && (width===320 || width===390 || width===1440)){
+        await testInfo.attach("typographie-"+(path==="/"?"accueil":"formations")+"-"+width,{
+          body:await page.screenshot({fullPage:true}),
+          contentType:"image/png"
+        });
+      }
+    }
+    expect(measurements[measurements.length-1].size - measurements[0].size, "Titre non responsive "+path).toBeGreaterThan(8);
+    for(let i=1;i<measurements.length;i++){
+      expect(measurements[i].size + .5, "Progression typographique incohérente "+path).toBeGreaterThanOrEqual(measurements[i-1].size);
+    }
+  }
+});
+
+test("typographie de section et mouvement réduit", async ({page,isMobile}) => {
+  test.skip(isMobile, "Le scénario modifie la taille de fenêtre lui-même");
+  await page.setViewportSize({width:320,height:700});
+  await page.emulateMedia({reducedMotion:"reduce"});
+  await page.goto("/");
+  const sectionHeading=page.locator(".jp-section-heading h2").first();
+  await expect(sectionHeading).toBeVisible();
+  const small=await sectionHeading.evaluate(el=>parseFloat(getComputedStyle(el).fontSize));
+  expect(small).toBeGreaterThanOrEqual(23);
+  expect(small).toBeLessThanOrEqual(32);
+  await page.setViewportSize({width:1440,height:900});
+  const large=await sectionHeading.evaluate(el=>parseFloat(getComputedStyle(el).fontSize));
+  expect(large).toBeGreaterThan(small);
+  expect(large).toBeLessThanOrEqual(44);
+  const transition=await page.locator(".jp-area-link").first().evaluate(el=>getComputedStyle(el).transitionDuration);
+  expect(parseFloat(transition)).toBeLessThanOrEqual(.01);
+});

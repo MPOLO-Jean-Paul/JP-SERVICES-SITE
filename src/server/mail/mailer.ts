@@ -1,6 +1,7 @@
 import "server-only";
 import nodemailer, { type Transporter } from "nodemailer";
 import { env } from "@/env";
+import { sendResendEmail } from "./resend-api";
 
 export function smtpConfigurationError(): string | null {
   if (!env.SMTP_HOST) return "SMTP_HOST n'est pas défini.";
@@ -33,6 +34,15 @@ export type MailMessage = { to: string; subject: string; html: string; text: str
  * journalisé dans la console et la fonction retourne `false` au lieu de lever une erreur.
  */
 export async function sendMail(message: MailMessage): Promise<boolean> {
+  // Render Free and Cloudflare Workers cannot rely on SMTP ports.
+  // Prefer HTTPS API delivery whenever the provider is configured.
+  if (env.RESEND_API_KEY && env.SMTP_FROM_ADDRESS) {
+    await sendResendEmail(
+      { apiKey: env.RESEND_API_KEY, from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_ADDRESS}>` },
+      message,
+    );
+    return true;
+  }
   if (!smtpIsConfigured()) {
     if (env.NODE_ENV !== "production") {
       console.info(`[mail:dev] → ${message.to}\nSujet : ${message.subject}\n${message.text}\n`);

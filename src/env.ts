@@ -13,6 +13,7 @@ export const env = createEnv({
     APP_TIMEZONE: z.string().default("Africa/Lubumbashi"),
     // Obligatoire sur Render / Docker ; facultatif sur Cloudflare si la liaison HYPERDRIVE est configurée.
     DATABASE_URL: z.string().min(1).optional(),
+    RESEND_API_KEY: z.string().optional(),
     SMTP_HOST: z.string().optional(),
     SMTP_PORT: z.coerce.number().int().positive().default(587),
     SMTP_SECURE: z
@@ -44,6 +45,7 @@ export const env = createEnv({
     APP_SECRET: process.env.APP_SECRET,
     APP_TIMEZONE: process.env.APP_TIMEZONE,
     DATABASE_URL: process.env.DATABASE_URL,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
     SMTP_HOST: process.env.SMTP_HOST,
     SMTP_PORT: process.env.SMTP_PORT,
     SMTP_SECURE: process.env.SMTP_SECURE,

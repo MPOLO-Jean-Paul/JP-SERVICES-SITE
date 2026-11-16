@@ -6,9 +6,6 @@
 const required = [
   "DATABASE_URL",
   "APP_SECRET",
-  "SMTP_HOST",
-  "SMTP_USERNAME",
-  "SMTP_PASSWORD",
   "SMTP_FROM_ADDRESS",
   "S3_ENDPOINT",
   "S3_BUCKET",
@@ -18,6 +15,9 @@ const required = [
 
 const missing = required.filter((key) => !process.env[key]?.trim());
 const invalid: string[] = [];
+const hasMailApi = Boolean(process.env.RESEND_API_KEY?.trim());
+const hasSmtp = Boolean(process.env.SMTP_HOST?.trim() && process.env.SMTP_USERNAME?.trim() && process.env.SMTP_PASSWORD?.trim());
+if (!hasMailApi && !hasSmtp) invalid.push("messagerie (RESEND_API_KEY ou paramètres SMTP complets requis)");
 
 if (process.env.APP_SECRET && process.env.APP_SECRET.length < 32) {
   invalid.push("APP_SECRET (moins de 32 caractères)");

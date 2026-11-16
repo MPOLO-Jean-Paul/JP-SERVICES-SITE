@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { ScoliaPreview } from "@/components/visuals/mockups";
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, Banknote, BookOpenCheck, CalendarClock, CheckCircle2, Database, Download, FileSpreadsheet, GraduationCap, HardDriveDownload, Landmark, LockKeyhole, MonitorSmartphone, Network, Receipt, School, ShieldCheck, Users, Wallet } from "lucide-react";
+import { ArrowRight, ArrowUpRight, BadgeCheck, Banknote, BookOpenCheck, CalendarClock, Database, FileSpreadsheet, GraduationCap, HardDriveDownload, Landmark, LockKeyhole, MonitorSmartphone, Network, Receipt, ShieldCheck, Users, Wallet } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { jsonLd, pageMetadata, SITE_URL } from "@/lib/seo";
@@ -20,35 +19,34 @@ const MODULES = [
 export default function ScoliaPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd({ "@type": "SoftwareApplication", name: "SCOLIA Pro", applicationCategory: "BusinessApplication", operatingSystem: "Windows 10/11, Android", description: "Logiciel de gestion scolaire : secrétariat, caisse, recouvrement, scolarité, personnel et paie.", publisher: { "@type": "Organization", name: "JP-Services", url: SITE_URL }, offers: { "@type": "Offer", price: "0", priceCurrency: "USD", description: "Licence établissement sur devis, essai possible." } })} />
-      <section className="relative overflow-hidden bg-brand-950 text-white">
-        <div className="bg-grid pointer-events-none absolute inset-0 opacity-60 [--grid-line:rgb(255_255_255/0.05)]" aria-hidden />
-        <div className="pointer-events-none absolute -right-40 -top-40 size-[560px] rounded-full bg-brand-600/30 blur-3xl" aria-hidden />
-        <div className="shell relative py-20 lg:py-28">
-          <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/[0.06] px-3 py-1 text-[11px] text-white/70 ring-1 ring-white/10 font-medium"><School className="size-3.5" /> Logiciel de gestion scolaire</span>
-            <h1 className="h-display mt-7 text-white">SCOLIA Pro. <span className="text-brand-300">L’école, sans Excel.</span></h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-white/70">Secrétariat, caisse, recouvrement, scolarité, personnel et paie dans un seul logiciel fiable, conçu pour les complexes scolaires privés de la République démocratique du Congo.</p>
-            <div className="mt-9 flex flex-wrap justify-center gap-3">
-              <Link href="/contact?sujet=SCOLIA%20Pro" className="inline-flex h-12 items-center gap-2 rounded-lg bg-white px-6 text-[15px] font-medium text-brand-950 transition hover:bg-white/90">Demander une démonstration <ArrowRight className="size-4" /></Link>
-              <Link href="/logiciels" className="inline-flex h-12 items-center gap-2 rounded-lg border border-white/20 px-6 text-[15px] font-medium transition hover:bg-white/10"><Download className="size-4" /> Télécharger</Link>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd({ "@type": "SoftwareApplication", name: "SCOLIA Pro", applicationCategory: "BusinessApplication", operatingSystem: "Windows 10/11, Android", description: "Logiciel de gestion scolaire : secrétariat, caisse, recouvrement, scolarité, personnel et paie.", publisher: { "@type": "Organization", name: "JP-Services", url: SITE_URL } })} />
+      <section className="jp-product-hero" aria-labelledby="scolia-hero-title">
+        <div className="shell jp-product-hero-layout">
+          <div className="jp-product-hero-copy">
+            <p className="jp-overline"><span className="jp-overline-mark"/> LOGICIEL MÉTIER / JP-SERVICES</p>
+            <h1 id="scolia-hero-title">SCOLIA Pro.<br/><span>La gestion scolaire, en un seul espace.</span></h1>
+            <p className="jp-product-hero-lead">Un projet logiciel conçu pour faciliter le travail des établissements : administration, scolarité, suivi financier et organisation des informations.</p>
+            <span className="jp-product-stage">PROJET EN ÉVOLUTION — MODALITÉS SUR DEMANDE</span>
+            <div className="jp-directory-actions">
+              <Link href="/contact?sujet=SCOLIA%20Pro" className="jp-action jp-action-primary">Demander des informations <ArrowUpRight size={18}/></Link>
+              <Link href="/logiciels" className="jp-action jp-action-text">Explorer les logiciels <ArrowRight size={17}/></Link>
             </div>
           </div>
-          <div className="relative mx-auto mt-16 max-w-5xl">
-            <div className="absolute -inset-x-8 -bottom-8 top-12 rounded-[40px] bg-brand-500/25 blur-3xl" aria-hidden />
-            <ScoliaPreview className="relative border-white/10 text-ink" />
-          </div>
-          <ul className="mx-auto mt-14 grid max-w-4xl gap-x-8 gap-y-3 text-sm sm:grid-cols-3">
-            {["Installateur Windows autonome", "Multiposte en réseau local", "Reçus numérotés sans trou", "Journal d’audit chaîné SHA-256", "Sauvegarde quotidienne vérifiée", "Utilisable hors ligne"].map((p) => <li key={p} className="flex items-center gap-2 text-white/75"><CheckCircle2 className="size-4 shrink-0 text-brand-300" /> {p}</li>)}
-          </ul>
+          <aside className="jp-product-aside" aria-label="Principaux domaines du projet">
+            <span>SCOLIA / DOMAINES FONCTIONNELS</span>
+            {["Gestion des apprenants","Finances et encaissements","Scolarité et suivi","Administration et rapports"].map((name,i)=>
+              <div key={name}><small>{String(i+1).padStart(2,"0")}</small><strong>{name}</strong></div>
+            )}
+            <p>Les fonctionnalités et conditions de déploiement sont à confirmer avec notre équipe.</p>
+          </aside>
         </div>
       </section>
 
       <section className="section">
         <div className="shell">
           <SectionHeading kicker="Six métiers, un seul logiciel" title="Tout le fonctionnement de l’école, du secrétariat à la paie." text="Chaque module parle le vocabulaire de l’école et s’appuie sur les mêmes données : plus de ressaisie, plus de classeurs dispersés." />
-          <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border bg-line md:grid-cols-2 lg:grid-cols-3">
-            {MODULES.map(({ Icon, t, d }) => <article key={t} className="bg-panel p-8"><Icon className="size-5" /><h3 className="h3 mt-6">{t}</h3><p className="mt-2 text-copy">{d}</p></article>)}
+          <div className="jp-product-modules mt-12 grid gap-0 md:grid-cols-2 lg:grid-cols-3">
+            {MODULES.map(({ Icon, t, d }) => <article key={t} className="jp-product-module p-7"><Icon className="size-5" /><h3 className="h3 mt-6">{t}</h3><p className="mt-2 text-copy">{d}</p></article>)}
           </div>
         </div>
       </section>
@@ -65,9 +63,9 @@ export default function ScoliaPage() {
 
       <section className="section">
         <div className="shell">
-          <SectionHeading kicker="Déploiement" title="Opérationnel en une matinée." />
+          <SectionHeading kicker="Déploiement" title="Une installation adaptée à votre établissement." />
           <ol className="mt-12 grid gap-6 md:grid-cols-4">
-            {[["Installer", "Un seul fichier .exe avec assistant en français : aucun SDK ni Excel à installer."], ["Configurer", "Établissement, année scolaire, sections, promotions et tarifs en quelques écrans."], ["Importer", "Reprise des apprenants et paiements depuis l’ancienne version SCOLIA (Excel)."], ["Former", "Prise en main du secrétariat et de la comptabilité par JP-Services, sur place ou à distance."]].map(([t, d], i) => <li key={t} className="reveal relative rounded-xl border p-6 pt-9"><span className="absolute -top-3.5 left-6 inline-flex size-7 items-center justify-center rounded-full border bg-panel font-mono text-xs">{i + 1}</span><h3 className="font-semibold">{t}</h3><p className="mt-1 text-sm text-copy">{d}</p></li>)}
+            {[["Étudier", "Préciser les besoins de l’établissement et les fonctionnalités attendues."], ["Configurer", "Définir les années scolaires, sections, promotions et paramètres requis."], ["Reprendre", "Préparer et vérifier l’importation des données existantes si elle est nécessaire."], ["Accompagner", "Organiser la prise en main et l’assistance selon les modalités convenues."]].map(([t, d], i) => <li key={t} className="reveal relative rounded-xl border p-6 pt-9"><span className="absolute -top-3.5 left-6 inline-flex size-7 items-center justify-center rounded-full border bg-panel font-mono text-xs">{i + 1}</span><h3 className="font-semibold">{t}</h3><p className="mt-1 text-sm text-copy">{d}</p></li>)}
           </ol>
         </div>
       </section>

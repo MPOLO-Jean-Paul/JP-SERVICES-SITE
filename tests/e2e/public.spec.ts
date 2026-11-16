@@ -259,9 +259,9 @@ test("typographie fluide : titres plus petits sur téléphone, lisibles sur tabl
         });
       }
     }
-    expect(measurements[measurements.length-1].size - measurements[0].size, "Titre non responsive "+path).toBeGreaterThan(8);
+    expect(measurements[measurements.length-1]!.size - measurements[0]!.size, "Titre non responsive "+path).toBeGreaterThan(8);
     for(let i=1;i<measurements.length;i++){
-      expect(measurements[i].size + .5, "Progression typographique incohérente "+path).toBeGreaterThanOrEqual(measurements[i-1].size);
+      expect(measurements[i]!.size + .5, "Progression typographique incohérente "+path).toBeGreaterThanOrEqual(measurements[i-1]!.size);
     }
   }
 });

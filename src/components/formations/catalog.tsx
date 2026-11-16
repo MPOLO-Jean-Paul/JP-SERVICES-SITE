@@ -1,14 +1,12 @@
 "use client";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
-import Image from "next/image";
-import { Cover } from "@/components/visuals/cover";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, Calendar, Clock, ListChecks, RotateCcw, Search } from "lucide-react";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Select } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { cn, formatDate, formatPrice, uploadedImage } from "@/lib/utils";
+import { cn, formatDate, formatPrice } from "@/lib/utils";
 
 export type CatalogItem = { id: number; titre: string; excerpt: string; search: string; domainSlug: string; domainLabel: string; domainIcon: string; niveau: string; prix: number; duree: string; dateDebut: string | null; dateTs: number; modules: number; image: string };
 export type DomainChip = { slug: string; label: string; icon: string; count: number };
@@ -116,13 +114,11 @@ export function Catalog({ items, domains, levels }: { items: CatalogItem[]; doma
       </div>
 
       {filtered.length ? (
-        <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3" aria-live="polite">
-          {filtered.map((f) => (
-            <article key={f.id} className="card card-hover group flex flex-col overflow-hidden animate-fade-in">
-              <Link href={`/formations/${f.id}`} className="relative block aspect-[16/9] overflow-hidden" tabIndex={-1} aria-hidden>
-                {uploadedImage(f.image) ? <Image src={uploadedImage(f.image)!} alt="" fill sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" /> : <Cover seed={f.id} palette={f.domainSlug} label={f.domainLabel} className="size-full transition-transform duration-700 group-hover:scale-[1.03]" />}
-              </Link>
-              <div className="flex flex-1 flex-col p-6">
+        <div className="jp-catalogue-results mt-6" aria-live="polite">
+          {filtered.map((f, index) => (
+            <article key={f.id} className="jp-catalogue-item group animate-fade-in">
+              <div className="jp-catalogue-number" aria-hidden="true">{String(index+1).padStart(2,"0")}</div>
+              <div className="jp-catalogue-content">
                 <div className="flex items-center justify-between text-[11px] text-muted font-medium">
                   <span>{f.niveau}</span>
                   <span>{f.duree || "Durée à confirmer"}</span>
@@ -133,7 +129,7 @@ export function Catalog({ items, domains, levels }: { items: CatalogItem[]; doma
                   </Link>
                 </h3>
                 <p className="mt-2 flex-1 text-sm text-copy">{f.excerpt}</p>
-                <dl className="mt-4 grid grid-cols-3 gap-2 border-t pt-4 text-xs">
+                <dl className="jp-catalogue-metadata mt-5 grid grid-cols-3 gap-3 border-t pt-4 text-xs">
                   <div>
                     <dt className="inline-flex items-center gap-1 text-muted">
                       <Clock className="size-3.5" /> Durée
@@ -153,12 +149,12 @@ export function Catalog({ items, domains, levels }: { items: CatalogItem[]; doma
                     <dd className="mt-0.5 font-medium">{f.modules ? `${f.modules} module${f.modules > 1 ? "s" : ""}` : "Parcours guidé"}</dd>
                   </div>
                 </dl>
-                <div className="mt-4 flex items-center justify-between">
+                <div className="jp-catalogue-footer mt-5 flex items-center justify-between gap-4">
                   <div>
                     <span className="block text-xs text-muted">Tarif</span>
                     <strong className={cn("text-lg font-semibold", f.prix <= 0 && "text-success")}>{formatPrice(f.prix)}</strong>
                   </div>
-                  <Link href={`/formations/${f.id}`} className="inline-flex h-9 items-center gap-2 rounded-lg border border-line-strong px-3.5 text-sm font-medium transition group-hover:bg-ink group-hover:text-canvas">
+                  <Link href={`/formations/${f.id}`} className="jp-catalogue-action inline-flex min-h-10 items-center gap-2 border-b border-line-strong px-1 text-[12px] font-semibold transition-colors group-hover:border-primary group-hover:text-primary">
                     Voir la formation <ArrowRight className="size-4" />
                   </Link>
                 </div>

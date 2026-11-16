@@ -1,13 +1,11 @@
 "use client";
 import { useDeferredValue, useMemo, useState } from "react";
-import Image from "next/image";
 import { ArrowDownToLine, Calendar, ExternalLink, HardDrive, MonitorSmartphone, RotateCcw, Search, ShieldCheck } from "lucide-react";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
-import { cn, formatBytes, formatDate, uploadedImage } from "@/lib/utils";
-import { AppTile } from "@/components/visuals/cover";
+import { cn, formatBytes, formatDate } from "@/lib/utils";
 
 export type SoftwareItem = { id: number; nom: string; description: string; version: string; taille: number; plateforme: string; licence: string; image: string; telechargements: number; misAJour: string; categorieSlug: string; categorieNom: string; external: boolean; hasFile: boolean };
 export type CategoryChip = { slug: string; nom: string; count: number };
@@ -50,31 +48,28 @@ export function SoftwareCatalog({ items, categories, platforms }: { items: Softw
         {dirty ? <Button variant="ghost" size="sm" onClick={reset}><RotateCcw /> Réinitialiser</Button> : null}
       </div>
       {filtered.length ? (
-        <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((l) => (
-            <article key={l.id} id={`logiciel-${l.id}`} className="card card-hover flex flex-col p-6 animate-fade-in scroll-mt-28">
-              <div className="flex items-start gap-4">
-                {uploadedImage(l.image) ? (
-                  <span className="relative inline-flex size-12 shrink-0 overflow-hidden rounded-xl border"><Image src={uploadedImage(l.image)!} alt="" fill sizes="48px" className="object-cover" /></span>
-                ) : (
-                  <AppTile name={l.nom} />
-                )}
+        <div className="jp-catalogue-results mt-6">
+          {filtered.map((l, index) => (
+            <article key={l.id} id={`logiciel-${l.id}`} className="jp-catalogue-item jp-software-item animate-fade-in scroll-mt-28">
+              <div className="jp-catalogue-number" aria-hidden="true">{String(index+1).padStart(2,"0")}</div>
+              <div className="jp-catalogue-content">
+                <div className="flex items-start gap-4">
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2"><h3 className="h3 truncate">{l.nom}</h3>{l.version ? <Badge tone="brand">v{l.version}</Badge> : null}</div>
                   <p className="mt-0.5 text-[11px] text-muted font-medium">{l.categorieNom}</p>
                 </div>
               </div>
-              <p className="mt-4 flex-1 text-sm text-copy">{l.description || "Fiche en préparation."}</p>
-              <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 border-t pt-4 text-xs text-copy">
+              <p className="mt-4 text-sm text-copy">{l.description || "Fiche en préparation."}</p>
+              <dl className="jp-catalogue-metadata mt-5 grid grid-cols-2 gap-x-4 gap-y-2 border-t pt-4 text-xs text-copy">
                 <div className="flex items-center gap-1.5"><MonitorSmartphone className="size-3.5 text-muted" /><dd className="truncate">{l.plateforme || "Multi-plateforme"}</dd></div>
                 <div className="flex items-center gap-1.5"><ShieldCheck className="size-3.5 text-muted" /><dd className="truncate">{l.licence}</dd></div>
                 <div className="flex items-center gap-1.5"><HardDrive className="size-3.5 text-muted" /><dd>{formatBytes(l.taille)}</dd></div>
                 <div className="flex items-center gap-1.5"><Calendar className="size-3.5 text-muted" /><dd>{formatDate(l.misAJour, "fr", { day: "numeric", month: "short", year: "numeric" })}</dd></div>
               </dl>
-              <div className="mt-5 flex items-center justify-between gap-3">
+              <div className="jp-catalogue-footer mt-5 flex items-center justify-between gap-3">
                 <span className="text-xs text-muted"><strong className="text-sm text-ink">{l.telechargements.toLocaleString("fr-FR")}</strong> téléchargement{l.telechargements > 1 ? "s" : ""}</span>
                 {l.hasFile || l.external ? (
-                  <a href={`/telecharger/${l.id}`} className="inline-flex h-9 items-center gap-2 rounded-lg bg-ink px-3.5 text-sm font-medium text-canvas transition hover:bg-ink/85" rel="nofollow">{l.external ? <ExternalLink className="size-4" /> : <ArrowDownToLine className="size-4" />}{l.external ? "Accéder" : "Télécharger"}</a>
+                  <a href={`/telecharger/${l.id}`} className="jp-catalogue-action inline-flex min-h-10 items-center gap-2 border-b border-line-strong px-1 text-[12px] font-semibold transition-colors hover:border-primary hover:text-primary" rel="nofollow">{l.external ? <ExternalLink className="size-4" /> : <ArrowDownToLine className="size-4" />}{l.external ? "Accéder" : "Télécharger"}</a>
                 ) : (
                   <span className="text-xs text-muted">Bientôt disponible</span>
                 )}

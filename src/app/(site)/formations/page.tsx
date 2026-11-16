@@ -6,7 +6,6 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { buttonVariants } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { PageHero } from "@/components/site/page-hero";
-import { Cover } from "@/components/visuals/cover";
 import { Catalog, type CatalogItem, type DomainChip } from "@/components/formations/catalog";
 import { listFormations } from "@/server/services/formations";
 import { excerpt } from "@/lib/utils";
@@ -17,7 +16,6 @@ export const metadata: Metadata = pageMetadata({ title: "Formations", descriptio
 
 export default async function FormationsPage() {
   const formations = await listFormations().catch(() => []);
-  const today = new Date().toISOString().slice(0, 10);
   const items: CatalogItem[] = formations.map((f) => ({
     id: f.id,
     titre: f.titre,
@@ -41,15 +39,13 @@ export default async function FormationsPage() {
     domainMap.set(f.domain.slug, d);
   }
   const levels = Array.from(new Set(items.map((i) => i.niveau))).sort((a, b) => a.localeCompare(b, "fr"));
-  const upcoming = formations.filter((f) => f.dateDebut && f.dateDebut >= today).length;
-  const preview = formations.slice(0, 4);
 
   return (
     <>
       <PageHero
         eyebrow="Catalogue des formations"
-        title="Choisissez la compétence qui fait avancer votre projet."
-        text="Des parcours structurés, un programme détaillé et un tarif annoncé. Comparez les niveaux, puis organisez votre planning après inscription."
+        title="Développez vos compétences. Donnez-leur une application concrète."
+        text="Explorez les formations publiées par JP-SERVICES. Comparez les programmes et les informations disponibles pour choisir avec précision."
         actions={
           <>
             <a href="#catalogue" className={buttonVariants({ variant: "dark", size: "lg" })}>
@@ -61,26 +57,12 @@ export default async function FormationsPage() {
           </>
         }
         aside={
-          <div className="card overflow-hidden shadow-lg">
-            <div className="grid grid-cols-2 gap-px bg-line">
-              {(preview.length ? preview : [null, null, null, null]).map((f, i) => (
-                <div key={f?.id ?? i} className="bg-panel">
-                  <Cover seed={f?.id ?? i} palette={f?.domain.slug ?? ["developpement", "data-numerique", "bureautique-gestion", "marketing-communication"][i]} label={f?.domain.label} title={f?.titre} compact className="aspect-[4/3]" />
-                </div>
-              ))}
-            </div>
-            {formations.length ? <dl className="grid grid-cols-3 divide-x border-t">
-              {[
-                [formations.length, "formations"],
-                [domainMap.size, "domaines"],
-                [upcoming, "sessions à venir"],
-              ].map(([n, label]) => (
-                <div key={label as string} className="p-4">
-                  <dd className="font-display text-2xl font-semibold">{n as number}</dd>
-                  <dt className="text-[11px] text-muted font-medium">{label as string}</dt>
-                </div>
-              ))}
-            </dl> : null}
+          <div className="jp-directory-guide" aria-label="Étapes pour choisir une formation">
+            <span>VOTRE PARCOURS</span>
+            <p>Une bonne formation commence par un besoin clairement identifié.</p>
+            {["Définir votre objectif","Lire les informations publiées","Demander les précisions utiles"].map((item,i)=>
+              <div className="jp-directory-guide-row" key={item}><small>{String(i+1).padStart(2,"0")}</small><strong>{item}</strong></div>
+            )}
           </div>
         }
       />
@@ -95,10 +77,10 @@ export default async function FormationsPage() {
             <EmptyState
               icon={GraduationCap}
               title="Le catalogue est en préparation"
-              text="Les premières formations seront publiées très bientôt. Créez votre compte ou écrivez-nous pour être informé dès l’ouverture des inscriptions."
+              text="Aucun programme n’est publié actuellement. Écrivez-nous pour préciser vos besoins ; les formations apparaîtront ici lorsque leurs informations seront confirmées."
               action={
                 <div className="flex flex-wrap justify-center gap-3">
-                  <Link href="/inscription" className={buttonVariants({ variant: "dark" })}>Créer mon compte</Link>
+                  <Link href="/contact?sujet=Demande%20de%20formation" className={buttonVariants({ variant: "dark" })}>Demander des renseignements</Link>
                   <Link href="/contact" className={buttonVariants({ variant: "outline" })}>Nous contacter</Link>
                 </div>
               }
@@ -110,13 +92,13 @@ export default async function FormationsPage() {
       <section className="section border-t bg-canvas-soft">
         <div className="shell">
           <SectionHeading kicker="Bien choisir" title="Un parcours clair, de la découverte à la pratique." text="Chaque fiche vous donne les informations utiles avant de vous engager." action={<Link href="/aide" className={buttonVariants({ variant: "outline" })}>Besoin de conseils ? <ArrowRight /></Link>} />
-          <ol className="mt-12 grid gap-px overflow-hidden rounded-2xl border bg-line md:grid-cols-3">
+          <ol className="jp-directory-steps mt-12">
             {[
               { Icon: SearchCheck, title: "Comparez", text: "Filtrez par domaine, niveau, durée et tarif pour identifier la formation adaptée." },
               { Icon: Rows3, title: "Consultez le programme", text: "Découvrez les modules, le déroulement et les prochaines dates avant l’inscription." },
               { Icon: CalendarCheck, title: "Planifiez", text: "Après inscription, proposez vos disponibilités et suivez la validation de votre planning." },
             ].map(({ Icon, title, text }, i) => (
-              <li key={title} className="bg-panel p-8">
+              <li key={title} className="jp-directory-step">
                 <div className="flex items-center justify-between">
                   <Icon className="size-5" />
                   <span className="font-mono text-xs text-muted">0{i + 1}</span>

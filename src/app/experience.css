@@ -1,0 +1,130 @@
+/*
+ * JP-Services / expérience affinée.
+ * Layers of light, precise motion and clearer affordances without changing
+ * the underlying typography, branding, architecture or actual photographs.
+ */
+:root {
+  --jp-glow:rgba(43,78,240,.085);
+  --jp-glow-soft:rgba(147,176,255,.09);
+  --jp-ease-spring:cubic-bezier(.18,.86,.24,1);
+  --jp-outline:rgba(43,78,240,.3);
+}
+html[data-theme="dark"] {
+  --jp-glow:rgba(122,150,255,.115);
+  --jp-glow-soft:rgba(60,92,195,.09);
+  --jp-outline:rgba(155,179,255,.34);
+}
+.jp-hero {
+  position:relative;
+  isolation:isolate;
+}
+.jp-hero::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 68% at 85% 19%,var(--jp-glow),transparent 74%),
+    radial-gradient(ellipse 32% 42% at 9% 79%,var(--jp-glow-soft),transparent 85%);
+}
+.jp-hero > .shell {position:relative;z-index:1;}
+.jp-hero-main h1 span {
+  background:linear-gradient(105deg,var(--primary) 4%,#6988fa 55%,var(--primary) 100%);
+  background-clip:text;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+html[data-theme="dark"] .jp-hero-main h1 span{
+  background-image:linear-gradient(110deg,#93abff,#c0ceff 62%,#93abff);
+}
+.jp-path-finder,.jp-area-link,.jp-learning-empty {
+  box-shadow:0 0 0 0 transparent;
+  transition:box-shadow .28s var(--jp-ease-spring),
+    border-color .28s ease,transform .28s var(--jp-ease-spring);
+}
+@media (hover:hover) {
+  .jp-area-link:hover,
+  .jp-learning-empty:hover {
+    box-shadow:0 12px 34px -29px var(--primary),0 0 0 1px var(--jp-outline);
+  }
+  .jp-path-finder:focus-within {box-shadow:0 0 0 2px var(--jp-outline);}
+  .jp-method-step:hover .jp-method-rule {
+    background:linear-gradient(90deg,var(--primary),var(--line));
+  }
+}
+.jp-hero-switch[aria-pressed="true"],
+.jp-path-option[aria-pressed="true"] {
+  box-shadow:0 2px 8px rgba(43,78,240,.1);
+}
+.jp-hero-switch:focus-visible,.jp-path-option:focus-visible{
+  outline:2px solid var(--primary);
+  outline-offset:2px;
+}
+.jp-hero-photo figcaption {
+  background:linear-gradient(transparent,rgba(2,12,27,.7));
+}
+.jp-method-step .jp-method-rule{
+  transform-origin:left center;
+  transition:background-color .28s ease,transform .28s ease;
+}
+.jp-scolia-section{
+  position:relative;
+  isolation:isolate;
+}
+.jp-scolia-section::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:radial-gradient(ellipse 75% 80% at 95% 2%,rgba(83,116,236,.15),transparent 77%);
+}
+.jp-scolia-section>.shell {position:relative;z-index:1;}
+.jp-scolia-index-row{
+  border-color:rgba(205,222,255,.15);
+  transition:background-color .24s ease,border-color .24s ease;
+}
+.jp-scolia-index-row:hover{background:rgba(205,222,255,.045);}
+.jp-site-footer a,.jp-footer-directory a{
+  text-decoration-thickness:1px;
+  text-underline-offset:4px;
+}
+#site-header :is(a,button):focus-visible,
+.jp-site-footer :is(a,button):focus-visible {
+  outline:2px solid var(--primary);
+  outline-offset:3px;
+}
+.jp-path-action,.jp-action,.jp-finale-link,
+.jp-hero-switch,.jp-path-option,.jp-drawer-pref-trigger {
+  -webkit-tap-highlight-color:transparent;
+}
+.jp-press-wave {z-index:0; opacity:0; mix-blend-mode:normal;}
+.jp-scroll-progress {height:2px;}
+.jp-scroll-progress > span {
+  background:linear-gradient(90deg,#2b4ef0,#7998ff 65%,#a6beff);
+  transition:transform .10s linear;
+}
+.jp-search-status {
+  border:1px solid var(--md3-outline-variant);
+  background:var(--md3-surface-container);
+}
+#main-content :is(input,textarea,select):focus-visible{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px var(--jp-glow);
+  outline:0;
+}
+@media(max-width:620px){
+  .jp-hero::before{
+    background:radial-gradient(ellipse 100% 45% at 90% 25%,var(--jp-glow),transparent 82%);
+  }
+  .jp-hero-photo figcaption{padding-inline:16px;}
+  .jp-method-step:hover{box-shadow:none;}
+}
+@media(prefers-reduced-motion:reduce){
+  .jp-path-finder,.jp-area-link,.jp-learning-empty,.jp-method-step .jp-method-rule,
+  .jp-scolia-index-row,.jp-scroll-progress>span{transition:none!important;}
+  .jp-hero-switch[aria-pressed="true"],.jp-path-option[aria-pressed="true"]{
+    box-shadow:none;
+  }
+}

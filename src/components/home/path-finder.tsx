@@ -43,6 +43,13 @@ export function PathFinder() {
             type="button"
             key={path.label}
             onClick={() => setActive(index)}
+            onKeyDown={(event) => {
+              if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+              event.preventDefault();
+              const next = (index + (event.key === "ArrowRight" ? 1 : paths.length - 1)) % paths.length;
+              setActive(next);
+              event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>("button")[next]?.focus();
+            }}
             aria-pressed={active === index}
             className="jp-path-option"
             data-testid={`path-choice-${index}`}

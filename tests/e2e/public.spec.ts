@@ -486,3 +486,26 @@ test("l'API de recherche refuse les requêtes trop longues", async ({request}) =
   expect(r.status()).toBe(400);
   expect((await r.json()).error).toBe("invalid_query");
 });
+
+test("la galerie et les parcours répondent aussi aux flèches du clavier",async({page})=>{
+  await page.goto("/");
+  const first=page.getByTestId("hero-slide-0");
+  await first.focus();
+  await first.press("ArrowRight");
+  await expect(page.getByTestId("hero-slide-1")).toHaveAttribute("aria-pressed","true");
+  await expect(page.getByTestId("hero-slide-1")).toBeFocused();
+  const path=page.getByTestId("path-choice-0");
+  await path.focus();
+  await path.press("ArrowRight");
+  await expect(page.getByTestId("path-choice-1")).toHaveAttribute("aria-pressed","true");
+  await expect(page.getByTestId("path-choice-1")).toBeFocused();
+});
+test("les contenus restent visibles quand les animations sont désactivées",async({page})=>{
+ await page.emulateMedia({reducedMotion:"reduce"});
+ await page.goto("/");
+ await expect(page.locator(".jp-method-step")).toHaveCount(3);
+ const h=page.locator(".jp-method-step h3").first();
+ await h.scrollIntoViewIfNeeded();
+ await expect(h).toBeVisible();
+ await expect(h).toContainText("Comprendre");
+});

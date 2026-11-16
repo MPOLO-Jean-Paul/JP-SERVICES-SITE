@@ -59,6 +59,14 @@ export function HeroShowcase() {
             aria-label={`Afficher : ${item.label}`}
             aria-pressed={active === index}
             onClick={() => setActive(index)}
+            onKeyDown={(event) => {
+              if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+              event.preventDefault();
+              const next = (index + (event.key === "ArrowRight" ? 1 : slides.length - 1)) % slides.length;
+              setActive(next);
+              const buttons = event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>("button");
+              buttons?.[next]?.focus();
+            }}
           >
             <MaterialIcon name={item.icon} size={17} filled={active === index} />
             <span>{item.label}</span>

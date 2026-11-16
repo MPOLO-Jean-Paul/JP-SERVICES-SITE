@@ -10,7 +10,7 @@ import { clientIp, createSession, destroyAllSessions, getCurrentUser } from "@/s
 import { hashPassword, passwordNeedsRehash, passwordPolicyError, verifyPassword } from "@/server/auth/password";
 import { verifyGoogleIdToken } from "@/server/auth/google";
 import { rateLimit } from "@/server/security/rate-limit";
-import { layoutEmail, sendMail } from "@/server/mail/mailer";
+import { layoutEmail, sendMail, mailDeliveryConfigured } from "@/server/mail/mailer";
 import { safeLocalRedirect } from "@/lib/utils";
 import { env } from "@/env";
 
@@ -98,6 +98,11 @@ export async function registerAction(_prev: AuthState, formData: FormData): Prom
   const policy = passwordPolicyError(password);
   if (policy) return { error: t(policy), values };
   if (password !== confirm) return { error: t("mismatch"), values };
+  // En production, l'inscription nécessite un transport mail fonctionnel ;
+  // en développement, l'affichage du code dans les journaux reste possible.
+  if (env.NODE_ENV === "production" && !mailDeliveryConfigured()) {
+    return { error: t("mailUnavailable"), values };
+  }
   const ip = await clientIp();
   if (!(await rateLimit(`register:${ip}`, 5, 3600))) return { error: (await getTranslations("common"))("tooManyRequests"), values };
 
@@ -144,6 +149,9 @@ export async function activateAction(_prev: AuthState, formData: FormData): Prom
 
 export async function resendActivationAction(_prev: AuthState, formData: FormData): Promise<AuthState> {
   const ts = await getTranslations("auth.success");
+  if (env.NODE_ENV === "production" && !mailDeliveryConfigured()) {
+    return { error: (await getTranslations("auth.errors"))("mailUnavailable") };
+  }
   const email = emailSchema.safeParse(formData.get("email"));
   if (!email.success) return { error: (await getTranslations("auth.errors"))("emailInvalid") };
   const ip = await clientIp();
@@ -162,6 +170,9 @@ export async function resendActivationAction(_prev: AuthState, formData: FormDat
 /* ───────────── Mot de passe oublié ───────────── */
 export async function forgotPasswordAction(_prev: AuthState, formData: FormData): Promise<AuthState> {
   const ts = await getTranslations("auth.success");
+  if (env.NODE_ENV === "production" && !mailDeliveryConfigured()) {
+    return { error: (await getTranslations("auth.errors"))("mailUnavailable") };
+  }
   const email = emailSchema.safeParse(formData.get("email"));
   if (!email.success) return { error: (await getTranslations("auth.errors"))("emailInvalid") };
   const ip = await clientIp();

@@ -211,7 +211,11 @@
     "terms": "En créant un compte, vous acceptez les <terms>conditions d’utilisation</terms> et la <privacy>politique de confidentialité</privacy>.",
     "showcaseBadge": "ESPACE MEMBRE",
     "showcaseTitle": "Votre parcours numérique, au même endroit.",
-    "showcasePoints": ["Suivi des inscriptions et plannings", "Projets et forum d’entraide", "Alertes sur les nouvelles sessions"],
+    "showcasePoints": [
+      "Suivi des inscriptions et plannings",
+      "Projets et forum d’entraide",
+      "Alertes sur les nouvelles sessions"
+    ],
     "activationTitle": "Confirmez votre adresse e-mail",
     "activationIntro": "Nous avons envoyé un code à 6 chiffres à {email}. Saisissez-le pour activer votre compte.",
     "activationCode": "Code d’activation à 6 chiffres",
@@ -238,7 +242,8 @@
       "complexity": "Utilisez au moins une majuscule, une minuscule et un chiffre.",
       "predictable": "Choisissez un mot de passe moins prévisible.",
       "codeInvalid": "Code invalide ou expiré.",
-      "google": "La connexion Google a échoué. Réessayez."
+      "google": "La connexion Google a échoué. Réessayez.",
+      "mailUnavailable": "Le service d’e-mails est temporairement indisponible. Réessayez après sa configuration."
     },
     "success": {
       "activated": "Votre compte est actif. Vous pouvez maintenant vous connecter.",

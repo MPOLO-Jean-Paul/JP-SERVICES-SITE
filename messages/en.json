@@ -181,7 +181,13 @@
     "placeholder": "Search a course, software, news…",
     "hint": "Type to search",
     "empty": "No matching content.",
-    "sections": { "formations": "Courses", "logiciels": "Software", "actualites": "News", "posts": "Forum", "pages": "Pages" },
+    "sections": {
+      "formations": "Courses",
+      "logiciels": "Software",
+      "actualites": "News",
+      "posts": "Forum",
+      "pages": "Pages"
+    },
     "seeAllResults": "See all results"
   },
   "auth": {
@@ -205,7 +211,11 @@
     "terms": "By creating an account you accept the <terms>terms of use</terms> and the <privacy>privacy policy</privacy>.",
     "showcaseBadge": "MEMBER AREA",
     "showcaseTitle": "Your digital journey, in one place.",
-    "showcasePoints": ["Track enrolments and schedules", "Projects and help forum", "Alerts for new sessions"],
+    "showcasePoints": [
+      "Track enrolments and schedules",
+      "Projects and help forum",
+      "Alerts for new sessions"
+    ],
     "activationTitle": "Confirm your e-mail address",
     "activationIntro": "We sent a 6-digit code to {email}. Enter it to activate your account.",
     "activationCode": "6-digit activation code",
@@ -232,7 +242,8 @@
       "complexity": "Use at least one upper case, one lower case and one digit.",
       "predictable": "Choose a less predictable password.",
       "codeInvalid": "Invalid or expired code.",
-      "google": "Google sign-in failed. Please try again."
+      "google": "Google sign-in failed. Please try again.",
+      "mailUnavailable": "Email delivery is temporarily unavailable. Please try again after configuration."
     },
     "success": {
       "activated": "Your account is active. You can now sign in.",

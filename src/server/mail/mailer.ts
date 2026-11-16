@@ -12,6 +12,10 @@ export function smtpConfigurationError(): string | null {
 
 export const smtpIsConfigured = () => smtpConfigurationError() === null;
 
+/** Évite de créer des codes d'activation que le service ne peut pas expédier. */
+export const mailDeliveryConfigured = () =>
+  Boolean((env.RESEND_API_KEY && env.SMTP_FROM_ADDRESS) || smtpIsConfigured());
+
 let transporter: Transporter | null = null;
 function getTransporter(): Transporter {
   if (transporter) return transporter;

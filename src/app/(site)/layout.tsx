@@ -12,13 +12,13 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-white">
         {t("skipToContent")}
       </a>
-      <SiteHeader />
-      <SiteMotion />
       {process.env.JP_PREVIEW_MODE === "1" && (
-        <div role="status" className="jp-preview-notice border-b px-5 py-3 text-center text-xs font-medium leading-relaxed">
-          Aperçu du site : comptes et paiements désactivés pour la démonstration.
+        <div role="status" className="jp-preview-notice border-b px-5 py-2.5 text-center text-xs font-medium leading-relaxed">
+          Version de démonstration — comptes et paiements non disponibles.
         </div>
       )}
+      <SiteHeader />
+      <SiteMotion />
       <main id="main-content" className="flex-1">
         {children}
       </main>

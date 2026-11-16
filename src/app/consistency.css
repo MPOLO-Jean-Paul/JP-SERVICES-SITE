@@ -55,3 +55,108 @@ html[data-theme="dark"] #site-header{background:rgba(11,14,20,.95);}
 .jp-drawer-pref-trigger{gap:5px;padding:7px;font-size:12px;}
 .jp-finale-link{font-size:14px;}
 }
+
+/* Novembre 2026 — harmonisation de la navigation, du pied de page et de SCOLIA.
+   Le lien éditorial de fin de page conserve son trait de séparation, sans devenir
+   une capsule rognée (ancienne règle Material 3 contradictoire avec le pied de page). */
+.jp-finale .jp-finale-link {
+  box-sizing:border-box;
+  align-self:stretch;
+  min-width:0;
+  width:auto;
+  max-width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:12px 4px 16px;
+  margin:0;
+  border:0;
+  border-bottom:2px solid var(--ink);
+  border-radius:0;
+  background:transparent;
+  color:var(--ink);
+  overflow:visible;
+  isolation:auto;
+  text-decoration:none;
+}
+.jp-finale .jp-finale-link:hover {
+  color:var(--primary);
+  border-bottom-color:var(--primary);
+}
+.jp-finale .jp-finale-link .jp-md3-icon { width:20px; height:20px; flex:none; }
+.jp-finale .jp-finale-layout > * { min-width:0; }
+.jp-finale .jp-finale-layout > div { max-width:100%; }
+/* Navigation has to be opaque when sticky: content and the preview notice must
+   not ghost through its translucent background while scrolling. */
+#site-header,
+html[data-theme="dark"] #site-header {
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+}
+html[data-theme="dark"] #site-header {background:var(--canvas);}
+html:not([data-theme="dark"]) #site-header {background:var(--canvas);}
+.jp-preview-notice {
+  position:relative;
+  z-index:0;
+  display:block;
+  background:var(--canvas-soft);
+  color:var(--ink);
+  line-height:1.5;
+  padding-block:10px;
+  text-wrap:balance;
+}
+.jp-product-hero .jp-directory-actions {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:12px;
+  margin-top:18px;
+}
+.jp-product-hero .jp-action {
+  box-sizing:border-box;
+  min-height:52px;
+  max-width:100%;
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding-inline:20px;
+}
+.jp-product-hero .jp-action-primary {
+  color:#101c2e;
+  background:#fff;
+  border-color:#fff;
+}
+.jp-product-hero .jp-action-text {
+  color:#f5f7ff;
+  background:transparent;
+  border:1px solid #ffffff55;
+}
+.jp-product-hero .jp-action svg {flex:none;}
+/* Stable spacing and contrast across narrow smartphones. */
+@media(max-width:620px){
+  .jp-finale .jp-finale-link {
+    width:100%;
+    padding:11px 3px 15px;
+    font-size:15px;
+    line-height:1.35;
+    gap:12px;
+  }
+  .jp-product-hero .jp-directory-actions {
+    flex-direction:column;
+    align-items:stretch;
+    gap:13px;
+    margin-top:20px;
+  }
+  .jp-product-hero .jp-action{
+    width:100%;
+    padding-inline:18px;
+    min-height:52px;
+  }
+  .jp-product-hero .jp-action-text{max-width:100%;}
+}
+@media(prefers-reduced-motion:reduce){
+ .jp-finale .jp-finale-link{transition:none!important;}
+}

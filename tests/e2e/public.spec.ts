@@ -433,3 +433,42 @@ test("les champs de contact ont des icônes sans masquer la saisie",async({page}
   expect(padding).toBeGreaterThanOrEqual(40);
  }
 });
+
+test("les CTA et le bandeau de démonstration sont lisibles sur mobile",async({page})=>{
+ for(const theme of ["light","dark"]){
+   await page.setViewportSize({width:390,height:844});
+   await page.goto("/");
+   await page.evaluate(t=>document.documentElement.setAttribute("data-theme",t),theme);
+   const notice=page.locator(".jp-preview-notice");
+   if(await notice.count()) {
+     await expect(notice).toBeVisible();
+     const banner=await notice.evaluate(el=>({bg:getComputedStyle(el).backgroundColor,
+       ink:getComputedStyle(el).color,box:el.getBoundingClientRect().toJSON()}));
+     expect(banner.ink).not.toBe(banner.bg);
+     const nav=await page.locator("#site-header").boundingBox();
+     expect(nav!.y).toBeGreaterThanOrEqual(banner.box.bottom-2);
+   }
+   const link=page.locator(".jp-finale-link");
+   await link.scrollIntoViewIfNeeded();
+   await expect(link).toBeVisible();
+   const geometry=await link.evaluate(el=>({
+      radius:getComputedStyle(el).borderTopLeftRadius,
+      overflow:getComputedStyle(el).overflow,
+      box:el.getBoundingClientRect().toJSON(),
+      text:el.textContent?.trim()??""
+   }));
+   expect(geometry.radius).toBe("0px");
+   expect(geometry.overflow).toBe("visible");
+   expect(geometry.box.x).toBeGreaterThanOrEqual(0);
+   expect(geometry.box.right).toBeLessThanOrEqual(391);
+   expect(geometry.text).toContain("Nous contacter");
+   await page.goto("/scolia");
+   const buttons=page.locator(".jp-product-hero .jp-directory-actions .jp-action");
+   await expect(buttons).toHaveCount(2);
+   const rectangles=await buttons.evaluateAll(nodes=>nodes.map(el=>{
+     const r=el.getBoundingClientRect();return {x:r.left,right:r.right,top:r.top,bottom:r.bottom,radius:getComputedStyle(el).borderRadius};
+   }));
+   for(const r of rectangles){expect(r.x).toBeGreaterThanOrEqual(0);expect(r.right).toBeLessThanOrEqual(391);expect(r.radius).toBe("999px");}
+   expect(rectangles[1]!.top).toBeGreaterThanOrEqual(rectangles[0]!.bottom+8);
+ }
+});

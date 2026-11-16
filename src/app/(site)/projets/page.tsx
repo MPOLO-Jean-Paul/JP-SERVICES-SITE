@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/site/page-hero";
-import { PipelinePreview } from "@/components/visuals/mockups";
 import Link from "next/link";
-import { ArrowRight, CircleCheck, CircleDashed, Clock, Eye, Rocket, ShieldCheck } from "lucide-react";
+import { ArrowRight, CircleCheck, CircleDashed, Clock, Rocket } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -32,19 +31,19 @@ export default async function ProjetsPage() {
             <a href="#realisations" className={buttonVariants({ variant: "outline", size: "lg" })}>Voir les réalisations</a>
           </>
         }
-        aside={<PipelinePreview />}
+        aside={<div className="jp-directory-guide"><span>VOTRE DÉMARCHE</span><p>Un projet se construit autour d’un problème concret.</p>{["Présenter le contexte","Décrire les objectifs","Échanger sur la faisabilité"].map((step,i)=><div className="jp-directory-guide-row" key={step}><small>{String(i+1).padStart(2,"0")}</small><strong>{step}</strong></div>)}</div>}
       >
-        <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-copy"><li className="inline-flex items-center gap-2"><ShieldCheck className="size-4" /> Données protégées</li><li className="inline-flex items-center gap-2"><Eye className="size-4" /> Suivi transparent</li></ul>
+        
       </PageHero>
 
       <section className="section" id="soumettre">
         <div className="shell grid gap-10 lg:grid-cols-[1fr_1fr]">
-          <div className="card reveal p-6 sm:p-8">
+          <div className="jp-project-form-section p-6 sm:p-8">
             <span className="eyebrow">Nouvelle demande</span>
             <h2 className="h2 mt-2">Présenter un projet</h2>
             <p className="mt-2 text-copy">Donnez suffisamment de contexte pour obtenir un premier retour pertinent.</p>
             <div className="mt-6">
-              {user ? <ProjectForm /> : <div className="bg-dots rounded-xl border p-8 text-center"><p className="text-copy">Connectez-vous pour transmettre un projet et suivre son analyse.</p><Link href="/connexion?redirect_to=/projets" className={buttonVariants({ variant: "dark", className: "mt-4" })}>Se connecter <ArrowRight /></Link></div>}
+              {user ? <ProjectForm /> : <div className="rounded-md border border-line-strong bg-canvas-soft p-7"><p className="text-copy">Connectez-vous pour transmettre un projet et suivre son analyse.</p><Link href="/connexion?redirect_to=/projets" className={buttonVariants({ variant: "dark", className: "mt-4" })}>Se connecter <ArrowRight /></Link></div>}
             </div>
           </div>
           <div className="reveal">

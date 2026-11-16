@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/site/page-hero";
-import { LiveRoomPreview } from "@/components/visuals/mockups";
 import Link from "next/link";
 import { ArrowRight, CalendarDays, Clock, Globe, Lock, MonitorSmartphone, Radio, Share2, UserRound, Video, Mic } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
@@ -21,19 +20,19 @@ export default async function LivePage() {
       <PageHero
         eyebrow="Formations en ligne"
         title="Rejoignez une formation en direct, où que vous soyez."
-        text="Sessions de visioconférence intégrées au site, depuis un ordinateur ou un téléphone, sans rien installer. Le lien de la salle se partage par WhatsApp ou Telegram."
+        text="Explorez les sessions publiées, vérifiez leurs horaires et les modalités d’accès, puis rejoignez la salle lorsque la session est disponible."
         actions={
           <>
             <a href="#sessions" className={buttonVariants({ variant: "dark", size: "lg" })}>Voir les sessions <ArrowRight /></a>
             <Link href="/formations" className={buttonVariants({ variant: "outline", size: "lg" })}>Catalogue des formations</Link>
           </>
         }
-        aside={<LiveRoomPreview />}
+        aside={<div className="jp-directory-guide"><span>PARTICIPER À UNE SESSION</span><p>Les prochaines dates sont publiées dans le calendrier ci-dessous.</p>{["Consulter les dates disponibles","Vérifier les conditions d’accès","Ouvrir votre session"].map((step,i)=><div className="jp-directory-guide-row" key={step}><small>{String(i+1).padStart(2,"0")}</small><strong>{step}</strong></div>)}</div>}
       />
 
       <section className="section" id="sessions">
         <div className="shell">
-          <SectionHeading kicker="Programme en ligne" title="Les prochaines sessions en visioconférence." text="Rejoignez une salle quelques minutes avant le début. Un compte membre peut être demandé selon la session." />
+          <SectionHeading kicker="Programme en ligne" title="Les prochaines sessions en visioconférence." text="Consultez les horaires et les conditions d’accès. Certaines sessions peuvent nécessiter un compte membre." />
           {rows.length ? (
             <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {rows.map(({ session: s, formationTitre }) => {

@@ -16,7 +16,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <SiteMotion />
       {process.env.JP_PREVIEW_MODE === "1" && (
         <div role="status" className="jp-preview-notice border-b px-5 py-3 text-center text-xs font-medium leading-relaxed">
-          Prévisualisation de la refonte JP-Services : les comptes, inscriptions, formulaires et paiements ne sont pas activés sur cette démonstration.
+          Aperçu du site : comptes et paiements désactivés pour la démonstration.
         </div>
       )}
       <main id="main-content" className="flex-1">

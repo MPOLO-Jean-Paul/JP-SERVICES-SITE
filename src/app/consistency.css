@@ -1,0 +1,57 @@
+/* Display-only repairs: retain the existing JP-Services layout and palette. */
+:root { --jp-field-leading:#566277; }
+html[data-theme="dark"] {
+ --canvas-soft:#10141d;
+ --jp-field-leading:#acbad2;
+}
+.jp-md3-icon {display:inline-block;width:1em;height:1em;max-width:none;max-height:none;overflow:visible;font-family:inherit;vertical-align:middle;}
+#site-header{background:rgba(255,255,255,.95);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+html[data-theme="dark"] #site-header{background:rgba(11,14,20,.95);}
+.jp-scolia-section,.jp-scolia-section h2,.jp-scolia-section .jp-scolia-index-row strong,.jp-scolia-section .jp-scolia-index-row{color:#f5f7ff;}
+.jp-scolia-section .jp-scolia-main h2 em{color:#a6beff;}
+.jp-scolia-section .jp-scolia-main>p:not(.jp-overline){color:#d1dbeb;}
+.jp-scolia-section .jp-scolia-index-top,.jp-scolia-section .jp-scolia-index-bottom{color:#c2cfdf;}
+.jp-scolia-section .jp-scolia-index-row>span{color:#b4c5df;}
+.jp-scolia-section .jp-scolia-index-row>.jp-md3-icon{color:#b7e6ca;}
+.jp-scolia-index-row{grid-template-columns:28px minmax(0,1fr) 22px;min-width:0;}
+.jp-scolia-index-row strong{min-width:0;overflow-wrap:anywhere;}
+.jp-scolia-index-row .jp-md3-icon{justify-self:end;}
+.jp-scolia-index-top,.jp-scolia-index-bottom{min-width:0;flex-wrap:wrap;gap:6px 15px;}
+.jp-scolia-index-top>*,.jp-scolia-index-bottom>*{overflow-wrap:anywhere;}
+.jp-scolia-main .jp-overline{gap:8px;}
+.jp-scolia-main .jp-scolia-status{margin-inline-start:0;}
+.jp-finale-link{min-width:0;max-width:100%;overflow-wrap:anywhere;}
+.jp-finale-link .jp-md3-icon{flex-shrink:0;}
+.jp-preview-notice{background:var(--canvas-soft);color:var(--ink);border-color:var(--line);}
+.jp-learning,.jp-method,.jp-site-footer{color:var(--ink);}
+.jp-learning .jp-section-heading h2,.jp-learning .jp-learning-empty h3,
+.jp-method .jp-section-heading h2,.jp-method .jp-method-step h3,
+.jp-site-footer .jp-footer-title,.jp-site-footer .jp-footer-navigation p{color:var(--ink);}
+.jp-field-shell{position:relative;display:block;width:100%;min-width:0;}
+.jp-field-shell>.jp-field-leading{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--jp-field-leading);pointer-events:none;z-index:1;}
+.jp-field-shell-textarea>.jp-field-leading{top:16px;transform:none;}
+.jp-field-shell>.jp-field-with-icon{padding-left:42px;min-width:0;}
+.jp-field-shell:focus-within>.jp-field-leading{color:var(--primary);}
+.jp-field-shell>textarea.jp-field-with-icon{padding-top:13px;}
+.jp-site-footer #newsletter-email{width:100%;}
+.jp-drawer-preferences{min-width:0;}
+.jp-drawer-pref-trigger{display:inline-flex;align-items:center;min-height:42px;gap:7px;padding:8px 10px;color:var(--ink);font-size:13px;font-weight:600;border-radius:14px;background:transparent;cursor:pointer;}
+.jp-drawer-pref-trigger:hover,.jp-drawer-pref-trigger[aria-expanded="true"]{background:var(--md3-secondary-container);color:var(--md3-on-secondary-container);}
+.jp-drawer-pref-options{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:9px 0 2px;}
+.jp-drawer-pref-options button{min-height:38px;padding:7px 11px;border:1px solid var(--md3-outline-variant);border-radius:14px;color:var(--ink);font-size:12px;background:var(--panel);cursor:pointer;}
+.jp-drawer-pref-options button[aria-pressed="true"]{background:var(--md3-primary-container);color:var(--md3-on-primary-container);border-color:var(--md3-primary);font-weight:700;}
+.jp-drawer-pref-options button:disabled{opacity:.5;cursor:wait;}
+#mobile-drawer{color:var(--ink);}
+#mobile-drawer .jp-md3-drawer-link{gap:10px;}
+#mobile-drawer .jp-md3-drawer-link>span{min-width:0;overflow-wrap:anywhere;}
+@media(max-width:620px){
+.jp-finale-link{width:100%;gap:12px;align-items:center;padding-right:2px;}
+.jp-scolia-actions .jp-action{max-width:100%;}
+.jp-scolia-index-row{gap:9px;grid-template-columns:25px minmax(0,1fr) 20px;}
+.jp-scolia-index-row strong{font-size:clamp(13px,3.5vw,15px);}
+#mobile-drawer{width:min(360px,92vw);}
+}
+@media(max-width:360px){
+.jp-drawer-pref-trigger{gap:5px;padding:7px;font-size:12px;}
+.jp-finale-link{font-size:14px;}
+}

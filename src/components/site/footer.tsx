@@ -64,7 +64,7 @@ export async function SiteFooter() {
       <div className="shell">
         <div className="jp-footer-intro grid gap-12 border-b py-14 sm:py-16 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
           <div className="relative">
-            <p className="jp-overline">JP-SERVICES / RESTONS EN CONTACT</p>
+            <p className="jp-overline">RESTONS EN CONTACT</p>
             <h2 className="jp-footer-title mt-5 max-w-xl">{t("ctaTitle")}</h2>
             <p className="mt-4 max-w-lg text-sm leading-7 text-copy">{t("ctaText")}</p>
             <div className="mt-7 flex flex-wrap gap-3">

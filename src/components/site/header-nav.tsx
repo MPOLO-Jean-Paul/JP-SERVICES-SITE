@@ -1,8 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { usePathname, useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
+import { useTheme } from "next-themes";
+import { locales, localeLabels } from "@/i18n/config";
+import { setLocale } from "@/server/actions/locale";
 import { MaterialIcon } from "@/components/ui/material-symbol";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
@@ -10,8 +13,6 @@ import { Icon } from "./icon";
 import { LogoMark } from "@/components/brand/logo";
 import { Avatar } from "@/components/ui/avatar";
 import { Menu, MenuContent, MenuItem, MenuLabel, MenuSeparator, MenuTrigger } from "@/components/ui/dropdown";
-import { LanguageMenu } from "./language-menu";
-import { ThemeMenu } from "./theme-menu";
 import type { SessionUser } from "@/server/auth/session";
 
 
@@ -142,6 +143,12 @@ export function MobileDrawer({ user, logoutAction }: Props) {
   const t = useTranslations("nav");
   const tc = useTranslations("common");
   const pathname = usePathname();
+  const router = useRouter();
+  const locale = useLocale();
+  const { theme, setTheme } = useTheme();
+  const [pendingLanguage, startLanguageTransition] = useTransition();
+  const [showLanguage, setShowLanguage] = useState(false);
+  const [showTheme, setShowTheme] = useState(false);
   const [open, setOpen] = useState(false);
   const [seenPath, setSeenPath] = useState(pathname);
   if (seenPath !== pathname) {
@@ -170,6 +177,13 @@ export function MobileDrawer({ user, logoutAction }: Props) {
     ] },
   ];
   const close = () => setOpen(false);
+  const changeLanguage = (next: string) => {
+    if (next === locale) return;
+    startLanguageTransition(async () => {
+      await setLocale(next);
+      router.refresh();
+    });
+  };
 
   return <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
     <DialogPrimitive.Trigger asChild>
@@ -223,8 +237,32 @@ export function MobileDrawer({ user, logoutAction }: Props) {
             <Link href="/connexion" onClick={close} className="inline-flex min-h-11 items-center justify-center rounded-md border px-3 text-xs font-semibold">{t("login")}</Link>
             <Link href="/inscription" onClick={close} className="inline-flex min-h-11 items-center justify-center rounded-md bg-ink px-3 text-xs font-semibold text-canvas">{t("signup")}</Link>
           </div> : null}
-          <div className="flex items-center justify-between"><LanguageMenu /><ThemeMenu /></div>
-          <p className="mt-3 text-[11px] text-muted">{t("location")}</p>
+          <div className="jp-drawer-preferences" aria-label="Préférences d’affichage">
+            <div className="flex items-center justify-between gap-3">
+              <button type="button" data-testid="drawer-language-trigger" aria-expanded={showLanguage}
+                aria-controls="drawer-languages" className="jp-drawer-pref-trigger"
+                onClick={() => {setShowLanguage(v=>!v);setShowTheme(false);}}>
+                <MaterialIcon name="language" size={19}/><span>{localeLabels[locale as keyof typeof localeLabels]?.short ?? "FR"}</span>
+                <MaterialIcon name="keyboard_arrow_down" size={16}/>
+              </button>
+              <button type="button" data-testid="drawer-theme-trigger" aria-expanded={showTheme}
+                aria-controls="drawer-themes" className="jp-drawer-pref-trigger"
+                onClick={() => {setShowTheme(v=>!v);setShowLanguage(false);}}>
+                <MaterialIcon name="contrast" size={19}/><span>{t("theme")}</span>
+                <MaterialIcon name="keyboard_arrow_down" size={16}/>
+              </button>
+            </div>
+            {showLanguage ? <div id="drawer-languages" className="jp-drawer-pref-options" role="group" aria-label={t("language")}>
+              {locales.map(value=><button key={value} type="button" data-testid={`drawer-language-${value}`}
+                aria-pressed={locale===value} disabled={pendingLanguage}
+                onClick={()=>changeLanguage(value)}>{localeLabels[value].label}</button>)}
+            </div>:null}
+            {showTheme ? <div id="drawer-themes" className="jp-drawer-pref-options" role="group" aria-label={t("theme")}>
+              {(["light","dark","system"] as const).map(value=><button key={value} type="button"
+                data-testid={`drawer-theme-${value}`} aria-pressed={theme===value}
+                onClick={()=>setTheme(value)}>{value==="light"?t("themeLight"):value==="dark"?t("themeDark"):t("themeSystem")}</button>)}
+            </div>:null}
+          </div>
         </div>
       </DialogPrimitive.Content>
     </DialogPrimitive.Portal>

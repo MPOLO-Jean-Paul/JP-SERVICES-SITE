@@ -57,14 +57,14 @@ export default async function HomePage() {
       <section className="jp-hero" aria-labelledby="home-title">
         <div className="shell jp-hero-layout">
           <div className="jp-hero-main">
-            <p className="jp-overline"><span className="jp-overline-mark" /> JP-SERVICES <span className="jp-overline-separator">/</span> LUBUMBASHI · RDC</p>
+            <p className="jp-overline"><span className="jp-overline-mark" /> FORMATIONS <span className="jp-overline-separator">/</span> LOGICIELS <span className="jp-overline-separator">/</span> PROJETS</p>
             <h1 id="home-title">Le numérique <span>en action.</span></h1>
             <p className="jp-hero-lead">Formations pratiques, logiciels et solutions numériques pour apprendre, créer et concrétiser vos projets.</p>
             <div className="jp-hero-actions">
               <Link href="/formations" className="jp-action jp-action-primary">Explorer les formations <MaterialIcon name="north_east" size={18} /></Link>
               <Link href={memberLink} className="jp-action jp-action-text">{memberLabel} <MaterialIcon name="arrow_forward" size={17} /></Link>
             </div>
-            <p className="jp-hero-support"><MaterialIcon name="location_on" size={15} /> À Lubumbashi et accessible en ligne</p>
+            <p className="jp-hero-support"><MaterialIcon name="location_on" size={15} /> Disponible sur place et à distance</p>
           </div>
           <aside className="jp-hero-guide" aria-labelledby="home-guide-title">
             <HeroShowcase />
@@ -166,7 +166,7 @@ export default async function HomePage() {
             {["Gestion des apprenants","Finances & encaissements","Scolarité & évaluations","Rapports & administration"].map((name,i)=><div key={name} className="jp-scolia-index-row">
               <span>{String(i+1).padStart(2,"0")}</span><strong>{name}</strong><MaterialIcon name="check" size={17} />
             </div>)}
-            <div className="jp-scolia-index-bottom"><span>UN ÉTABLISSEMENT, UNE VUE D&apos;ENSEMBLE</span><span>JP—SERVICES</span></div>
+            <div className="jp-scolia-index-bottom"><span>UN ÉTABLISSEMENT, UNE VUE D&apos;ENSEMBLE</span><span>SUIVI CENTRALISÉ</span></div>
           </div>
         </div>
       </section>
@@ -186,7 +186,7 @@ export default async function HomePage() {
       <section className="jp-finale" aria-labelledby="finale-title">
         <div className="shell jp-finale-layout">
           <div><p className="jp-overline">PARLONS DE VOTRE PROCHAINE ÉTAPE</p><h2 id="finale-title">Un projet ? <em>Parlons-en.</em></h2></div>
-          <Link href="/contact" className="jp-finale-link">Contacter JP-SERVICES <MaterialIcon name="north_east" size={22} /></Link>
+          <Link href="/contact" className="jp-finale-link">Nous contacter <MaterialIcon name="north_east" size={22} /></Link>
         </div>
       </section>
     </>

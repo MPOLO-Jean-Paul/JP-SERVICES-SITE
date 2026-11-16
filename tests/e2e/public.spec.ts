@@ -509,3 +509,14 @@ test("les contenus restent visibles quand les animations sont désactivées",asy
  await expect(h).toBeVisible();
  await expect(h).toContainText("Comprendre");
 });
+
+test("les liens de la version démo ne demandent pas de créer un compte désactivé",async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ await page.goto("/");
+ if(await page.locator(".jp-preview-notice").count()===0) return;
+ await expect(page.locator("#site-header a[href='/contact']")).toBeVisible();
+ await expect(page.locator(".jp-footer-intro a[href='/inscription']")).toHaveCount(0);
+ await expect(page.locator(".jp-footer-intro a[href='/contact']")).toBeVisible();
+ await page.locator('button[aria-controls="mobile-drawer"]').click();
+ await expect(page.locator("#mobile-drawer a[href='/contact']")).toBeVisible();
+});

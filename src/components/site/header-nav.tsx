@@ -23,7 +23,7 @@ const NAV_ICONS: Record<string, string> = {
   "/forum": "forum", "/partenariat": "handshake", "/contact": "mail",
 };
 
-type Props = { user: Pick<SessionUser, "displayName" | "email" | "isAdmin" | "photoProfil"> | null; logoutAction: () => Promise<void>; unread?: number };
+type Props = { user: Pick<SessionUser, "displayName" | "email" | "isAdmin" | "photoProfil"> | null; logoutAction: () => Promise<void>; unread?: number; preview?: boolean };
 
 export function DesktopNav({ user }: { user: Props["user"] }) {
   const t = useTranslations("nav");
@@ -54,8 +54,9 @@ export function DesktopNav({ user }: { user: Props["user"] }) {
   );
 }
 
-export function AccountMenu({ user, logoutAction, unread = 0 }: Props) {
+export function AccountMenu({ user, logoutAction, unread = 0, preview = false }: Props) {
   const t = useTranslations("nav");
+  if (!user && preview) return <Link href="/contact" className="hidden min-h-9 items-center rounded-full bg-ink px-4 text-sm font-medium text-canvas sm:inline-flex">{t("contact")}</Link>;
   if (!user) {
     return (
       <div className="hidden items-center gap-2 sm:flex">
@@ -139,7 +140,7 @@ export function AccountMenu({ user, logoutAction, unread = 0 }: Props) {
   );
 }
 
-export function MobileDrawer({ user, logoutAction }: Props) {
+export function MobileDrawer({ user, logoutAction, preview = false }: Props) {
   const t = useTranslations("nav");
   const tc = useTranslations("common");
   const pathname = usePathname();
@@ -234,8 +235,8 @@ export function MobileDrawer({ user, logoutAction }: Props) {
         </div>
         <div className="shrink-0 border-t px-5 py-4">
           {!user ? <div className="mb-4 grid grid-cols-2 gap-2">
-            <Link href="/connexion" onClick={close} className="inline-flex min-h-11 items-center justify-center rounded-md border px-3 text-xs font-semibold">{t("login")}</Link>
-            <Link href="/inscription" onClick={close} className="inline-flex min-h-11 items-center justify-center rounded-md bg-ink px-3 text-xs font-semibold text-canvas">{t("signup")}</Link>
+            <Link href={preview ? "/formations" : "/connexion"} onClick={close} className="inline-flex min-h-11 items-center justify-center rounded-md border px-3 text-xs font-semibold">{preview ? t("formations") : t("login")}</Link>
+            <Link href={preview ? "/contact" : "/inscription"} onClick={close} className="inline-flex min-h-11 items-center justify-center rounded-md bg-ink px-3 text-xs font-semibold text-canvas">{preview ? t("contact") : t("signup")}</Link>
           </div> : null}
           <div className="jp-drawer-preferences" aria-label="Préférences d’affichage">
             <div className="flex items-center justify-between gap-3">

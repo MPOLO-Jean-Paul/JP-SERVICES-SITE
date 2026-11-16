@@ -16,6 +16,7 @@ import { ThemeMenu } from "./theme-menu";
 export async function SiteHeader() {
   const [t, user, settings] = await Promise.all([getTranslations("nav"), getCurrentUser(), getSettings()]);
   const unread = user ? await countUnreadNotifications(user.id).catch(() => 0) : 0;
+  const preview = process.env.JP_PREVIEW_MODE === "1";
   const announcement = settings.annonce_texte?.trim();
   const announcementHref = /^(?:https?:\/\/|\/)/i.test(settings.annonce_url ?? "") ? settings.annonce_url! : "/formations";
   const publicUser = user ? { displayName: user.displayName, email: user.email, isAdmin: user.isAdmin, photoProfil: user.photoProfil } : null;
@@ -25,7 +26,7 @@ export async function SiteHeader() {
       {announcement ? <AnnouncementBar text={announcement} href={announcementHref} label={settings.annonce_lien_label || "En savoir plus"} /> : null}
       <header className="glass sticky top-0 z-40 border-b" id="site-header">
         <div className="shell flex h-16 items-center gap-3">
-          <MobileDrawer user={publicUser} logoutAction={logoutAction} />
+          <MobileDrawer user={publicUser} logoutAction={logoutAction} preview={preview} />
           <Link href="/" className="flex items-center gap-2.5" aria-label="JP-Services — Accueil">
             <LogoMark className="size-9" />
             <span className="hidden text-[11px] font-semibold tracking-[.115em] text-ink xl:inline">JP-SERVICES</span>
@@ -42,10 +43,10 @@ export async function SiteHeader() {
             <LanguageMenu className="hidden sm:inline-flex" />
             <ThemeMenu className="hidden sm:inline-flex" />
             <div className="ml-1">
-              <AccountMenu user={publicUser} logoutAction={logoutAction} unread={unread} />
+              <AccountMenu user={publicUser} logoutAction={logoutAction} unread={unread} preview={preview} />
               {!user ? (
-                <Link href="/connexion" className="inline-flex h-9 items-center rounded-lg bg-ink px-3 text-sm font-medium text-canvas sm:hidden">
-                  {t("access")}
+                <Link href={preview ? "/contact" : "/connexion"} className="inline-flex h-9 items-center rounded-lg bg-ink px-3 text-sm font-medium text-canvas sm:hidden">
+                  {preview ? t("contact") : t("access")}
                 </Link>
               ) : null}
             </div>

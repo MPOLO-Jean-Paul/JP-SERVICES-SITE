@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { MaterialIcon } from "@/components/ui/material-symbol";
 import { LogoMark } from "@/components/brand/logo";
 import { Facebook, Linkedin, TikTok, Youtube } from "@/components/brand/social-icons";
@@ -11,7 +11,8 @@ import { LanguageMenu } from "./language-menu";
 import { PwaInstall } from "./pwa-install";
 
 export async function SiteFooter() {
-  const [t, tn, user, s] = await Promise.all([getTranslations("footer"), getTranslations("nav"), getCurrentUser(), getSettings()]);
+  const [t, tn, user, s, locale] = await Promise.all([getTranslations("footer"), getTranslations("nav"), getCurrentUser(), getSettings(), getLocale()]);
+  const preview = process.env.JP_PREVIEW_MODE === "1";
   const year = new Date().getFullYear();
   const socials = [
     { href: s.social_facebook, label: "Facebook", Icon: Facebook },
@@ -51,11 +52,17 @@ export async function SiteFooter() {
             { href: "/notifications", label: tn("notifications") },
             { href: "/mes-projets", label: tn("myProjects") },
           ]
-        : [
-            { href: "/inscription", label: t("createAccount") },
-            { href: "/connexion", label: tn("login") },
-            { href: "/mot-de-passe-oublie", label: t("forgot") },
-          ],
+        : preview
+          ? [
+              { href: "/contact", label: tn("contact") },
+              { href: "/aide", label: tn("help") },
+              { href: "/formations", label: tn("formations") },
+            ]
+          : [
+              { href: "/inscription", label: t("createAccount") },
+              { href: "/connexion", label: tn("login") },
+              { href: "/mot-de-passe-oublie", label: t("forgot") },
+            ],
     },
   ];
 
@@ -65,14 +72,14 @@ export async function SiteFooter() {
         <div className="jp-footer-intro grid gap-12 border-b py-14 sm:py-16 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
           <div className="relative">
             <p className="jp-overline">RESTONS EN CONTACT</p>
-            <h2 className="jp-footer-title mt-5 max-w-xl">{t("ctaTitle")}</h2>
-            <p className="mt-4 max-w-lg text-sm leading-7 text-copy">{t("ctaText")}</p>
+            <h2 className="jp-footer-title mt-5 max-w-xl">{preview ? (locale === "en" ? "Let’s talk about your project." : "Parlons de votre projet.") : t("ctaTitle")}</h2>
+            <p className="mt-4 max-w-lg text-sm leading-7 text-copy">{preview ? (locale === "en" ? "Explore our services and tell us what you want to build or learn." : "Découvrez nos services et présentez-nous ce que vous souhaitez apprendre ou réaliser.") : t("ctaText")}</p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link href={user ? "/formations" : "/inscription"} className="inline-flex h-11 items-center gap-2 rounded-md bg-ink px-5 text-[13px] font-medium text-canvas transition-colors hover:bg-primary hover:text-white">
-                {user ? t("ctaPrimaryLogged") : t("ctaPrimary")} <MaterialIcon name="arrow_forward" size={20} className="size-4" />
+              <Link href={preview ? "/contact" : user ? "/formations" : "/inscription"} className="inline-flex h-11 items-center gap-2 rounded-md bg-ink px-5 text-[13px] font-medium text-canvas transition-colors hover:bg-primary hover:text-white">
+                {preview ? tn("contact") : user ? t("ctaPrimaryLogged") : t("ctaPrimary")} <MaterialIcon name="arrow_forward" size={20} className="size-4" />
               </Link>
-              <Link href="/contact" className="inline-flex h-11 items-center rounded-md border border-line-strong bg-panel px-5 text-[13px] font-medium transition-colors hover:border-primary hover:text-primary">
-                {t("ctaSecondary")}
+              <Link href={preview ? "/formations" : "/contact"} className="inline-flex h-11 items-center rounded-md border border-line-strong bg-panel px-5 text-[13px] font-medium transition-colors hover:border-primary hover:text-primary">
+                {preview ? tn("formations") : t("ctaSecondary")}
               </Link>
             </div>
           </div>

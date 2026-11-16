@@ -55,6 +55,15 @@ test("la recherche globale s’ouvre au clavier", async ({ page, isMobile }) => 
   await expect(page.getByRole("option").first()).toBeVisible();
 });
 
+test("la sonde indépendante identifie la nouvelle révision et vérifie les tables", async ({request}) => {
+  const response = await request.get("/api/readiness");
+  expect(response.status()).toBe(200);
+  const data = await response.json();
+  expect(data).toMatchObject({status:"ok",database:"ok",schema:"ok",revision:"readiness-20261116-v2"});
+  expect(response.headers()["cache-control"]).toContain("no-store");
+  expect(response.headers()["x-jp-health-revision"]).toBe("readiness-20261116-v2");
+});
+
 test("la sonde de production vérifie aussi les tables du site", async ({request}) => {
   const response = await request.get("/api/health");
   expect(response.status()).toBe(200);

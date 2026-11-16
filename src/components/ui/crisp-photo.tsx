@@ -32,6 +32,7 @@ export function CrispPhoto({ category, onError, ...props }: CrispPhotoProps) {
   return (
     <Image
       {...props}
+      alt={props.alt}
       src={failed ? photo.fallback : photo.url}
       quality={failed ? undefined : 90}
       onError={(event) => {

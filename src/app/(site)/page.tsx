@@ -27,7 +27,7 @@ const areas = [
     description: "Des solutions pensées pour les besoins des organisations, de l'idée à sa mise en œuvre.",
     href: "/projets", photo: "projets",
   },
-];
+] as const;
 
 const method = [
   { number: "01", name: "Comprendre", description: "Partir d'un besoin précis. Définir ce que vous voulez apprendre, améliorer ou construire." },

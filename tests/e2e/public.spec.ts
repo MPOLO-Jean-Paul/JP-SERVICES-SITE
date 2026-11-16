@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => acceptCookies(page));
 const PAGES: Array<[string, RegExp]> = [
   ["/", /compétences/i],
   ["/formations", /compétence/i],
-  ["/logiciels", /logiciels/i],
+  ["/logiciels", /bons outils/i],
   ["/scolia", /SCOLIA Pro/i],
   ["/formations-en-ligne", /direct/i],
   ["/projets", /projet/i],
@@ -14,7 +14,7 @@ const PAGES: Array<[string, RegExp]> = [
   ["/actualites", /Actualités/i],
   ["/partenariat", /ensemble/i],
   ["/a-propos", /propos/i],
-  ["/contact", /Contactez/i],
+  ["/contact", /Parlons/i],
   ["/aide", /aide/i],
   ["/conditions", /Conditions/i],
   ["/confidentialite", /confidentialité/i],
@@ -181,4 +181,41 @@ test("le choix de langue se fait depuis le menu contextuel avec mise à jour de 
   await page.getByTestId("footer-language-popover").getByRole("menuitemradio",{name:/Français/}).click();
   await expect(page.locator("html")).toHaveAttribute("lang","fr");
   await expect(trigger).toContainText("Français");
+});
+
+
+test("les rubriques présentent de vraies informations plutôt que des interfaces fictives", async ({page}) => {
+  for (const path of ["/formations","/logiciels","/projets","/formations-en-ligne"]) {
+    const response=await page.goto(path);
+    expect(response?.status()).toBe(200);
+    await expect(page.locator(".jp-directory-guide")).toBeVisible();
+  }
+  await page.goto("/scolia");
+  await expect(page.locator(".jp-product-hero")).toBeVisible();
+  await expect(page.getByText("PROJET EN ÉVOLUTION", {exact:false})).toBeVisible();
+  await expect(page.locator("script[type='application/ld+json']").first()).not.toContainText('"price":"0"');
+});
+
+test("le contact affiche des coordonnées réelles et conserve le sujet des liens", async ({page}) => {
+  await page.goto("/contact?sujet=SCOLIA%20Pro");
+  await expect(page.locator(".jp-contact-main")).toBeVisible();
+  await expect(page.locator("#sujet")).toHaveValue("SCOLIA Pro");
+  await expect(page.locator(".jp-contact-aside")).toBeVisible();
+  await expect(page.locator(".jp-contact-address")).toContainText("Lubumbashi");
+});
+
+test("les pages publiques raffinées restent sans débordement sur mobile et ordinateur", async ({page},testInfo) => {
+  test.setTimeout(90000);
+  for(const [name,width,height] of [["mobile",320,700],["phone",390,844],["tablet",820,1024],["desktop",1440,900]] as const){
+    await page.setViewportSize({width,height});
+    for(const path of ["/formations","/logiciels","/contact","/scolia"]){
+      await page.goto(path);
+      await expect(page.locator("h1")).toBeVisible();
+      const size=await page.evaluate(()=>({width:document.documentElement.scrollWidth,screen:window.innerWidth}));
+      expect(size.width, "Débordement "+name+" "+path).toBeLessThanOrEqual(size.screen+1);
+      if ((name === "phone" || name === "desktop") && (path === "/formations" || path === "/contact")) {
+        await testInfo.attach("jp-"+name+"-"+path.replace("/",""),{body:await page.screenshot({fullPage:true}),contentType:"image/png"});
+      }
+    }
+  }
 });

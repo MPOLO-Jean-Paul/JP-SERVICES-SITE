@@ -300,3 +300,76 @@
 }
 @media(max-width:350px){.jp-catalogue-item{grid-template-columns:22px minmax(0,1fr);gap:7px}.jp-catalogue-footer{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){.jp-catalogue-action svg{transition:none}}
+
+
+/* Contact : vraie information, sans simulation d'interface ni promesse de délai. */
+.jp-contact-section{background:var(--canvas);padding:clamp(60px,7.5vw,108px) 0 clamp(76px,9vw,128px)}
+.jp-contact-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(310px,.72fr);gap:clamp(48px,8vw,125px);align-items:start}
+.jp-contact-main{min-width:0}
+.jp-contact-main h2,.jp-contact-aside h2{font-size:clamp(29px,3vw,42px);font-weight:640;letter-spacing:-.055em;line-height:1.16;margin:20px 0 14px}
+.jp-contact-main>p:not(.jp-overline),.jp-contact-aside>p:not(.jp-overline){font-size:13px;line-height:1.85;color:var(--copy);max-width:610px}
+.jp-contact-form{margin-top:34px;border-top:1px solid var(--line-strong);padding-top:31px}
+.jp-contact-form .field,.jp-contact-form textarea{border-radius:4px}
+.jp-contact-aside{min-width:0;position:sticky;top:115px}
+.jp-contact-lines{margin-top:27px;border-top:1px solid var(--line-strong)}
+.jp-contact-line{display:grid;grid-template-columns:22px minmax(0,1fr) 17px;align-items:center;gap:13px;border-bottom:1px solid var(--line);padding:20px 0;min-height:78px;transition:padding-left .2s,color .2s}
+.jp-contact-line>svg:first-child{color:var(--primary)}
+.jp-contact-line>svg:last-child{color:var(--muted)}
+a.jp-contact-line:hover{color:var(--primary);padding-left:5px}
+.jp-contact-line span{min-width:0}
+.jp-contact-line small{display:block;color:var(--muted);font:700 10px/1.5 var(--font-geist-mono),monospace;letter-spacing:.09em;margin-bottom:6px}
+.jp-contact-line strong{display:block;font-size:13px;font-weight:630;overflow-wrap:anywhere}
+.jp-contact-address{grid-template-columns:22px minmax(0,1fr)}
+.jp-contact-note{margin-top:38px;background:var(--canvas-soft);border-top:2px solid var(--ink);padding:27px}
+.jp-contact-note>span{font:700 10px var(--font-geist-mono),monospace;color:var(--primary);letter-spacing:.1em}
+.jp-contact-note p{color:var(--copy);font-size:12px;line-height:1.85;margin:17px 0}
+.jp-contact-note a{display:inline-flex;gap:9px;align-items:center;font-size:12px;font-weight:700;border-bottom:1px solid var(--line-strong);padding-bottom:7px}
+.jp-contact-note a:hover{color:var(--primary)}
+.jp-project-form-section{border:1px solid var(--line);border-radius:4px;background:var(--panel)}
+/* SCOLIA Pro — fiche d'éditeur, pas une maquette de tableau de bord imaginaire. */
+.jp-product-hero{background:#101c2e;color:#f8faff;border-bottom:1px solid #ffffff30;overflow:hidden}
+.jp-product-hero-layout{display:grid;grid-template-columns:minmax(0,1.17fr) minmax(0,.83fr);gap:clamp(50px,8vw,120px);align-items:center;padding-top:clamp(80px,10vw,136px);padding-bottom:clamp(78px,10vw,130px)}
+.jp-product-hero .jp-overline{color:#b7c7e6}
+.jp-product-hero h1{font-size:clamp(45px,5.6vw,76px);font-weight:625;letter-spacing:-.067em;line-height:1.09;margin:26px 0 26px;color:#fff}
+.jp-product-hero h1 span{color:#b8caff}
+.jp-product-hero-lead{font-size:clamp(14px,1.45vw,18px);line-height:1.85;color:#c2cce0;max-width:655px}
+.jp-product-stage{display:inline-block;margin-top:24px;color:#cad8ee;border-bottom:1px solid #ffffff36;padding-bottom:8px;font:700 10px var(--font-geist-mono),monospace;letter-spacing:.1em}
+.jp-product-hero .jp-action-primary{color:#101c2e;background:#fff;border-color:#fff;border-radius:3px}
+.jp-product-hero .jp-action-primary:hover{background:#d5e2ff;border-color:#d5e2ff;color:#101c2e}
+.jp-product-hero .jp-action-text{color:#fff;border-color:#ffffff55}
+.jp-product-aside{min-width:0;border-top:2px solid #a7bdfa}
+.jp-product-aside>span{font:650 10px var(--font-geist-mono),monospace;letter-spacing:.11em;color:#c2d0ea;display:block;margin:21px 0}
+.jp-product-aside>div{display:grid;grid-template-columns:37px minmax(0,1fr);gap:14px;align-items:center;min-height:67px;border-top:1px solid #ffffff2e}
+.jp-product-aside>div small{color:#a6b8d5;font:650 11px var(--font-geist-mono),monospace}
+.jp-product-aside>div strong{font-weight:570;font-size:clamp(14px,1.4vw,18px);letter-spacing:-.02em}
+.jp-product-aside>p{color:#adbed8;border-top:1px solid #ffffff2e;font-size:11px;line-height:1.8;padding-top:20px;margin-top:0}
+.jp-product-modules{border-top:1px solid var(--line-strong)}
+.jp-product-module{border-bottom:1px solid var(--line)}
+.jp-product-module:nth-child(3n+2){border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.jp-product-module svg{color:var(--primary);width:20px;height:20px}
+.jp-product-module h3{font-size:20px;font-weight:620;letter-spacing:-.04em;margin-top:21px}
+.jp-product-module p{font-size:12px;line-height:1.85;color:var(--copy);margin-top:10px}
+@media(max-width:1000px){
+ .jp-contact-layout{gap:42px}
+ .jp-product-hero-layout{gap:45px}
+ .jp-product-hero h1{font-size:clamp(40px,6vw,61px)}
+}
+@media(max-width:800px){
+ .jp-contact-layout,.jp-product-hero-layout{grid-template-columns:1fr}
+ .jp-contact-aside{position:static}
+ .jp-contact-layout{gap:64px}
+ .jp-product-aside{max-width:580px}
+ .jp-product-module:nth-child(3n+2){border-left:0;border-right:0}
+ .jp-product-module:nth-child(odd){border-right:1px solid var(--line)}
+}
+@media(max-width:620px){
+ .jp-contact-section{padding-top:51px;padding-bottom:77px}
+ .jp-contact-layout{gap:52px}
+ .jp-contact-note{padding:21px}
+ .jp-product-hero-layout{padding-top:70px;padding-bottom:72px;gap:55px}
+ .jp-product-hero h1{font-size:clamp(39px,11vw,55px)}
+ .jp-product-hero-lead{font-size:14px}
+ .jp-product-module:nth-child(odd){border-right:0}
+ .jp-product-module{padding:23px 0}
+}
+@media(prefers-reduced-motion:reduce){.jp-contact-line{transition:none}}

@@ -243,7 +243,8 @@
       "predictable": "Choose a less predictable password.",
       "codeInvalid": "Invalid or expired code.",
       "google": "Google sign-in failed. Please try again.",
-      "mailUnavailable": "Email delivery is temporarily unavailable. Please try again after configuration."
+      "mailUnavailable": "Email delivery is temporarily unavailable. Please try again after configuration.",
+      "previewRestricted": "Registrations on this validation site are limited to the authorized test account."
     },
     "success": {
       "activated": "Your account is active. You can now sign in.",

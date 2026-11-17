@@ -12,6 +12,14 @@ export async function forceActivationCode(email: string, code = "123456") {
   return code;
 }
 
+/** Injecte uniquement en CI un code de réinitialisation dans la base éphémère. */
+export async function forceResetCode(email: string, code = "654321") {
+  const sql = postgres(process.env.DATABASE_URL ?? "postgres://jp:jp_dev_password@127.0.0.1:5432/jpservices", { max: 1, onnotice: () => {} });
+  await sql`UPDATE users SET reset_token = ${createHash("sha256").update(code + email).digest("hex")}, reset_expire = NOW() + INTERVAL '20 minutes' WHERE email = ${email}`;
+  await sql.end();
+  return code;
+}
+
 export async function acceptCookies(page: Page) {
   await page.addInitScript(() => localStorage.setItem("jp_consent", JSON.stringify({ analytics: false, at: Date.now() })));
 }

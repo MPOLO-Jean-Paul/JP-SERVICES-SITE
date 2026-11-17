@@ -243,7 +243,8 @@
       "predictable": "Choisissez un mot de passe moins prévisible.",
       "codeInvalid": "Code invalide ou expiré.",
       "google": "La connexion Google a échoué. Réessayez.",
-      "mailUnavailable": "Le service d’e-mails est temporairement indisponible. Réessayez après sa configuration."
+      "mailUnavailable": "Le service d’e-mails est temporairement indisponible. Réessayez après sa configuration.",
+      "previewRestricted": "Les inscriptions sur ce site de validation sont réservées au compte de test autorisé."
     },
     "success": {
       "activated": "Votre compte est actif. Vous pouvez maintenant vous connecter.",

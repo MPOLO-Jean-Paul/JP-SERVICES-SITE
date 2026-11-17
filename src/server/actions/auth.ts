@@ -21,6 +21,22 @@ const PENDING_COOKIE = "jp_pending_email";
 const sha = (v: string) => createHash("sha256").update(v).digest("hex");
 const sixDigits = () => String(randomInt(0, 1_000_000)).padStart(6, "0");
 
+/**
+ * Les pages d'authentification restent disponibles pour tester leur design,
+ * mais le backend de validation n'autorise qu'un compte explicitement désigné.
+ * Sans adresse autorisée configurée, aucune inscription n'est possible.
+ */
+function previewEmailForbidden(email: string): boolean {
+  if (process.env.JP_PREVIEW_MODE !== "1") return false;
+  const allowed = process.env.JP_STAGING_TEST_EMAIL?.trim().toLowerCase();
+  return !allowed || email !== allowed;
+}
+
+/** Dans les tests CI uniquement, les codes sont injectés dans PostgreSQL éphémère. */
+function e2eEmailBypass(): boolean {
+  return process.env.CI === "true" && process.env.JP_E2E_ALLOW_UNSENT_CODES === "1";
+}
+
 async function landingFor(role: string, requested?: string | null) {
   const safe = safeLocalRedirect(requested, "");
   if (safe && !safe.startsWith("/connexion") && !safe.startsWith("/inscription")) return safe;
@@ -34,6 +50,7 @@ export async function loginAction(_prev: AuthState, formData: FormData): Promise
   const password = String(formData.get("mot_de_passe") ?? "");
   const redirectTo = String(formData.get("redirect_to") ?? "");
   if (!email.success || !password || password.length > 512) return { error: t("invalid"), values: { email: String(formData.get("email") ?? "") } };
+  if (previewEmailForbidden(email.data)) return { error: t("previewRestricted") };
   const ip = await clientIp();
   if (!(await rateLimit(`login:${email.data}:${ip}`, 8, 900))) return { error: (await getTranslations("common"))("tooManyRequests") };
   const user = (await db.select().from(schema.users).where(eq(schema.users.email, email.data)).limit(1))[0];
@@ -57,6 +74,7 @@ export async function googleLoginAction(idToken: string, redirectTo?: string): P
   if (!(await rateLimit(`google:${ip}`, 20, 900))) return { error: (await getTranslations("common"))("tooManyRequests") };
   const identity = await verifyGoogleIdToken(idToken);
   if (!identity) return { error: t("google") };
+  if (previewEmailForbidden(identity.email)) return { error: t("previewRestricted") };
   let user = (await db.select().from(schema.users).where(or(eq(schema.users.googleId, identity.sub), eq(schema.users.email, identity.email))).limit(1))[0];
   if (!user) {
     const randomPassword = await hashPassword(createHash("sha256").update(identity.sub + env.APP_SECRET + Date.now()).digest("hex"));
@@ -95,6 +113,7 @@ export async function registerAction(_prev: AuthState, formData: FormData): Prom
   if (formData.get("website")) return { success: ts("activationSent") };
   if (!emailRaw || !password) return { error: t("fields"), values };
   if (!email.success) return { error: t("emailInvalid"), values };
+  if (previewEmailForbidden(email.data)) return { error: t("previewRestricted"), values };
   const policy = passwordPolicyError(password);
   if (policy) return { error: t(policy), values };
   if (password !== confirm) return { error: t("mismatch"), values };
@@ -102,8 +121,7 @@ export async function registerAction(_prev: AuthState, formData: FormData): Prom
   // en développement, l'affichage du code dans les journaux reste possible.
   // Uniquement dans la CI GitHub: les tests d'inscription activent les codes
   // directement dans la base éphémère, sans expédier de véritables e-mails.
-  const isCiE2e = process.env.CI === "true" && process.env.JP_E2E_ALLOW_UNSENT_CODES === "1";
-  if (env.NODE_ENV === "production" && !mailDeliveryConfigured() && !isCiE2e) {
+  if (env.NODE_ENV === "production" && !mailDeliveryConfigured() && !e2eEmailBypass()) {
     return { error: t("mailUnavailable"), values };
   }
   const ip = await clientIp();
@@ -135,6 +153,7 @@ export async function activateAction(_prev: AuthState, formData: FormData): Prom
   const email = emailSchema.safeParse(formData.get("email"));
   const code = String(formData.get("code") ?? "").replace(/\D/g, "");
   if (!email.success || code.length !== 6) return { error: t("codeInvalid") };
+  if (previewEmailForbidden(email.data)) return { error: t("previewRestricted") };
   const ip = await clientIp();
   if (!(await rateLimit(`activate:${email.data}:${ip}`, 8, 900))) return { error: (await getTranslations("common"))("tooManyRequests") };
   const cutoff = new Date(Date.now() - 30 * 60_000);
@@ -152,11 +171,13 @@ export async function activateAction(_prev: AuthState, formData: FormData): Prom
 
 export async function resendActivationAction(_prev: AuthState, formData: FormData): Promise<AuthState> {
   const ts = await getTranslations("auth.success");
-  if (env.NODE_ENV === "production" && !mailDeliveryConfigured()) {
-    return { error: (await getTranslations("auth.errors"))("mailUnavailable") };
-  }
+  const errors = await getTranslations("auth.errors");
   const email = emailSchema.safeParse(formData.get("email"));
-  if (!email.success) return { error: (await getTranslations("auth.errors"))("emailInvalid") };
+  if (!email.success) return { error: errors("emailInvalid") };
+  if (previewEmailForbidden(email.data)) return { error: errors("previewRestricted") };
+  if (env.NODE_ENV === "production" && !mailDeliveryConfigured() && !e2eEmailBypass()) {
+    return { error: errors("mailUnavailable") };
+  }
   const ip = await clientIp();
   if (!(await rateLimit(`resend:${email.data}:${ip}`, 3, 900))) return { error: (await getTranslations("common"))("tooManyRequests") };
   const pending = (await db.select().from(schema.tempUsers).where(eq(schema.tempUsers.email, email.data)).limit(1))[0];
@@ -173,11 +194,13 @@ export async function resendActivationAction(_prev: AuthState, formData: FormDat
 /* ───────────── Mot de passe oublié ───────────── */
 export async function forgotPasswordAction(_prev: AuthState, formData: FormData): Promise<AuthState> {
   const ts = await getTranslations("auth.success");
-  if (env.NODE_ENV === "production" && !mailDeliveryConfigured()) {
-    return { error: (await getTranslations("auth.errors"))("mailUnavailable") };
-  }
+  const errors = await getTranslations("auth.errors");
   const email = emailSchema.safeParse(formData.get("email"));
-  if (!email.success) return { error: (await getTranslations("auth.errors"))("emailInvalid") };
+  if (!email.success) return { error: errors("emailInvalid") };
+  if (previewEmailForbidden(email.data)) return { error: errors("previewRestricted") };
+  if (env.NODE_ENV === "production" && !mailDeliveryConfigured() && !e2eEmailBypass()) {
+    return { error: errors("mailUnavailable") };
+  }
   const ip = await clientIp();
   if (!(await rateLimit(`forgot:${email.data}:${ip}`, 4, 900))) return { error: (await getTranslations("common"))("tooManyRequests") };
   const user = (await db.select({ id: schema.users.id, prenom: schema.users.prenom }).from(schema.users).where(and(eq(schema.users.email, email.data), eq(schema.users.isActive, 1))).limit(1))[0];
@@ -199,6 +222,7 @@ export async function resetPasswordAction(_prev: AuthState, formData: FormData):
   const password = String(formData.get("mot_de_passe") ?? "");
   const confirm = String(formData.get("confirmer_mot_de_passe") ?? "");
   if (!email.success || code.length !== 6) return { error: t("codeInvalid") };
+  if (previewEmailForbidden(email.data)) return { error: t("previewRestricted") };
   const policy = passwordPolicyError(password);
   if (policy) return { error: t(policy) };
   if (password !== confirm) return { error: t("mismatch") };

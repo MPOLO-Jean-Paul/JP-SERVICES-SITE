@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { acceptCookies, forceActivationCode, login } from "./helpers";
+import { acceptCookies, forceActivationCode, forceResetCode, login } from "./helpers";
 
 test.describe.configure({ mode: "serial" });
 const email = `membre.${Date.now()}@exemple.test`;
@@ -73,4 +73,38 @@ test("un membre ne peut pas accéder à l’administration", async ({ page }) =>
   await page.waitForURL(/\/profil/);
   await page.goto("/admin");
   await expect(page).not.toHaveURL(/\/admin/);
+});
+
+
+test("déconnexion invalide la session, sans accès aux pages protégées", async ({ page }) => {
+  await login(page, email, password);
+  await page.waitForURL(/\\/profil/);
+  await page.getByRole("button", { name: /mon espace/i }).click();
+  await page.getByRole("button", { name: /Se déconnecter/i }).click();
+  await page.waitForURL(/deconnecte=1/);
+  await page.goto("/profil");
+  await page.waitForURL(/\\/connexion/);
+  expect(page.url()).toContain("redirect_to");
+});
+
+test("réinitialisation du mot de passe : code incorrect refusé, ancien mot de passe invalidé", async ({ page }) => {
+  await page.goto("/mot-de-passe-oublie");
+  await page.getByLabel("Adresse e-mail").fill(email);
+  await page.getByRole("button", { name: /Envoyer le code/ }).click();
+  await page.waitForURL(/\\/mot-de-passe\\/reinitialiser/);
+  await page.locator("#code").fill("000001");
+  await page.locator("#mot_de_passe").fill("Nouveau-Membre-Test-2026");
+  await page.locator("#confirmer_mot_de_passe").fill("Nouveau-Membre-Test-2026");
+  await page.getByRole("button", { name: /Enregistrer le mot de passe/ }).click();
+  await expect(page.getByText(/Code invalide ou expiré/)).toBeVisible();
+  const code = await forceResetCode(email);
+  await page.locator("#code").fill(code);
+  await page.locator("#mot_de_passe").fill("Nouveau-Membre-Test-2026");
+  await page.locator("#confirmer_mot_de_passe").fill("Nouveau-Membre-Test-2026");
+  await page.getByRole("button", { name: /Enregistrer le mot de passe/ }).click();
+  await page.waitForURL(/\\/connexion\\?reinitialise=1/);
+  await login(page, email, password);
+  await expect(page.getByText("Identifiant ou mot de passe incorrect.")).toBeVisible();
+  await login(page, email, "Nouveau-Membre-Test-2026");
+  await page.waitForURL(/\\/profil/);
 });

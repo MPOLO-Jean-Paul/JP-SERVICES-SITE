@@ -107,3 +107,20 @@ exclusivement dans les secrets Render, jamais dans GitHub.
 - Les téléchargements et médias nécessitent le stockage S3 permanent.
 - Aucun de ces fichiers ne modifie automatiquement les DNS du domaine ni ne
   crée un compte chez Neon/Resend/Cloudflare.
+
+## Validation des comptes (17 novembre 2026)
+
+L'environnement `jp-services-db-validation-75v5` a une configuration
+`JP_PREVIEW_MODE=1` ; les actions serveur d'authentification vérifient
+désormais `JP_STAGING_TEST_EMAIL`. Une seule adresse autorisée peut
+s'inscrire, se connecter par mot de passe ou Google, activer son compte
+et demander une réinitialisation sur cette instance. Par défaut (adresse
+non définie), aucune inscription n'est possible. Aucune restriction
+de ce type n'est appliquée au site officiel (`JP_PREVIEW_MODE=0`).
+La configuration doit rester **temporaire** et servir exclusivement aux tests.
+
+La CI utilise une base PostgreSQL isolée et l'option
+`CI=true` + `JP_E2E_ALLOW_UNSENT_CODES=1` pour tester
+activation et réinitialisation sans envoyer de vrais codes. Elle n'est
+jamais activée sur Render. Les essais réels Resend doivent utiliser une
+adresse appartenant à l'équipe, sans communiquer ses codes de connexion.

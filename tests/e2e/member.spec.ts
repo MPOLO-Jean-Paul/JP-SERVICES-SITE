@@ -23,6 +23,31 @@ test("inscription, activation et accès à l’espace membre", async ({ page }) 
   await expect(page.locator("h1")).toContainText("Bonjour Aline");
 });
 
+test("espace membre mobile sans débordement horizontal", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 780 });
+  await login(page, email, password);
+  await page.waitForURL(/\\/profil/);
+
+  const navigation = page.getByRole("navigation", { name: "Rubriques de mon espace" });
+  await expect(navigation).toBeVisible();
+  await expect(navigation.getByRole("link", { name: "Mon profil" })).toHaveAttribute("aria-current", "page");
+
+  const width = await page.evaluate(() => ({
+    document: document.documentElement.scrollWidth,
+    viewport: window.innerWidth,
+  }));
+  expect(width.document).toBeLessThanOrEqual(width.viewport + 1);
+
+  await navigation.getByRole("link", { name: "Formations" }).click();
+  await page.waitForURL(/\\/abonnements/);
+  await expect(page.getByRole("heading", { name: "Mes formations" })).toBeVisible();
+  const nextWidth = await page.evaluate(() => ({
+    document: document.documentElement.scrollWidth,
+    viewport: window.innerWidth,
+  }));
+  expect(nextWidth.document).toBeLessThanOrEqual(nextWidth.viewport + 1);
+});
+
 test("mot de passe incorrect refusé", async ({ page }) => {
   await login(page, email, "Mauvais-Passe-2026");
   await expect(page.getByText("Identifiant ou mot de passe incorrect.")).toBeVisible();

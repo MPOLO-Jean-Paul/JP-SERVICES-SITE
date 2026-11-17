@@ -18,7 +18,7 @@ export function EnrollCard({ formationId, priceLabel, isFree, duration, level, s
       router.refresh();
     });
   return (
-    <aside className="card sticky top-32 p-6 shadow-md" aria-label="Inscription à la formation">
+    <aside className="card jp-course-enroll-card min-w-0 p-4 shadow-sm sm:p-6 lg:sticky lg:top-32" aria-label="Inscription à la formation">
       <div className="flex items-end justify-between">
         <div>
           <span className="text-[11px] text-muted font-medium">Tarif de la formation</span>
@@ -26,7 +26,7 @@ export function EnrollCard({ formationId, priceLabel, isFree, duration, level, s
         </div>
         <ShieldCheck className="size-6 text-muted" aria-hidden />
       </div>
-      <ul className="mt-5 grid grid-cols-2 gap-3 text-sm">
+      <ul className="jp-course-enroll-facts mt-5 grid grid-cols-2 gap-2 text-sm sm:gap-3">
         {[
           [Clock, "Durée", duration],
           [Signal, "Niveau", level],
@@ -35,11 +35,11 @@ export function EnrollCard({ formationId, priceLabel, isFree, duration, level, s
         ].map(([Icon, label, value]) => {
           const I = Icon as typeof Clock;
           return (
-            <li key={label as string} className="rounded-lg border bg-canvas-soft p-3">
+            <li key={label as string} className="min-w-0 rounded-xl border bg-canvas-soft p-3">
               <span className="flex items-center gap-1.5 text-xs text-muted">
                 <I className="size-3.5" /> {label as string}
               </span>
-              <strong className="mt-1 block text-sm">{value as string}</strong>
+              <strong className="mt-1 block break-words text-sm leading-snug">{value as string}</strong>
             </li>
           );
         })}

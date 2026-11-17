@@ -19,10 +19,10 @@ export default async function AdminDashboard() {
     <AdminPage title="Tableau de bord" text="Vue d’ensemble de la plateforme : communauté, catalogue, contenus et demandes à traiter.">
       {todo.length ? (
         <Panel title="À traiter" text="Les demandes en attente d’une action de l’équipe.">
-          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{todo.map(({ n, label, href, Icon }) => <li key={href}><Link href={href} className="flex items-center gap-3 rounded-lg border border-amber-300/60 bg-amber-50 p-4 text-amber-900 hover:border-amber-400 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100"><Icon className="size-5" /><span><strong className="text-xl">{n}</strong> {label}</span><ArrowRight className="ml-auto size-4" /></Link></li>)}</ul>
+          <ul className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">{todo.map(({ n, label, href, Icon }) => <li key={href}><Link href={href} className="flex items-center gap-3 rounded-lg border border-amber-300/60 bg-amber-50 p-4 text-amber-900 hover:border-amber-400 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100"><Icon className="size-5" /><span><strong className="text-xl">{n}</strong> {label}</span><ArrowRight className="ml-auto size-4" /></Link></li>)}</ul>
         </Panel>
       ) : null}
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid min-w-0 grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         <StatCard icon={Users} label="Comptes utilisateurs" value={s.users} href="/admin/utilisateurs" hint={s.pendingActivations ? `${s.pendingActivations} en attente d’activation` : undefined} />
         <StatCard icon={GraduationCap} label="Formations publiées" value={s.formations} href="/admin/formations" tone="info" hint={`${s.enrollments} inscriptions`} />
         <StatCard icon={Download} label="Logiciels" value={s.logiciels} href="/admin/logiciels" tone="success" />
@@ -32,7 +32,7 @@ export default async function AdminDashboard() {
         <StatCard icon={Mail} label="Abonnés newsletter" value={s.newsletter} href="/admin/newsletter" tone="success" />
         <StatCard icon={Bell} label="Plannings en attente" value={s.pendingPlannings} href="/admin/horaires" tone={s.pendingPlannings ? "warning" : "brand"} />
       </div>
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid min-w-0 gap-4 lg:grid-cols-2 lg:gap-6">
         <Panel title="Derniers inscrits" actions={<Link href="/admin/utilisateurs" className="text-sm font-semibold text-primary">Tout voir</Link>}>
           <ul className="divide-y">{recent.users.map((u) => <li key={u.id} className="flex items-center gap-3 py-2.5 text-sm"><UserPlus className="size-4 text-muted" /><span className="min-w-0 flex-1 truncate"><strong>{`${u.prenom} ${u.nom}`.trim() || u.email}</strong> <span className="text-muted">{u.email}</span></span><span className="text-xs text-muted">{formatDateTime(u.date)}</span></li>)}{!recent.users.length ? <li className="py-6 text-center text-sm text-muted">Aucun compte.</li> : null}</ul>
         </Panel>
@@ -47,7 +47,7 @@ export default async function AdminDashboard() {
         </Panel>
       </div>
       <Panel title="Toutes les rubriques">
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{ADMIN_NAV.filter((i) => i.href !== "/admin").map((i) => <Link key={i.href} href={i.href} className="flex items-start gap-3 rounded-lg border p-4 transition hover:border-primary/50 hover:bg-panel-2"><span className="icon-box"><AdminIcon name={i.icon} className="size-4" /></span><span><strong className="block text-sm">{i.label}</strong><span className="text-xs text-muted">{i.description}</span></span></Link>)}</div>
+        <div className="grid min-w-0 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{ADMIN_NAV.filter((i) => i.href !== "/admin").map((i) => <Link key={i.href} href={i.href} className="flex items-start gap-3 rounded-lg border p-4 transition hover:border-primary/50 hover:bg-panel-2"><span className="icon-box"><AdminIcon name={i.icon} className="size-4" /></span><span><strong className="block text-sm">{i.label}</strong><span className="text-xs text-muted">{i.description}</span></span></Link>)}</div>
       </Panel>
     </AdminPage>
   );

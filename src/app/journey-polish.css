@@ -166,3 +166,40 @@ html[data-theme="dark"] {
   .jp-member-list-card,
   .jp-directory-guide-row { transition: none !important; transform: none !important; }
 }
+
+/* Fiche de formation : informations, onglets et programme adaptés au tactile. */
+.jp-course-detail-hero, .jp-course-detail-hero .shell, .jp-course-detail-hero .shell > div { min-width: 0; }
+.jp-course-detail-hero h1 { text-wrap: balance; overflow-wrap: anywhere; }
+.jp-course-facts > div { min-width: 0; }
+.jp-course-tabs { background: var(--header-glass); }
+.jp-course-tabs .jp-course-tab { white-space: nowrap; -webkit-tap-highlight-color: transparent; }
+.jp-course-tabs .jp-course-tab:hover { background: var(--panel-2); border-color: var(--primary); }
+.jp-course-tabs .jp-course-tab:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.jp-course-benefit, .jp-course-step, .jp-course-module, .jp-course-accordion { border-color: var(--jp-journey-edge); }
+.jp-course-accordion details[open] { background: var(--panel); }
+.jp-course-accordion details summary:hover { background: var(--panel-2); }
+.jp-course-accordion details summary:focus-visible { outline: 2px solid var(--primary); outline-offset: -3px; }
+.jp-course-enroll-card { border-color: var(--jp-journey-edge); border-radius: 19px; box-shadow: var(--jp-journey-shadow); }
+.jp-course-enroll-facts li { overflow-wrap: anywhere; }
+@media (max-width: 390px) {
+  .jp-course-detail-hero .lead { font-size: 1rem; line-height: 1.56; }
+  .jp-course-accordion summary { flex-wrap: wrap; }
+  .jp-course-accordion summary strong { flex-basis: calc(100% - 40px); }
+  .jp-course-enroll-facts { grid-template-columns: minmax(0, 1fr); }
+}
+/* Console : hiérarchie lisible, cartes cohérentes, menu accessible. */
+.jp-admin-desktop-sidebar, .jp-admin-page, .jp-admin-panel { min-width: 0; }
+.jp-admin-panel, .jp-admin-stat { border-color: var(--jp-journey-edge); box-shadow: var(--jp-journey-shadow); }
+.jp-admin-panel { border-radius: 19px; overflow: hidden; }
+.jp-admin-stat { border-radius: 16px; }
+.jp-admin-panel .table-jp th { white-space: nowrap; }
+.jp-admin-panel .table-jp td { overflow-wrap: anywhere; }
+.jp-admin-page .jp-admin-stat:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+@media (max-width: 639px) { .jp-admin-panel { border-radius: 16px; } }
+@media (max-width: 359px) {
+  .jp-admin-page .jp-admin-stat { padding: 12px; }
+  .jp-admin-page .jp-admin-stat .icon-box { width: 35px; height: 35px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jp-course-tabs .jp-course-tab, .jp-course-accordion summary { transition: none !important; }
+}

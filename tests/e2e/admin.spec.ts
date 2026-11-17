@@ -39,6 +39,14 @@ test("publier une formation avec image puis la retrouver au catalogue", async ({
   await expect(page.getByText("La formation a été publiée.")).toBeVisible();
   await page.goto("/formations");
   await expect(page.getByRole("heading", { name: titre })).toBeVisible();
+  await page.getByRole("heading", { name: titre }).click();
+  await expect(page.getByRole("heading", { level: 1, name: titre })).toBeVisible();
+  await page.setViewportSize({ width: 360, height: 780 });
+  await expect(page.getByRole("navigation", { name: "Sections de la formation" })).toBeVisible();
+  await expect(page.getByRole("complementary", { name: "Inscription à la formation" })).toBeVisible();
+  const dims = await page.evaluate(() => ({ viewport: window.innerWidth, content: document.documentElement.scrollWidth }));
+  expect(dims.content, "Fiche de formation : débordement mobile").toBeLessThanOrEqual(dims.viewport);
+  await page.setViewportSize({ width: 1280, height: 800 });
 });
 
 test("modifier les paramètres du site met à jour le bandeau", async ({ page }) => {
@@ -49,4 +57,21 @@ test("modifier les paramètres du site met à jour le bandeau", async ({ page })
   await expect(page.getByText("Paramètres enregistrés.")).toBeVisible();
   await page.goto("/");
   await expect(page.getByText(texte)).toBeVisible();
+});
+
+test("le menu administrateur mobile est accessible et se ferme au clavier", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/admin");
+  const trigger = page.getByRole("button", { name: "Ouvrir le menu d’administration" });
+  await expect(trigger).toBeVisible();
+  await trigger.click();
+  const drawer = page.getByRole("dialog", { name: "Menu d’administration" });
+  await expect(drawer).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(drawer).not.toBeVisible();
+  await trigger.click();
+  await drawer.locator('a[href="/admin/formations"]').click();
+  await expect(page).toHaveURL(/\/admin\/formations$/);
+  await expect(drawer).not.toBeVisible();
+  await page.setViewportSize({ width: 1280, height: 800 });
 });

@@ -40,29 +40,29 @@ export default async function FormationPage({ params }: { params: Promise<{ id: 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd({ "@type": "Course", name: f.titre, description: excerpt(f.description, 300), provider: { "@type": "Organization", name: "JP-Services", url: SITE_URL }, offers: { "@type": "Offer", price: price, priceCurrency: "USD", availability: "https://schema.org/InStock" }, hasCourseInstance: f.dateDebut ? { "@type": "CourseInstance", courseMode: "blended", startDate: f.dateDebut, location: { "@type": "Place", name: "JP-Services, Lubumbashi" } } : undefined })} />
-      <section className="relative overflow-hidden border-b">
+      <section className="jp-course-detail-hero relative overflow-hidden border-b">
         <div className="bg-grid fade-mask pointer-events-none absolute inset-0" aria-hidden />
         
-        <div className="shell relative grid gap-12 py-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-20">
+        <div className="shell relative grid min-w-0 gap-7 py-10 sm:gap-10 sm:py-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)] lg:items-center lg:py-20">
           <div>
             <nav aria-label="Fil d’Ariane" className="flex items-center gap-1.5 text-[11px] text-muted font-medium">
               <Link href="/formations" className="hover:text-ink">Formations</Link>
               <ChevronRight className="size-3" />
               <span>{f.domain.label}</span>
             </nav>
-            <h1 className="h1 mt-6">{f.titre}</h1>
+            <h1 className="h1 mt-5 break-words">{f.titre}</h1>
             <p className="lead mt-5 max-w-2xl">{excerpt(f.description, 220)}</p>
-            <dl className="mt-8 grid max-w-xl grid-cols-3 divide-x rounded-xl border bg-panel">
+            <dl className="jp-course-facts mt-7 grid max-w-xl grid-cols-2 gap-px overflow-hidden rounded-2xl border bg-line shadow-xs sm:grid-cols-3">
               {[
                 [Signal, "Niveau", level],
                 [Clock, "Durée", duration],
                 [CalendarCheck, "Début", f.dateDebut ? formatDate(f.dateDebut, "fr", { day: "numeric", month: "short", year: "numeric" }) : "À annoncer"],
-              ].map(([I, k, v]) => {
+              ].map(([I, k, v], index) => {
                 const Ic = I as typeof Clock;
                 return (
-                  <div key={k as string} className="p-4">
-                    <dt className="flex items-center gap-1.5 text-[11px] text-muted font-medium"><Ic className="size-3.5" /> {k as string}</dt>
-                    <dd className="mt-1 text-sm font-semibold">{v as string}</dd>
+                  <div key={k as string} className={`min-w-0 bg-panel p-3.5 sm:p-4 ${index === 2 ? "col-span-2 sm:col-span-1" : ""}`}>
+                    <dt className="flex items-center gap-1.5 text-xs font-medium text-muted"><Ic className="size-3.5 shrink-0" aria-hidden="true" /> {k as string}</dt>
+                    <dd className="mt-1 break-words text-sm font-semibold leading-snug text-ink">{v as string}</dd>
                   </div>
                 );
               })}
@@ -79,15 +79,15 @@ export default async function FormationPage({ params }: { params: Promise<{ id: 
         </div>
       </section>
 
-      <nav className="glass sticky top-16 z-30 border-b" aria-label="Sections de la formation">
-        <div className="shell flex gap-6 overflow-x-auto text-sm font-medium no-scrollbar">
+      <nav className="jp-course-tabs glass sticky top-16 z-30 border-b" aria-label="Sections de la formation">
+        <div className="shell flex min-w-0 gap-1 overflow-x-auto text-sm font-medium no-scrollbar sm:gap-3">
           {[
             ["#apercu", "Aperçu"],
             ["#competences", "Compétences"],
             ["#methode", "Méthode"],
             ["#programme", "Programme"],
           ].map(([href, label]) => (
-            <a key={href} href={href} className="shrink-0 border-b border-transparent py-3.5 text-copy hover:border-ink hover:text-ink">
+            <a key={href} href={href} className="jp-course-tab inline-flex min-h-11 shrink-0 items-center rounded-lg border-b-2 border-transparent px-3 py-2.5 text-copy transition-colors hover:text-ink focus-visible:text-ink">
               {label}
             </a>
           ))}
@@ -95,8 +95,8 @@ export default async function FormationPage({ params }: { params: Promise<{ id: 
       </nav>
 
       <section className="section">
-        <div className="shell grid gap-10 lg:grid-cols-[1fr_380px] lg:items-start">
-          <div className="space-y-16">
+        <div className="shell grid min-w-0 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(320px,380px)] lg:items-start lg:gap-10">
+          <div className="min-w-0 space-y-12 sm:space-y-16">
             <section id="apercu" className="reveal scroll-mt-32">
               <span className="eyebrow">À propos de cette formation</span>
               <h2 className="h2 mt-2">Développez une compétence utile, avec un cadre clair.</h2>
@@ -109,7 +109,7 @@ export default async function FormationPage({ params }: { params: Promise<{ id: 
                 ].map(([I, title, text]) => {
                   const Ic = I as typeof Laptop;
                   return (
-                    <div key={title as string} className="rounded-xl border bg-canvas-soft p-5">
+                    <div key={title as string} className="jp-course-benefit rounded-2xl border bg-panel p-4 sm:p-5">
                       <Ic className="size-5" />
                       <strong className="mt-3 block">{title as string}</strong>
                       <p className="mt-1 text-sm text-copy">{text as string}</p>
@@ -124,7 +124,7 @@ export default async function FormationPage({ params }: { params: Promise<{ id: 
               <h2 className="h2 mt-2">Ce que vous allez parcourir.</h2>
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {modules.map((m, i) => (
-                  <article key={m} className="card flex gap-4 p-5">
+                  <article key={`${i}-${m}`} className="card jp-course-module flex min-w-0 gap-3 rounded-2xl p-4 sm:gap-4 sm:p-5">
                     <span className="font-mono text-sm text-muted">{String(i + 1).padStart(2, "0")}</span>
                     <div>
                       <h3 className="font-semibold">{m}</h3>
@@ -144,7 +144,7 @@ export default async function FormationPage({ params }: { params: Promise<{ id: 
                   ["Pratiquer", "Vous passez à l’action au moyen d’exercices, de démonstrations et de cas guidés."],
                   ["Consolider", "Vous réutilisez les acquis dans un travail de synthèse et identifiez vos prochaines étapes."],
                 ].map(([title, text], i) => (
-                  <li key={title} className="relative rounded-xl border p-5 pt-8">
+                  <li key={title} className="jp-course-step relative rounded-2xl border p-4 pt-8 sm:p-5 sm:pt-8">
                     <span className="absolute -top-3.5 left-5 inline-flex size-7 items-center justify-center rounded-full border bg-panel font-mono text-xs">{i + 1}</span>
                     <h3 className="font-semibold">{title}</h3>
                     <p className="mt-1 text-sm text-copy">{text}</p>
@@ -156,13 +156,13 @@ export default async function FormationPage({ params }: { params: Promise<{ id: 
             <section id="programme" className="reveal scroll-mt-32">
               <span className="eyebrow">Programme</span>
               <h2 className="h2 mt-2">Les étapes de votre parcours.</h2>
-              <div className="mt-6 divide-y rounded-xl border">
+              <div className="jp-course-accordion mt-6 divide-y overflow-hidden rounded-2xl border">
                 {modules.map((m, i) => (
-                  <details key={m} open={i === 0} className="group">
-                    <summary className="flex cursor-pointer list-none items-center gap-4 p-5 [&::-webkit-details-marker]:hidden">
-                      <span className="text-[11px] text-muted font-medium">Module {String(i + 1).padStart(2, "0")}</span>
-                      <strong className="flex-1">{m}</strong>
-                      <Plus className="size-4 text-muted transition-transform group-open:rotate-45" />
+                  <details key={`${i}-${m}`} name={`formation-modules-${f.id}`} open={i === 0} className="group">
+                    <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-4 sm:gap-4 sm:px-5 sm:py-5 [&::-webkit-details-marker]:hidden">
+                      <span className="shrink-0 text-[11px] font-medium text-muted">Module {String(i + 1).padStart(2, "0")}</span>
+                      <strong className="min-w-0 flex-1 break-words text-sm leading-snug sm:text-base">{m}</strong>
+                      <Plus className="size-4 shrink-0 text-muted transition-transform group-open:rotate-45" aria-hidden="true" />
                     </summary>
                     <p className="px-5 pb-5 text-sm text-copy">Ce module combine compréhension, démonstration et mise en pratique. Le contenu détaillé et les supports sont communiqués dans votre espace de formation.</p>
                   </details>

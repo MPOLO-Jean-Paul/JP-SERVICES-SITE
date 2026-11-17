@@ -41,7 +41,7 @@ export default async function ProgrammePage({ params, searchParams }: { params: 
     <>
       <section className="relative overflow-hidden border-b">
         <div className="bg-grid fade-mask pointer-events-none absolute inset-0" aria-hidden />
-        <div className="shell relative grid gap-8 py-14 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div className="shell relative grid min-w-0 gap-8 py-10 sm:py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,384px)] lg:items-center">
           <div>
             <Link href={`/formations/${formationId}`} className="inline-flex items-center gap-2 text-sm font-medium text-copy hover:text-ink">
               <ArrowLeft className="size-4" /> Retour à la formation
@@ -54,7 +54,7 @@ export default async function ProgrammePage({ params, searchParams }: { params: 
             <Cover seed={formation.id} palette={formation.domain.slug} className="aspect-[4/3] w-24 shrink-0 rounded-lg" />
             <div className="min-w-0">
               <span className="text-xs text-muted">Votre formation</span>
-              <h2 className="truncate font-semibold">{formation.titre}</h2>
+              <h2 className="break-words font-semibold leading-snug">{formation.titre}</h2>
               <p className="text-sm text-copy">
                 {formation.niveau || "Niveau ouvert"} · {formation.duree || "Durée à confirmer"}
               </p>
@@ -95,8 +95,8 @@ function ExistingPlanning({ statut, modules, horaires, dateCreation }: { statut:
   } catch {}
   const s = STATUS[statut] ?? { label: statut, tone: "neutral" as const };
   return (
-    <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
-      <div className="card p-8">
+    <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:gap-8">
+      <div className="card min-w-0 p-4 sm:p-8">
         <Badge tone={s.tone}>
           <Clock3 /> {s.label}
         </Badge>
@@ -121,7 +121,7 @@ function ExistingPlanning({ statut, modules, horaires, dateCreation }: { statut:
             <h3 className="font-semibold">Disponibilités</h3>
             <ul className="mt-3 space-y-2">
               {Object.entries(schedule).map(([day, h]) => (
-                <li key={day} className="flex items-center justify-between rounded-lg bg-panel-2 px-3 py-2 text-sm">
+                <li key={day} className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-panel-2 px-3 py-2 text-sm">
                   <span className="font-medium">{day}</span>
                   <span className="text-copy">
                     {h.debut} → {h.fin}

@@ -39,7 +39,9 @@ test("publier une formation avec image puis la retrouver au catalogue", async ({
   await expect(page.getByText("La formation a été publiée.")).toBeVisible();
   await page.goto("/formations");
   await expect(page.getByRole("heading", { name: titre })).toBeVisible();
-  await page.getByRole("heading", { name: titre }).click();
+  // Cliquer sur le vrai lien contenu dans le titre, pas sur le bloc h3 qui le dépasse.
+  await page.getByRole("heading", { name: titre }).getByRole("link", { name: titre }).click();
+  await expect(page).toHaveURL(/\/formations\/\d+$/);
   await expect(page.getByRole("heading", { level: 1, name: titre })).toBeVisible();
   await page.setViewportSize({ width: 360, height: 780 });
   await expect(page.getByRole("navigation", { name: "Sections de la formation" })).toBeVisible();

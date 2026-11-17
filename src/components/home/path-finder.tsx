@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { MaterialIcon } from "@/components/ui/material-symbol";
 
@@ -33,9 +33,11 @@ const paths = [
 
 export function PathFinder() {
   const [active, setActive] = useState(0);
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
   const selected = paths[active]!;
   return (
-    <div className="jp-path-finder">
+    <div className="jp-path-finder" data-hydrated={hydrated ? "true" : "false"}>
       <p className="jp-path-caption">Je souhaite…</p>
       <div className="jp-path-options" role="group" aria-label="Choisir mon objectif">
         {paths.map((path, index) => (

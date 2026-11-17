@@ -100,7 +100,10 @@ export async function registerAction(_prev: AuthState, formData: FormData): Prom
   if (password !== confirm) return { error: t("mismatch"), values };
   // En production, l'inscription nécessite un transport mail fonctionnel ;
   // en développement, l'affichage du code dans les journaux reste possible.
-  if (env.NODE_ENV === "production" && !mailDeliveryConfigured()) {
+  // Uniquement dans la CI GitHub: les tests d'inscription activent les codes
+  // directement dans la base éphémère, sans expédier de véritables e-mails.
+  const isCiE2e = process.env.CI === "true" && process.env.JP_E2E_ALLOW_UNSENT_CODES === "1";
+  if (env.NODE_ENV === "production" && !mailDeliveryConfigured() && !isCiE2e) {
     return { error: t("mailUnavailable"), values };
   }
   const ip = await clientIp();

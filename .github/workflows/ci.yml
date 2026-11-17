@@ -67,6 +67,9 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Tests navigateur
         run: pnpm test:e2e
+        env:
+          # Strictement dans ce job CI, avec PostgreSQL éphémère.
+          JP_E2E_ALLOW_UNSENT_CODES: "1"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -56,6 +56,7 @@ export function DesktopNav({ user }: { user: Props["user"] }) {
 
 export function AccountMenu({ user, logoutAction, unread = 0, preview = false }: Props) {
   const t = useTranslations("nav");
+  const [logoutPending, startLogout] = useTransition();
   if (!user && preview) return <Link href="/contact" className="hidden min-h-9 items-center rounded-full bg-ink px-4 text-sm font-medium text-canvas sm:inline-flex">{t("contact")}</Link>;
   if (!user) {
     return (
@@ -128,13 +129,17 @@ export function AccountMenu({ user, logoutAction, unread = 0, preview = false }:
           </>
         ) : null}
         <MenuSeparator />
-        <form action={logoutAction}>
-          <MenuItem asChild>
-            <button type="submit" className="w-full text-danger data-[highlighted]:text-danger">
-              <MaterialIcon name="logout" size={20} /> {t("logout")}
-            </button>
-          </MenuItem>
-        </form>
+        <MenuItem
+          disabled={logoutPending}
+          className="text-danger data-[highlighted]:text-danger"
+          onSelect={() => {
+            // Un submit natif depuis un menu Radix qui se démonte peut être perdu.
+            // La transition garantit l'appel de l'action serveur de déconnexion.
+            startLogout(() => { void logoutAction(); });
+          }}
+        >
+          <MaterialIcon name="logout" size={20} /> {t("logout")}
+        </MenuItem>
       </MenuContent>
     </Menu>
   );

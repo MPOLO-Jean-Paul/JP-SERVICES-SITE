@@ -40,7 +40,7 @@ const posters = [
 ] as const;
 
 export function PromoCarousel() {
-  const g = useRotatingGallery(posters.length, INTERVAL_MS);
+  const { rootRef, trackRef, active, playing, manualPause, reduceMotion, goTo, onScroll, togglePause, onMouseEnter, onMouseLeave, onFocusCapture, onBlurCapture } = useRotatingGallery(posters.length, INTERVAL_MS);
   return (
     <section className="jp-campaigns jp-section" aria-labelledby="jp-campaign-heading">
       <div className="shell">
@@ -51,11 +51,11 @@ export function PromoCarousel() {
           </div>
           <p className="jp-section-aside">Trois façons d’apprendre, d’utiliser et de construire avec nos services.</p>
         </div>
-        <div className="jp-auto-gallery jp-promo-gallery" ref={g.rootRef}
-          data-paused={!g.playing} data-reduced-motion={g.reduceMotion}
-          onMouseEnter={g.onMouseEnter} onMouseLeave={g.onMouseLeave}
-          onFocusCapture={g.onFocusCapture} onBlurCapture={g.onBlurCapture}>
-          <div ref={g.trackRef} className="jp-promo-track" onScroll={g.onScroll}
+        <div className="jp-auto-gallery jp-promo-gallery" ref={rootRef}
+          data-paused={!playing} data-reduced-motion={reduceMotion}
+          onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}
+          onFocusCapture={onFocusCapture} onBlurCapture={onBlurCapture}>
+          <div ref={trackRef} className="jp-promo-track" onScroll={onScroll}
             role="region" aria-roledescription="carrousel" aria-label="Affiches des activités JP-Services" aria-live="off">
             {posters.map((poster, index) => (
               <article key={poster.label} className="jp-promo-slide" role="group"
@@ -85,29 +85,29 @@ export function PromoCarousel() {
             <div className="jp-gallery-dots" role="group" aria-label="Choisir une affiche">
               {posters.map((poster, index) => (
                 <button key={poster.label} type="button"
-                  className="jp-gallery-dot" aria-current={g.active === index ? "true" : undefined}
+                  className="jp-gallery-dot" aria-current={active === index ? "true" : undefined}
                   aria-label={"Afficher l’affiche " + (index + 1) + " : " + poster.kicker}
-                  onClick={() => g.goTo(index)}>
+                  onClick={() => goTo(index)}>
                   <span />
                 </button>
               ))}
             </div>
             <div className="jp-gallery-actions">
-              <button type="button" className="jp-gallery-icon" onClick={() => g.goTo(g.active - 1)} aria-label="Affiche précédente">
+              <button type="button" className="jp-gallery-icon" onClick={() => goTo(active - 1)} aria-label="Affiche précédente">
                 <ChevronLeft aria-hidden="true" className="size-5" />
               </button>
-              <button type="button" className="jp-gallery-icon" onClick={g.togglePause}
-                aria-label={g.manualPause ? "Reprendre le défilement automatique" : "Mettre le défilement automatique en pause"}
-                aria-pressed={g.manualPause}>
-                {g.manualPause ? <Play aria-hidden="true" className="size-4" /> : <Pause aria-hidden="true" className="size-4" />}
+              <button type="button" className="jp-gallery-icon" onClick={togglePause}
+                aria-label={manualPause ? "Reprendre le défilement automatique" : "Mettre le défilement automatique en pause"}
+                aria-pressed={manualPause}>
+                {manualPause ? <Play aria-hidden="true" className="size-4" /> : <Pause aria-hidden="true" className="size-4" />}
               </button>
-              <button type="button" className="jp-gallery-icon" onClick={() => g.goTo(g.active + 1)} aria-label="Affiche suivante">
+              <button type="button" className="jp-gallery-icon" onClick={() => goTo(active + 1)} aria-label="Affiche suivante">
                 <ChevronRight aria-hidden="true" className="size-5" />
               </button>
             </div>
           </div>
           <div className="jp-promo-progress" aria-hidden="true">
-            <span key={g.active} style={{ animationDuration: String(INTERVAL_MS) + "ms" }} />
+            <span key={active} style={{ animationDuration: String(INTERVAL_MS) + "ms" }} />
           </div>
         </div>
         <div className="jp-campaign-ticker" aria-label="Formations, logiciels, solutions numériques, accompagnement et SCOLIA Pro">

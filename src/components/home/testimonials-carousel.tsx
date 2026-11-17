@@ -27,7 +27,7 @@ const prompts = [
 export function TestimonialsCarousel({ testimonials }: { testimonials: PublishedTestimonial[] }) {
   const hasTestimonials = testimonials.length > 0;
   const cards = hasTestimonials ? testimonials : prompts;
-  const g = useRotatingGallery(cards.length, 8500);
+  const { rootRef, trackRef, active, playing, manualPause, reduceMotion, goTo, onScroll, togglePause, onMouseEnter, onMouseLeave, onFocusCapture, onBlurCapture } = useRotatingGallery(cards.length, 8500);
   return (
     <section className="jp-stories jp-section" aria-labelledby="jp-stories-heading">
       <div className="shell">
@@ -41,11 +41,11 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Published
             ? "Des témoignages authentiques publiés avec l’accord de leurs auteurs."
             : "Cet espace accueillera des témoignages vérifiés. En attendant, voici les expériences dont nous souhaitons recueillir le récit."}</p>
         </div>
-        <div className="jp-auto-gallery jp-story-gallery" ref={g.rootRef}
-          data-paused={!g.playing} data-reduced-motion={g.reduceMotion}
-          onMouseEnter={g.onMouseEnter} onMouseLeave={g.onMouseLeave}
-          onFocusCapture={g.onFocusCapture} onBlurCapture={g.onBlurCapture}>
-          <div ref={g.trackRef} onScroll={g.onScroll} className="jp-stories-track"
+        <div className="jp-auto-gallery jp-story-gallery" ref={rootRef}
+          data-paused={!playing} data-reduced-motion={reduceMotion}
+          onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}
+          onFocusCapture={onFocusCapture} onBlurCapture={onBlurCapture}>
+          <div ref={trackRef} onScroll={onScroll} className="jp-stories-track"
             role="region" aria-roledescription="carrousel"
             aria-label={hasTestimonials ? "Témoignages JP-Services" : "Partagez votre expérience JP-Services"}
             aria-live="off">
@@ -77,12 +77,12 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Published
               Partager votre expérience <ArrowUpRight aria-hidden="true" className="size-4" />
             </Link>
             <div className="jp-story-controls" role="group" aria-label="Navigation des témoignages">
-              <span className="jp-story-position">{String(g.active + 1).padStart(2, "0")} / {String(cards.length).padStart(2, "0")}</span>
-              <button type="button" className="jp-gallery-icon" aria-label="Témoignage précédent" onClick={() => g.goTo(g.active - 1)}><ChevronLeft className="size-5" aria-hidden="true" /></button>
-              <button type="button" className="jp-gallery-icon" aria-label={g.manualPause ? "Reprendre les témoignages" : "Mettre les témoignages en pause"} aria-pressed={g.manualPause} onClick={g.togglePause}>
-                {g.manualPause ? <Play className="size-4" aria-hidden="true" /> : <Pause className="size-4" aria-hidden="true" />}
+              <span className="jp-story-position">{String(active + 1).padStart(2, "0")} / {String(cards.length).padStart(2, "0")}</span>
+              <button type="button" className="jp-gallery-icon" aria-label="Témoignage précédent" onClick={() => goTo(active - 1)}><ChevronLeft className="size-5" aria-hidden="true" /></button>
+              <button type="button" className="jp-gallery-icon" aria-label={manualPause ? "Reprendre les témoignages" : "Mettre les témoignages en pause"} aria-pressed={manualPause} onClick={togglePause}>
+                {manualPause ? <Play className="size-4" aria-hidden="true" /> : <Pause className="size-4" aria-hidden="true" />}
               </button>
-              <button type="button" className="jp-gallery-icon" aria-label="Témoignage suivant" onClick={() => g.goTo(g.active + 1)}><ChevronRight className="size-5" aria-hidden="true" /></button>
+              <button type="button" className="jp-gallery-icon" aria-label="Témoignage suivant" onClick={() => goTo(active + 1)}><ChevronRight className="size-5" aria-hidden="true" /></button>
             </div>
           </div>
         </div>

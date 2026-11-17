@@ -91,7 +91,7 @@ test("réinitialisation du mot de passe : code incorrect refusé, ancien mot de 
   await page.goto("/mot-de-passe-oublie");
   await page.getByLabel("Adresse e-mail").fill(email);
   await page.getByRole("button", { name: /Envoyer le code/ }).click();
-  await page.waitForURL(/\/mot-de-passe\\/reinitialiser/);
+  await page.waitForURL(/\/mot-de-passe\/reinitialiser/);
   await page.locator("#code").fill("000001");
   await page.locator("#mot_de_passe").fill("Nouveau-Membre-Test-2026");
   await page.locator("#confirmer_mot_de_passe").fill("Nouveau-Membre-Test-2026");
@@ -102,7 +102,7 @@ test("réinitialisation du mot de passe : code incorrect refusé, ancien mot de 
   await page.locator("#mot_de_passe").fill("Nouveau-Membre-Test-2026");
   await page.locator("#confirmer_mot_de_passe").fill("Nouveau-Membre-Test-2026");
   await page.getByRole("button", { name: /Enregistrer le mot de passe/ }).click();
-  await page.waitForURL(/\/connexion\\?reinitialise=1/);
+  await page.waitForURL(/\/connexion\?reinitialise=1/);
   await login(page, email, password);
   await expect(page.getByText("Identifiant ou mot de passe incorrect.")).toBeVisible();
   await login(page, email, "Nouveau-Membre-Test-2026");

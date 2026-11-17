@@ -16,6 +16,28 @@ Aucune carte n'est nécessaire pour préparer ce dépôt. **L'ouverture des comp
 Neon et Resend et la vérification du domaine demandent une action du propriétaire.**
 Les offres gratuites peuvent être suspendues en cas de dépassement de quota.
 
+## État réellement validé — 17 novembre 2026
+
+- Projet Neon Free `jp-services-official`, région `aws-eu-central-1` (Francfort), PostgreSQL 17.
+- Branche Neon `production` : **préservée et vide**, en attente de la production officielle.
+- Branche Neon `validation-render` : reliée au service Render existant
+  `jp-services-db-validation-75v5` via une variable `DATABASE_URL` secrète dans Render.
+- Migration Drizzle 0000 appliquée, **27 tables publiques** confirmées,
+  avec `drizzle.__drizzle_migrations` et les tables `users`, `messages`, `site_settings`.
+- Render : déploiement `dep-dbttb1psrm7s73e00cpg` en statut **live**.
+- Neon Object Storage : bucket **privé** `jp-services-uploads` créé sur `production`
+  et visible depuis `validation-render`.
+- Les identifiants S3, la messagerie Resend et les DNS de `jp-services.org` ne
+  sont pas encore configurés. Ne pas annoncer la production comme disponible.
+- Le service de validation fonctionne toujours en `JP_PREVIEW_MODE=1` :
+  pas d'activation publique des comptes ni des paiements.
+- Les données de l'ancien PostgreSQL Render n'ont **pas été supprimées**.
+
+**Important** : les fichiers `render.validation.yaml` doivent garder
+`DATABASE_URL: sync: false` pour éviter de réécraser la connexion Neon
+lors d'une synchronisation Blueprint. La chaîne de connexion elle-même reste
+exclusivement dans les secrets Render, jamais dans GitHub.
+
 ## Étapes de configuration (ne rien faire sur le domaine officiel avant validation)
 
 ### 1. Créer et protéger Neon Free

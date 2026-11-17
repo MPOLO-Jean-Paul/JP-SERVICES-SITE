@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CrispPhoto, type PhotoCategory } from "@/components/ui/crisp-photo";
 import { MaterialIcon } from "@/components/ui/material-symbol";
 
@@ -30,11 +30,11 @@ const slides: ReadonlyArray<{ label: string; heading: string; category: PhotoCat
 
 export function HeroShowcase() {
   const [active, setActive] = useState(0);
-  const [hydrated, setHydrated] = useState(false);
-  useEffect(() => setHydrated(true), []);
+  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => { containerRef.current?.setAttribute("data-hydrated", "true"); }, []);
   const slide = slides[active]!;
   return (
-    <div className="jp-hero-showcase" data-testid="hero-showcase" data-hydrated={hydrated ? "true" : "false"}>
+    <div ref={containerRef} className="jp-hero-showcase" data-testid="hero-showcase" data-hydrated="false">
       <figure className="jp-hero-photo">
         <CrispPhoto
           key={slide.category}

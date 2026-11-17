@@ -5,6 +5,8 @@ import { hashPassword, passwordNeedsRehash, passwordPolicyError, verifyPassword 
 describe("politique de mot de passe", () => {
   it("applique les règles", () => {
     expect(passwordPolicyError("Court1")).toBe("tooShort");
+    expect(passwordPolicyError("Abcdef1")).toBe("tooShort");
+    expect(passwordPolicyError("Abcdefg1")).toBeNull();
     expect(passwordPolicyError("toutenminuscule1")).toBe("complexity");
     expect(passwordPolicyError("Azerty12345")).toBe("predictable");
     expect(passwordPolicyError("Solide-Passe-2026")).toBeNull();

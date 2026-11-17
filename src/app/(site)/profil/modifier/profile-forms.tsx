@@ -43,8 +43,8 @@ export function ProfileForms({ user }: { user: { prenom: string; nom: string; em
           <p className="mt-1 text-sm text-copy">{user.isGoogle ? "Vous vous connectez avec Google. Définir un mot de passe vous permettra aussi de vous connecter par e-mail." : "Votre mot de passe actuel est obligatoire pour modifier l’adresse e-mail ou choisir un nouveau mot de passe."}</p>
           <div className="mt-4 grid gap-5 sm:grid-cols-3">
             {!user.isGoogle ? <Field label="Mot de passe actuel" htmlFor="mot_de_passe_actuel"><PasswordInput id="mot_de_passe_actuel" name="mot_de_passe_actuel" autoComplete="current-password" /></Field> : null}
-            <Field label="Nouveau mot de passe" htmlFor="nouveau_mot_de_passe" hint="10 caractères min., majuscule, minuscule et chiffre."><PasswordInput id="nouveau_mot_de_passe" name="nouveau_mot_de_passe" autoComplete="new-password" minLength={10} maxLength={128} /></Field>
-            <Field label="Confirmation" htmlFor="confirmer_mot_de_passe"><PasswordInput id="confirmer_mot_de_passe" name="confirmer_mot_de_passe" autoComplete="new-password" minLength={10} maxLength={128} /></Field>
+            <Field label="Nouveau mot de passe" htmlFor="nouveau_mot_de_passe" hint="8 caractères min., majuscule, minuscule et chiffre."><PasswordInput id="nouveau_mot_de_passe" name="nouveau_mot_de_passe" autoComplete="new-password" minLength={8} maxLength={128} /></Field>
+            <Field label="Confirmation" htmlFor="confirmer_mot_de_passe"><PasswordInput id="confirmer_mot_de_passe" name="confirmer_mot_de_passe" autoComplete="new-password" minLength={8} maxLength={128} /></Field>
           </div>
         </div>
         <div className="flex justify-end"><SubmitButton><Save /> Enregistrer</SubmitButton></div>

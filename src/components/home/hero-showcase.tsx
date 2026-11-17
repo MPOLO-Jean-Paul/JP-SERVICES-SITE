@@ -31,10 +31,43 @@ const slides: ReadonlyArray<{ label: string; heading: string; category: PhotoCat
 export function HeroShowcase() {
   const [active, setActive] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => { containerRef.current?.setAttribute("data-hydrated", "true"); }, []);
+  const [motionAllowed, setMotionAllowed] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [interacting, setInteracting] = useState(false);
+  const [tabVisible, setTabVisible] = useState(true);
+  useEffect(() => {
+    containerRef.current?.setAttribute("data-hydrated", "true");
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateMotion = () => setMotionAllowed(!media.matches);
+    const updateTab = () => setTabVisible(document.visibilityState === "visible");
+    updateMotion();
+    updateTab();
+    media.addEventListener("change", updateMotion);
+    document.addEventListener("visibilitychange", updateTab);
+    const observer = typeof IntersectionObserver !== "undefined"
+      ? new IntersectionObserver(([entry]) => setIsVisible(Boolean(entry?.isIntersecting)), { threshold: 0.25 })
+      : null;
+    if (observer && containerRef.current) observer.observe(containerRef.current);
+    else setIsVisible(true);
+    return () => {
+      observer?.disconnect();
+      media.removeEventListener("change", updateMotion);
+      document.removeEventListener("visibilitychange", updateTab);
+    };
+  }, []);
+  useEffect(() => {
+    if (!motionAllowed || !isVisible || !tabVisible || interacting) return;
+    const timer = window.setInterval(() => setActive((value) => (value + 1) % slides.length), 8500);
+    return () => window.clearInterval(timer);
+  }, [motionAllowed, isVisible, tabVisible, interacting]);
   const slide = slides[active]!;
   return (
-    <div ref={containerRef} className="jp-hero-showcase" data-testid="hero-showcase" data-hydrated="false">
+    <div ref={containerRef} className="jp-hero-showcase" data-testid="hero-showcase" data-hydrated="false"
+      onMouseEnter={() => setInteracting(true)} onMouseLeave={() => setInteracting(false)}
+      onFocusCapture={() => setInteracting(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setInteracting(false);
+      }}>
       <figure className="jp-hero-photo">
         <CrispPhoto
           key={slide.category}
@@ -46,7 +79,7 @@ export function HeroShowcase() {
           priority={active === 0}
           sizes="(max-width:800px) 92vw, (max-width:1280px) 50vw, 40vw"
         />
-        <figcaption aria-live="polite">
+        <figcaption aria-live="off">
           <span>{slide.heading}</span>
           <span>{String(active + 1).padStart(2, "0")} / 03</span>
         </figcaption>

@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "Paramètres du site" };
 
 export default async function ParametresPage() {
   const settings = await getSettings();
-  const fields: FieldDef[] = SETTING_FIELDS.map((f) => ({ name: f.key, label: f.label, group: f.group, hint: f.help || undefined, type: f.multiline ? "textarea" : "text", rows: 3, value: settings[f.key] ?? "", half: !f.multiline && f.group !== "Annonce" }));
+  const fields: FieldDef[] = SETTING_FIELDS.map((f) => ({ name: f.key, label: f.label, group: f.group, hint: f.help || undefined, type: f.toggle ? "checkbox" : f.multiline ? "textarea" : "text", rows: 3, value: settings[f.key] ?? "", half: !f.multiline && f.group !== "Annonce" }));
   return (
     <AdminPage title="Paramètres du site" text="Bandeau d’annonce, textes d’introduction, coordonnées et réseaux sociaux. Les modifications sont visibles immédiatement.">
       <Panel className="jp-admin-settings-panel"><ResourceForm action={saveSettingsAction} fields={fields} submitLabel="Enregistrer les paramètres" /></Panel>

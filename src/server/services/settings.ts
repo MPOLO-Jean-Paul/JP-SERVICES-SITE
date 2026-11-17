@@ -20,9 +20,21 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   social_linkedin: "https://www.linkedin.com/in/jp-services-b51940381",
   social_youtube: "https://www.youtube.com/@jp-services-v8d",
   social_tiktok: "",
+  temoignage_1_auteur: "",
+  temoignage_1_fonction: "",
+  temoignage_1_citation: "",
+  temoignage_1_publier: "",
+  temoignage_2_auteur: "",
+  temoignage_2_fonction: "",
+  temoignage_2_citation: "",
+  temoignage_2_publier: "",
+  temoignage_3_auteur: "",
+  temoignage_3_fonction: "",
+  temoignage_3_citation: "",
+  temoignage_3_publier: "",
 };
 
-export const SETTING_FIELDS: Array<{ key: keyof typeof DEFAULT_SETTINGS & string; label: string; help: string; multiline?: boolean; group: string }> = [
+export const SETTING_FIELDS: Array<{ key: keyof typeof DEFAULT_SETTINGS & string; label: string; help: string; multiline?: boolean; toggle?: boolean; group: string }> = [
   { key: "annonce_texte", label: "Texte du bandeau d’annonce", help: "Laisser vide pour masquer le bandeau en haut du site.", group: "Annonce" },
   { key: "annonce_url", label: "Lien du bandeau", help: "Chemin interne (/formations) ou URL complète.", group: "Annonce" },
   { key: "annonce_lien_label", label: "Libellé du lien", help: "", group: "Annonce" },
@@ -40,6 +52,18 @@ export const SETTING_FIELDS: Array<{ key: keyof typeof DEFAULT_SETTINGS & string
   { key: "social_linkedin", label: "LinkedIn", help: "", group: "Réseaux sociaux" },
   { key: "social_youtube", label: "YouTube", help: "", group: "Réseaux sociaux" },
   { key: "social_tiktok", label: "TikTok", help: "", group: "Réseaux sociaux" },
+  { key: "temoignage_1_auteur", label: "Témoignage 1 · Auteur", help: "Nom affiché uniquement avec son accord.", group: "Témoignages" },
+  { key: "temoignage_1_fonction", label: "Témoignage 1 · Contexte", help: "Ex. participant à une formation (uniquement si confirmé).", group: "Témoignages" },
+  { key: "temoignage_1_citation", label: "Témoignage 1 · Citation réelle", help: "Reproduire fidèlement une citation recueillie auprès de la personne.", multiline: true, group: "Témoignages" },
+  { key: "temoignage_1_publier", label: "Publier le témoignage 1", help: "Cocher seulement après avoir obtenu l'autorisation de publication de l'auteur.", toggle: true, group: "Témoignages" },
+  { key: "temoignage_2_auteur", label: "Témoignage 2 · Auteur", help: "Nom affiché uniquement avec son accord.", group: "Témoignages" },
+  { key: "temoignage_2_fonction", label: "Témoignage 2 · Contexte", help: "Fonction ou expérience réelle.", group: "Témoignages" },
+  { key: "temoignage_2_citation", label: "Témoignage 2 · Citation réelle", help: "Ne pas inventer ni modifier le sens du témoignage.", multiline: true, group: "Témoignages" },
+  { key: "temoignage_2_publier", label: "Publier le témoignage 2", help: "Confirmer l'autorisation de publication.", toggle: true, group: "Témoignages" },
+  { key: "temoignage_3_auteur", label: "Témoignage 3 · Auteur", help: "Nom affiché uniquement avec son accord.", group: "Témoignages" },
+  { key: "temoignage_3_fonction", label: "Témoignage 3 · Contexte", help: "Fonction ou expérience réelle.", group: "Témoignages" },
+  { key: "temoignage_3_citation", label: "Témoignage 3 · Citation réelle", help: "Ne publier que des retours authentiques.", multiline: true, group: "Témoignages" },
+  { key: "temoignage_3_publier", label: "Publier le témoignage 3", help: "Confirmer l'autorisation de publication.", toggle: true, group: "Témoignages" },
 ];
 
 export const getSettings = cache(async (): Promise<Record<string, string>> => {

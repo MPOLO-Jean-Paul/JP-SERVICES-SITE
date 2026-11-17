@@ -565,3 +565,33 @@ test("les sections des paramètres sont claires et la recherche admin s'adapte",
     expect(width, "Débordement de la page " + url).toBeLessThanOrEqual(1);
   }
 });
+
+test("les affiches d'accueil ont trois slides et des commandes accessibles", async ({page}) => {
+  await page.goto("/");
+  const gallery = page.getByRole("region", { name: "Affiches des activités JP-Services" });
+  await expect(gallery).toBeVisible();
+  await expect(gallery.getByRole("group", { name: /sur 3/ })).toHaveCount(3);
+  await page.getByRole("button", { name: "Affiche suivante" }).click();
+  await expect(page.getByRole("button", { name: /Afficher l’affiche 2/ })).toHaveAttribute("aria-current", "true");
+  await page.getByRole("button", { name: "Mettre le défilement automatique en pause" }).click();
+  await expect(page.getByRole("button", { name: "Reprendre le défilement automatique" })).toHaveAttribute("aria-pressed", "true");
+});
+
+test("les expériences accueillent les vrais avis sans citations fictives", async ({page}) => {
+  await page.goto("/");
+  const stories = page.locator(".jp-stories");
+  await expect(stories).toBeVisible();
+  await expect(stories.getByRole("link", { name: "Partager votre expérience" })).toBeVisible();
+  await expect(page.locator(".jp-promo-slide")).toHaveCount(3);
+  await page.setViewportSize({width: 320, height: 700});
+  const dimensions = await page.evaluate(() => ({ total: document.documentElement.scrollWidth, viewport: innerWidth }));
+  expect(dimensions.total, "Les carrousels ne doivent pas déborder sur mobile").toBeLessThanOrEqual(dimensions.viewport + 1);
+});
+
+test("les carrousels respectent les préférences de mouvement réduit", async ({page}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await expect(page.locator(".jp-promo-gallery")).toHaveAttribute("data-reduced-motion", "true");
+  await expect(page.locator(".jp-story-gallery")).toHaveAttribute("data-reduced-motion", "true");
+  await expect(page.locator(".jp-hero-photo")).toBeVisible();
+});

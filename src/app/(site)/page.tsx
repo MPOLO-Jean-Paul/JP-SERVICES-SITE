@@ -2,6 +2,9 @@ import Link from "next/link";
 import { CrispPhoto } from "@/components/ui/crisp-photo";
 import { MaterialIcon } from "@/components/ui/material-symbol";
 import { HeroShowcase } from "@/components/home/hero-showcase";
+import { PromoCarousel } from "@/components/home/promo-carousel";
+import { TestimonialsCarousel, type PublishedTestimonial } from "@/components/home/testimonials-carousel";
+import { getSettings } from "@/server/services/settings";
 import { PathFinder } from "@/components/home/path-finder";
 import { getCurrentUser } from "@/server/auth/session";
 import { listActualites } from "@/server/services/content";
@@ -36,11 +39,22 @@ const method = [
 ];
 
 export default async function HomePage() {
-  const [formations, actualites, user] = await Promise.all([
+  const [formations, actualites, user, settings] = await Promise.all([
     listUpcomingFormations(3).catch(() => []),
     listActualites(3).catch(() => []),
     getCurrentUser().catch(() => null),
+    getSettings(),
   ]);
+  // No invented reviews: only quotes explicitly published by an administrator.
+  const testimonials: PublishedTestimonial[] = [1, 2, 3]
+    .map((index) => ({
+      name: (settings["temoignage_" + index + "_auteur"] ?? "").trim().slice(0, 90),
+      role: (settings["temoignage_" + index + "_fonction"] ?? "").trim().slice(0, 120),
+      quote: (settings["temoignage_" + index + "_citation"] ?? "").trim().slice(0, 500),
+      published: settings["temoignage_" + index + "_publier"] === "1",
+    }))
+    .filter((item) => item.published && item.name.length > 1 && item.quote.length >= 15)
+    .map(({ name, role, quote }) => ({ name, role, quote }));
   const preview = process.env.JP_PREVIEW_MODE === "1";
   const memberLink = user ? "/profil" : preview ? "/contact" : "/inscription";
   const memberLabel = user ? "Accéder à mon espace" : preview ? "Parler de votre besoin" : "Rejoindre JP-Services";
@@ -86,6 +100,8 @@ export default async function HomePage() {
         </div>
         <div className="shell jp-hero-signature" aria-hidden="true"><span>FORMATION</span><span>TECHNOLOGIE</span><span>SOLUTIONS MÉTIERS</span></div>
       </section>
+
+      <PromoCarousel />
 
       <section className="jp-section jp-areas" aria-labelledby="areas-title">
         <div className="shell jp-areas-layout">
@@ -170,6 +186,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <TestimonialsCarousel testimonials={testimonials} />
 
       {actualites.length > 0 ? <section className="jp-section jp-news" aria-labelledby="news-title">
         <div className="shell">

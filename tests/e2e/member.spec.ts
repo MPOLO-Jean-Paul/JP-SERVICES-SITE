@@ -80,7 +80,7 @@ test("déconnexion invalide la session, sans accès aux pages protégées", asyn
   await login(page, email, password);
   await page.waitForURL(/\/profil/);
   await page.getByRole("button", { name: /mon espace/i }).click();
-  await page.getByRole("button", { name: /Se déconnecter/i }).click();
+  await page.getByRole("menuitem", { name: /Se déconnecter/i }).click();
   await page.waitForURL(/deconnecte=1/);
   await page.goto("/profil");
   await page.waitForURL(/\/connexion/);

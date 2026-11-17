@@ -146,8 +146,10 @@ html[data-theme="dark"] {
   letter-spacing: .1em;
   color: var(--ink);
 }
-@media (max-width: 360px) {
-  .jp-mobile-brand { font-size: 9px; letter-spacing: .045em; }
+/* À 320px, privilégier les actions utiles plutôt que forcer le nom complet
+   dans la barre : le logo et son libellé accessible restent présents. */
+@media (max-width: 359px) {
+  .jp-mobile-brand { display: none; }
 }
 
 /* Accueil : garder les photos et le texte, améliorer la lecture et les états. */

@@ -20,7 +20,7 @@ export function ProfileForms({ user }: { user: { prenom: string; nom: string; em
   const router = useRouter();
   return (
     <div className="space-y-8">
-      <section className="card p-6">
+      <section className="card jp-profile-panel p-4 sm:p-6">
         <h2 className="h3">Photo de profil</h2>
         <form className="mt-4 flex flex-wrap items-center gap-5" action={(fd) => start(async () => { const r = await updateAvatarAction(fd); if (r.error) toast.error(r.error); else { toast.success(r.success); router.refresh(); } })}>
           <Avatar name={user.displayName} src={user.photoProfil} size={72} />
@@ -29,7 +29,7 @@ export function ProfileForms({ user }: { user: { prenom: string; nom: string; em
         </form>
       </section>
 
-      <form action={action} className="card space-y-6 p-6" noValidate>
+      <form action={action} className="card jp-profile-panel space-y-6 p-4 sm:p-6" noValidate>
         <h2 className="h3">Informations personnelles</h2>
         {state.error ? <Alert tone="danger">{state.error}</Alert> : null}
         {state.success ? <Alert tone="success">{state.success}</Alert> : null}
@@ -41,7 +41,7 @@ export function ProfileForms({ user }: { user: { prenom: string; nom: string; em
         <div className="border-t pt-6">
           <h3 className="font-semibold">Sécurité du compte</h3>
           <p className="mt-1 text-sm text-copy">{user.isGoogle ? "Vous vous connectez avec Google. Définir un mot de passe vous permettra aussi de vous connecter par e-mail." : "Votre mot de passe actuel est obligatoire pour modifier l’adresse e-mail ou choisir un nouveau mot de passe."}</p>
-          <div className="mt-4 grid gap-5 sm:grid-cols-3">
+          <div className={`mt-4 grid gap-5 ${user.isGoogle ? "sm:grid-cols-2" : "sm:grid-cols-2 xl:grid-cols-3"}`}>
             {!user.isGoogle ? <Field label="Mot de passe actuel" htmlFor="mot_de_passe_actuel"><PasswordInput id="mot_de_passe_actuel" name="mot_de_passe_actuel" autoComplete="current-password" /></Field> : null}
             <Field label="Nouveau mot de passe" htmlFor="nouveau_mot_de_passe" hint="8 caractères min., majuscule, minuscule et chiffre."><PasswordInput id="nouveau_mot_de_passe" name="nouveau_mot_de_passe" autoComplete="new-password" minLength={8} maxLength={128} /></Field>
             <Field label="Confirmation" htmlFor="confirmer_mot_de_passe"><PasswordInput id="confirmer_mot_de_passe" name="confirmer_mot_de_passe" autoComplete="new-password" minLength={8} maxLength={128} /></Field>
@@ -51,7 +51,7 @@ export function ProfileForms({ user }: { user: { prenom: string; nom: string; em
       </form>
 
       {!user.isAdmin ? (
-        <section className="rounded-xl border border-red-200 p-6 dark:border-red-900/50">
+        <section className="jp-profile-danger rounded-xl border border-red-200 p-4 sm:p-6 dark:border-red-900/50">
           <h2 className="h3 flex items-center gap-2 text-danger"><TriangleAlert className="size-5" /> Zone sensible</h2>
           <p className="mt-2 text-sm text-copy">La suppression de votre compte est définitive : publications, projets, inscriptions et notifications seront effacés.</p>
           <Button variant="danger" className="mt-4" onClick={() => setDeleteOpen(true)}>Supprimer mon compte</Button>

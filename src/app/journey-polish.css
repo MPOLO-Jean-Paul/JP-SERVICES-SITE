@@ -1,0 +1,168 @@
+/*
+ * JP-Services / finition des parcours et espaces membres.
+ * Une seule couche de retouches après la base de design existante.
+ * Respecte le thème clair/sombre, la marque cobalt et les préférences de mouvement.
+ */
+:root {
+  --jp-journey-edge: color-mix(in srgb, var(--line-strong) 78%, transparent);
+  --jp-journey-shadow: 0 2px 8px rgba(18, 38, 72, .025),
+    0 15px 38px -32px rgba(18, 38, 72, .3);
+}
+html[data-theme="dark"] {
+  --jp-journey-shadow: 0 10px 32px -24px rgba(0, 0, 0, .62);
+}
+
+/* Entrées de catalogue : hiérarchie stable et adaptation à tous les formats. */
+#main-content .jp-inner-hero {
+  position: relative;
+  isolation: isolate;
+  background: var(--canvas);
+}
+#main-content .jp-inner-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(ellipse 65% 85% at 95% 4%,
+    color-mix(in srgb, var(--primary) 5%, transparent), transparent 80%);
+}
+.jp-inner-hero-layout, .jp-inner-hero-copy,
+.jp-inner-hero-aside { min-width: 0; }
+.jp-inner-hero-copy h1 {
+  max-width: 23ch;
+  overflow-wrap: normal;
+  text-wrap: balance;
+}
+.jp-inner-hero-copy .jp-inner-hero-lead {
+  max-width: 66ch;
+  line-height: 1.62;
+}
+.jp-directory-guide {
+  border-color: var(--jp-journey-edge);
+  box-shadow: var(--jp-journey-shadow);
+}
+.jp-directory-guide-row {
+  transition: background-color .2s ease, border-color .2s ease;
+}
+.jp-catalogue-filters {
+  border-color: var(--jp-journey-edge);
+  box-shadow: var(--jp-journey-shadow);
+}
+.jp-catalogue-filters .field {
+  min-width: 0;
+  border-radius: 11px;
+}
+.jp-catalogue-results .jp-catalogue-item {
+  min-width: 0;
+  border-radius: 18px;
+  border-color: var(--jp-journey-edge);
+  box-shadow: var(--jp-journey-shadow);
+  transition: border-color .22s ease, box-shadow .24s ease,
+    transform .24s cubic-bezier(.2,.8,.2,1);
+}
+.jp-catalogue-results .jp-catalogue-item:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 17%, transparent);
+}
+.jp-catalogue-results .jp-catalogue-content,
+.jp-catalogue-results .jp-catalogue-metadata > div {
+  min-width: 0;
+}
+.jp-catalogue-results .jp-catalogue-metadata dd {
+  overflow-wrap: anywhere;
+  line-height: 1.45;
+}
+.jp-catalogue-results .jp-catalogue-action:focus-visible,
+.jp-catalogue-results h3 a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.jp-project-form-section {
+  min-width: 0;
+  border: 1px solid var(--jp-journey-edge);
+  border-radius: 20px;
+  background: var(--panel);
+  box-shadow: var(--jp-journey-shadow);
+}
+
+/* Notifications, projets, formations suivies : une même finition. */
+.jp-member-list-card,
+.jp-enrollment-card,
+.jp-profile-panel {
+  min-width: 0;
+  border-radius: 18px;
+  border-color: var(--jp-journey-edge);
+  box-shadow: var(--jp-journey-shadow);
+}
+.jp-member-list-card {
+  transition: border-color .22s ease, box-shadow .22s ease;
+}
+.jp-notification-row .jp-unread-indicator {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  min-height: 23px;
+  border: 1px solid color-mix(in srgb, var(--primary) 27%, transparent);
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 650;
+}
+.jp-notification-row .jp-notification-read-action {
+  min-height: 36px;
+  padding-inline: 3px;
+  text-underline-offset: 3px;
+}
+.jp-notification-row .jp-notification-read-action:focus-visible,
+.jp-project-list a:focus-visible,
+.jp-enrollment-card a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+.jp-enrollment-card :is(h2, dl) { min-width: 0; }
+.jp-enrollment-card h2 { overflow-wrap: anywhere; }
+.jp-profile-panel .field { border-radius: 11px; }
+.jp-profile-danger { background: var(--panel); }
+.jp-empty-state {
+  border-color: var(--jp-journey-edge);
+  box-shadow: var(--jp-journey-shadow);
+}
+.jp-empty-state .icon-box { border-radius: 15px; }
+.jp-empty-state .h3 { max-width: 28ch; text-wrap: balance; }
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .jp-catalogue-results .jp-catalogue-item:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--primary) 22%, var(--jp-journey-edge));
+    box-shadow: 0 14px 36px -26px rgba(29, 57, 113, .32);
+  }
+  .jp-member-list-card:hover {
+    border-color: color-mix(in srgb, var(--primary) 19%, var(--jp-journey-edge));
+  }
+}
+@media (max-width: 620px) {
+  .jp-inner-hero-copy h1 { max-width: 100%; }
+  .jp-catalogue-results .jp-catalogue-metadata {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 14px;
+  }
+  .jp-catalogue-results .jp-catalogue-footer { flex-wrap: wrap; }
+  .jp-project-form-section { border-radius: 16px; }
+  .jp-notification-row { overflow-wrap: anywhere; }
+  .jp-enrollment-card > img { max-height: 225px; }
+}
+@media (max-width: 360px) {
+  .jp-catalogue-results .jp-catalogue-metadata {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .jp-catalogue-results .jp-catalogue-action { max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jp-catalogue-results .jp-catalogue-item,
+  .jp-member-list-card,
+  .jp-directory-guide-row { transition: none !important; transform: none !important; }
+}

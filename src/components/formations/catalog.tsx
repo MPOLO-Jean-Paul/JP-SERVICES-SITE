@@ -1,5 +1,5 @@
 "use client";
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, Calendar, Clock, ListChecks, RotateCcw, Search } from "lucide-react";
@@ -14,6 +14,7 @@ export type DomainChip = { slug: string; label: string; icon: string; count: num
 
 export function Catalog({ items, domains, levels }: { items: CatalogItem[]; domains: DomainChip[]; levels: string[] }) {
   const router = useRouter();
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const params = useSearchParams();
   const [q, setQ] = useState(params.get("q") ?? "");
   const [domain, setDomain] = useState(params.get("domaine") ?? "all");
@@ -22,16 +23,42 @@ export function Catalog({ items, domains, levels }: { items: CatalogItem[]; doma
   const [sort, setSort] = useState(params.get("tri") ?? "title");
   const deferredQ = useDeferredValue(q.trim().toLowerCase());
 
+  // Garder le lien des filtres partageable sans déclencher une navigation
+  // à chaque frappe ni faire défiler la page lors du premier affichage.
   useEffect(() => {
-    const sp = new URLSearchParams();
-    if (q.trim()) sp.set("q", q.trim());
-    if (domain !== "all") sp.set("domaine", domain);
-    if (level !== "all") sp.set("niveau", level);
-    if (price !== "all") sp.set("tarif", price);
-    if (sort !== "title") sp.set("tri", sort);
-    const qs = sp.toString();
-    router.replace(`/formations${qs ? `?${qs}` : ""}#catalogue`, { scroll: false });
+    const timer = window.setTimeout(() => {
+      const sp = new URLSearchParams(window.location.search);
+      for (const key of ["q", "domaine", "niveau", "tarif", "tri"]) sp.delete(key);
+      if (q.trim()) sp.set("q", q.trim());
+      if (domain !== "all") sp.set("domaine", domain);
+      if (level !== "all") sp.set("niveau", level);
+      if (price !== "all") sp.set("tarif", price);
+      if (sort !== "title") sp.set("tri", sort);
+      const qs = sp.toString();
+      const next = `/formations${qs ? `?${qs}` : ""}${window.location.hash}`;
+      const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      if (next !== current) router.replace(next, { scroll: false });
+    }, 250);
+    return () => window.clearTimeout(timer);
   }, [q, domain, level, price, sort, router]);
+
+  // Le raccourci indiqué dans l'interface doit réellement fonctionner.
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey || event.metaKey || event.altKey) return;
+      const target = event.target;
+      const editing = target instanceof HTMLElement &&
+        (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
+      if (event.key === "/" && !editing) {
+        event.preventDefault();
+        searchInputRef.current?.focus();
+      } else if (event.key === "Escape" && document.activeElement === searchInputRef.current) {
+        searchInputRef.current?.blur();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   const filtered = useMemo(() => {
     const list = items.filter((it) => (!deferredQ || it.search.includes(deferredQ)) && (domain === "all" || it.domainSlug === domain) && (level === "all" || it.niveau.toLowerCase() === level) && (price === "all" || (price === "free" ? it.prix <= 0 : it.prix > 0)));
@@ -50,12 +77,12 @@ export function Catalog({ items, domains, levels }: { items: CatalogItem[]; doma
 
   return (
     <div id="catalogue">
-      <div className="card reveal p-4 sm:p-5" role="search" aria-label="Filtrer les formations">
+      <div className="card jp-catalogue-filters reveal p-4 sm:p-5" role="search" aria-label="Filtrer les formations">
         <div className="grid gap-3 lg:grid-cols-[1.6fr_repeat(3,1fr)]">
           <label className="relative block">
             <span className="sr-only">Rechercher une formation</span>
             <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted" aria-hidden />
-            <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher par titre, compétence ou domaine…" className="field h-11 pl-10 pr-10" autoComplete="off" />
+            <input ref={searchInputRef} type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher par titre, compétence ou domaine…" className="field h-11 pl-10 pr-10" autoComplete="off" />
             <kbd className="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded border bg-panel-2 px-1.5 text-[10px] font-semibold text-muted sm:block">/</kbd>
           </label>
           <label className="block text-xs font-medium text-muted">
@@ -114,7 +141,7 @@ export function Catalog({ items, domains, levels }: { items: CatalogItem[]; doma
       </div>
 
       {filtered.length ? (
-        <div className="jp-catalogue-results mt-6" aria-live="polite">
+        <div className="jp-catalogue-results mt-6" aria-label="Résultats des formations">
           {filtered.map((f, index) => (
             <article key={f.id} className="jp-catalogue-item group animate-fade-in">
               <div className="jp-catalogue-number" aria-hidden="true">{String(index+1).padStart(2,"0")}</div>

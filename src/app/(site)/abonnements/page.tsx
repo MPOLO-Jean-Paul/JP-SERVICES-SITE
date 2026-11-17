@@ -25,9 +25,9 @@ export default async function AbonnementsPage() {
       {rows.length ? (
         <ul className="space-y-4">
           {rows.map((e) => { const f = e.formation; const st = e.planningStatut ? STATUS[e.planningStatut] ?? { label: e.planningStatut, tone: "neutral" as const } : null; const alerts = e.notificationsActive === 1; return (
-            <li key={e.id} className="card overflow-hidden md:flex">
+            <li key={e.id} className="card jp-enrollment-card overflow-hidden md:flex">
               {uploadedImage(f.image) ? <Image src={uploadedImage(f.image)!} alt="" width={320} height={240} className="aspect-[4/3] w-full object-cover md:w-56" /> : <Cover seed={f.id} palette={detectDomain(f.titre, f.description).slug} className="aspect-[4/3] w-full md:w-56" />}
-              <div className="flex flex-1 flex-col p-6">
+              <div className="flex min-w-0 flex-1 flex-col p-4 sm:p-6">
                 <div className="flex flex-wrap items-center gap-2">{st ? <Badge tone={st.tone}>{st.label}</Badge> : <Badge tone="brand">Programme à organiser</Badge>}{alerts ? <Badge tone="success"><Bell /> Alertes actives</Badge> : <Badge tone="neutral"><BellOff /> Alertes désactivées</Badge>}</div>
                 <h2 className="h3 mt-3"><Link href={`/formations/${f.id}`} className="hover:text-primary">{f.titre}</Link></h2>
                 <dl className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-copy"><div className="inline-flex items-center gap-1.5"><CalendarDays className="size-4 text-muted" /> Début : {f.dateDebut ? formatDate(f.dateDebut) : "à annoncer"}</div><div className="inline-flex items-center gap-1.5"><Clock className="size-4 text-muted" /> {f.duree || "Durée à confirmer"}</div><div className="inline-flex items-center gap-1.5"><BookOpen className="size-4 text-muted" /> Inscrit le {formatDate(e.dateInscription)}</div></dl>

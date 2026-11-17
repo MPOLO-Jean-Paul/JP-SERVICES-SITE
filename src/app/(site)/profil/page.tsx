@@ -45,7 +45,7 @@ export default async function ProfilPage({ searchParams }: { searchParams: Promi
             key={href}
             href={href}
             aria-label={`${title} : ${value}. Ouvrir ${hint.toLowerCase()}.`}
-            className={`card card-hover group min-w-0 rounded-2xl p-4 shadow-xs transition-colors hover:border-primary/30 sm:p-5 ${index === 2 ? "col-span-2 sm:col-span-1" : ""}`}
+            className={`card card-hover jp-member-stat group min-w-0 rounded-2xl p-4 shadow-xs transition-colors hover:border-primary/30 sm:p-5 ${index === 2 ? "col-span-2 sm:col-span-1" : ""}`}
           >
             <div className="flex items-center justify-between gap-2">
               <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">

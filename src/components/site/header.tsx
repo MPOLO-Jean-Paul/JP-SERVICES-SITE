@@ -25,11 +25,11 @@ export async function SiteHeader() {
     <>
       {announcement ? <AnnouncementBar text={announcement} href={announcementHref} label={settings.annonce_lien_label || "En savoir plus"} /> : null}
       <header className="glass sticky top-0 z-40 border-b" id="site-header">
-        <div className="shell flex h-16 items-center gap-3">
+        <div className="shell jp-header-inner flex h-16 items-center gap-2.5 sm:gap-3">
           <MobileDrawer user={publicUser} logoutAction={logoutAction} preview={preview} />
-          <Link href="/" className="flex items-center gap-2.5" aria-label="JP-Services — Accueil">
+          <Link href="/" className="jp-site-logo flex items-center gap-2" aria-label="JP-Services — Accueil">
             <LogoMark className="size-9" />
-            <span className="hidden text-[11px] font-semibold tracking-[.115em] text-ink xl:inline">JP-SERVICES</span>
+            <span className="jp-mobile-brand">JP-SERVICES</span>
           </Link>
           <div className="mx-auto">
             <DesktopNav user={publicUser} />

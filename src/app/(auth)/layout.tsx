@@ -10,7 +10,7 @@ import { CookieConsent } from "@/components/site/cookie-consent";
 export default async function AuthLayout({ children }: { children: React.ReactNode }) {
   const [t, tc, s] = await Promise.all([getTranslations("auth"), getTranslations("common"), getSettings()]);
   return (
-    <div className="grid min-h-dvh lg:grid-cols-[1.05fr_1fr]">
+    <div className="jp-auth-workspace grid min-h-dvh lg:grid-cols-[1.05fr_1fr]">
       <aside className="jp-auth-aside relative hidden overflow-hidden bg-brand-950 text-white lg:flex lg:flex-col lg:justify-between lg:p-12">
         <Link href="/" className="relative z-10 flex items-center gap-3 text-[12px] font-semibold tracking-[.12em]" aria-label="JP-Services — Accueil">
           <LogoMark className="size-10" />
@@ -23,7 +23,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
         </div>
         <p className="relative z-10 text-[11px] font-medium text-white/50">© {new Date().getFullYear()} JP-Services · Lubumbashi</p>
       </aside>
-      <div className="flex flex-col">
+      <div className="jp-auth-pane flex min-w-0 flex-col">
         <header className="flex items-center justify-between px-6 py-4 sm:px-10">
           <Link href="/" className="inline-flex items-center gap-2 text-sm font-medium text-copy hover:text-ink">
             <ArrowLeft className="size-4" /> {tc("backHome")}
@@ -36,8 +36,8 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
             <ThemeMenu />
           </div>
         </header>
-        <main id="main-content" className="flex flex-1 items-center justify-center px-6 py-10 sm:px-10">
-          <div className="w-full max-w-md">{children}</div>
+        <main id="main-content" className="jp-auth-main flex flex-1 items-center justify-center px-6 py-10 sm:px-10">
+          <div className="jp-auth-content">{children}</div>
         </main>
       </div>
       <CookieConsent />

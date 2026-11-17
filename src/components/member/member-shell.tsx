@@ -26,9 +26,9 @@ export function MemberShell({ user, current, title, text, children, unread = 0 }
   const inactiveClass = "border-line bg-panel text-copy hover:border-primary/25 hover:bg-panel-2 hover:text-ink lg:border-transparent lg:bg-transparent";
 
   return (
-    <div className="shell grid min-w-0 grid-cols-[minmax(0,1fr)] gap-6 py-6 sm:gap-8 sm:py-9 lg:grid-cols-[248px_minmax(0,1fr)] lg:gap-9 lg:py-12">
+    <div className="shell jp-member-shell grid min-w-0 grid-cols-[minmax(0,1fr)] gap-6 py-6 sm:gap-8 sm:py-9 lg:grid-cols-[248px_minmax(0,1fr)] lg:gap-9 lg:py-12">
       <aside className="min-w-0 lg:sticky lg:top-24 lg:self-start" aria-label="Navigation de l’espace membre">
-        <div className="card flex min-w-0 items-center gap-3 rounded-2xl p-3.5 shadow-xs sm:p-4 lg:p-5">
+        <div className="card jp-member-account flex min-w-0 items-center gap-3 rounded-2xl p-3.5 shadow-xs sm:p-4 lg:p-5">
           <Avatar name={user.displayName} src={user.photoProfil} size={52} className="ring-2 ring-primary/15" />
           <div className="min-w-0 flex-1">
             <p className="break-words text-[15px] font-semibold leading-snug text-ink sm:text-base">{user.displayName}</p>
@@ -36,7 +36,7 @@ export function MemberShell({ user, current, title, text, children, unread = 0 }
           </div>
         </div>
 
-        <nav className="mt-3 grid min-w-0 grid-cols-2 gap-2 sm:grid-cols-3 lg:mt-4 lg:grid-cols-1 lg:gap-1" aria-label="Rubriques de mon espace">
+        <nav className="jp-member-nav mt-3 flex min-w-0 gap-2 overflow-x-auto pb-1 lg:mt-4 lg:grid lg:grid-cols-1 lg:gap-1 lg:overflow-visible lg:pb-0" aria-label="Rubriques de mon espace">
           {NAV.map(({ href, label, shortLabel, Icon }) => (
             <Link
               key={href}
@@ -44,7 +44,7 @@ export function MemberShell({ user, current, title, text, children, unread = 0 }
               aria-current={current === href ? "page" : undefined}
               title={label}
               className={cn(
-                "group flex min-h-12 min-w-0 items-center gap-2 rounded-xl border px-3 py-2.5 text-[13px] font-medium leading-snug transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:text-sm lg:gap-3 lg:px-3.5",
+                "group flex min-h-12 items-center gap-2 rounded-xl border px-3.5 py-2.5 text-[13px] font-medium leading-snug transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:text-sm lg:min-w-0 lg:gap-3 lg:px-3.5",
                 current === href ? activeClass : inactiveClass
               )}
             >
@@ -56,7 +56,7 @@ export function MemberShell({ user, current, title, text, children, unread = 0 }
             </Link>
           ))}
           {user.isAdmin ? (
-            <Link href="/admin" className={cn("flex min-h-12 min-w-0 items-center gap-2 rounded-xl border px-3 py-2.5 text-[13px] font-medium leading-snug transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:text-sm lg:gap-3 lg:px-3.5", inactiveClass)}>
+            <Link href="/admin" className={cn("flex min-h-12 items-center gap-2 rounded-xl border px-3.5 py-2.5 text-[13px] font-medium leading-snug transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:text-sm lg:min-w-0 lg:gap-3 lg:px-3.5", inactiveClass)}>
               <LayoutDashboard className="size-[18px] shrink-0" aria-hidden="true" />
               <span className="min-w-0 break-words">Administration</span>
             </Link>

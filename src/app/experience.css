@@ -121,6 +121,187 @@ html[data-theme="dark"] .jp-hero-main h1 span{
   .jp-hero-photo figcaption{padding-inline:16px;}
   .jp-method-step:hover{box-shadow:none;}
 }
+
+/* ─────────────────────────────────────────────────────────────
+   JP-SERVICES / finition native — accueil, authentification,
+   espace membre. Un seul niveau de finition après le design
+   existant : pas de changement de marque ni de composants métier.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --jp-native-shadow: 0 2px 7px rgba(24, 43, 77, .035), 0 18px 48px -36px rgba(24, 43, 77, .25);
+  --jp-native-border: color-mix(in srgb, var(--line-strong) 80%, transparent);
+}
+html[data-theme="dark"] {
+  --jp-native-shadow: 0 6px 28px -16px rgba(0, 0, 0, .4);
+}
+#site-header {
+  box-shadow: 0 1px 0 var(--line), 0 14px 26px -28px rgba(18, 37, 69, .35);
+}
+.jp-site-logo { flex: 0 0 auto; white-space: nowrap; }
+.jp-mobile-brand {
+  display: inline;
+  white-space: nowrap;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: .1em;
+  color: var(--ink);
+}
+@media (max-width: 360px) {
+  .jp-mobile-brand { font-size: 9px; letter-spacing: .045em; }
+}
+
+/* Accueil : garder les photos et le texte, améliorer la lecture et les états. */
+.jp-hero-main .jp-hero-lead {
+  max-width: 54ch;
+  line-height: 1.58;
+  letter-spacing: -.012em;
+}
+.jp-hero .jp-hero-photo {
+  box-shadow: 0 12px 36px -26px rgba(11, 35, 74, .5);
+}
+.jp-hero-guide .jp-guide-row {
+  transition: background-color .22s var(--jp-ease-spring),
+    border-color .22s ease, color .22s ease, transform .22s var(--jp-ease-spring);
+}
+.jp-hero-guide .jp-guide-row:focus-visible,
+.jp-areas-list .jp-area-link:focus-visible,
+.jp-course-list .jp-course-row:focus-visible,
+.jp-news-list .jp-news-row:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+.jp-hero-actions .jp-action-primary { box-shadow: 0 8px 24px -15px var(--primary); }
+.jp-hero-actions .jp-action:active { transform: scale(.985); }
+.jp-areas-list .jp-area-link,
+.jp-course-list .jp-course-row {
+  box-shadow: var(--jp-native-shadow);
+}
+.jp-section-heading h2,
+.jp-sticky-intro h2,
+.jp-finale h2 { text-wrap: balance; }
+
+/* Auth : espace ouvert plutôt qu'une carte artificielle. */
+.jp-auth-workspace {
+  background: var(--canvas);
+  min-width: 0;
+}
+.jp-auth-aside {
+  background-image:
+    radial-gradient(ellipse 80% 65% at 15% 20%, rgba(86, 119, 244, .2), transparent 75%),
+    linear-gradient(145deg, #0b1539, #090f25 68%, #101a36);
+}
+.jp-auth-aside::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .27;
+  background-image: linear-gradient(90deg, rgba(255,255,255,.085) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255,255,255,.085) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(120deg, transparent 15%, black 80%);
+}
+.jp-auth-pane { min-width: 0; background: var(--canvas); }
+.jp-auth-main { min-width: 0; }
+.jp-auth-content { width: 100%; max-width: 440px; }
+.jp-auth-card { min-width: 0; }
+.jp-auth-topline { display: flex; align-items: center; gap: 7px; margin-bottom: 21px; }
+.jp-auth-topline > span:first-child { height: 3px; width: 31px; border-radius: 999px; background: var(--primary); }
+.jp-auth-topline > span:last-child { height: 3px; width: 8px; border-radius: 999px; background: var(--line-strong); }
+.jp-auth-card > .h1 {
+  font-size: clamp(1.85rem, 1.45rem + 1.4vw, 2.45rem);
+  line-height: 1.13;
+  letter-spacing: -.04em;
+}
+.jp-auth-card > .jp-auth-intro {
+  max-width: 40ch;
+  margin-top: 11px;
+  color: var(--copy);
+  line-height: 1.55;
+}
+.jp-auth-card > .jp-auth-fields { margin-top: clamp(1.5rem, 2.4vw, 2rem); }
+.jp-auth-card > .jp-auth-footer {
+  margin-top: 30px;
+  padding-top: 21px;
+  border-color: var(--line);
+}
+.jp-auth-content .label { font-size: 13px; font-weight: 650; margin-bottom: 7px; }
+.jp-auth-content .field {
+  min-height: 47px;
+  border-radius: 12px;
+  background-color: var(--panel);
+  border-color: var(--jp-native-border);
+  box-shadow: 0 1px 2px rgba(22, 38, 66, .035);
+  transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+.jp-auth-content .field:hover:not(:disabled) { border-color: var(--line-strong); }
+.jp-auth-content .field:focus-visible {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--jp-glow);
+}
+.jp-auth-content .hint { margin-top: 7px; line-height: 1.5; }
+.jp-auth-content .jp-md3-button { min-height: 46px; }
+.jp-auth-content .jp-password-visibility {
+  height: 40px;
+  width: 40px;
+  border-radius: 11px;
+}
+.jp-auth-content .jp-password-visibility:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Espace membre : onglets tactiles sur téléphone et vraie navigation latérale sur PC. */
+.jp-member-shell { min-width: 0; }
+.jp-member-account {
+  border-color: var(--jp-native-border);
+  box-shadow: var(--jp-native-shadow);
+}
+.jp-member-nav {
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+.jp-member-nav::-webkit-scrollbar { display: none; }
+.jp-member-nav > a {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  min-width: 146px;
+  white-space: nowrap;
+  border-radius: 13px;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease, transform .2s var(--jp-ease-spring);
+}
+.jp-member-nav > a[aria-current="page"] {
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px var(--jp-outline);
+}
+.jp-member-nav > a:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.jp-member-stat { border-color: var(--jp-native-border); box-shadow: var(--jp-native-shadow); }
+.jp-member-stat:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .jp-member-nav > a:hover { transform: translateY(-1px); }
+}
+@media (min-width: 1024px) {
+  .jp-member-nav { scroll-snap-type: none; }
+  .jp-member-nav > a { width: 100%; min-width: 0; white-space: normal; }
+}
+@media (max-width: 639px) {
+  .jp-auth-main { padding-top: 26px; padding-bottom: max(28px, env(safe-area-inset-bottom)); }
+  .jp-auth-card > .jp-auth-fields { margin-top: 25px; }
+  .jp-member-nav { margin-inline: -20px; padding-inline: 20px; }
+  .jp-member-nav > a { min-height: 49px; }
+}
+@media (max-width: 370px) {
+  .jp-member-nav > a { min-width: 138px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jp-member-nav > a, .jp-auth-content .field, .jp-hero-guide .jp-guide-row {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
 @media(prefers-reduced-motion:reduce){
   .jp-path-finder,.jp-area-link,.jp-learning-empty,.jp-method-step .jp-method-rule,
   .jp-scolia-index-row,.jp-scroll-progress>span{transition:none!important;}

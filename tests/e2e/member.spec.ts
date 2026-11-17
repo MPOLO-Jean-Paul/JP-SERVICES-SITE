@@ -31,6 +31,12 @@ test("espace membre mobile sans débordement horizontal", async ({ page }) => {
   const navigation = page.getByRole("navigation", { name: "Rubriques de mon espace" });
   await expect(navigation).toBeVisible();
   await expect(navigation.getByRole("link", { name: "Mon profil" })).toHaveAttribute("aria-current", "page");
+  const navScroll = await navigation.evaluate((element) => ({
+    scroll: element.scrollWidth,
+    viewport: element.clientWidth,
+  }));
+  expect(navScroll.scroll).toBeGreaterThan(navScroll.viewport);
+  await expect(navigation.getByRole("link", { name: "Notifications" })).toBeAttached();
 
   const width = await page.evaluate(() => ({
     document: document.documentElement.scrollWidth,

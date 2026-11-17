@@ -508,6 +508,8 @@ test("l'API de recherche refuse les requêtes trop longues", async ({request}) =
 
 test("la galerie et les parcours répondent aussi aux flèches du clavier",async({page})=>{
   await page.goto("/");
+  await expect(page.getByTestId("hero-showcase")).toHaveAttribute("data-hydrated", "true");
+  await expect(page.locator(".jp-path-finder")).toHaveAttribute("data-hydrated", "true");
   const first=page.getByTestId("hero-slide-0");
   await first.focus();
   await first.press("ArrowRight");

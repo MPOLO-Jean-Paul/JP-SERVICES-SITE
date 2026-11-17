@@ -54,6 +54,9 @@ test("publier une formation avec image puis la retrouver au catalogue", async ({
 test("modifier les paramètres du site met à jour le bandeau", async ({ page }) => {
   const texte = `Annonce de test ${Date.now()}`;
   await page.goto("/admin/parametres");
+  await expect(page.getByRole("heading", { name: "Annonce" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Coordonnées" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Réseaux sociaux" })).toBeVisible();
   await page.getByLabel(/Texte du bandeau/).fill(texte);
   await page.getByRole("button", { name: /Enregistrer les paramètres/ }).click();
   await expect(page.getByText("Paramètres enregistrés.")).toBeVisible();

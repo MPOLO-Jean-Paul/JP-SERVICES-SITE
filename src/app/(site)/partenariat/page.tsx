@@ -81,7 +81,7 @@ export default async function PartenariatPage() {
       <section className="section pt-0" id="proposer">
         <div className="shell grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
           <div className="reveal"><span className="eyebrow">Proposer un partenariat</span><h2 className="h2 mt-2">Parlez-nous de votre organisation.</h2><p className="mt-3 text-copy">Décrivez votre structure et la forme de collaboration envisagée. Votre demande est transmise directement à l’équipe JP-Services.</p></div>
-          <div className="card reveal p-6 sm:p-8"><PartnershipForm types={PARTNERSHIP_TYPES.map((t) => t.label)} /></div>
+          <div className="card jp-public-form-panel reveal min-w-0 p-4 sm:p-8"><PartnershipForm types={PARTNERSHIP_TYPES.map((t) => t.label)} /></div>
         </div>
       </section>
     </>

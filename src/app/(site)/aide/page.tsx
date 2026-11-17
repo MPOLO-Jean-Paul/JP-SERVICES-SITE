@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { GraduationCap, LifeBuoy, Lock, Rocket, UserCheck } from "lucide-react";
+import { ChevronDown, GraduationCap, LifeBuoy, Lock, Rocket, UserCheck } from "lucide-react";
 import { PageHeader } from "@/components/site/page-header";
 import { pageMetadata, jsonLd } from "@/lib/seo";
 import { SupportForm } from "./support-form";
@@ -9,7 +9,7 @@ export const metadata: Metadata = pageMetadata({ title: "Centre d’aide", descr
 
 const FAQ = [
   { q: "Comment activer mon compte ?", a: "Après l’inscription, un code à 6 chiffres est envoyé à votre adresse e-mail. Saisissez-le sur la page d’activation. Le code expire après 30 minutes ; vous pouvez en demander un nouveau." },
-  { q: "J’ai oublié mon mot de passe.", a: "Utilisez « Mot de passe oublié » depuis la page de connexion. Un code de réinitialisation vous est envoyé par e-mail. Choisissez ensuite un mot de passe de 10 caractères minimum avec majuscule, minuscule et chiffre." },
+  { q: "J’ai oublié mon mot de passe.", a: "Utilisez « Mot de passe oublié » depuis la page de connexion. Un code de réinitialisation vous est envoyé par e-mail. Choisissez ensuite un mot de passe de 8 caractères minimum avec majuscule, minuscule et chiffre." },
   { q: "Comment m’inscrire à une formation ?", a: "Ouvrez la fiche de la formation, cliquez sur « S’inscrire », puis organisez votre programme en choisissant vos modules et jusqu’à trois créneaux. L’équipe confirme ensuite le planning." },
   { q: "Les formations en ligne nécessitent-elles un logiciel ?", a: "Non. Les sessions se déroulent dans le navigateur via une salle de visioconférence. Sur téléphone, l’application gratuite Jitsi Meet peut être proposée pour plus de confort." },
   { q: "Comment proposer un projet ?", a: "Connectez-vous, ouvrez la page Projets et décrivez votre initiative. Vous suivez ensuite son analyse et son statut depuis le même espace." },
@@ -29,7 +29,7 @@ export default function AidePage() {
               { Icon: GraduationCap, title: "Formations", text: "Inscription, programme, horaires et accès aux contenus pédagogiques." },
               { Icon: Rocket, title: "Projets et communauté", text: "Soumission d’un projet, suivi de validation et participation au forum." },
             ].map(({ Icon, title, text }) => (
-              <article key={title} className="card reveal flex gap-4 p-6">
+              <article key={title} className="card jp-help-topic reveal flex min-w-0 gap-3 rounded-2xl p-4 sm:gap-4 sm:p-6">
                 <span className="icon-box">
                   <Icon className="size-5" />
                 </span>
@@ -45,16 +45,19 @@ export default function AidePage() {
             <div>
               <span className="eyebrow">Questions fréquentes</span>
               <h2 className="h2 mt-2">Les réponses aux demandes les plus courantes.</h2>
-              <div className="mt-6 divide-y rounded-xl border">
+              <div className="jp-help-faq mt-6 divide-y overflow-hidden rounded-2xl border">
                 {FAQ.map((f, i) => (
-                  <details key={f.q} open={i === 0} className="group p-5">
-                    <summary className="cursor-pointer list-none font-semibold [&::-webkit-details-marker]:hidden">{f.q}</summary>
-                    <p className="mt-2 text-sm text-copy">{f.a}</p>
+                  <details key={f.q} name="jp-help-faq" open={i === 0} className="group">
+                    <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-4 py-4 font-semibold text-ink sm:px-5 [&::-webkit-details-marker]:hidden">
+                      <span className="min-w-0 flex-1">{f.q}</span>
+                      <ChevronDown className="jp-help-chevron size-4 shrink-0 text-muted transition-transform" aria-hidden="true" />
+                    </summary>
+                    <p className="px-4 pb-5 text-sm leading-relaxed text-copy sm:px-5">{f.a}</p>
                   </details>
                 ))}
               </div>
             </div>
-            <div className="card reveal p-6 sm:p-8" id="assistance">
+            <div className="card jp-public-form-panel reveal min-w-0 p-4 sm:p-8" id="assistance">
               <span className="eyebrow">Assistance humaine</span>
               <h2 className="h2 mt-2">Vous n’avez pas trouvé votre réponse ?</h2>
               <p className="mt-2 text-copy">Décrivez précisément la situation, l’action effectuée et le résultat observé. Ne transmettez jamais votre mot de passe.</p>

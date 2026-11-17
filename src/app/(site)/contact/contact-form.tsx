@@ -10,7 +10,7 @@ export function ContactForm({ initialSubject = "" }: { initialSubject?: string }
   const [state, action] = useActionState<FormState, FormData>(contactAction, { status: "idle" });
   const v = state.values ?? {};
   return (
-    <form action={action} className="space-y-5" noValidate>
+    <form action={action} className="jp-public-form min-w-0 space-y-5" noValidate>
       {state.status === "error" ? <Alert tone="danger">{state.message}</Alert> : null}
       {state.status === "success" ? <Alert tone="success">{state.message}</Alert> : null}
       <div className="grid gap-5 sm:grid-cols-2">

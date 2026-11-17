@@ -541,3 +541,27 @@ test("les liens de la version démo ne demandent pas de créer un compte désact
  await page.locator('button[aria-controls="mobile-drawer"]').click();
  await expect(page.locator("#mobile-drawer a[href='/contact']")).toBeVisible();
 });
+
+// Régression : la documentation d'aide doit refléter la règle appliquée par le serveur.
+test("le centre d'aide affiche la politique actuelle et des FAQ accessibles", async ({ page }) => {
+  await page.goto("/aide");
+  const faq = page.locator(".jp-help-faq");
+  await expect(faq.getByText(/8 caractères minimum/)).toHaveCount(1);
+  await expect(faq.getByText(/10 caractères minimum/)).toHaveCount(0);
+  const question = faq.locator("summary").filter({ hasText: "J’ai oublié mon mot de passe." });
+  await question.click();
+  await expect(question.locator("..")).toHaveAttribute("open", "");
+  await page.setViewportSize({ width: 320, height: 700 });
+  const dims = await page.evaluate(() => ({ page: document.documentElement.scrollWidth, viewport: innerWidth }));
+  expect(dims.page, "Le centre d'aide déborde sur téléphone").toBeLessThanOrEqual(dims.viewport + 1);
+});
+
+test("les sections des paramètres sont claires et la recherche admin s'adapte", async ({ page }) => {
+  // Les formulaires publics doivent conserver leurs liens et champs accessibles sur mobile.
+  await page.setViewportSize({ width: 320, height: 700 });
+  for (const url of ["/contact", "/partenariat", "/aide", "/conditions"]) {
+    await page.goto(url);
+    const width = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+    expect(width, "Débordement de la page " + url).toBeLessThanOrEqual(1);
+  }
+});

@@ -29,7 +29,7 @@ export default async function AdminFormationsPage({ searchParams }: { searchPara
               <td className="text-sm">{f.niveau}</td>
               <td className="whitespace-nowrap text-sm">{f.dateDebut ? formatDate(f.dateDebut, "fr", { day: "numeric", month: "short", year: "numeric" }) : "—"}</td>
               <td className="text-sm font-medium">{formatPrice(f.prix)}</td>
-              <td className="text-sm">{Number(inscrits)}{Number(plannings) ? <span className="ml-2 text-xs text-amber-600">{Number(plannings)} planning(s) à valider</span> : null}</td>
+              <td className="text-sm">{Number(inscrits)}{Number(plannings) ? <span className="ml-2 text-xs text-amber-600">{Number(plannings)} {Number(plannings) > 1 ? "plannings" : "planning"} à valider</span> : null}</td>
               <td className="text-right"><Link href={`/admin/formations/${f.id}`} className={buttonVariants({ variant: "outline", size: "sm" })}><Pencil /> Modifier</Link></td>
             </tr>
           ))}

@@ -36,7 +36,7 @@ export function AdminSidebar({ user, logoutAction }: { user: { displayName: stri
       <nav className="mt-3 min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 scrollbar-thin" aria-label="Administration">
         {Object.entries(groups).map(([group, items]) => (
           <div key={group} className="mb-4">
-            <p className="px-3 pb-1 font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-muted">{group}</p>
+            <p className="px-3 pb-1.5 text-[12px] font-semibold text-muted">{group.charAt(0).toUpperCase() + group.slice(1).toLowerCase()}</p>
             <ul className="space-y-0.5">{items.map((i) => <li key={i.href}><Link href={i.href} aria-current={isActive(i.href) ? "page" : undefined} className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-copy transition hover:bg-panel-2 hover:text-ink", isActive(i.href) && "bg-panel text-ink shadow-xs ring-1 ring-line hover:bg-panel")}><AdminIcon name={i.icon} className="size-4" /> {i.label}</Link></li>)}</ul>
           </div>
         ))}

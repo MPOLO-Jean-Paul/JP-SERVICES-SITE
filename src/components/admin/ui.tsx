@@ -12,9 +12,9 @@ export function AdminPage({ title, text, actions, children }: { title: string; t
 }
 
 export function StatCard({ icon: Icon, label, value, href, tone = "brand", hint }: { icon: LucideIcon; label: string; value: number | string; href?: string; tone?: "brand" | "success" | "warning" | "danger" | "info"; hint?: string }) {
-  const tones = { brand: "text-ink", success: "text-emerald-600", warning: "text-amber-600", danger: "text-red-600", info: "text-brand-600" };
-  const body = (<><div className="flex items-center justify-between"><span className={cn("icon-box", tones[tone])}><Icon /></span>{hint ? <span className="text-xs text-muted">{hint}</span> : null}</div><p className="mt-4 font-display text-[clamp(1.8rem,3vw,2.25rem)] font-semibold leading-none tracking-tight tabular-nums text-ink">{typeof value === "number" ? value.toLocaleString("fr-FR") : value}</p><p className="mt-2 text-xs font-semibold leading-snug text-copy sm:text-sm">{label}</p></>);
-  return href ? <Link href={href} className="card card-hover jp-admin-stat block min-w-0 p-4 sm:p-5">{body}</Link> : <div className="card jp-admin-stat min-w-0 p-4 sm:p-5">{body}</div>;
+  const tones = { brand: "violet", success: "mint", warning: "amber", danger: "red", info: "blue" } as const;
+  const body = (<><div className="flex items-center justify-between"><span className="jp-service-icon jp-admin-stat-icon"><Icon /></span>{hint ? <span className="text-xs text-muted">{hint}</span> : null}</div><p className="mt-4 font-display text-[clamp(1.8rem,3vw,2.25rem)] font-semibold leading-none tracking-tight tabular-nums text-ink">{typeof value === "number" ? value.toLocaleString("fr-FR") : value}</p><p className="mt-2 text-xs font-semibold leading-snug text-copy sm:text-sm">{label}</p></>);
+  return href ? <Link href={href} data-tone={tones[tone]} className="card card-hover jp-admin-stat block min-w-0 p-4 sm:p-5">{body}</Link> : <div data-tone={tones[tone]} className="card jp-admin-stat min-w-0 p-4 sm:p-5">{body}</div>;
 }
 
 export function Panel({ title, text, actions, children, className }: { title?: string; text?: string; actions?: React.ReactNode; children: React.ReactNode; className?: string }) {

@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
 import { CookieConsent } from "@/components/site/cookie-consent";
 import { BackToTop } from "@/components/site/back-to-top";
+import { FormAssist } from "@/components/site/form-assist";
 import { SiteMotion } from "@/components/site/site-motion";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -25,6 +26,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <SiteFooter />
       <CookieConsent />
       <BackToTop />
+      <FormAssist />
     </>
   );
 }

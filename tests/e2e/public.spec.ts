@@ -301,8 +301,9 @@ test("typographie de section et mouvement réduit", async ({page,isMobile}) => {
   expect(small).toBeGreaterThanOrEqual(23);
   expect(small).toBeLessThanOrEqual(32);
   await page.setViewportSize({width:1440,height:900});
+  // Le redimensionnement est asynchrone : on attend que la nouvelle taille soit appliquée.
+  await expect.poll(()=>sectionHeading.evaluate(el=>parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThan(small);
   const large=await sectionHeading.evaluate(el=>parseFloat(getComputedStyle(el).fontSize));
-  expect(large).toBeGreaterThan(small);
   expect(large).toBeLessThanOrEqual(44);
   const transition=await page.locator(".jp-area-link").first().evaluate(el=>getComputedStyle(el).transitionDuration);
   expect(parseFloat(transition)).toBeLessThanOrEqual(.01);

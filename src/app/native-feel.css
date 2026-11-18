@@ -78,3 +78,11 @@ a, button, [role="button"], summary { -webkit-tap-highlight-color: transparent; 
   footer button { position: relative; }
   footer button::before { content: ""; position: absolute; inset: -12px -4px; }
 }
+
+/* Erreurs de saisie au plus près du champ */
+.jp-field-error { margin-top: 6px; display: flex; align-items: flex-start; gap: 6px; color: var(--color-danger, #c4291c); font-size: 13px; font-weight: 500; line-height: 1.4; animation: jp-error-in 0.22s ease both; }
+.jp-field-error::before { content: ""; flex: 0 0 auto; width: 14px; height: 14px; margin-top: 2px; border-radius: 999px; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 5h2v7h-2zm0 9h2v2h-2z'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 5h2v7h-2zm0 9h2v2h-2z'/%3E%3C/svg%3E") center / contain no-repeat; }
+.jp-field-error[hidden] { display: none; }
+.jp-field-has-error > .hint { display: none; }
+[aria-invalid="true"].field, [aria-invalid="true"] .field, .field[aria-invalid="true"] { border-color: var(--color-danger, #c4291c) !important; box-shadow: 0 0 0 3px rgb(196 41 28 / 0.12) !important; }
+@keyframes jp-error-in { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }

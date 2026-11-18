@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { FormAssist } from "@/components/site/form-assist";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { ArrowLeft } from "lucide-react";
@@ -11,6 +12,8 @@ import { CookieConsent } from "@/components/site/cookie-consent";
 export default async function AuthLayout({ children }: { children: React.ReactNode }) {
   const [t, tc, s] = await Promise.all([getTranslations("auth"), getTranslations("common"), getSettings()]);
   return (
+    <>
+    <FormAssist />
     <div className="jp-auth-workspace grid min-h-dvh lg:grid-cols-[1.05fr_1fr]">
       <aside className="jp-auth-aside relative hidden overflow-hidden bg-brand-950 text-white lg:flex lg:flex-col lg:justify-between lg:p-12">
         <Link href="/" className="relative z-10 flex items-center gap-3 text-[12px] font-semibold tracking-[.12em]" aria-label="JP-Services — Accueil">
@@ -43,5 +46,6 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
       </div>
       <CookieConsent />
     </div>
+    </>
   );
 }

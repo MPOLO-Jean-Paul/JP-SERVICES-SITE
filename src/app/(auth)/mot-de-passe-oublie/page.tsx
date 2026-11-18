@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "Mot de passe oublié", robots: { ind
 export default async function ForgotPage() {
   const t = await getTranslations("auth");
   return (
-    <AuthCard
+    <AuthCard step={{ current: 1, total: 2, label: "Votre adresse e-mail" }}
       title={t("forgotTitle")}
       intro={t("forgotIntro")}
       footer={

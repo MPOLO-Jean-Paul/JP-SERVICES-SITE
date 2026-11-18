@@ -28,8 +28,8 @@ export function RegisterForm() {
       <Field label={t("email")} htmlFor="email">
         <Input id="email" name="email" type="email" autoComplete="email" placeholder="nom@exemple.com" required maxLength={254} defaultValue={state.values?.email} inputMode="email" />
       </Field>
-      <Field label={t("password")} htmlFor="mot_de_passe" hint={t("policyHint")}>
-        <PasswordInput id="mot_de_passe" name="mot_de_passe" autoComplete="new-password" required minLength={8} maxLength={128} />
+      <Field label={t("password")} htmlFor="mot_de_passe">
+        <PasswordInput strength id="mot_de_passe" name="mot_de_passe" autoComplete="new-password" required minLength={8} maxLength={128} />
       </Field>
       <Field label={t("passwordConfirm")} htmlFor="confirmer_mot_de_passe">
         <PasswordInput id="confirmer_mot_de_passe" name="confirmer_mot_de_passe" autoComplete="new-password" required minLength={8} maxLength={128} />

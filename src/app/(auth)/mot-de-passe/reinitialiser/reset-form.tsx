@@ -20,8 +20,8 @@ export function ResetForm({ email }: { email: string }) {
       <Field label={t("resetCode")} htmlFor="code">
         <Input id="code" name="code" inputMode="numeric" pattern="[0-9]{6}" maxLength={6} required autoComplete="one-time-code" className="text-center font-mono text-2xl tracking-[0.5em]" placeholder="••••••" />
       </Field>
-      <Field label={t("newPassword")} htmlFor="mot_de_passe" hint={t("policyHint")}>
-        <PasswordInput id="mot_de_passe" name="mot_de_passe" autoComplete="new-password" required minLength={8} maxLength={128} />
+      <Field label={t("newPassword")} htmlFor="mot_de_passe">
+        <PasswordInput strength id="mot_de_passe" name="mot_de_passe" autoComplete="new-password" required minLength={8} maxLength={128} />
       </Field>
       <Field label={t("passwordConfirm")} htmlFor="confirmer_mot_de_passe">
         <PasswordInput id="confirmer_mot_de_passe" name="confirmer_mot_de_passe" autoComplete="new-password" required minLength={8} maxLength={128} />

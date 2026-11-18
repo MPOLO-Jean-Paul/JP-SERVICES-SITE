@@ -11,7 +11,7 @@ export default async function ActivationPage({ searchParams }: { searchParams: P
   const t = await getTranslations("auth");
   const email = (sp.email ?? "").toLowerCase();
   return (
-    <AuthCard title={t("activationTitle")} intro={t("activationIntro", { email: email || "votre adresse" })}>
+    <AuthCard step={{ current: 2, total: 2, label: "Activation" }} title={t("activationTitle")} intro={t("activationIntro", { email: email || "votre adresse" })}>
       {sp.envoi === "0" ? (
         <Alert tone="warning" className="mb-5">
           {t("success.activationPending")}

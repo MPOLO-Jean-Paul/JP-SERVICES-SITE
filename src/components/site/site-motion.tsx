@@ -15,8 +15,11 @@ export function SiteMotion() {
     let frame = 0;
     const progress = progressRef.current;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const header = document.getElementById("site-header");
     const syncProgress = () => {
       frame = 0;
+      // En-tête : plus compact et ombré dès que la page défile.
+      header?.toggleAttribute("data-scrolled", window.scrollY > 8);
       const max = document.documentElement.scrollHeight - window.innerHeight;
       if (progress) progress.style.transform = `scaleX(${max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0})`;
     };

@@ -67,7 +67,9 @@ function errorSlot(field: Field): HTMLElement | null {
   return slot;
 }
 
-function show(field: Field, message: string) {
+function show(field: Field, rawMessage: string) {
+  // Champ avec critères de robustesse affichés : la liste suffit, on marque seulement le champ.
+  const message = rawMessage && field.dataset.strength !== undefined && field.validity.customError ? "Complétez les critères ci-dessous." : rawMessage;
   const slot = errorSlot(field);
   if (!slot) return;
   slot.textContent = message;

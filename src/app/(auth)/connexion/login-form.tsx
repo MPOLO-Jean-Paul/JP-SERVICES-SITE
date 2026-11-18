@@ -23,7 +23,10 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
         <PasswordInput id="mot_de_passe" name="mot_de_passe" autoComplete="current-password" required maxLength={512} />
       </Field>
       <div className="flex items-center justify-between text-sm">
-        <span className="text-muted">{t("remember")}</span>
+        <label className="jp-remember inline-flex cursor-pointer select-none items-center gap-2.5 text-copy">
+          <input type="checkbox" name="remember" defaultChecked className="jp-remember-box" />
+          <span>{t("remember")}</span>
+        </label>
         <Link href="/mot-de-passe-oublie" className="font-medium text-primary hover:underline">
           {t("forgot")}
         </Link>

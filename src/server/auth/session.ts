@@ -34,11 +34,15 @@ async function requestMeta() {
   return { ip: ip.trim().slice(0, 45), userAgent: (h.get("user-agent") ?? "").slice(0, 255) };
 }
 
-/** Crée une session serveur et dépose le cookie HttpOnly. */
-export async function createSession(userId: number) {
+/**
+ * Crée une session serveur et dépose le cookie HttpOnly.
+ * `persistent: false` (« Rester connecté » décoché) : cookie de session effacé à la fermeture
+ * du navigateur, et session serveur limitée à 12 heures.
+ */
+export async function createSession(userId: number, { persistent = true }: { persistent?: boolean } = {}) {
   const token = randomBytes(32).toString("base64url");
   const meta = await requestMeta();
-  const expiresAt = new Date(Date.now() + SESSION_TTL_MS);
+  const expiresAt = new Date(Date.now() + (persistent ? SESSION_TTL_MS : 12 * 60 * 60 * 1000));
   await db.insert(schema.sessions).values({ id: hashToken(token), userId, userAgent: meta.userAgent, ipAddress: meta.ip, expiresAt });
   const jar = await cookies();
   jar.set(SESSION_COOKIE, token, {
@@ -46,7 +50,7 @@ export async function createSession(userId: number) {
     sameSite: "lax",
     secure: env.NODE_ENV === "production",
     path: "/",
-    expires: expiresAt,
+    ...(persistent ? { expires: expiresAt } : {}),
   });
   // Nettoyage opportuniste des sessions expirées.
   if (Math.random() < 0.05) await db.delete(schema.sessions).where(lt(schema.sessions.expiresAt, new Date())).catch(() => {});

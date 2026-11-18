@@ -20,7 +20,7 @@ const NAV_ICONS: Record<string, string> = {
   "/formations": "school", "/formations-en-ligne": "videocam", "/logiciels": "apps",
   "/projets": "workspaces", "/a-propos": "info", "/abonnements": "menu_book",
   "/scolia": "account_tree", "/aide": "help", "/actualites": "newspaper",
-  "/forum": "forum", "/partenariat": "handshake", "/contact": "mail",
+  "/forum": "forum", "/partenariat": "handshake", "/contact": "mail", "/services": "briefcase", "/contact?sujet=Demande%20de%20devis": "send",
 };
 
 type Props = { user: Pick<SessionUser, "displayName" | "email" | "isAdmin" | "photoProfil"> | null; logoutAction: () => Promise<void>; unread?: number; preview?: boolean };
@@ -164,6 +164,10 @@ export function MobileDrawer({ user, logoutAction, preview = false }: Props) {
   }
 
   const sections = [
+    { label: t("services"), links: [
+      { href: "/services", title: t("ourServices") },
+      { href: "/contact?sujet=Demande%20de%20devis", title: t("quote") },
+    ] },
     { label: t("learn"), links: [
       { href: "/formations", title: t("catalog") },
       { href: "/formations-en-ligne", title: t("live") },
@@ -175,7 +179,6 @@ export function MobileDrawer({ user, logoutAction, preview = false }: Props) {
       { href: "/aide", title: t("help") },
     ] },
     { label: t("exploreSection"), links: [
-      { href: "/services", title: t("ourServices") },
       { href: "/projets", title: t("projects") },
       { href: "/actualites", title: t("news") },
       { href: "/forum", title: t("forum") },

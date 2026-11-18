@@ -148,3 +148,55 @@ html:has(.jp-nav-progress[data-state="loading"]) body { cursor: progress; }
 .jp-scolia-index-top span, .jp-scolia-index-bottom span { font-size: 12px !important; }
 /* Titres de groupes du menu mobile et des méga-menus */
 .jp-drawer .uppercase, #site-header .uppercase { text-transform: none; letter-spacing: 0.01em; font-size: 12.5px; }
+
+/* ── Pages de compte ── */
+.jp-auth-kicker { display: inline-flex; align-items: center; gap: 8px; color: #b5c8ff; font-size: 13.5px; font-weight: 600; }
+.jp-auth-kicker::before { content: ""; width: 8px; height: 8px; border-radius: 999px; background: #7b9cff; }
+.jp-auth-check { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 999px; background: rgb(122 150 255 / 0.18); color: #b5c8ff; }
+.jp-auth-step-dot { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 999px; border: 1px solid rgb(181 200 255 / 0.4); color: #dbe4ff; font-size: 12px; font-weight: 650; }
+.jp-auth-aside-body { animation: jp-aside-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes jp-aside-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* Progression explicite */
+.jp-auth-steps { margin-bottom: 18px; }
+.jp-auth-steps-bar { display: flex; gap: 6px; max-width: 120px; }
+.jp-auth-steps-bar > span { flex: 1; height: 4px; border-radius: 99px; background: var(--line-strong); transition: background 0.3s ease; }
+.jp-auth-steps-bar > span[data-done="true"] { background: var(--primary); }
+.jp-auth-steps p { margin-top: 8px; color: var(--muted); font-size: 12.5px; font-weight: 600; }
+
+/* « Rester connecté » : vraie case à cocher */
+.jp-remember-box { width: 18px; height: 18px; flex: 0 0 auto; border-radius: 5px; accent-color: var(--primary); cursor: pointer; }
+.jp-remember:hover span { color: var(--ink); }
+
+/* Mot de passe : majuscules activées et critères */
+.jp-caps-warning { margin-top: 6px; display: flex; align-items: center; gap: 6px; color: #a05a00; font-size: 12.5px; font-weight: 600; }
+.jp-strength { margin-top: 10px; }
+.jp-strength-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+.jp-strength-bar > span { height: 4px; border-radius: 99px; background: var(--line-strong); transition: background 0.3s ease; }
+.jp-strength[data-level="1"] .jp-strength-bar > span[data-on="true"] { background: #e5484d; }
+.jp-strength[data-level="2"] .jp-strength-bar > span[data-on="true"] { background: #f59e0b; }
+.jp-strength[data-level="3"] .jp-strength-bar > span[data-on="true"] { background: #84cc16; }
+.jp-strength[data-level="4"] .jp-strength-bar > span[data-on="true"] { background: #16a34a; }
+.jp-strength ul { margin-top: 9px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px 12px; }
+.jp-strength li { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12.5px; transition: color 0.25s ease; }
+.jp-strength li svg { flex: 0 0 auto; padding: 2px; width: 16px; height: 16px; border-radius: 99px; background: var(--panel-2); color: transparent; transition: background 0.25s ease, color 0.25s ease; }
+.jp-strength li[data-ok="true"] { color: var(--ink); }
+.jp-strength li[data-ok="true"] svg { background: #16a34a; color: #fff; }
+
+/* ── En-tête ── */
+#site-header { transition: box-shadow 0.3s ease, background-color 0.3s ease; }
+#site-header[data-scrolled] { box-shadow: 0 1px 0 var(--line), 0 10px 30px -18px rgb(11 13 26 / 0.28); }
+/* La hauteur ne change pas au défilement : sur une page courte, cela ferait osciller la page. */
+/* Liens du menu : pastille douce au survol, soulignement fin pour la page active */
+.jp-nav-link { border-radius: 999px; transition: color 0.2s ease, background-color 0.2s ease; }
+.jp-nav-link:hover { background: var(--panel-2); }
+.jp-nav-link-active { background: transparent !important; color: var(--ink); font-weight: 600; }
+.jp-nav-link:after { display: block !important; left: 16px; right: 16px; bottom: 3px; border-radius: 2px; }
+.jp-nav-link:hover:after { transform: scaleX(0); }
+.jp-nav-link-active:after { transform: scaleX(1) !important; }
+
+/* Panneau latéral : en-tête de section plus lisible, lien actif marqué */
+.jp-drawer [aria-current="page"] { background: var(--primary-soft); color: var(--primary); }
+.jp-drawer [aria-current="page"] svg { color: var(--primary); }
+.jp-auth-topbar { border-bottom: 1px solid transparent; }
+@media (max-width: 1023px) { .jp-auth-topbar { border-bottom-color: var(--line); } }

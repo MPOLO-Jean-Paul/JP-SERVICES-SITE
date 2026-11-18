@@ -11,7 +11,7 @@ export default async function ResetPage({ searchParams }: { searchParams: Promis
   const sp = await searchParams;
   const t = await getTranslations("auth");
   return (
-    <AuthCard
+    <AuthCard step={{ current: 2, total: 2, label: "Nouveau mot de passe" }}
       title={t("resetTitle")}
       intro={t("resetIntro")}
       footer={

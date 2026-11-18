@@ -63,7 +63,7 @@ export async function loginAction(_prev: AuthState, formData: FormData): Promise
   if (passwordNeedsRehash(user.motDePasse)) {
     await db.update(schema.users).set({ motDePasse: await hashPassword(password) }).where(eq(schema.users.id, user.id)).catch(() => {});
   }
-  await createSession(user.id);
+  await createSession(user.id, { persistent: formData.get("remember") === "on" });
   redirect(await landingFor(user.role, redirectTo));
 }
 

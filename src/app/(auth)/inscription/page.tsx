@@ -19,7 +19,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
   const [t, s] = await Promise.all([getTranslations("auth"), getSettings()]);
   const redirectTo = safeLocalRedirect(sp.redirect_to, "");
   return (
-    <AuthCard
+    <AuthCard step={{ current: 1, total: 2, label: "Votre compte" }}
       title={s.auth_register_title || t("registerTitle")}
       intro={s.auth_register_intro || t("registerIntro")}
       footer={

@@ -132,21 +132,33 @@ export default async function HomePage() {
             <div><p className="jp-overline">Nos services</p><h2 id="services-title">Ce que nous <em>réalisons pour vous.</em></h2></div>
             <Link href="/services" className="jp-inline-link">Tous nos services <MaterialIcon name="north_east" size={18} /></Link>
           </div>
-          <div className="jp-home-services-grid reveal-stagger">
-            {SERVICES.map((service) => (
-              <Link key={service.slug} href={"/services#" + service.slug} className="jp-home-service" data-tone={service.tone}>
-                <Image src={service.avatar} width={240} height={240} alt="" unoptimized loading="lazy" className="jp-home-service-avatar" />
-                <h3>{service.title}</h3>
-                <p>{service.short}</p>
-                <span className="jp-home-service-more">Découvrir <MaterialIcon name="arrow_forward" size={16} /></span>
+          <div className="jp-hsvc-grid" role="list">
+            {SERVICES.map((service, index) => (
+              <Link key={service.slug} href={"/services#" + service.slug} className="jp-hsvc" data-tone={service.tone} role="listitem">
+                <span className="jp-hsvc-visual" aria-hidden="true">
+                  <span className="jp-hsvc-num">{String(index + 1).padStart(2, "0")}</span>
+                  <Image src={service.avatar} width={240} height={240} alt="" unoptimized loading="lazy" className="jp-hsvc-avatar" />
+                  <span className="jp-hsvc-icon"><service.Icon /></span>
+                </span>
+                <span className="jp-hsvc-body">
+                  <h3>{service.title}</h3>
+                  <p>{service.short}</p>
+                  <span className="jp-hsvc-more">Découvrir <MaterialIcon name="arrow_forward" size={16} /></span>
+                </span>
               </Link>
             ))}
-            <Link href="/contact?sujet=Demande%20de%20devis" className="jp-home-service jp-home-service-quote">
-              <h3>Un besoin précis ?</h3>
-              <p>Présentez votre projet : nous vous répondons avec une proposition claire.</p>
-              <span className="jp-home-service-more">Demander un devis <MaterialIcon name="arrow_forward" size={16} /></span>
+            <Link href="/contact?sujet=Demande%20de%20devis" className="jp-hsvc jp-hsvc-quote" role="listitem">
+              <span className="jp-hsvc-quote-art" aria-hidden="true">
+                {SERVICES.slice(0, 4).map((s) => <Image key={s.slug} src={s.avatar} width={240} height={240} alt="" unoptimized loading="lazy" />)}
+              </span>
+              <span className="jp-hsvc-body">
+                <h3>Un besoin précis&nbsp;?</h3>
+                <p>Présentez votre projet&nbsp;: nous vous répondons avec une proposition claire, un délai et un budget.</p>
+                <span className="jp-hsvc-more">Demander un devis <MaterialIcon name="arrow_forward" size={16} /></span>
+              </span>
             </Link>
           </div>
+          <p className="jp-hsvc-hint" aria-hidden="true">Faites glisser pour voir les {SERVICES.length} services</p>
         </div>
       </section>
 

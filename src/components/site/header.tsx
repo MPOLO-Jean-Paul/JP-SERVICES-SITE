@@ -44,7 +44,7 @@ export async function SiteHeader() {
             <div className="ml-1">
               <AccountMenu user={publicUser} logoutAction={logoutAction} unread={unread} preview={preview} />
               {!user ? (
-                <Link href={preview ? "/contact" : "/connexion"} className={(preview ? "inline-flex sm:hidden" : "hidden") + " h-9 items-center rounded-lg bg-ink px-3 text-sm font-medium text-canvas"}>
+                <Link href={preview ? "/contact" : "/connexion"} className="inline-flex h-9 items-center rounded-lg bg-ink px-3 text-sm font-medium text-canvas sm:hidden">
                   {preview ? t("contact") : t("access")}
                 </Link>
               ) : null}

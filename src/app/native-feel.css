@@ -1,13 +1,13 @@
 /* ─────────────────────────────────────────────────────────────
-   Sensation « application native » : onglets mobiles, retour tactile,
-   transitions de page, feuilles compactes. Respecte le mouvement réduit.
+   Finitions d’interaction : retour tactile, transitions de page,
+   bandeau cookies compact. Respecte le mouvement réduit.
    ───────────────────────────────────────────────────────────── */
 
 /* Retour tactile : pas de flash gris, léger enfoncement à l’appui */
 a, button, [role="button"], summary { -webkit-tap-highlight-color: transparent; }
 @media (prefers-reduced-motion: no-preference) {
   button:not(:disabled):active,
-  .jp-action:active, .jp-tab:active, .jp-hero-start-link:active, .jp-area-link:active, .jp-course-row:active {
+  .jp-action:active, .jp-hero-start-link:active, .jp-area-link:active, .jp-course-row:active {
     transform: scale(0.97);
     transition: transform 0.08s ease;
   }
@@ -17,44 +17,9 @@ a, button, [role="button"], summary { -webkit-tap-highlight-color: transparent; 
 .jp-page-enter { animation: jp-page-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
 @keyframes jp-page-in { from { opacity: 0; } to { opacity: 1; } }
 
-/* Barre d’onglets mobile */
-.jp-tabbar {
-  position: fixed;
-  inset: auto 0 0 0;
-  z-index: 45;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
-  border-top: 1px solid var(--line);
-  background: var(--canvas);
-  box-shadow: 0 -10px 30px -22px rgb(11 13 26 / 0.35);
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.jp-tabbar[data-hidden="true"] { transform: translateY(110%); }
-.jp-tab {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  min-width: 0;
-  padding: 4px 2px;
-  color: var(--muted);
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  border-radius: 14px;
-}
-.jp-tab-icon { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 30px; border-radius: 999px; transition: background-color 0.25s ease, color 0.25s ease; }
-.jp-tab-label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.jp-tab-active { color: var(--ink); }
-.jp-tab-active .jp-tab-icon { background: var(--primary-soft); color: var(--primary); }
-
 @media (max-width: 767px) {
-  /* Le contenu ne passe jamais sous la barre d’onglets */
-  body:has(.jp-tabbar) { padding-bottom: calc(66px + env(safe-area-inset-bottom)); }
-  /* Bouton « haut de page » et bandeau cookies au-dessus de la barre */
-  .jp-md3-fab { bottom: calc(78px + env(safe-area-inset-bottom)) !important; }
-  .jp-cookie-sheet { bottom: calc(74px + env(safe-area-inset-bottom)); padding: 14px 16px; border-radius: 18px; }
+  /* Bandeau cookies plus compact sur mobile */
+  .jp-cookie-sheet { padding: 14px 16px; border-radius: 18px; }
   .jp-cookie-sheet .icon-box { display: none; }
   .jp-cookie-sheet p { font-size: 13px; line-height: 1.45; }
   .jp-cookie-sheet > div:last-child { margin-top: 10px; }
@@ -64,5 +29,5 @@ a, button, [role="button"], summary { -webkit-tap-highlight-color: transparent; 
 .jp-overline { font-family: var(--font-sans); letter-spacing: 0.09em; font-weight: 600; }
 
 @media (prefers-reduced-motion: reduce) {
-  .jp-page-enter, .jp-tabbar { animation: none !important; transition: none !important; }
+  .jp-page-enter { animation: none !important; }
 }

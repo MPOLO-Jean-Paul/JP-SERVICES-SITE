@@ -480,6 +480,9 @@ test("les CTA et le bandeau de démonstration sont lisibles sur mobile",async({p
    await page.goto("/scolia");
    const buttons=page.locator(".jp-product-hero .jp-directory-actions .jp-action");
    await expect(buttons).toHaveCount(2);
+   // Attendre que la page soit mise en page avant de mesurer (sinon positions à 0).
+   await expect(buttons.nth(1)).toBeVisible();
+   await expect.poll(()=>buttons.nth(1).evaluate(el=>el.getBoundingClientRect().top)).toBeGreaterThan(0);
    const rectangles=await buttons.evaluateAll(nodes=>nodes.map(el=>{
      const r=el.getBoundingClientRect();return {x:r.left,right:r.right,top:r.top,bottom:r.bottom,radius:getComputedStyle(el).borderRadius};
    }));
@@ -610,4 +613,16 @@ test("la page des services présente les sept services et pré-remplit la demand
   await page.locator("#sites-web").getByRole("link", { name: /Demander ce service/ }).click();
   await page.waitForURL(/\/contact\?sujet=/);
   await expect(page.locator("#sujet")).toHaveValue("Sites web professionnels");
+});
+
+test("les services de l'accueil défilent seuls sur mobile et s'arrêtent sur demande", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  const row = page.locator(".jp-hsvc-grid");
+  await row.scrollIntoViewIfNeeded();
+  await expect.poll(() => row.evaluate((el) => el.scrollLeft), { timeout: 9000, message: "La rangée doit avancer seule" }).toBeGreaterThan(40);
+  await page.getByRole("button", { name: "Mettre le défilement en pause" }).click();
+  const stopped = await row.evaluate((el) => el.scrollLeft);
+  await page.waitForTimeout(3800);
+  expect(await row.evaluate((el) => el.scrollLeft)).toBe(stopped);
 });

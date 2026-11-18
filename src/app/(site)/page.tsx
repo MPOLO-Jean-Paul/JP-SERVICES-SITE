@@ -11,6 +11,7 @@ import { listUpcomingFormations } from "@/server/services/formations";
 import { excerpt, formatDate, formatPrice } from "@/lib/utils";
 import { SITE_URL, jsonLd } from "@/lib/seo";
 import { SERVICES } from "@/lib/services";
+import { AutoScrollRow } from "@/components/home/auto-scroll-row";
 
 export const dynamic = "force-dynamic";
 
@@ -132,7 +133,7 @@ export default async function HomePage() {
             <div><p className="jp-overline">Nos services</p><h2 id="services-title">Ce que nous <em>réalisons pour vous.</em></h2></div>
             <Link href="/services" className="jp-inline-link">Tous nos services <MaterialIcon name="north_east" size={18} /></Link>
           </div>
-          <div className="jp-hsvc-grid" role="list">
+          <AutoScrollRow className="jp-hsvc-grid" label="Nos services">
             {SERVICES.map((service, index) => (
               <Link key={service.slug} href={"/services#" + service.slug} className="jp-hsvc" data-tone={service.tone} role="listitem">
                 <span className="jp-hsvc-visual" aria-hidden="true">
@@ -157,8 +158,7 @@ export default async function HomePage() {
                 <span className="jp-hsvc-more">Demander un devis <MaterialIcon name="arrow_forward" size={16} /></span>
               </span>
             </Link>
-          </div>
-          <p className="jp-hsvc-hint" aria-hidden="true">Faites glisser pour voir les {SERVICES.length} services</p>
+          </AutoScrollRow>
         </div>
       </section>
 

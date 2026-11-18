@@ -113,8 +113,8 @@ export function PromoCarousel() {
           <div className="jp-campaign-ticker-track" aria-hidden="true">
             {[0,1].map((copy) => (
               <div key={copy} className="jp-campaign-ticker-group">
-                {["FORMATIONS PRATIQUES","DÉVELOPPEMENT LOGICIEL","SOLUTIONS MÉTIERS","ACCOMPAGNEMENT","SCOLIA PRO"].map((label) => (
-                  <span key={label}>{label}<span className="jp-ticker-star">✳</span></span>
+                {["Formations pratiques","Développement logiciel","Solutions métiers","Accompagnement","SCOLIA Pro"].map((label) => (
+                  <span key={label}>{label}<span className="jp-ticker-dot" /></span>
                 ))}
               </div>
             ))}

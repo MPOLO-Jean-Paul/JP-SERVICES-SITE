@@ -169,3 +169,78 @@
 /* États vides illustrés */
 .jp-empty-art { display: block; }
 @media (prefers-reduced-motion: reduce) { .jp-page-heading-art { animation: none !important; } }
+
+/* ── Finitions des zones de l’accueil (affiches, SCOLIA, témoignages) ── */
+
+/* Étiquettes : police du texte, plus fines que la police à chasse fixe */
+.jp-promo-label, .jp-promo-counter, .jp-story-topic, .jp-story-position, .jp-campaign-ticker-group > span {
+  font-family: var(--font-sans);
+  letter-spacing: 0.08em;
+}
+.jp-story-topic { font-weight: 600; }
+
+/* Bandeau défilant : mots en casse normale, séparés par des points de couleur */
+.jp-campaign-ticker-group > span { font-weight: 600; font-size: 13px; letter-spacing: -0.005em; color: var(--copy); }
+.jp-ticker-dot { display: inline-block; width: 7px; height: 7px; border-radius: 999px; background: #2f5bff; }
+.jp-campaign-ticker-group > span:nth-child(3n + 1) .jp-ticker-dot { background: #ff4d3d; }
+.jp-campaign-ticker-group > span:nth-child(3n + 2) .jp-ticker-dot { background: #7b4dff; }
+
+/* SCOLIA : statut en pastille discrète plutôt qu’en cadre */
+.jp-scolia-status {
+  border: 0 !important;
+  border-radius: 999px !important;
+  padding: 4px 10px !important;
+  background: rgb(255 255 255 / 0.1) !important;
+  color: #c9d6f2 !important;
+  font-family: var(--font-sans) !important;
+  letter-spacing: 0.06em !important;
+}
+
+/* Bouton « haut de page » : plus petit et clair pour ne pas masquer le contenu */
+.jp-back-to-top { box-shadow: 0 10px 24px -12px rgb(11 13 26 / 0.35); }
+
+@media (max-width: 640px) {
+  /* Affiches : l’illustration revient en haut, plus de grand vide sombre */
+  .jp-promo-slide { flex-direction: column; align-items: stretch; justify-content: flex-start; min-height: 0; }
+  .jp-promo-illustration {
+    display: block;
+    position: relative;
+    top: auto;
+    right: auto;
+    order: -1;
+    width: min(56%, 210px);
+    margin: 30px auto 0;
+    transform: none;
+    opacity: 1;
+  }
+  .jp-promo-slide:hover .jp-promo-illustration { transform: none; }
+  .jp-promo-art { display: none; }
+  .jp-promo-shade { background: none; }
+  .jp-promo-copy { padding: 8px 22px 30px; }
+  .jp-promo-copy h3 { max-width: none; }
+  .jp-promo-counter { top: 16px; right: 16px; }
+
+  /* Commandes des carrousels : alignées, sans chevauchement */
+  .jp-promo-controls { padding: 10px 12px; }
+  .jp-promo-controls .jp-gallery-icon, .jp-story-controls .jp-gallery-icon { width: 38px; height: 38px; }
+  .jp-story-foot { gap: 12px; }
+  .jp-story-controls { width: 100%; justify-content: flex-end; }
+  .jp-story-position { margin-right: auto; }
+
+  /* Témoignages : portrait plus mesuré, texte qui respire */
+  .jp-story-avatar { width: 88px; height: 88px; margin-bottom: 16px; }
+  .jp-story-topic { margin-top: 4px; }
+
+  /* SCOLIA : boutons à la largeur du contenu, illustration aérée */
+  .jp-scolia-actions { gap: 10px; }
+  .jp-scolia-photo.jp-scolia-illustration { border-radius: 18px; }
+
+  .jp-back-to-top { right: 14px; bottom: 14px; width: 38px; height: 38px; }
+}
+
+/* SCOLIA : libellés du tableau lisibles sur mobile */
+.jp-scolia-index-top span, .jp-scolia-index-bottom span { font-family: var(--font-sans); letter-spacing: 0.07em; }
+@media (max-width: 640px) {
+  .jp-scolia-index-top, .jp-scolia-index-bottom { flex-wrap: wrap; gap: 4px 12px; }
+  .jp-scolia-index-top span:last-child, .jp-scolia-index-bottom span:last-child { opacity: 0.7; }
+}

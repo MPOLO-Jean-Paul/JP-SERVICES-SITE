@@ -14,8 +14,8 @@ const posters = [
     text: "Des parcours pratiques et des projets concrets pour progresser dans le numérique.",
     action: "Découvrir les formations",
     href: "/formations",
-    image: "/media/atelier-numerique.webp",
-    alt: "Illustration d'un atelier de formation informatique",
+    image: "/illustrations/apprendre-partout.svg",
+    alt: "Illustration d’une apprenante qui suit sa formation sur ordinateur",
   },
   {
     label: "LOGICIELS / JP-SERVICES",
@@ -24,8 +24,8 @@ const posters = [
     text: "Logiciels et ressources numériques pour simplifier le quotidien et gagner en efficacité.",
     action: "Explorer les logiciels",
     href: "/logiciels",
-    image: "/media/developpement-logiciel.webp",
-    alt: "Illustration d'un environnement de développement logiciel",
+    image: "/illustrations/formateur-en-ligne.svg",
+    alt: "Illustration d’une séance en visioconférence avec un formateur",
   },
   {
     label: "SOLUTIONS / JP-SERVICES",
@@ -34,8 +34,8 @@ const posters = [
     text: "De la première idée à un outil adapté, donnons une forme concrète à vos projets.",
     action: "Présenter un projet",
     href: "/contact?sujet=Projet%20num%C3%A9rique",
-    image: "/media/travail-equipe.webp",
-    alt: "Illustration d'une équipe travaillant sur un projet numérique",
+    image: "/illustrations/projet-equipe.svg",
+    alt: "Illustration de deux personnes qui présentent un projet sur un tableau",
   },
 ] as const;
 
@@ -60,9 +60,8 @@ export function PromoCarousel() {
             {posters.map((poster, index) => (
               <article key={poster.label} className="jp-promo-slide" role="group"
                 aria-roledescription="diapositive" aria-label={String(index + 1) + " sur " + posters.length}>
-                <Image src={poster.image} alt={poster.alt} fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
-                  quality={90} priority={index === 0} className="jp-promo-photo" />
+                <Image src={poster.image} alt={poster.alt} width={400} height={400}
+                  unoptimized priority={index === 0} className="jp-promo-illustration" />
                 <div className="jp-promo-shade" aria-hidden="true" />
                 <div className="jp-promo-art" aria-hidden="true"><span /><span /><span /></div>
                 <div className="jp-promo-copy">

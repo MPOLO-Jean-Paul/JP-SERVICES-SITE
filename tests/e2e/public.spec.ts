@@ -129,7 +129,7 @@ test("la nouvelle direction graphique reste lisible et sans débordement", async
     await page.setViewportSize({width,height});
     await page.goto("/");
     await expect(page.locator("h1")).toContainText("numérique");
-    await expect(page.locator(".jp-guide-row")).toHaveCount(4);
+    await expect(page.locator(".jp-hero-start-link")).toHaveCount(4);
     await expect(page.locator(".jp-area-link")).toHaveCount(3);
     const widths = await page.evaluate(() => ({page: document.documentElement.scrollWidth,viewport:window.innerWidth}));
     expect(widths.page, "Débordement d'affichage "+label).toBeLessThanOrEqual(widths.viewport+1);
@@ -325,13 +325,13 @@ test("à 1024 px, la navigation reste compacte et accessible", async ({page,isMo
 });
 
 
-test("accueil : photographies des trois activités présentes et chargées", async ({page,isMobile}) => {
+test("accueil : illustrations du héros, des domaines et de SCOLIA présentes et chargées", async ({page,isMobile}) => {
   test.skip(isMobile, "Contrôles de dimensions réalisés sur plusieurs viewports");
   test.setTimeout(100000);
   for(const width of [320,390,820,1024,1440]){
     await page.setViewportSize({width,height:850});
     await page.goto("/");
-    const images=page.locator(".jp-hero-photo img, .jp-area-visual img, .jp-scolia-photo img");
+    const images=page.locator(".jp-hero-art img, .jp-area-visual img, .jp-scolia-photo img");
     await expect(images).toHaveCount(5);
     for(let i=0;i<await images.count();i++){
       const photo=images.nth(i);
@@ -339,7 +339,7 @@ test("accueil : photographies des trois activités présentes et chargées", asy
       await expect.poll(async()=>photo.evaluate(img=>{
         const image=img as HTMLImageElement;
         return image.complete && image.naturalWidth>0;
-      }),{timeout:12000,message:"Photographie indisponible à "+width+"px, image "+i}).toBe(true);
+      }),{timeout:12000,message:"Illustration indisponible à "+width+"px, image "+i}).toBe(true);
     }
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
     expect(overflow,"Les visuels provoquent un débordement à "+width+"px").toBeLessThanOrEqual(1);
@@ -365,22 +365,19 @@ test("accueil : titres resserrés et lecture facile sur téléphone",async ({pag
 test("les animations de l'accueil respectent la préférence de mouvement réduit", async ({page}) => {
   await page.emulateMedia({reducedMotion:"reduce"});
   await page.goto("/");
-  await expect(page.locator(".jp-hero-photo")).toBeVisible();
-  const duration=await page.locator(".jp-hero-photo").evaluate(el=>getComputedStyle(el).animationDuration);
+  await expect(page.locator(".jp-hero-chip").first()).toBeVisible();
+  const duration=await page.locator(".jp-hero-chip").first().evaluate(el=>getComputedStyle(el).animationDuration);
   expect(parseFloat(duration), "Le mouvement réduit doit supprimer les animations visibles").toBeLessThanOrEqual(0.001);
 });
 
-test("Material 3 : le visiteur peut parcourir les visuels sans quitter l'accueil", async ({page}) => {
+test("l'accueil présente l'illustration JP-Services et les accès directs", async ({page}) => {
   await page.goto("/");
-  const showcase = page.getByTestId("hero-showcase");
-  await expect(showcase.locator(".jp-hero-photo img")).toHaveCount(1);
-  await expect(page.getByTestId("hero-slide-0")).toHaveAttribute("aria-pressed", "true");
-  await page.getByTestId("hero-slide-1").click();
-  await expect(page.getByTestId("hero-slide-1")).toHaveAttribute("aria-pressed", "true");
-  await expect(showcase.locator("figcaption")).toContainText("OUTILS NUMÉRIQUES");
-  await expect(showcase.locator(".jp-hero-photo img")).toHaveAttribute("src", /photo-1618477388954-7852f32655ec|developpement-logiciel/);
-  await page.getByTestId("hero-slide-2").click();
-  await expect(showcase.locator("figcaption")).toContainText("SOLUTIONS MÉTIERS");
+  await expect(page.locator(".jp-hero-art img")).toHaveAttribute("src", /\/illustrations\/hero-apprenante\.svg/);
+  await expect(page.locator(".jp-hero-chip")).toHaveCount(3);
+  const start = page.getByRole("navigation", { name: "Votre point de départ" });
+  await expect(start.getByRole("link")).toHaveCount(4);
+  await expect(start.locator('a[href="/scolia"]')).toBeVisible();
+  await expect(page.locator(".jp-method-illustration")).toHaveCount(3);
 });
 
 test("Material 3 : le guide interactif oriente vers des pages existantes", async ({page}) => {
@@ -400,25 +397,23 @@ test("Flutter motion : les mouvements désactivés respectent les préférences 
   await page.emulateMedia({reducedMotion: "reduce"});
   await page.goto("/");
   await expect(page.locator(".jp-scroll-progress")).toBeAttached();
-  const animation = await page.locator(".jp-showcase-image").evaluate(el => getComputedStyle(el).animationDuration);
+  const animation = await page.locator(".jp-hero-chip").first().evaluate(el => getComputedStyle(el).animationDuration);
   expect(parseFloat(animation)).toBeLessThanOrEqual(.001);
 });
 
-test("les photographies HD chargent en qualité élevée sans filtre flou", async ({page}) => {
+test("les illustrations sont vectorielles, nettes et sans filtre flou", async ({page}) => {
   await page.goto("/");
-  const photo = page.locator(".jp-hero-photo img");
-  await expect(photo).toBeVisible();
-  const metrics = await photo.evaluate((img) => {
+  const art = page.locator(".jp-hero-art img");
+  await expect(art).toBeVisible();
+  const metrics = await art.evaluate((img) => {
     const node = img as HTMLImageElement;
-    return {
-      src: node.currentSrc || node.src,
-      filter: getComputedStyle(img).filter,
-    };
+    return { src: node.currentSrc || node.src, filter: getComputedStyle(img).filter, loaded: node.complete && node.naturalWidth > 0 };
   });
-  expect(metrics.src).toMatch(/photo-1758270705317|atelier-numerique/);
+  expect(metrics.src).toMatch(/\/illustrations\/hero-apprenante\.svg$/);
   expect(metrics.filter).toBe("none");
-  await page.getByTestId("hero-slide-1").click();
-  await expect(photo).toHaveAttribute("src", /photo-1618477388954|developpement-logiciel/);
+  expect(metrics.loaded).toBe(true);
+  const promo = page.locator(".jp-promo-illustration").first();
+  await expect(promo).toHaveAttribute("src", /\/illustrations\/.+\.svg$/);
 });
 
 test("le panneau mobile change le thème sans menu imbriqué",async({page})=>{
@@ -508,13 +503,7 @@ test("l'API de recherche refuse les requêtes trop longues", async ({request}) =
 
 test("la galerie et les parcours répondent aussi aux flèches du clavier",async({page})=>{
   await page.goto("/");
-  await expect(page.getByTestId("hero-showcase")).toHaveAttribute("data-hydrated", "true");
   await expect(page.locator(".jp-path-finder")).toHaveAttribute("data-hydrated", "true");
-  const first=page.getByTestId("hero-slide-0");
-  await first.focus();
-  await first.press("ArrowRight");
-  await expect(page.getByTestId("hero-slide-1")).toHaveAttribute("aria-pressed","true");
-  await expect(page.getByTestId("hero-slide-1")).toBeFocused();
   const path=page.getByTestId("path-choice-0");
   await path.focus();
   await path.press("ArrowRight");
@@ -593,5 +582,5 @@ test("les carrousels respectent les préférences de mouvement réduit", async (
   await page.goto("/");
   await expect(page.locator(".jp-promo-gallery")).toHaveAttribute("data-reduced-motion", "true");
   await expect(page.locator(".jp-story-gallery")).toHaveAttribute("data-reduced-motion", "true");
-  await expect(page.locator(".jp-hero-photo")).toBeVisible();
+  await expect(page.locator(".jp-hero-art")).toBeVisible();
 });

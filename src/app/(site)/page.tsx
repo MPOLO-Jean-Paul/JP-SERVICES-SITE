@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { CrispPhoto } from "@/components/ui/crisp-photo";
+import Image from "next/image";
 import { MaterialIcon } from "@/components/ui/material-symbol";
-import { HeroShowcase } from "@/components/home/hero-showcase";
 import { PromoCarousel } from "@/components/home/promo-carousel";
 import { TestimonialsCarousel, type PublishedTestimonial } from "@/components/home/testimonials-carousel";
 import { getSettings } from "@/server/services/settings";
@@ -18,24 +17,24 @@ const areas = [
   {
     number: "01", name: "Formations numériques", label: "APPRENDRE",
     description: "Des contenus organisés par compétences, des exercices et un parcours à construire étape par étape.",
-    href: "/formations", photo: "formation",
+    href: "/formations", illustration: "/illustrations/domaine-formations.svg",
   },
   {
     number: "02", name: "Logiciels & outils", label: "UTILISER",
     description: "Retrouvez les ressources numériques publiées et les outils utiles à votre activité.",
-    href: "/logiciels", photo: "logiciels",
+    href: "/logiciels", illustration: "/illustrations/domaine-logiciels.svg",
   },
   {
     number: "03", name: "Solutions & projets", label: "RÉALISER",
     description: "Des solutions pensées pour les besoins des organisations, de l'idée à sa mise en œuvre.",
-    href: "/projets", photo: "projets",
+    href: "/projets", illustration: "/illustrations/domaine-projets.svg",
   },
 ] as const;
 
 const method = [
-  { number: "01", name: "Comprendre", description: "Partir d'un besoin précis. Définir ce que vous voulez apprendre, améliorer ou construire." },
-  { number: "02", name: "Pratiquer", description: "Avancer avec une démarche concrète, des exemples utiles et des étapes compréhensibles." },
-  { number: "03", name: "Appliquer", description: "Transformer les acquis en méthodes, en outils et en réalisations qui servent vraiment." },
+  { number: "01", illustration: "/illustrations/formateur-en-ligne.svg", name: "Comprendre", description: "Partir d'un besoin précis. Définir ce que vous voulez apprendre, améliorer ou construire." },
+  { number: "02", illustration: "/illustrations/apprendre-partout.svg", name: "Pratiquer", description: "Avancer avec une démarche concrète, des exemples utiles et des étapes compréhensibles." },
+  { number: "03", illustration: "/illustrations/projet-equipe.svg", name: "Appliquer", description: "Transformer les acquis en méthodes, en outils et en réalisations qui servent vraiment." },
 ];
 
 export default async function HomePage() {
@@ -80,25 +79,29 @@ export default async function HomePage() {
             </div>
             <p className="jp-hero-support"><MaterialIcon name="location_on" size={15} /> Disponible sur place et à distance</p>
           </div>
-          <aside className="jp-hero-guide" aria-labelledby="home-guide-title">
-            <HeroShowcase />
-            <p id="home-guide-title" className="jp-guide-label">Votre point de départ</p>
-            <Link href="/formations" className="jp-guide-row">
-              <span>01</span><strong>Développer une compétence</strong><MaterialIcon name="north_east" size={19} />
-            </Link>
-            <Link href="/logiciels" className="jp-guide-row">
-              <span>02</span><strong>Découvrir un outil</strong><MaterialIcon name="north_east" size={19} />
-            </Link>
-            <Link href="/scolia" className="jp-guide-row">
-              <span>03</span><strong>Explorer SCOLIA Pro</strong><MaterialIcon name="north_east" size={19} />
-            </Link>
-            <Link href="/contact" className="jp-guide-row">
-              <span>04</span><strong>Parler d&apos;un projet</strong><MaterialIcon name="north_east" size={19} />
-            </Link>
-            <p className="jp-guide-footnote">Des parcours utiles, sans complexité inutile.</p>
-          </aside>
+          <figure className="jp-hero-art" aria-hidden="true">
+            <Image src="/illustrations/hero-apprenante.svg" width={600} height={520} alt="" priority unoptimized className="jp-hero-art-image" />
+            <div className="jp-hero-chip jp-hero-chip-progress">
+              <strong>Module 3 / 5</strong>
+              <span className="jp-hero-chip-bar"><span /></span>
+              <small>Votre progression</small>
+            </div>
+            <div className="jp-hero-chip jp-hero-chip-live"><span className="jp-hero-chip-dot" />Session en direct</div>
+            <div className="jp-hero-chip jp-hero-chip-check"><MaterialIcon name="check" size={18} />Exercice validé</div>
+          </figure>
         </div>
-        <div className="shell jp-hero-signature" aria-hidden="true"><span>FORMATION</span><span>TECHNOLOGIE</span><span>SOLUTIONS MÉTIERS</span></div>
+        <nav className="shell jp-hero-start" aria-label="Votre point de départ">
+          {([
+            ["/formations", "Développer une compétence"],
+            ["/logiciels", "Découvrir un outil"],
+            ["/scolia", "Explorer SCOLIA Pro"],
+            ["/contact", "Parler d’un projet"],
+          ] as const).map(([href, label], index) => (
+            <Link key={href} href={href} className="jp-hero-start-link">
+              <span>{String(index + 1).padStart(2, "0")}</span><strong>{label}</strong><MaterialIcon name="north_east" size={18} />
+            </Link>
+          ))}
+        </nav>
       </section>
 
       <PromoCarousel />
@@ -115,7 +118,7 @@ export default async function HomePage() {
             {areas.map(area => <Link href={area.href} key={area.number} className="jp-area-link">
               <span className="jp-area-number">{area.number}</span>
               <div><span className="jp-area-kicker">{area.label}</span><h3>{area.name}</h3><p>{area.description}</p></div>
-              <span className="jp-area-visual"><CrispPhoto category={area.photo} width={300} height={220} alt="" loading="lazy" sizes="(max-width:620px) 160px, 260px" /></span>
+              <span className="jp-area-visual jp-area-illustration"><Image src={area.illustration} width={300} height={220} alt="" loading="lazy" unoptimized /></span>
               <MaterialIcon name="north_east" size={21} className="jp-area-arrow" />
             </Link>)}
           </div>
@@ -158,6 +161,7 @@ export default async function HomePage() {
             <p className="jp-section-aside">Une méthode simple pour garder le cap : comprendre un problème, travailler concrètement et mesurer la progression.</p>
           </div>
           <div className="jp-method-grid">{method.map(step=><div key={step.number} className="jp-method-step">
+            <Image className="jp-method-illustration" src={step.illustration} width={400} height={400} alt="" loading="lazy" unoptimized />
             <span>{step.number}</span><div className="jp-method-rule"/><h3>{step.name}</h3><p>{step.description}</p>
           </div>)}</div>
         </div>
@@ -175,8 +179,8 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="jp-scolia-index" aria-label="Domaines couverts par le projet">
-            <figure className="jp-scolia-photo">
-              <CrispPhoto category="projets" width={1100} height={660} alt="Photographie illustrative d’une équipe collaborant autour d’un projet numérique" loading="lazy" sizes="(max-width:800px) 92vw, 45vw" />
+            <figure className="jp-scolia-photo jp-scolia-illustration">
+              <Image src="/illustrations/scolia-gestion.svg" width={560} height={340} alt="Illustration de SCOLIA Pro : un établissement scolaire, son tableau de bord et un reçu de paiement" loading="lazy" unoptimized />
             </figure>
             <div className="jp-scolia-index-top"><span>SCOLIA / DOMAINES</span><span>VERSION EN CONSTRUCTION</span></div>
             {["Gestion des apprenants","Finances & encaissements","Scolarité & évaluations","Rapports & administration"].map((name,i)=><div key={name} className="jp-scolia-index-row">

@@ -26,7 +26,8 @@
     "cf:build": "CLOUDFLARE_BUILD=1 SKIP_ENV_VALIDATION=1 opennextjs-cloudflare build",
     "cf:preview": "pnpm cf:build && opennextjs-cloudflare preview",
     "cf:deploy": "pnpm cf:build && opennextjs-cloudflare deploy",
-    "db:reset": "tsx scripts/reset-db.ts"
+    "db:reset": "tsx scripts/reset-db.ts",
+    "illustrations": "node scripts/illustrations/generate.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1169.0",

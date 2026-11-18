@@ -1,10 +1,18 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ChevronLeft, ChevronRight, MessageSquareQuote, Pause, Play } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { useRotatingGallery } from "./use-rotating-gallery";
 
 export type PublishedTestimonial = { name: string; role: string; quote: string };
+
+/** Avatar illustré stable pour chaque nom (aucune photo réelle n’est associée à une personne). */
+function avatarFor(seed: string) {
+  let h = 0;
+  for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return `/illustrations/avatar-${(h % 6) + 1}.svg`;
+}
 
 const prompts = [
   {
@@ -52,7 +60,8 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Published
             {cards.map((item, index) => (
               <article className="jp-story-slide" role="group" aria-roledescription="diapositive"
                 aria-label={String(index + 1) + " sur " + cards.length} key={index}>
-                <div className="jp-story-mark"><MessageSquareQuote aria-hidden="true" className="size-6" /></div>
+                <Image className="jp-story-avatar" src={hasTestimonials ? avatarFor((item as PublishedTestimonial).name) : `/illustrations/avatar-${(index % 6) + 1}.svg`}
+                  width={200} height={200} alt="" unoptimized loading="lazy" />
                 {hasTestimonials ? (
                   <>
                     <p className="jp-story-topic">TÉMOIGNAGE / {String(index + 1).padStart(2, "0")}</p>

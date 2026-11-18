@@ -53,7 +53,7 @@ export function CookieConsent() {
   return (
     <>
       {visible ? (
-        <aside role="dialog" aria-labelledby="cookie-title" className="fixed inset-x-3 bottom-3 z-40 mx-auto max-w-xl rounded-xl border bg-panel p-5 shadow-lg animate-fade-up sm:inset-x-auto sm:left-5">
+        <aside role="dialog" aria-labelledby="cookie-title" className="jp-cookie-sheet fixed inset-x-3 bottom-3 z-40 mx-auto max-w-xl rounded-xl border bg-panel p-5 shadow-lg animate-fade-up sm:inset-x-auto sm:left-5">
           <div className="flex gap-3">
             <span className="icon-box">
               <Cookie />

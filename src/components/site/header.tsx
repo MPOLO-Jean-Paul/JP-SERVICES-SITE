@@ -29,7 +29,6 @@ export async function SiteHeader() {
           <MobileDrawer user={publicUser} logoutAction={logoutAction} preview={preview} />
           <Link href="/" className="jp-site-logo flex items-center gap-2" aria-label="JP-Services — Accueil">
             <LogoMark className="size-9" />
-            <span className="jp-mobile-brand">JP-SERVICES</span>
           </Link>
           <div className="mx-auto">
             <DesktopNav user={publicUser} />
@@ -45,7 +44,7 @@ export async function SiteHeader() {
             <div className="ml-1">
               <AccountMenu user={publicUser} logoutAction={logoutAction} unread={unread} preview={preview} />
               {!user ? (
-                <Link href={preview ? "/contact" : "/connexion"} className="inline-flex h-9 items-center rounded-lg bg-ink px-3 text-sm font-medium text-canvas sm:hidden">
+                <Link href={preview ? "/contact" : "/connexion"} className={(preview ? "inline-flex sm:hidden" : "hidden") + " h-9 items-center rounded-lg bg-ink px-3 text-sm font-medium text-canvas"}>
                   {preview ? t("contact") : t("access")}
                 </Link>
               ) : null}

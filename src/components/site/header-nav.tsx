@@ -29,11 +29,11 @@ export function DesktopNav({ user }: { user: Props["user"] }) {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const links = [
-    { href: "/formations", icon: "school", label: t("formations") },
-    { href: "/formations-en-ligne", icon: "videocam", label: t("live") },
-    { href: "/logiciels", icon: "apps", label: t("software") },
-    { href: "/projets", icon: "workspaces", label: t("projects") },
-    { href: "/a-propos", icon: "info", label: t("about") },
+    { href: "/formations", label: t("formations") },
+    { href: "/formations-en-ligne", label: t("live") },
+    { href: "/logiciels", label: t("software") },
+    { href: "/projets", label: t("projects") },
+    { href: "/a-propos", label: t("about") },
   ];
   return (
     <nav className="hidden items-center gap-1 xl:flex" aria-label="Menu principal">
@@ -47,7 +47,7 @@ export function DesktopNav({ user }: { user: Props["user"] }) {
             "jp-nav-link relative inline-flex min-h-10 items-center whitespace-nowrap px-3 text-[13px] font-medium text-copy transition-colors hover:text-ink",
             active && "jp-nav-link-active text-ink",
           )}
-        ><MaterialIcon name={link.icon} size={17} filled={active} />{link.label}</Link>;
+        >{link.label}</Link>;
       })}
       {user ? <Link href="/profil" className="sr-only">Mon espace</Link> : null}
     </nav>
@@ -61,10 +61,10 @@ export function AccountMenu({ user, logoutAction, unread = 0, preview = false }:
   if (!user) {
     return (
       <div className="hidden items-center gap-2 sm:flex">
-        <Link href="/connexion" className="inline-flex h-9 items-center rounded-lg px-3 text-sm font-medium text-copy transition hover:bg-panel-2 hover:text-ink">
+        <Link href="/connexion" className="inline-flex h-9 items-center whitespace-nowrap rounded-lg px-3 text-sm font-medium text-copy transition hover:bg-panel-2 hover:text-ink">
           {t("login")}
         </Link>
-        <Link href="/inscription" className="inline-flex h-9 items-center gap-2 rounded-lg bg-ink px-3.5 text-sm font-medium text-canvas shadow-sm transition hover:bg-ink/85">
+        <Link href="/inscription" className="inline-flex h-9 items-center gap-2 whitespace-nowrap rounded-lg bg-ink px-3.5 text-sm font-medium text-canvas shadow-sm transition hover:bg-ink/85">
           {t("signup")}
         </Link>
       </div>
@@ -209,7 +209,6 @@ export function MobileDrawer({ user, logoutAction, preview = false }: Props) {
         <div className="flex shrink-0 items-center justify-between border-b px-5 py-4">
           <Link href="/" onClick={close} aria-label="JP-Services — Accueil" className="flex items-center gap-3">
             <LogoMark className="size-9" />
-            <span className="text-[13px] font-semibold tracking-tight">JP-SERVICES</span>
           </Link>
           <DialogPrimitive.Close asChild>
             <button type="button" aria-label={tc("closeMenu")} className="inline-flex size-10 items-center justify-center rounded-md hover:bg-panel-2">

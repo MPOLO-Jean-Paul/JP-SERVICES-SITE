@@ -97,7 +97,6 @@ export async function SiteFooter() {
         <div className="col-span-2 lg:col-span-1">
           <Link href="/" className="inline-flex items-center gap-3" aria-label="JP-Services — Accueil">
             <LogoMark className="size-9" />
-            <span className="text-[12px] font-semibold tracking-[.1em] text-ink">JP-SERVICES</span>
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-copy">{t("brandText")}</p>
           <p className="mt-4 text-[11px] text-muted font-medium">{s.contact_adresse}</p>

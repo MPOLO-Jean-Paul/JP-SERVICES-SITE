@@ -4,9 +4,11 @@ import { SiteFooter } from "@/components/site/footer";
 import { CookieConsent } from "@/components/site/cookie-consent";
 import { BackToTop } from "@/components/site/back-to-top";
 import { SiteMotion } from "@/components/site/site-motion";
+import { MobileTabBar } from "@/components/site/mobile-tab-bar";
+import { getCurrentUser } from "@/server/auth/session";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
-  const t = await getTranslations("common");
+  const [t, user] = await Promise.all([getTranslations("common"), getCurrentUser().catch(() => null)]);
   return (
     <>
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-white">
@@ -25,6 +27,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <SiteFooter />
       <CookieConsent />
       <BackToTop />
+      <MobileTabBar signedIn={Boolean(user)} />
     </>
   );
 }

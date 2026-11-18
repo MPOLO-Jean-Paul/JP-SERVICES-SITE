@@ -10,6 +10,7 @@ type Result = { type: "formations" | "logiciels" | "actualites" | "posts"; id: n
 const typeIcon = { formations: "school", logiciels: "download", actualites: "newspaper", posts: "forum" } as const;
 
 const PAGES = [
+  { href: "/services", label: "Nos services", icon: "briefcase", keywords: "service application web mobile site internet logiciel monétisation automatisation logo affiche graphisme design encadrement programmation formation informatique devis" },
   { href: "/formations", label: "Formations", icon: "school", keywords: "formation cours compétence apprendre programme" },
   { href: "/formations-en-ligne", label: "Formations en ligne", icon: "videocam", keywords: "distance vidéo web en direct cours" },
   { href: "/logiciels", label: "Logiciels", icon: "download", keywords: "logiciel outil télécharger application numérique" },

@@ -10,6 +10,7 @@ import { listActualites } from "@/server/services/content";
 import { listUpcomingFormations } from "@/server/services/formations";
 import { excerpt, formatDate, formatPrice } from "@/lib/utils";
 import { SITE_URL, jsonLd } from "@/lib/seo";
+import { SERVICES } from "@/lib/services";
 
 export const dynamic = "force-dynamic";
 
@@ -121,6 +122,30 @@ export default async function HomePage() {
               <span className="jp-area-visual jp-area-illustration"><Image src={area.illustration} width={300} height={220} alt="" loading="lazy" unoptimized /></span>
               <MaterialIcon name="north_east" size={21} className="jp-area-arrow" />
             </Link>)}
+          </div>
+        </div>
+      </section>
+
+      <section className="jp-section jp-home-services" aria-labelledby="services-title">
+        <div className="shell">
+          <div className="jp-section-heading">
+            <div><p className="jp-overline">Nos services</p><h2 id="services-title">Ce que nous <em>réalisons pour vous.</em></h2></div>
+            <Link href="/services" className="jp-inline-link">Tous nos services <MaterialIcon name="north_east" size={18} /></Link>
+          </div>
+          <div className="jp-home-services-grid reveal-stagger">
+            {SERVICES.map((service) => (
+              <Link key={service.slug} href={"/services#" + service.slug} className="jp-home-service" data-tone={service.tone}>
+                <span className="jp-service-icon"><service.Icon aria-hidden /></span>
+                <h3>{service.title}</h3>
+                <p>{service.short}</p>
+                <span className="jp-home-service-more">Découvrir <MaterialIcon name="arrow_forward" size={16} /></span>
+              </Link>
+            ))}
+            <Link href="/contact?sujet=Demande%20de%20devis" className="jp-home-service jp-home-service-quote">
+              <h3>Un besoin précis ?</h3>
+              <p>Présentez votre projet : nous vous répondons avec une proposition claire.</p>
+              <span className="jp-home-service-more">Demander un devis <MaterialIcon name="arrow_forward" size={16} /></span>
+            </Link>
           </div>
         </div>
       </section>

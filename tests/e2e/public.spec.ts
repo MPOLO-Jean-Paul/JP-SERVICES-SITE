@@ -602,3 +602,12 @@ test("la fenêtre de recherche est centrée et entièrement visible", async ({ p
   const rightGap = viewport.width - (box!.x + box!.width);
   expect(Math.abs(leftGap - rightGap), "La fenêtre doit être centrée horizontalement").toBeLessThanOrEqual(2);
 });
+
+test("la page des services présente les sept services et pré-remplit la demande", async ({ page }) => {
+  const response = await page.goto("/services");
+  expect(response?.status()).toBe(200);
+  await expect(page.locator(".jp-service-card")).toHaveCount(7);
+  await page.locator("#sites-web").getByRole("link", { name: /Demander ce service/ }).click();
+  await page.waitForURL(/\/contact\?sujet=/);
+  await expect(page.locator("#sujet")).toHaveValue("Sites web professionnels");
+});

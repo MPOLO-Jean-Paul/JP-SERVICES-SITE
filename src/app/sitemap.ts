@@ -8,7 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const statics: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified: now, changeFrequency: "daily", priority: 1 },
-    ...["/formations", "/formations-en-ligne", "/logiciels", "/scolia", "/projets", "/forum", "/actualites", "/partenariat", "/a-propos", "/contact", "/aide", "/solution-digitale", "/produits", "/conditions", "/confidentialite", "/cookies"].map((p) => ({ url: `${SITE_URL}${p}`, lastModified: now, changeFrequency: "weekly" as const, priority: p === "/formations" || p === "/scolia" ? 0.9 : 0.7 })),
+    ...["/services", "/formations", "/formations-en-ligne", "/logiciels", "/scolia", "/projets", "/forum", "/actualites", "/partenariat", "/a-propos", "/contact", "/aide", "/solution-digitale", "/produits", "/conditions", "/confidentialite", "/cookies"].map((p) => ({ url: `${SITE_URL}${p}`, lastModified: now, changeFrequency: "weekly" as const, priority: p === "/formations" || p === "/scolia" || p === "/services" ? 0.9 : 0.7 })),
   ];
   try {
     const [formations, actualites, posts] = await Promise.all([

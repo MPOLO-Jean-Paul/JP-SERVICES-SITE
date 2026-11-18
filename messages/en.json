@@ -55,7 +55,7 @@
     "programText": "Plan your modules and learning days.",
     "support": "Get support",
     "supportText": "Read the answers and contact the JP-Services team.",
-    "services": "Services & community",
+    "services": "Services",
     "servicesIntro": "From idea to a clear solution.",
     "servicesText": "JP-Services combines digital support, practical information and community exchange.",
     "talkNeed": "Tell us about your need",
@@ -130,7 +130,8 @@
     "learn": "Learn",
     "resources": "Resources",
     "exploreSection": "Explore",
-    "location": "Lubumbashi · Democratic Republic of the Congo"
+    "location": "Lubumbashi · Democratic Republic of the Congo",
+    "ourServices": "Our services"
   },
   "footer": {
     "ctaTitle": "Ready to start?",

@@ -36,6 +36,7 @@ export async function SiteFooter() {
     {
       title: t("servicesCol"),
       links: [
+        { href: "/services", label: tn("ourServices") },
         { href: "/projets", label: tn("projects") },
         { href: "/forum", label: tn("forum") },
         { href: "/actualites", label: tn("news") },

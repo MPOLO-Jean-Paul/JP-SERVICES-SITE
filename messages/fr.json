@@ -55,7 +55,7 @@
     "programText": "Planifiez vos modules et vos jours d’apprentissage.",
     "support": "Être accompagné",
     "supportText": "Consultez les réponses et contactez l’équipe JP-Services.",
-    "services": "Services et communauté",
+    "services": "Services",
     "servicesIntro": "De l’idée à une solution claire.",
     "servicesText": "JP-Services réunit accompagnement digital, informations pratiques et échanges communautaires.",
     "talkNeed": "Parler de votre besoin",
@@ -130,7 +130,8 @@
     "learn": "Apprendre",
     "resources": "Ressources",
     "exploreSection": "Explorer",
-    "location": "Lubumbashi · République démocratique du Congo"
+    "location": "Lubumbashi · République démocratique du Congo",
+    "ourServices": "Nos services"
   },
   "footer": {
     "ctaTitle": "Prêt à commencer ?",

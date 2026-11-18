@@ -29,6 +29,7 @@ export function DesktopNav({ user }: { user: Props["user"] }) {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const links = [
+    { href: "/services", label: t("services") },
     { href: "/formations", label: t("formations") },
     { href: "/formations-en-ligne", label: t("live") },
     { href: "/logiciels", label: t("software") },
@@ -174,6 +175,7 @@ export function MobileDrawer({ user, logoutAction, preview = false }: Props) {
       { href: "/aide", title: t("help") },
     ] },
     { label: t("exploreSection"), links: [
+      { href: "/services", title: t("ourServices") },
       { href: "/projets", title: t("projects") },
       { href: "/actualites", title: t("news") },
       { href: "/forum", title: t("forum") },

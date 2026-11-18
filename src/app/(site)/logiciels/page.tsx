@@ -34,7 +34,7 @@ export default async function LogicielsPage() {
             <Link href="/scolia" className={buttonVariants({ variant: "outline", size: "lg" })}>Découvrir SCOLIA Pro</Link>
           </>
         }
-        aside={<div className="jp-directory-guide" aria-label="Choisir un logiciel"><span>LE RÉPERTOIRE</span><p>Avant une installation, consultez la plateforme, la version et les conditions d’utilisation.</p>{["Identifier votre besoin","Vérifier la fiche du logiciel","Accéder à la ressource"].map((item,i)=><div key={item} className="jp-directory-guide-row"><small>{String(i+1).padStart(2,"0")}</small><strong>{item}</strong></div>)}</div>}
+        aside={<div className="jp-directory-guide" aria-label="Choisir un logiciel"><span>Le répertoire</span><p>Avant une installation, consultez la plateforme, la version et les conditions d’utilisation.</p>{["Identifier votre besoin","Vérifier la fiche du logiciel","Accéder à la ressource"].map((item,i)=><div key={item} className="jp-directory-guide-row"><small>{String(i+1).padStart(2,"0")}</small><strong>{item}</strong></div>)}</div>}
       >
         {items.length ? <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
           {[[items.length, "logiciels"], [chips.length, "catégories"], [total, "téléchargements"]].map(([n, l]) => (

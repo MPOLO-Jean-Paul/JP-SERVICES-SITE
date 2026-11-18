@@ -32,40 +32,40 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
     <section className="jp-contact-section">
       <div className="shell jp-contact-layout">
         <div className="jp-contact-main">
-          <p className="jp-overline">01 / VOTRE DEMANDE</p>
+          <p className="jp-overline">Votre demande</p>
           <h2>Écrivez-nous.</h2>
           <p>Indiquez votre sujet et les informations utiles pour que nous puissions comprendre votre demande.</p>
           <div className="jp-contact-form"><ContactForm initialSubject={subject}/></div>
         </div>
         <aside className="jp-contact-aside" aria-labelledby="contact-coordinates">
-          <p className="jp-overline">02 / NOUS JOINDRE</p>
+          <p className="jp-overline">Nous joindre</p>
           <h2 id="contact-coordinates">Les coordonnées.</h2>
           <p>JP-SERVICES est basé à Lubumbashi, en République démocratique du Congo.</p>
           <div className="jp-contact-lines">
             {email && <a href={"mailto:" + email} className="jp-contact-line">
               <Mail size={19} aria-hidden="true"/>
-              <span><small>ADRESSE E-MAIL</small><strong>{email}</strong></span>
+              <span><small>Adresse e-mail</small><strong>{email}</strong></span>
               <ArrowUpRight size={16} aria-hidden="true"/>
             </a>}
             {phone && <a href={"tel:" + phone.replace(/\s+/g, "")} className="jp-contact-line">
               <Phone size={19} aria-hidden="true"/>
-              <span><small>TÉLÉPHONE</small><strong>{phone}</strong></span>
+              <span><small>Téléphone</small><strong>{phone}</strong></span>
               <ArrowUpRight size={16} aria-hidden="true"/>
             </a>}
             {whatsapp && <a href={"https://wa.me/" + whatsapp} target="_blank" rel="noopener noreferrer" className="jp-contact-line">
               <WhatsApp className="size-[19px]" />
-              <span><small>MESSAGERIE</small><strong>Écrire sur WhatsApp</strong></span>
+              <span><small>Messagerie</small><strong>Écrire sur WhatsApp</strong></span>
               <ArrowUpRight size={16} aria-hidden="true"/>
             </a>}
             <div className="jp-contact-line jp-contact-address">
               <MapPin size={19} aria-hidden="true"/>
-              <span><small>LOCALISATION</small><strong>{location || "Lubumbashi, RDC"}</strong></span>
+              <span><small>Localisation</small><strong>{location || "Lubumbashi, RDC"}</strong></span>
             </div>
           </div>
           <div className="jp-contact-note">
-            <span>UNE DEMANDE BIEN PRÉPARÉE</span>
+            <span>Une demande bien préparée</span>
             <p>Précisez le contexte, le résultat recherché et les contraintes importantes. Cela facilite un échange concret.</p>
-            <Link href="/a-propos" className="jp-hit">Découvrir JP-SERVICES <ArrowUpRight size={16}/></Link>
+            <Link href="/a-propos" className="jp-hit">Découvrir JP-Services <ArrowUpRight size={16}/></Link>
           </div>
         </aside>
       </div>

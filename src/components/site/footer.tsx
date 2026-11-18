@@ -71,7 +71,7 @@ export async function SiteFooter() {
       <div className="shell">
         <div className="jp-footer-intro grid gap-12 border-b py-14 sm:py-16 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
           <div className="relative">
-            <p className="jp-overline">RESTONS EN CONTACT</p>
+            <p className="jp-overline">Restons en contact</p>
             <h2 className="jp-footer-title mt-5 max-w-xl">{preview ? (locale === "en" ? "Let’s talk about your project." : "Parlons de votre projet.") : t("ctaTitle")}</h2>
             <p className="mt-4 max-w-lg text-sm leading-7 text-copy">{preview ? (locale === "en" ? "Explore our services and tell us what you want to build or learn." : "Découvrez nos services et présentez-nous ce que vous souhaitez apprendre ou réaliser.") : t("ctaText")}</p>
             <div className="mt-7 flex flex-wrap gap-3">

@@ -86,3 +86,65 @@ a, button, [role="button"], summary { -webkit-tap-highlight-color: transparent; 
 .jp-field-has-error > .hint { display: none; }
 [aria-invalid="true"].field, [aria-invalid="true"] .field, .field[aria-invalid="true"] { border-color: var(--color-danger, #c4291c) !important; box-shadow: 0 0 0 3px rgb(196 41 28 / 0.12) !important; }
 @keyframes jp-error-in { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+
+/* ── Indicateur de chargement entre deux pages ── */
+.jp-nav-progress { position: fixed; inset: 0 0 auto 0; z-index: 70; height: 3px; pointer-events: none; opacity: 0; transition: opacity 0.3s ease 0.1s; }
+.jp-nav-progress > span { display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(0); background: linear-gradient(90deg, #ff4d3d, #7b4dff 45%, #2f5bff); box-shadow: 0 0 10px rgb(47 91 255 / 0.45); border-radius: 0 3px 3px 0; }
+.jp-nav-progress[data-state="loading"] { opacity: 1; transition: opacity 0.15s ease; }
+.jp-nav-progress[data-state="loading"] > span { animation: jp-progress-run 8s cubic-bezier(0.08, 0.8, 0.2, 1) forwards; }
+.jp-nav-progress[data-state="done"] { opacity: 0; }
+.jp-nav-progress[data-state="done"] > span { transform: scaleX(1); transition: transform 0.25s ease-out; }
+@keyframes jp-progress-run { 0% { transform: scaleX(0); } 20% { transform: scaleX(0.45); } 60% { transform: scaleX(0.75); } 100% { transform: scaleX(0.92); } }
+/* Pendant le chargement, le curseur indique l’attente */
+html:has(.jp-nav-progress[data-state="loading"]) body { cursor: progress; }
+@media (prefers-reduced-motion: reduce) {
+  .jp-nav-progress[data-state="loading"] > span { animation: none; transform: scaleX(0.6); }
+}
+
+/* ── Fenêtres : ouverture et fermeture fluides (dialogues, recherche, menu mobile, menus) ──
+   Propriétés de transformation individuelles (translate/scale) : elles se cumulent avec
+   le centrage existant sans le perturber. */
+.jp-scrim[data-state="open"] { animation: jp-scrim-in 0.22s ease both; }
+.jp-scrim[data-state="closed"] { animation: jp-scrim-out 0.18s ease both; }
+.jp-window[data-state="open"] { animation: jp-window-in 0.26s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.jp-window[data-state="closed"] { animation: jp-window-out 0.16s cubic-bezier(0.4, 0, 1, 1) both; }
+.jp-drawer[data-state="open"] { animation: jp-drawer-in 0.34s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.jp-drawer[data-state="closed"] { animation: jp-drawer-out 0.22s cubic-bezier(0.4, 0, 1, 1) both; }
+/* Menus déroulants : animation d’origine (fiable avec la bibliothèque Radix lors des rafraîchissements). */
+@keyframes jp-scrim-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes jp-scrim-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes jp-window-in { from { opacity: 0; translate: 0 10px; scale: 0.98; } to { opacity: 1; translate: 0 0; scale: 1; } }
+@keyframes jp-window-out { from { opacity: 1; scale: 1; } to { opacity: 0; translate: 0 6px; scale: 0.985; } }
+@keyframes jp-drawer-in { from { translate: -100% 0; } to { translate: 0 0; } }
+@keyframes jp-drawer-out { from { translate: 0 0; } to { translate: -100% 0; } }
+/* Liens du menu mobile : apparition en cascade à l’ouverture */
+.jp-drawer[data-state="open"] nav a, .jp-drawer[data-state="open"] nav li { animation: jp-drawer-item 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.jp-drawer[data-state="open"] nav li:nth-child(2), .jp-drawer[data-state="open"] nav a:nth-child(2) { animation-delay: 30ms; }
+.jp-drawer[data-state="open"] nav li:nth-child(3), .jp-drawer[data-state="open"] nav a:nth-child(3) { animation-delay: 60ms; }
+.jp-drawer[data-state="open"] nav li:nth-child(4), .jp-drawer[data-state="open"] nav a:nth-child(4) { animation-delay: 90ms; }
+.jp-drawer[data-state="open"] nav li:nth-child(n + 5), .jp-drawer[data-state="open"] nav a:nth-child(n + 5) { animation-delay: 120ms; }
+@keyframes jp-drawer-item { from { opacity: 0; translate: -10px 0; } to { opacity: 1; translate: 0 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .jp-scrim, .jp-window, .jp-drawer, .jp-drawer nav a, .jp-drawer nav li { animation-duration: 1ms !important; animation-delay: 0ms !important; }
+}
+
+/* ── Ton plus humain : étiquettes en casse normale, police du texte, couleur douce ── */
+.jp-overline {
+  text-transform: none;
+  letter-spacing: 0;
+  font: 600 13.5px/1.5 var(--font-sans);
+  gap: 10px;
+  color: var(--primary);
+}
+.jp-overline-mark { width: 8px; height: 8px; border-radius: 999px; }
+.jp-overline-separator { color: var(--muted); opacity: 0.6; }
+.jp-guide-label, .jp-area-kicker, .jp-course-domain, .jp-promo-label, .jp-story-topic,
+.jp-scolia-index-top span, .jp-scolia-index-bottom span, .jp-scolia-status, .jp-contact-card small, small {
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+  font-family: var(--font-sans) !important;
+}
+.jp-area-kicker, .jp-course-domain, .jp-promo-label, .jp-story-topic { font-size: 12.5px !important; font-weight: 600 !important; }
+.jp-scolia-index-top span, .jp-scolia-index-bottom span { font-size: 12px !important; }
+/* Titres de groupes du menu mobile et des méga-menus */
+.jp-drawer .uppercase, #site-header .uppercase { text-transform: none; letter-spacing: 0.01em; font-size: 12.5px; }

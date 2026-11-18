@@ -15,17 +15,17 @@ export const dynamic = "force-dynamic";
 
 const areas = [
   {
-    number: "01", name: "Formations numériques", label: "APPRENDRE",
+    number: "01", name: "Formations numériques", label: "Apprendre",
     description: "Des contenus organisés par compétences, des exercices et un parcours à construire étape par étape.",
     href: "/formations", illustration: "/illustrations/domaine-formations.svg",
   },
   {
-    number: "02", name: "Logiciels & outils", label: "UTILISER",
+    number: "02", name: "Logiciels & outils", label: "Utiliser",
     description: "Retrouvez les ressources numériques publiées et les outils utiles à votre activité.",
     href: "/logiciels", illustration: "/illustrations/domaine-logiciels.svg",
   },
   {
-    number: "03", name: "Solutions & projets", label: "RÉALISER",
+    number: "03", name: "Solutions & projets", label: "Réaliser",
     description: "Des solutions pensées pour les besoins des organisations, de l'idée à sa mise en œuvre.",
     href: "/projets", illustration: "/illustrations/domaine-projets.svg",
   },
@@ -70,7 +70,7 @@ export default async function HomePage() {
       <section className="jp-hero" aria-labelledby="home-title">
         <div className="shell jp-hero-layout">
           <div className="jp-hero-main">
-            <p className="jp-overline"><span className="jp-overline-mark" /> FORMATIONS <span className="jp-overline-separator">/</span> LOGICIELS <span className="jp-overline-separator">/</span> PROJETS</p>
+            <p className="jp-overline"><span className="jp-overline-mark" /> Formations <span className="jp-overline-separator">·</span> Logiciels <span className="jp-overline-separator">·</span> Projets</p>
             <h1 id="home-title">Le numérique <span>en action.</span></h1>
             <p className="jp-hero-lead">Formations pratiques, logiciels et solutions numériques pour apprendre, créer et concrétiser vos projets.</p>
             <div className="jp-hero-actions">
@@ -109,7 +109,7 @@ export default async function HomePage() {
       <section className="jp-section jp-areas" aria-labelledby="areas-title">
         <div className="shell jp-areas-layout">
           <div className="jp-sticky-intro">
-            <p className="jp-overline">01 / NOS DOMAINES</p>
+            <p className="jp-overline">Nos domaines</p>
             <h2 id="areas-title">Un savoir-faire, <em>plusieurs solutions.</em></h2>
             <p>Chaque besoin a son propre parcours. Choisissez une direction et accédez directement aux contenus correspondants.</p>
             <PathFinder />
@@ -128,7 +128,7 @@ export default async function HomePage() {
       <section className="jp-section jp-learning" aria-labelledby="learning-title">
         <div className="shell">
           <div className="jp-section-heading">
-            <div><p className="jp-overline">02 / SE FORMER</p><h2 id="learning-title">Les prochaines <em>formations.</em></h2></div>
+            <div><p className="jp-overline">Se former</p><h2 id="learning-title">Les prochaines <em>formations.</em></h2></div>
             <Link href="/formations" className="jp-inline-link">Consulter le catalogue <MaterialIcon name="north_east" size={18} /></Link>
           </div>
           {formations.length ? <div className="jp-course-list">
@@ -157,7 +157,7 @@ export default async function HomePage() {
       <section className="jp-section jp-method" aria-labelledby="method-title">
         <div className="shell">
           <div className="jp-section-heading">
-            <div><p className="jp-overline">03 / NOTRE APPROCHE</p><h2 id="method-title">Apprendre <em>par la pratique.</em></h2></div>
+            <div><p className="jp-overline">Notre approche</p><h2 id="method-title">Apprendre <em>par la pratique.</em></h2></div>
             <p className="jp-section-aside">Une méthode simple pour garder le cap : comprendre un problème, travailler concrètement et mesurer la progression.</p>
           </div>
           <div className="jp-method-grid">{method.map(step=><div key={step.number} className="jp-method-step">
@@ -170,7 +170,7 @@ export default async function HomePage() {
       <section className="jp-scolia-section" aria-labelledby="scolia-title">
         <div className="shell jp-scolia-grid">
           <div className="jp-scolia-main">
-            <p className="jp-overline">04 / LOGICIEL MÉTIER <span className="jp-scolia-status">EN DÉVELOPPEMENT</span></p>
+            <p className="jp-overline">Logiciel métier <span className="jp-scolia-status">En développement</span></p>
             <h2 id="scolia-title">SCOLIA Pro. <em>La gestion scolaire simplifiée.</em></h2>
             <p>Un projet logiciel conçu autour des opérations quotidiennes des établissements : suivi des apprenants, encaissements, organisation de la scolarité et pilotage des informations.</p>
             <div className="jp-scolia-actions">
@@ -182,11 +182,11 @@ export default async function HomePage() {
             <figure className="jp-scolia-photo jp-scolia-illustration">
               <Image src="/illustrations/scolia-gestion.svg" width={560} height={340} alt="Illustration de SCOLIA Pro : un établissement scolaire, son tableau de bord et un reçu de paiement" loading="lazy" unoptimized />
             </figure>
-            <div className="jp-scolia-index-top"><span>SCOLIA / DOMAINES</span><span>VERSION EN CONSTRUCTION</span></div>
+            <div className="jp-scolia-index-top"><span>Domaines couverts</span><span>Version en construction</span></div>
             {["Gestion des apprenants","Finances & encaissements","Scolarité & évaluations","Rapports & administration"].map((name,i)=><div key={name} className="jp-scolia-index-row">
               <span>{String(i+1).padStart(2,"0")}</span><strong>{name}</strong><MaterialIcon name="check" size={17} />
             </div>)}
-            <div className="jp-scolia-index-bottom"><span>UN ÉTABLISSEMENT, UNE VUE D&apos;ENSEMBLE</span><span>SUIVI CENTRALISÉ</span></div>
+            <div className="jp-scolia-index-bottom"><span>Un établissement, une vue d&apos;ensemble</span><span>Suivi centralisé</span></div>
           </div>
         </div>
       </section>
@@ -195,7 +195,7 @@ export default async function HomePage() {
 
       {actualites.length > 0 ? <section className="jp-section jp-news" aria-labelledby="news-title">
         <div className="shell">
-          <div className="jp-section-heading"><div><p className="jp-overline">05 / JOURNAL</p><h2 id="news-title">Les dernières <em>publications.</em></h2></div>
+          <div className="jp-section-heading"><div><p className="jp-overline">Journal</p><h2 id="news-title">Les dernières <em>publications.</em></h2></div>
             <Link href="/actualites" className="jp-inline-link">Toutes les actualités <MaterialIcon name="north_east" size={18} /></Link>
           </div>
           <div className="jp-news-list">{actualites.map(a=><Link key={a.id} href={"/actualites/"+a.id} className="jp-news-row">
@@ -207,7 +207,7 @@ export default async function HomePage() {
 
       <section className="jp-finale" aria-labelledby="finale-title">
         <div className="shell jp-finale-layout">
-          <div><p className="jp-overline">PARLONS DE VOTRE PROCHAINE ÉTAPE</p><h2 id="finale-title">Un projet ? <em>Parlons-en.</em></h2></div>
+          <div><p className="jp-overline">Parlons de votre prochaine étape</p><h2 id="finale-title">Un projet ? <em>Parlons-en.</em></h2></div>
           <Link href="/contact" className="jp-finale-link">Nous contacter <MaterialIcon name="north_east" size={22} /></Link>
         </div>
       </section>

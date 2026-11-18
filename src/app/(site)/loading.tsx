@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 export default function Loading() {
   return (
-    <div className="shell py-16">
+    <div data-jp-loading aria-busy="true" className="shell py-16">
       <Skeleton className="h-8 w-1/3" />
       <Skeleton className="mt-4 h-4 w-2/3" />
       <div className="mt-10 grid gap-6 md:grid-cols-3">

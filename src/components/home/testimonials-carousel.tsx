@@ -41,7 +41,7 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Published
       <div className="shell">
         <div className="jp-section-heading jp-stories-heading">
           <div>
-            <p className="jp-overline">PAROLES ET EXPÉRIENCES</p>
+            <p className="jp-overline">Paroles et expériences</p>
             <h2 id="jp-stories-heading">{hasTestimonials ? "Ce que vous " : "Vos expériences "}
               <em>{hasTestimonials ? "en dites." : "comptent."}</em></h2>
           </div>
@@ -64,7 +64,7 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Published
                   width={200} height={200} alt="" unoptimized loading="lazy" />
                 {hasTestimonials ? (
                   <>
-                    <p className="jp-story-topic">TÉMOIGNAGE / {String(index + 1).padStart(2, "0")}</p>
+                    <p className="jp-story-topic">Témoignage {index + 1}</p>
                     <blockquote className="jp-story-quote">« {(item as PublishedTestimonial).quote} »</blockquote>
                     <p className="jp-story-author"><strong>{(item as PublishedTestimonial).name}</strong>
                       {(item as PublishedTestimonial).role ? <span>{(item as PublishedTestimonial).role}</span> : null}
@@ -72,7 +72,7 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Published
                   </>
                 ) : (
                   <>
-                    <p className="jp-story-topic">VOS RETOURS / {(item as typeof prompts[number]).topic.toUpperCase()}</p>
+                    <p className="jp-story-topic">Vos retours · {(item as typeof prompts[number]).topic}</p>
                     <h3>{(item as typeof prompts[number]).title}</h3>
                     <p className="jp-story-prompt">{(item as typeof prompts[number]).text}</p>
                     <p className="jp-story-note">Aucune citation fictive n’est publiée.</p>

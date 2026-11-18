@@ -69,6 +69,7 @@ export function SearchDialog({ open, onOpenChange: setOpen }: { open: boolean; o
   const go = useCallback(
     (href: string) => {
       setOpen(false);
+      window.dispatchEvent(new Event("jp:navigation-start"));
       router.push(href);
     },
     [router, setOpen],
@@ -81,8 +82,8 @@ export function SearchDialog({ open, onOpenChange: setOpen }: { open: boolean; o
   return (
     <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/55 backdrop-blur-sm data-[state=open]:animate-fade-in" />
-        <DialogPrimitive.Content className="fixed left-1/2 top-[8vh] z-50 w-[calc(100%-1.5rem)] max-w-2xl -translate-x-1/2 overflow-hidden rounded-xl border bg-panel shadow-lg focus:outline-none data-[state=open]:animate-fade-up">
+        <DialogPrimitive.Overlay className="jp-scrim fixed inset-0 z-50 bg-black/55 backdrop-blur-sm" />
+        <DialogPrimitive.Content className="fixed left-1/2 top-[8vh] z-50 w-[calc(100%-1.5rem)] max-w-2xl -translate-x-1/2 overflow-hidden rounded-xl border bg-panel shadow-lg jp-window focus:outline-none">
           <DialogPrimitive.Title className="sr-only">{tn("searchLabel")}</DialogPrimitive.Title>
           <DialogPrimitive.Description className="sr-only">{t("hint")}</DialogPrimitive.Description>
           <Command shouldFilter={false} label={tn("searchLabel")}>

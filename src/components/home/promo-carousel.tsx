@@ -8,7 +8,7 @@ import { useRotatingGallery } from "./use-rotating-gallery";
 const INTERVAL_MS = 7200;
 const posters = [
   {
-    label: "FORMATIONS / JP-SERVICES",
+    label: "Formations",
     kicker: "01 — Apprendre",
     title: "Des compétences pour passer à l’action.",
     text: "Des parcours pratiques et des projets concrets pour progresser dans le numérique.",
@@ -18,7 +18,7 @@ const posters = [
     alt: "Illustration d’une apprenante qui suit sa formation sur ordinateur",
   },
   {
-    label: "LOGICIELS / JP-SERVICES",
+    label: "Logiciels",
     kicker: "02 — Utiliser",
     title: "Les bons outils. Au bon endroit.",
     text: "Logiciels et ressources numériques pour simplifier le quotidien et gagner en efficacité.",
@@ -28,7 +28,7 @@ const posters = [
     alt: "Illustration d’une séance en visioconférence avec un formateur",
   },
   {
-    label: "SOLUTIONS / JP-SERVICES",
+    label: "Solutions",
     kicker: "03 — Construire",
     title: "Des idées qui deviennent des solutions.",
     text: "De la première idée à un outil adapté, donnons une forme concrète à vos projets.",
@@ -46,7 +46,7 @@ export function PromoCarousel() {
       <div className="shell">
         <div className="jp-campaign-heading jp-section-heading">
           <div>
-            <p className="jp-overline">À LA UNE / JP-SERVICES</p>
+            <p className="jp-overline">À la une</p>
             <h2 id="jp-campaign-heading">Le numérique, <em>en mouvement.</em></h2>
           </div>
           <p className="jp-section-aside">Trois façons d’apprendre, d’utiliser et de construire avec nos services.</p>

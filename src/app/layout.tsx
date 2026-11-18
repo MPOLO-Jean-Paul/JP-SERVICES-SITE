@@ -2,7 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
+import { Suspense } from "react";
 import { Providers } from "@/components/providers";
+import { NavigationProgress } from "@/components/site/navigation-progress";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 import "./senior-ui.css";
@@ -52,6 +54,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={locale} suppressHydrationWarning className={`${geist.variable} ${geistMono.variable}`}>
       <body className="min-h-dvh flex flex-col">
+        <Suspense fallback={null}><NavigationProgress /></Suspense>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>
             {children}

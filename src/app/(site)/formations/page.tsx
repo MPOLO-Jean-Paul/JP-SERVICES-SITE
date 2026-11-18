@@ -59,7 +59,7 @@ export default async function FormationsPage() {
         }
         aside={
           <div className="jp-directory-guide" aria-label="Étapes pour choisir une formation">
-            <span>VOTRE PARCOURS</span>
+            <span>Votre parcours</span>
             <p>Une bonne formation commence par un besoin clairement identifié.</p>
             {["Définir votre objectif","Lire les informations publiées","Demander les précisions utiles"].map((item,i)=>
               <div className="jp-directory-guide-row" key={item}><small>{String(i+1).padStart(2,"0")}</small><strong>{item}</strong></div>

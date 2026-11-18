@@ -10,9 +10,9 @@ export const DialogClose = DialogPrimitive.Close;
 export function DialogContent({ className, children, title, description, ...props }: React.ComponentProps<typeof DialogPrimitive.Content> & { title: string; description?: string }) {
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/55 backdrop-blur-sm data-[state=open]:animate-fade-in" />
+      <DialogPrimitive.Overlay className="jp-scrim fixed inset-0 z-50 bg-black/55 backdrop-blur-sm" />
       <DialogPrimitive.Content
-        className={cn("fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-xl border bg-panel p-6 shadow-lg focus:outline-none data-[state=open]:animate-fade-up", className)}
+        className={cn("fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-xl border bg-panel p-6 shadow-lg jp-window focus:outline-none", className)}
         {...props}
       >
         <DialogPrimitive.Title className="h3 pr-8">{title}</DialogPrimitive.Title>

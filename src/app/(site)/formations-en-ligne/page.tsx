@@ -28,7 +28,7 @@ export default async function LivePage() {
             <Link href="/formations" className={buttonVariants({ variant: "outline", size: "lg" })}>Catalogue des formations</Link>
           </>
         }
-        aside={<div className="jp-directory-guide"><span>PARTICIPER À UNE SESSION</span><p>Les prochaines dates sont publiées dans le calendrier ci-dessous.</p>{["Consulter les dates disponibles","Vérifier les conditions d’accès","Ouvrir votre session"].map((step,i)=><div className="jp-directory-guide-row" key={step}><small>{String(i+1).padStart(2,"0")}</small><strong>{step}</strong></div>)}</div>}
+        aside={<div className="jp-directory-guide"><span>Participer à une session</span><p>Les prochaines dates sont publiées dans le calendrier ci-dessous.</p>{["Consulter les dates disponibles","Vérifier les conditions d’accès","Ouvrir votre session"].map((step,i)=><div className="jp-directory-guide-row" key={step}><small>{String(i+1).padStart(2,"0")}</small><strong>{step}</strong></div>)}</div>}
       />
 
       <section className="section" id="sessions">

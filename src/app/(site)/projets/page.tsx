@@ -32,7 +32,7 @@ export default async function ProjetsPage() {
             <a href="#realisations" className={buttonVariants({ variant: "outline", size: "lg" })}>Voir les réalisations</a>
           </>
         }
-        aside={<div className="jp-directory-guide"><span>VOTRE DÉMARCHE</span><p>Un projet se construit autour d’un problème concret.</p>{["Présenter le contexte","Décrire les objectifs","Échanger sur la faisabilité"].map((step,i)=><div className="jp-directory-guide-row" key={step}><small>{String(i+1).padStart(2,"0")}</small><strong>{step}</strong></div>)}</div>}
+        aside={<div className="jp-directory-guide"><span>Votre démarche</span><p>Un projet se construit autour d’un problème concret.</p>{["Présenter le contexte","Décrire les objectifs","Échanger sur la faisabilité"].map((step,i)=><div className="jp-directory-guide-row" key={step}><small>{String(i+1).padStart(2,"0")}</small><strong>{step}</strong></div>)}</div>}
       >
         
       </PageHero>

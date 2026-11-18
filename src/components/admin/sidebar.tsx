@@ -61,7 +61,7 @@ export function AdminSidebar({ user, logoutAction }: { user: { displayName: stri
           <Link href="/admin" className="min-w-0 truncate text-sm font-semibold">Console d’administration</Link>
         </header>
         <DialogPrimitive.Portal>
-          <DialogPrimitive.Overlay className="fixed inset-0 z-[100] bg-[#091426]/60 backdrop-blur-[2px] lg:hidden" />
+          <DialogPrimitive.Overlay className="jp-scrim fixed inset-0 z-[100] bg-[#091426]/60 backdrop-blur-[2px] lg:hidden" />
           <DialogPrimitive.Content id="jp-admin-mobile-menu"
             className="fixed inset-y-0 left-0 z-[101] w-[min(330px,92vw)] overflow-hidden border-r bg-panel shadow-xl outline-none lg:hidden">
             <DialogPrimitive.Title className="sr-only">Menu d’administration</DialogPrimitive.Title>

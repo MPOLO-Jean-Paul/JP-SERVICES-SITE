@@ -201,9 +201,9 @@ export function MobileDrawer({ user, logoutAction, preview = false }: Props) {
     {/* Portal indispensable : le backdrop-filter de l'en-tête est un contenant
         pour position:fixed, ce qui tronquait auparavant le tiroir mobile. */}
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-[110] bg-[#0e1829]/65 data-[state=open]:animate-fade-in xl:hidden" />
+      <DialogPrimitive.Overlay className="jp-scrim fixed inset-0 z-[110] bg-[#0e1829]/65 xl:hidden" />
       <DialogPrimitive.Content id="mobile-drawer" aria-describedby="mobile-drawer-description"
-        className="fixed inset-y-0 left-0 z-[111] flex w-[min(360px,92vw)] max-w-full flex-col overflow-hidden border-r bg-panel shadow-lg outline-none data-[state=open]:animate-slide-in-left xl:hidden">
+        className="fixed inset-y-0 left-0 z-[111] flex w-[min(360px,92vw)] max-w-full flex-col overflow-hidden border-r bg-panel shadow-lg outline-none jp-drawer xl:hidden">
         <DialogPrimitive.Title className="sr-only">{tc("openMenu")}</DialogPrimitive.Title>
         <DialogPrimitive.Description id="mobile-drawer-description" className="sr-only">Choisissez une rubrique de JP-Services.</DialogPrimitive.Description>
         <div className="flex shrink-0 items-center justify-between border-b px-5 py-4">

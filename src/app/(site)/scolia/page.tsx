@@ -23,17 +23,17 @@ export default function ScoliaPage() {
       <section className="jp-product-hero" aria-labelledby="scolia-hero-title">
         <div className="shell jp-product-hero-layout">
           <div className="jp-product-hero-copy">
-            <p className="jp-overline"><span className="jp-overline-mark"/> LOGICIEL MÉTIER / JP-SERVICES</p>
+            <p className="jp-overline"><span className="jp-overline-mark"/> Logiciel métier JP-Services</p>
             <h1 id="scolia-hero-title">SCOLIA Pro.<br/><span>La gestion scolaire, en un seul espace.</span></h1>
             <p className="jp-product-hero-lead">Un projet logiciel conçu pour faciliter le travail des établissements : administration, scolarité, suivi financier et organisation des informations.</p>
-            <span className="jp-product-stage">PROJET EN ÉVOLUTION — MODALITÉS SUR DEMANDE</span>
+            <span className="jp-product-stage">Projet en évolution — modalités sur demande</span>
             <div className="jp-directory-actions">
               <Link href="/contact?sujet=SCOLIA%20Pro" className="jp-action jp-action-primary">Demander des informations <ArrowUpRight size={18}/></Link>
               <Link href="/logiciels" className="jp-action jp-action-text">Explorer les logiciels <ArrowRight size={17}/></Link>
             </div>
           </div>
           <aside className="jp-product-aside" aria-label="Principaux domaines du projet">
-            <span>SCOLIA / DOMAINES FONCTIONNELS</span>
+            <span>Domaines fonctionnels</span>
             {["Gestion des apprenants","Finances et encaissements","Scolarité et suivi","Administration et rapports"].map((name,i)=>
               <div key={name}><small>{String(i+1).padStart(2,"0")}</small><strong>{name}</strong></div>
             )}

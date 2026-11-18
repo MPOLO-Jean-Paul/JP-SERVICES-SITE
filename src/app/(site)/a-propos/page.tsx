@@ -10,6 +10,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { listEquipe } from "@/server/services/content";
 import { getHomeStats } from "@/server/services/content";
 import { pageMetadata } from "@/lib/seo";
+import { CtaBand } from "@/components/site/cta-band";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = pageMetadata({ title: "À propos", description: "JP-Services : l’excellence numérique à votre portée. Notre mission, nos valeurs et l’équipe qui accompagne la formation et la transformation digitale à Lubumbashi.", path: "/a-propos" });
@@ -24,13 +25,13 @@ export default async function AProposPage() {
   const shown = stats ? ([[stats.formations, "formations", 5], [stats.membres, "membres", 50], [stats.logiciels, "logiciels", 5]] as const).filter(([n, , min]) => n >= min).map(([n, l]) => [n, l] as const) : [];
   return (
     <>
-      <PageHeader illustration="/illustrations/a-propos-equipe.svg" title="À propos de JP-Services" icon={Users} text="L’excellence numérique à votre portée. Nous transformons les idées en projets concrets et les projets en résultats." />
+      <PageHeader illustration="/illustrations/a-propos-equipe.svg" tone="violet" title="À propos de JP-Services" icon={Users} text="L’excellence numérique à votre portée. Nous transformons les idées en projets concrets et les projets en résultats." />
       <section className="section">
         <div className="shell grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>
             <span className="eyebrow">Qui sommes-nous ?</span>
             <h2 className="h1 mt-3">Ensemble pour une jeunesse rénovée.</h2>
-            <p className="lead jp-justify mt-5">JP-Services est une structure de formation et de services digitaux basée à Lubumbashi. Nous rendons les compétences numériques accessibles et nous accompagnons les organisations dans leur transformation : formations pratiques, logiciels métiers comme SCOLIA Pro, projets digitaux et communauté d’entraide.</p>
+            <p className="lead mt-5">JP-Services est une structure de formation et de services digitaux basée à Lubumbashi. Nous rendons les compétences numériques accessibles et nous accompagnons les organisations dans leur transformation : formations pratiques, logiciels métiers comme SCOLIA Pro, projets digitaux et communauté d’entraide.</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/formations" className={buttonVariants({ variant: "dark", size: "lg" })}>Découvrir nos formations <ArrowRight /></Link>
               <Link href="/contact" className={buttonVariants({ variant: "outline", size: "lg" })}>Nous contacter</Link>
@@ -129,6 +130,7 @@ export default async function AProposPage() {
           )}
         </div>
       </section>
+      <CtaBand title="Travaillons ensemble." text="Formation, application, site ou logiciel : parlons de votre projet et de la meilleure façon de le mener." href="/contact" label="Nous contacter" secondary={{ href: "/services", label: "Nos services" }} />
     </>
   );
 }

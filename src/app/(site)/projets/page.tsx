@@ -11,6 +11,7 @@ import { excerpt, formatDate } from "@/lib/utils";
 import { pageMetadata } from "@/lib/seo";
 import { PROJECT_STATUS } from "@/lib/constants";
 import { ProjectForm } from "./project-form";
+import { CtaBand } from "@/components/site/cta-band";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = pageMetadata({ title: "Projets digitaux", description: "Transformez votre idée en projet structuré : soumettez votre initiative à JP-Services, suivez son analyse et découvrez les réalisations de la communauté.", path: "/projets" });
@@ -22,6 +23,8 @@ export default async function ProjetsPage() {
   return (
     <>
       <PageHero
+        illustration="/illustrations/projet-equipe.svg"
+        tone="red"
         asideOnMobile
         eyebrow="Atelier de projets"
         title="Transformons votre idée en projet structuré."
@@ -76,6 +79,7 @@ export default async function ProjetsPage() {
           ) : <div className="card reveal mt-10 p-10 text-center text-copy">Les premiers projets validés seront présentés ici.</div>}
         </div>
       </section>
+      <CtaBand title="Votre idée mérite d’être réalisée." text="Applications, sites, logiciels ou visuels : présentez votre projet, nous revenons vers vous avec une proposition claire." href="/services" label="Voir nos services" secondary={{ href: "/contact?sujet=Projet%20num%C3%A9rique", label: "Nous écrire" }} />
     </>
   );
 }

@@ -200,3 +200,7 @@ html:has(.jp-nav-progress[data-state="loading"]) body { cursor: progress; }
 .jp-drawer [aria-current="page"] svg { color: var(--primary); }
 .jp-auth-topbar { border-bottom: 1px solid transparent; }
 @media (max-width: 1023px) { .jp-auth-topbar { border-bottom-color: var(--line); } }
+
+/* Petit guide des rubriques : étiquette dans la police du texte */
+.jp-directory-guide > span:first-child { font-family: var(--font-sans) !important; letter-spacing: 0.01em !important; text-transform: none !important; font-size: 13px !important; font-weight: 650 !important; color: var(--primary); }
+.jp-directory-guide [class*="font-mono"], .jp-directory-guide b, .jp-directory-guide strong + span { font-family: var(--font-sans); }

@@ -9,6 +9,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { listLiveSessions } from "@/server/services/content";
 import { formatDate } from "@/lib/utils";
 import { pageMetadata } from "@/lib/seo";
+import { CtaBand } from "@/components/site/cta-band";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = pageMetadata({ title: "Formations en ligne", description: "Rejoignez les sessions de formation JP-Services en visioconférence, depuis votre ordinateur ou votre téléphone, sans rien installer.", path: "/formations-en-ligne" });
@@ -18,6 +19,8 @@ export default async function LivePage() {
   return (
     <>
       <PageHero
+        illustration="/illustrations/formateur-en-ligne.svg"
+        tone="blue"
         asideOnMobile
         eyebrow="Formations en ligne"
         title="Rejoignez une formation en direct, où que vous soyez."
@@ -73,6 +76,7 @@ export default async function LivePage() {
           </div>
         </div>
       </section>
+      <CtaBand title="Une session pour votre équipe ?" text="Nous organisons des formations en direct pour les écoles, entreprises et associations, aux horaires qui vous conviennent." href="/contact?sujet=Session%20en%20ligne" label="Organiser une session" />
     </>
   );
 }

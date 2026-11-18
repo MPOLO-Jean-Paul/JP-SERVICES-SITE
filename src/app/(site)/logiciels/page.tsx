@@ -9,6 +9,7 @@ import { SoftwareCatalog, type CategoryChip, type SoftwareItem } from "@/compone
 import { listLogicielCategories, listLogiciels } from "@/server/services/content";
 import { getSetting } from "@/server/services/settings";
 import { pageMetadata } from "@/lib/seo";
+import { CtaBand } from "@/components/site/cta-band";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = pageMetadata({ title: "Logiciels à télécharger", description: "Médiathèque JP-Services : logiciels et outils vérifiés (bureautique, développement, design, sécurité, gestion scolaire) avec version, plateforme et licence.", path: "/logiciels" });
@@ -24,6 +25,8 @@ export default async function LogicielsPage() {
   return (
     <>
       <PageHero
+        illustration="/illustrations/service-logiciels.svg"
+        tone="mint"
         asideOnMobile
         eyebrow="Médiathèque JP-Services"
         title="Les bons outils, au bon endroit."
@@ -53,6 +56,7 @@ export default async function LogicielsPage() {
           </div>
         </div>
       </section>
+      <CtaBand title="Besoin d’un logiciel sur mesure ?" text="Nous concevons des logiciels de gestion pour tous les domaines, à l’image de SCOLIA Pro pour les écoles." href="/services#logiciels-professionnels" label="Découvrir le service" secondary={{ href: "/scolia", label: "SCOLIA Pro" }} />
     </>
   );
 }

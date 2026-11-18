@@ -4,6 +4,7 @@ import { ChevronDown, GraduationCap, LifeBuoy, Lock, Rocket, UserCheck } from "l
 import { PageHeader } from "@/components/site/page-header";
 import { pageMetadata, jsonLd } from "@/lib/seo";
 import { SupportForm } from "./support-form";
+import { CtaBand } from "@/components/site/cta-band";
 
 export const metadata: Metadata = pageMetadata({ title: "Centre d’aide", description: "Questions fréquentes sur le compte, les formations, les projets et la communauté JP-Services, et formulaire d’assistance.", path: "/aide" });
 
@@ -20,7 +21,7 @@ export default function AidePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd({ "@type": "FAQPage", mainEntity: FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) })} />
-      <PageHeader illustration="/illustrations/aide-questions.svg" title="Centre d’aide" icon={LifeBuoy} text="Une réponse claire, au bon moment. Retrouvez les sujets essentiels ou transmettez une demande détaillée à notre équipe." />
+      <PageHeader illustration="/illustrations/aide-questions.svg" tone="blue" title="Centre d’aide" icon={LifeBuoy} text="Une réponse claire, au bon moment. Retrouvez les sujets essentiels ou transmettez une demande détaillée à notre équipe." />
       <section className="section">
         <div className="shell">
           <div className="grid gap-5 md:grid-cols-3">
@@ -81,6 +82,7 @@ export default function AidePage() {
           </div>
         </div>
       </section>
+      <CtaBand title="Vous n’avez pas trouvé votre réponse ?" text="Écrivez-nous : notre équipe vous répond avec des explications claires, étape par étape." href="/contact?sujet=Assistance" label="Contacter l’équipe" />
     </>
   );
 }

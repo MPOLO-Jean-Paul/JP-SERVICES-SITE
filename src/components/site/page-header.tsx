@@ -1,12 +1,12 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { RingVisual, type Tone } from "./ring-visual";
 
 export type Crumb = { href?: string; label: string };
 
-export function PageHeader({ title, crumbs, text, actions, illustration, className }: {
+export function PageHeader({ title, crumbs, text, actions, illustration, tone, className }: {
   title: string;
   icon?: LucideIcon;
   crumbs?: Crumb[];
@@ -14,6 +14,7 @@ export function PageHeader({ title, crumbs, text, actions, illustration, classNa
   actions?: React.ReactNode;
   /** Illustration JP-Services affichée à droite (chemin dans /illustrations). */
   illustration?: string;
+  tone?: Tone;
   className?: string;
 }) {
   return <div className={cn("jp-page-heading border-b", className)}>
@@ -30,7 +31,7 @@ export function PageHeader({ title, crumbs, text, actions, illustration, classNa
         {text ? <p className="jp-page-heading-lead">{text}</p> : null}
       </div>
       {actions ? <div className="jp-page-heading-actions">{actions}</div> : null}
-      {illustration ? <Image src={illustration} width={400} height={400} alt="" priority unoptimized className="jp-page-heading-art" /> : null}
+      {illustration ? <RingVisual src={illustration} tone={tone} size="md" className="jp-page-heading-art" /> : null}
     </div>
   </div>;
 }

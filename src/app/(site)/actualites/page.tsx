@@ -10,6 +10,7 @@ import { countActualites, listActualites } from "@/server/services/content";
 import { excerpt, formatDate, isImagePath, isVideoPath, mediaUrl } from "@/lib/utils";
 import { pageMetadata } from "@/lib/seo";
 import { buttonVariants } from "@/components/ui/button";
+import { CtaBand } from "@/components/site/cta-band";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = pageMetadata({ title: "Actualités", description: "Annonces, conseils et initiatives publiés par l’équipe JP-Services : formations, logiciels, projets et vie de la communauté.", path: "/actualites" });
@@ -23,7 +24,7 @@ export default async function ActualitesPage({ searchParams }: { searchParams: P
   const [first, ...rest] = page === 1 ? items : [undefined, ...items];
   return (
     <>
-      <PageHeader illustration="/illustrations/actualites-journal.svg" title="Actualités" icon={Newspaper} text="Des nouvelles utiles pour apprendre, créer et progresser : les annonces, conseils et initiatives publiés par l’équipe JP-Services." />
+      <PageHeader illustration="/illustrations/actualites-journal.svg" tone="amber" title="Actualités" icon={Newspaper} text="Des nouvelles utiles pour apprendre, créer et progresser : les annonces, conseils et initiatives publiés par l’équipe JP-Services." />
       <section className="section">
         <div className="shell">
           {!items.length ? (
@@ -64,6 +65,7 @@ export default async function ActualitesPage({ searchParams }: { searchParams: P
           )}
         </div>
       </section>
+      <CtaBand title="Ne manquez aucune nouveauté." text="Formations, sessions en direct et nouveaux services : créez votre compte pour être averti en premier." href="/inscription" label="Créer mon compte" secondary={{ href: "/services", label: "Nos services" }} />
     </>
   );
 }

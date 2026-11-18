@@ -10,6 +10,7 @@ import { ForumList, type ForumPost } from "@/components/forum/forum-list";
 import { getCurrentUser } from "@/server/auth/session";
 import { listPosts } from "@/server/services/content";
 import { pageMetadata } from "@/lib/seo";
+import { CtaBand } from "@/components/site/cta-band";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = pageMetadata({ title: "Forum d’entraide", description: "Un espace pour demander, partager et progresser ensemble : questions techniques, projets et ressources de la communauté JP-Services.", path: "/forum" });
@@ -21,6 +22,8 @@ export default async function ForumPage({ searchParams }: { searchParams: Promis
   return (
     <>
       <PageHero
+        illustration="/illustrations/aide-questions.svg"
+        tone="blue"
         eyebrow="Communauté d’entraide"
         title="Demandez, partagez, progressez ensemble."
         text={posts.length ? `${posts.length} publication${posts.length > 1 ? "s" : ""} pour échanger conseils, projets et questions numériques avec la communauté JP-Services.` : "Posez vos questions, partagez vos ressources et aidez les autres membres à progresser. Lancez la première discussion de la communauté JP-Services."}
@@ -31,6 +34,7 @@ export default async function ForumPage({ searchParams }: { searchParams: Promis
         {sp.supprime ? <Alert tone="success" className="mb-6">La publication a été supprimée.</Alert> : null}
         {posts.length ? <ForumList posts={posts} canLike={Boolean(user)} /> : <EmptyState icon={MessagesSquare} title="La première discussion peut commencer" text="Posez une question technique, présentez votre projet ou partagez une ressource utile." action={user ? <Link href="/forum/nouveau" className={buttonVariants()}><Plus /> Créer la première publication</Link> : <Link href="/connexion?redirect_to=/forum/nouveau" className={buttonVariants()}>Se connecter</Link>} />}
       </div></section>
+      <CtaBand title="Une question qui demande un accompagnement ?" text="Au-delà du forum, notre équipe peut vous encadrer en programmation, design et informatique." href="/services#encadrement-programmation-design" label="Être accompagné" />
     </>
   );
 }

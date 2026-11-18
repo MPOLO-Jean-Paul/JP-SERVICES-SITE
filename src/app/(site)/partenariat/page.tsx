@@ -22,6 +22,8 @@ export default async function PartenariatPage() {
   return (
     <>
       <PageHero
+        illustration="/illustrations/a-propos-equipe.svg"
+        tone="amber"
         eyebrow="Partenariats"
         title="Construisons ensemble des compétences utiles."
         text={intro}

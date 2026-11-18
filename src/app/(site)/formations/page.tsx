@@ -10,6 +10,7 @@ import { Catalog, type CatalogItem, type DomainChip } from "@/components/formati
 import { listFormations } from "@/server/services/formations";
 import { excerpt } from "@/lib/utils";
 import { pageMetadata } from "@/lib/seo";
+import { CtaBand } from "@/components/site/cta-band";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = pageMetadata({ title: "Formations", description: "Catalogue des formations JP-Services : développement web, bureautique, marketing digital, data et management. Comparez les niveaux, tarifs et prochaines sessions.", path: "/formations" });
@@ -43,6 +44,8 @@ export default async function FormationsPage() {
   return (
     <>
       <PageHero
+        illustration="/illustrations/apprendre-partout.svg"
+        tone="violet"
         asideOnMobile
         eyebrow="Catalogue des formations"
         title="Développez vos compétences. Donnez-leur une application concrète."
@@ -111,6 +114,7 @@ export default async function FormationsPage() {
           </ol>
         </div>
       </section>
+      <CtaBand title="Vous ne trouvez pas la formation qu’il vous faut ?" text="Dites-nous ce que vous voulez apprendre : nous vous orientons vers le bon parcours ou organisons une session adaptée." href="/contact?sujet=Demande%20de%20formation" label="Demander une formation" secondary={{ href: "/formations-en-ligne", label: "Sessions en direct" }} />
     </>
   );
 }

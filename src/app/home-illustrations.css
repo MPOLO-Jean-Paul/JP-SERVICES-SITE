@@ -298,8 +298,7 @@
   .jp-justify, .jp-service-text, .prose-jp p, .jp-mission-card p.jp-justify {
     text-align: justify;
     text-justify: inter-word;
-    hyphens: auto;
-    -webkit-hyphens: auto;
+    hyphens: manual;
   }
 }
 .jp-section-intro-center { max-width: 720px; margin: 0 auto 40px; text-align: center; }
@@ -435,3 +434,39 @@
   .jp-svc-visual-icon { right: 14px; bottom: 14px; width: 46px; height: 46px; border-radius: 15px; }
 }
 @media (prefers-reduced-motion: reduce) { .jp-svc-orbit li, .jp-svc-avatar { animation: none !important; transition: none !important; } }
+
+/* ══════════════ Décor commun des rubriques (même langage que Nos services) ══════════════ */
+.jp-ring-visual { position: relative; display: grid; place-items: center; overflow: hidden; border-radius: 32px; background: radial-gradient(80% 80% at 50% 45%, color-mix(in srgb, var(--tone) 14%, var(--panel)) 0%, var(--tone-soft) 62%, var(--tone-soft) 100%); }
+.jp-ring-visual::before, .jp-ring-visual::after { content: ""; position: absolute; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--tone) 22%, transparent); }
+.jp-ring-visual::before { width: 76%; aspect-ratio: 1; }
+.jp-ring-visual::after { width: 104%; aspect-ratio: 1; opacity: 0.6; }
+.jp-ring-art { position: relative; z-index: 1; width: 64%; height: auto; filter: drop-shadow(0 22px 28px rgb(11 13 26 / 0.16)); animation: jp-art-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.jp-ring-lg { aspect-ratio: 5 / 4; width: 100%; max-width: 520px; justify-self: end; }
+.jp-ring-md { width: clamp(170px, 18vw, 240px); aspect-ratio: 1; border-radius: 28px; flex: 0 0 auto; margin-bottom: -8px !important; }
+.jp-ring-sm { width: 108px; aspect-ratio: 1; border-radius: 26px; }
+.jp-ring-sm .jp-ring-art { width: 78%; }
+
+/* En-têtes de page (À propos, Contact, Aide, Actualités…) */
+.jp-page-heading-layout { align-items: center !important; }
+.jp-page-heading-art.jp-ring-visual { animation: none; }
+
+/* En-têtes avec contenu annexe : médaillon posé au-dessus de la carte */
+.jp-inner-hero-aside-illustrated { position: relative; padding-top: 70px !important; border-top: 0 !important; }
+.jp-hero-medallion { position: absolute !important; top: 0; right: 0; z-index: 2; box-shadow: 0 0 0 6px var(--canvas), 0 18px 34px -20px rgb(11 13 26 / 0.45); }
+.jp-inner-hero-aside-illustrated > :not(.jp-hero-medallion) { position: relative; }
+
+/* Bandeau final : bouton secondaire */
+.jp-cta-band-ghost { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgb(255 255 255 / 0.22); color: #fff; font-size: 14px; font-weight: 600; transition: background 0.2s ease; }
+.jp-cta-band-ghost:hover { background: rgb(255 255 255 / 0.1); }
+.jp-service-band .jp-action-light { border-radius: 999px; }
+
+@media (max-width: 1023px) {
+  .jp-ring-lg { justify-self: center; max-width: 440px; }
+}
+@media (max-width: 767px) {
+  .jp-ring-lg { aspect-ratio: 16 / 10; border-radius: 24px; }
+  .jp-ring-lg .jp-ring-art { width: 46%; }
+  .jp-inner-hero-aside-illustrated { padding-top: 0 !important; }
+  .jp-hero-medallion { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) { .jp-ring-art { animation: none !important; } }

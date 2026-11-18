@@ -178,7 +178,7 @@
     "policy": "Read the cookie policy"
   },
   "search": {
-    "placeholder": "Search a course, software, news…",
+    "placeholder": "Course, software, news…",
     "hint": "Type to search",
     "empty": "No matching content.",
     "sections": {

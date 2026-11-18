@@ -51,7 +51,7 @@ test("la recherche globale s’ouvre au clavier", async ({ page, isMobile }) => 
   test.skip(isMobile, "raccourci clavier");
   await page.goto("/");
   await page.keyboard.press("Control+k");
-  await page.getByPlaceholder(/Rechercher une formation/).fill("web");
+  await page.getByRole("dialog").locator("input").first().fill("web");
   await expect(page.getByRole("option").first()).toBeVisible();
 });
 
@@ -492,7 +492,7 @@ test("la recherche reste utile si le serveur de contenus est temporairement indi
   await page.route("**/api/recherche?*", route => route.fulfill({status:503,contentType:"application/json",body:'{"results":[],"error":"temporarily_unavailable"}'}));
   await page.goto("/");
   await page.getByRole("button", {name:/recherch/i}).first().click();
-  await page.getByPlaceholder(/Rechercher une formation/).fill("scolia");
+  await page.getByRole("dialog").locator("input").first().fill("scolia");
   await expect(page.getByRole("option", {name:/SCOLIA Pro/})).toBeVisible();
   await expect(page.getByRole("status").filter({hasText:/recherche en direct|live results/i})).toBeVisible();
 });
@@ -584,4 +584,21 @@ test("les carrousels respectent les préférences de mouvement réduit", async (
   await expect(page.locator(".jp-promo-gallery")).toHaveAttribute("data-reduced-motion", "true");
   await expect(page.locator(".jp-story-gallery")).toHaveAttribute("data-reduced-motion", "true");
   await expect(page.locator(".jp-hero-art")).toBeVisible();
+});
+
+test("la fenêtre de recherche est centrée et entièrement visible", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /Recherche globale|Rechercher/ }).first().click();
+  const win = page.getByRole("dialog");
+  await expect(win).toBeVisible();
+  // Attendre la fin de l'animation d'ouverture avant de mesurer.
+  await page.waitForTimeout(450);
+  const box = await win.boundingBox();
+  const viewport = page.viewportSize()!;
+  expect(box, "La fenêtre doit être affichée").not.toBeNull();
+  expect(box!.x, "La fenêtre ne doit pas dépasser à gauche").toBeGreaterThanOrEqual(0);
+  expect(box!.x + box!.width, "La fenêtre ne doit pas dépasser à droite").toBeLessThanOrEqual(viewport.width + 1);
+  const leftGap = box!.x;
+  const rightGap = viewport.width - (box!.x + box!.width);
+  expect(Math.abs(leftGap - rightGap), "La fenêtre doit être centrée horizontalement").toBeLessThanOrEqual(2);
 });

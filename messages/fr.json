@@ -178,7 +178,7 @@
     "policy": "Lire la politique de cookies"
   },
   "search": {
-    "placeholder": "Rechercher une formation, un logiciel, une actualité…",
+    "placeholder": "Formation, logiciel, actualité…",
     "hint": "Tapez pour rechercher",
     "empty": "Aucun contenu ne correspond.",
     "sections": {

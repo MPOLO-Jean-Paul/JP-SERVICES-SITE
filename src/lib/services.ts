@@ -9,12 +9,15 @@ export type Service = {
   text: string;
   points: [string, string, string];
   Icon: LucideIcon;
+  /** Avatar illustré du service (public/illustrations). */
+  avatar: string;
   tone: "blue" | "violet" | "red" | "amber" | "mint";
 };
 
 export const SERVICES: Service[] = [
   {
     slug: "applications-web-mobile",
+    avatar: "/illustrations/service-apps.svg",
     title: "Applications web et mobiles",
     short: "Conception et développement d’applications sur mesure, sur ordinateur comme sur téléphone.",
     text: "Nous concevons et développons des applications adaptées à votre activité, de l’analyse du besoin à la mise en ligne : interfaces soignées, comptes utilisateurs, paiements, tableaux de bord et notifications.",
@@ -24,6 +27,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "sites-web",
+    avatar: "/illustrations/service-sites.svg",
     title: "Sites web professionnels",
     short: "Des sites rapides, élégants et bien référencés, que vous pouvez mettre à jour vous-même.",
     text: "Site vitrine, catalogue ou plateforme : nous réalisons des sites professionnels rapides, adaptés au mobile et pensés pour être trouvés sur les moteurs de recherche.",
@@ -33,6 +37,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "monetisation-automatisation",
+    avatar: "/illustrations/service-monetisation.svg",
     title: "Monétisation et automatisation",
     short: "Monétisation de vos comptes et automatisation des tâches répétitives.",
     text: "Nous vous accompagnons pour activer et faire fructifier la monétisation de vos comptes et pages, et nous automatisons les tâches qui vous prennent du temps : publications, rapports, formulaires et envois.",
@@ -42,6 +47,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "logiciels-professionnels",
+    avatar: "/illustrations/service-logiciels.svg",
     title: "Logiciels professionnels",
     short: "Logiciels métiers pour tous les domaines : écoles, commerce, finances, stocks…",
     text: "Nous concevons des logiciels de gestion pour tous les domaines d’activité, à l’image de SCOLIA Pro pour les écoles : fiables, simples à utiliser et capables de fonctionner en réseau ou hors ligne.",
@@ -51,6 +57,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "encadrement-programmation-design",
+    avatar: "/illustrations/service-encadrement.svg",
     title: "Encadrement en programmation et design",
     short: "Un accompagnement pratique, projet à l’appui, pour apprendre à coder et à concevoir.",
     text: "Nous encadrons apprenants et équipes sur des projets réels : programmation, conception d’interfaces et bonnes pratiques, avec des exercices, des revues de travail et des conseils personnalisés.",
@@ -60,6 +67,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "graphisme-evenementiel",
+    avatar: "/illustrations/service-graphisme.svg",
     title: "Logos, affiches et événementiel",
     short: "Logos, affiches, flyers et visuels pour vos événements et vos réseaux sociaux.",
     text: "Nous créons votre identité visuelle et vos supports de communication : logos, affiches, flyers, invitations, kakémonos et visuels pour les réseaux sociaux et les événements.",
@@ -69,6 +77,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "formation-informatique",
+    avatar: "/illustrations/service-formation.svg",
     title: "Formation et services informatiques",
     short: "Formations pour tous les niveaux et services informatiques du quotidien.",
     text: "Nous formons à l’informatique pour tous les niveaux et intervenons sur les besoins du quotidien : bureautique, internet, maintenance, réseaux, sécurité et outils numériques.",

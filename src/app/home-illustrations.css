@@ -292,3 +292,63 @@
   .jp-service-index { flex-wrap: nowrap; overflow-x: auto; margin-inline: -20px; padding-inline: 20px; scrollbar-width: none; }
   .jp-service-chip { flex: 0 0 auto; }
 }
+
+/* ── Alignements : textes longs justifiés, intros et cartes illustrées centrées ── */
+@media (min-width: 640px) {
+  .jp-justify, .jp-service-text, .prose-jp p, .jp-mission-card p.jp-justify {
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+}
+.jp-section-intro-center { max-width: 720px; margin: 0 auto 40px; text-align: center; }
+.jp-section-intro-center .jp-overline { justify-content: center; }
+.jp-section-intro-center h2 { margin-top: 10px; font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.4rem); font-weight: 650; letter-spacing: -0.035em; line-height: 1.12; text-wrap: balance; }
+.jp-section-intro-center > p:not(.jp-overline) { margin-top: 12px; color: var(--copy); font-size: 1.05rem; line-height: 1.65; text-wrap: pretty; }
+/* Méthode de l’accueil : vignettes centrées */
+.jp-method-step { text-align: center; }
+.jp-method-step .jp-method-rule { margin-inline: auto; }
+.jp-service-band { text-align: left; }
+@media (max-width: 640px) { .jp-service-band { justify-content: center; text-align: center; } }
+
+/* Page services : en-tête de carte avec avatar */
+.jp-service-head { position: relative; align-self: center; margin-bottom: 4px; }
+.jp-service-avatar { display: block; width: 128px; height: 128px; transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+.jp-service-icon-badge { position: absolute; right: -6px; bottom: 2px; width: 42px; height: 42px; border-radius: 13px; box-shadow: 0 0 0 4px var(--panel); background: var(--panel); }
+.jp-service-icon-badge::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--tone-soft); }
+.jp-service-icon-badge svg { position: relative; width: 20px; height: 20px; }
+.jp-service-card { text-align: left; }
+.jp-service-card .jp-service-title { text-align: center; }
+.jp-service-card .jp-service-cta { align-self: center; }
+@media (hover: hover) { .jp-service-card:hover .jp-service-avatar { transform: translateY(-4px) scale(1.03); } }
+
+/* Accueil : avatar dans les cartes services */
+.jp-home-service-avatar { width: 72px; height: 72px; transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+@media (hover: hover) { .jp-home-service:hover .jp-home-service-avatar { transform: translateY(-3px) scale(1.05); } }
+
+/* À propos : mission et vision */
+.jp-mission-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
+.jp-mission-card { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: clamp(26px, 4vw, 40px); border: 1px solid var(--line); border-radius: 26px; background: var(--panel); text-align: center; }
+.jp-mission-card h3 { font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.6rem); font-weight: 650; letter-spacing: -0.025em; line-height: 1.25; text-wrap: balance; }
+.jp-mission-card p.jp-justify { max-width: 560px; color: var(--copy); line-height: 1.7; }
+.jp-mission-kicker { margin-top: 6px; color: var(--primary); font-size: 13.5px; font-weight: 650; }
+.jp-mission-art { width: min(60%, 200px); height: auto; margin-bottom: 4px; }
+.jp-mission-card-dark { background: linear-gradient(155deg, #0b1935, #16295a); border-color: transparent; }
+.jp-mission-card-dark h3 { color: #fff; }
+.jp-mission-card-dark p.jp-justify { color: rgb(255 255 255 / 0.76); }
+.jp-mission-card-dark .jp-mission-kicker { color: #b5c8ff; }
+
+/* À propos : valeurs centrées */
+.jp-values { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; }
+.jp-value { flex: 1 1 280px; max-width: 380px; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 24px; border: 1px solid var(--line); border-radius: 22px; background: var(--panel); text-align: center; transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, border-color 0.3s ease; }
+.jp-value .jp-service-icon { width: 56px; height: 56px; border-radius: 18px; }
+.jp-value h3 { margin-top: 6px; font-size: 18px; font-weight: 650; letter-spacing: -0.015em; }
+.jp-value p { color: var(--copy); font-size: 14.5px; line-height: 1.65; text-wrap: pretty; }
+@media (hover: hover) { .jp-value:hover { transform: translateY(-3px); border-color: var(--line-strong); box-shadow: 0 18px 40px -26px rgb(11 13 26 / 0.45); } }
+
+@media (min-width: 1024px) {
+  /* Valeurs : trois puis deux, centrées */
+  .jp-values { max-width: 1180px; margin-inline: auto; }
+  .jp-value { flex: 0 1 calc((100% - 36px) / 3); max-width: calc((100% - 36px) / 3); }
+}

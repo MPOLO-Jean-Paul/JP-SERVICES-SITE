@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Mail, MapPin, Users } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Gem, HeartHandshake, Lightbulb, Mail, MapPin, ScanEye, Users } from "lucide-react";
 import { Linkedin } from "@/components/brand/social-icons";
 import { PageHeader } from "@/components/site/page-header";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -29,7 +30,7 @@ export default async function AProposPage() {
           <div>
             <span className="eyebrow">Qui sommes-nous ?</span>
             <h2 className="h1 mt-3">Ensemble pour une jeunesse rénovée.</h2>
-            <p className="lead mt-5">JP-Services est une structure de formation et de services digitaux basée à Lubumbashi. Nous rendons les compétences numériques accessibles et nous accompagnons les organisations dans leur transformation : formations pratiques, logiciels métiers comme SCOLIA Pro, projets digitaux et communauté d’entraide.</p>
+            <p className="lead jp-justify mt-5">JP-Services est une structure de formation et de services digitaux basée à Lubumbashi. Nous rendons les compétences numériques accessibles et nous accompagnons les organisations dans leur transformation : formations pratiques, logiciels métiers comme SCOLIA Pro, projets digitaux et communauté d’entraide.</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/formations" className={buttonVariants({ variant: "dark", size: "lg" })}>Découvrir nos formations <ArrowRight /></Link>
               <Link href="/contact" className={buttonVariants({ variant: "outline", size: "lg" })}>Nous contacter</Link>
@@ -58,20 +59,48 @@ export default async function AProposPage() {
         </div>
       </section>
 
-      <section className="section border-y bg-canvas-soft">
+      <section className="section border-y bg-canvas-soft" aria-labelledby="mission-title">
         <div className="shell">
-          <SectionHeading kicker="Mission et valeurs" title="Ce qui guide chacune de nos actions." />
-          <div className="reveal-stagger mt-12 grid gap-10 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+          <div className="jp-section-intro-center">
+            <p className="jp-overline">Mission et vision</p>
+            <h2 id="mission-title">Pourquoi nous faisons ce métier.</h2>
+          </div>
+          <div className="jp-mission-grid">
+            <article className="jp-mission-card reveal">
+              <Image src="/illustrations/formateur-en-ligne.svg" width={400} height={400} alt="" unoptimized loading="lazy" className="jp-mission-art" />
+              <p className="jp-mission-kicker">Notre mission</p>
+              <h3>Rendre le numérique accessible et utile à tous.</h3>
+              <p className="jp-justify">Former les jeunes et les professionnels aux compétences numériques, et donner aux entreprises, aux écoles et aux organisations des outils fiables qui simplifient leur travail au quotidien : formations pratiques, applications, sites, logiciels métiers et accompagnement.</p>
+            </article>
+            <article className="jp-mission-card jp-mission-card-dark reveal">
+              <Image src="/illustrations/a-propos-equipe.svg" width={400} height={400} alt="" unoptimized loading="lazy" className="jp-mission-art" />
+              <p className="jp-mission-kicker">Notre vision</p>
+              <h3>Une jeunesse rénovée, qui crée ses propres solutions.</h3>
+              <p className="jp-justify">Nous voulons voir une génération capable de concevoir les outils numériques dont son pays a besoin, de Lubumbashi à toute la République démocratique du Congo. C’est le sens de notre devise : « Ensemble pour une jeunesse rénovée ».</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="section" aria-labelledby="values-title">
+        <div className="shell">
+          <div className="jp-section-intro-center">
+            <p className="jp-overline">Nos valeurs</p>
+            <h2 id="values-title">Ce qui guide chacune de nos actions.</h2>
+            <p>Cinq engagements concrets, que nous appliquons à chaque formation, chaque projet et chaque logiciel.</p>
+          </div>
+          <div className="jp-values reveal-stagger">
             {[
-              { title: "Notre mission", text: "Rendre les compétences numériques accessibles et donner aux entreprises et aux écoles des outils qui simplifient leur gestion au quotidien." },
-              { title: "Le soin du détail", text: "Chaque formation est préparée sur des cas réels ; chaque logiciel est testé sur le terrain avant d’être publié." },
-              { title: "La transparence", text: "Des programmes clairs, des tarifs annoncés à l’avance et des données personnelles protégées." },
-              { title: "L’adaptation au terrain", text: "Des outils pensés pour les réalités locales : connexion limitée, réseau d’établissement, fonctionnement hors ligne." },
-            ].map(({ title, text }, i) => (
-              <article key={title} className="border-t border-line-strong pt-6">
-                <span className="font-display text-sm font-semibold text-primary tabular-nums">0{i + 1}</span>
-                <h3 className="h3 mt-3">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-copy">{text}</p>
+              { Icon: Gem, tone: "blue", title: "L’excellence", text: "Un travail soigné dans le moindre détail : chaque formation est préparée sur des cas réels, chaque logiciel est testé sur le terrain avant d’être livré." },
+              { Icon: ScanEye, tone: "violet", title: "La transparence", text: "Des programmes clairs, des tarifs annoncés à l’avance, des délais tenus et des données personnelles protégées." },
+              { Icon: HeartHandshake, tone: "red", title: "La proximité", text: "Une équipe joignable et à l’écoute, présente à Lubumbashi comme à distance, qui accompagne chacun à son rythme." },
+              { Icon: Lightbulb, tone: "amber", title: "L’innovation utile", text: "Des solutions modernes pensées pour les réalités locales : connexion limitée, réseau d’établissement, fonctionnement hors ligne." },
+              { Icon: Users, tone: "mint", title: "L’esprit d’équipe", text: "Nous avançons ensemble, avec nos apprenants, nos clients et nos partenaires : la réussite de l’un profite à tous." },
+            ].map(({ Icon, tone, title, text }) => (
+              <article key={title} className="jp-value" data-tone={tone}>
+                <span className="jp-service-icon"><Icon aria-hidden /></span>
+                <h3>{title}</h3>
+                <p>{text}</p>
               </article>
             ))}
           </div>
@@ -80,7 +109,7 @@ export default async function AProposPage() {
 
       <section className="section">
         <div className="shell">
-          <SectionHeading kicker="L’équipe" title="Les visages derrière le code." text="Formateurs, développeurs et accompagnateurs : une équipe engagée pour votre progression." />
+          <SectionHeading align="center" kicker="L’équipe" title="Les visages derrière le code." text="Formateurs, développeurs et accompagnateurs : une équipe engagée pour votre progression." />
           {membres.length ? (
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {membres.map((m) => (

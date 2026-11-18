@@ -24,6 +24,7 @@ const files = {
   "page-introuvable.svg": S.perdu(),
   "etat-vide.svg": S.vide(),
 };
+for (const k of ["apps", "sites", "monetisation", "logiciels", "encadrement", "graphisme", "formation"]) files[`service-${k}.svg`] = S.serviceAvatar(k);
 for (let i = 0; i < 6; i++) files[`avatar-${i + 1}.svg`] = S.avatar(i);
 for (const [name, content] of Object.entries(files)) {
   // Fichiers autonomes : identifiants internes préfixés pour éviter toute collision une fois intégrés.

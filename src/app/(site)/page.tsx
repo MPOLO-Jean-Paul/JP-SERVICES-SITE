@@ -135,7 +135,7 @@ export default async function HomePage() {
           <div className="jp-home-services-grid reveal-stagger">
             {SERVICES.map((service) => (
               <Link key={service.slug} href={"/services#" + service.slug} className="jp-home-service" data-tone={service.tone}>
-                <span className="jp-service-icon"><service.Icon aria-hidden /></span>
+                <Image src={service.avatar} width={240} height={240} alt="" unoptimized loading="lazy" className="jp-home-service-avatar" />
                 <h3>{service.title}</h3>
                 <p>{service.short}</p>
                 <span className="jp-home-service-more">Découvrir <MaterialIcon name="arrow_forward" size={16} /></span>

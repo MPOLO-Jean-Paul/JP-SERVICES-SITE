@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { PageHeader } from "@/components/site/page-header";
@@ -26,6 +27,11 @@ export default function ServicesPage() {
 
       <section className="jp-section">
         <div className="shell">
+          <div className="jp-section-intro-center">
+            <p className="jp-overline">Ce que nous réalisons</p>
+            <h2>Sept services, une même exigence.</h2>
+            <p>Choisissez un service pour découvrir ce qu’il comprend, puis demandez-le en un clic : votre demande nous arrive avec le bon sujet.</p>
+          </div>
           <nav aria-label="Aller à un service" className="jp-service-index">
             {SERVICES.map((s) => (
               <a key={s.slug} href={`#${s.slug}`} className="jp-service-chip"><s.Icon aria-hidden className="size-4" />{s.title}</a>
@@ -35,7 +41,10 @@ export default function ServicesPage() {
           <div className="jp-service-grid reveal-stagger">
             {SERVICES.map((s) => (
               <article key={s.slug} id={s.slug} className="jp-service-card" data-tone={s.tone}>
-                <span className="jp-service-icon"><s.Icon aria-hidden /></span>
+                <div className="jp-service-head">
+                  <Image src={s.avatar} width={240} height={240} alt="" unoptimized loading="lazy" className="jp-service-avatar" />
+                  <span className="jp-service-icon jp-service-icon-badge"><s.Icon aria-hidden /></span>
+                </div>
                 <h2 className="jp-service-title">{s.title}</h2>
                 <p className="jp-service-text">{s.text}</p>
                 <ul className="jp-service-points">

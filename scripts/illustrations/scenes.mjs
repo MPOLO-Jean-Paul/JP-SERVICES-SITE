@@ -252,4 +252,35 @@ function vide() {
   b.push(`<circle cx="186" cy="56" r="10" fill="${P.amber}"/><circle cx="54" cy="70" r="6" fill="${P.blue}" opacity=".7"/>`);
   return svg(240, 220, b.join(""));
 }
-export { apprendre, avatar, formateur, projet, hero, domFormation, domLogiciels, domProjets, scolia, support, equipe, questions, journal, perdu, vide };
+
+// 11. Avatars des services : un personnage et l’objet qui raconte le service (240×240).
+function serviceAvatar(kind) {
+  const conf = {
+    apps: { bg: P.sky, skin: P.skin[1], hair: "short", shirt: P.blue },
+    sites: { bg: P.lilac, skin: P.skin[2], hair: "braids", shirt: P.violet },
+    monetisation: { bg: P.blush, skin: P.skin[0], hair: "fade", shirt: P.red },
+    logiciels: { bg: "#E6F7F0", skin: P.skin[3], hair: "bun", shirt: P.mint },
+    encadrement: { bg: P.sky, skin: P.skin[0], hair: "afro", shirt: P.navy },
+    graphisme: { bg: P.cream, skin: P.skin[2], hair: "bun", shirt: P.amber },
+    formation: { bg: P.lilac, skin: P.skin[1], hair: "braids", shirt: P.violet },
+  }[kind];
+  const id = `sa-${kind}`;
+  const b = [`<defs><clipPath id="${id}"><circle cx="120" cy="120" r="116"/></clipPath></defs>`, `<circle cx="120" cy="120" r="116" fill="${conf.bg}"/>`];
+  const back = [];
+  const front = [];
+  if (kind === "sites") back.push(`<g transform="translate(118 34)"><rect width="104" height="76" rx="10" fill="#fff" stroke="${P.grey}" stroke-width="2"/><circle cx="12" cy="11" r="3" fill="${P.red}"/><circle cx="22" cy="11" r="3" fill="${P.amber}"/><circle cx="32" cy="11" r="3" fill="${P.mint}"/><rect x="10" y="22" width="84" height="22" rx="5" fill="${P.violet}" opacity=".85"/><rect x="10" y="50" width="50" height="6" rx="3" fill="${P.greyDark}"/><rect x="10" y="61" width="36" height="6" rx="3" fill="${P.grey}"/><rect x="66" y="50" width="28" height="17" rx="4" fill="${P.lilac}"/></g>`);
+  if (kind === "logiciels") back.push(`<g transform="translate(124 36)"><rect width="96" height="66" rx="9" fill="${P.navy}"/><rect x="7" y="7" width="82" height="52" rx="5" fill="#fff"/>${[0,1,2,3].map(i => `<rect x="${14 + i * 18}" y="${44 - (8 + i * 7)}" width="11" height="${8 + i * 7}" rx="3" fill="${i === 3 ? P.mint : "#bfe9d7"}"/>`).join("")}<rect x="14" y="13" width="40" height="5" rx="2.5" fill="${P.navy}" opacity=".6"/><rect x="40" y="66" width="16" height="10" fill="${P.navy}"/><rect x="28" y="74" width="40" height="6" rx="3" fill="${P.navy}"/></g>`);
+  if (kind === "monetisation") back.push(`<g transform="translate(142 40)">${[0,1,2].map(i => `<rect x="${i * 22}" y="${54 - i * 18}" width="15" height="${26 + i * 18}" rx="7.5" fill="${[P.red, P.violet, P.blue][i]}" opacity=".9"/>`).join("")}</g>`);
+  b.push(...back);
+  b.push(`<g clip-path="url(#${id})">${bust({ x: 104, y: 160, w: 150, h: 90, skin: conf.skin, shirt: conf.shirt, hair: conf.hair, r: 36 })}</g>`);
+  if (kind === "apps") front.push(`<g transform="translate(150 118) rotate(8)"><rect width="48" height="84" rx="10" fill="${P.navy}"/><rect x="5" y="9" width="38" height="64" rx="5" fill="#fff"/>${[0,1,2,3].map(i => `<rect x="${9 + (i % 2) * 17}" y="${14 + Math.floor(i / 2) * 17}" width="13" height="13" rx="4" fill="${[P.blue, P.red, P.amber, P.violet][i]}"/>`).join("")}<rect x="9" y="50" width="30" height="5" rx="2.5" fill="${P.grey}"/><rect x="9" y="59" width="22" height="5" rx="2.5" fill="${P.grey}"/></g><circle cx="152" cy="190" r="10" fill="${conf.skin}"/>`, `<g transform="translate(40 54)"><rect width="34" height="34" rx="10" fill="#fff"/><rect x="9" y="9" width="16" height="16" rx="4" fill="${P.blue}"/></g>`);
+  if (kind === "monetisation") front.push(`<g transform="translate(36 58)"><circle r="20" fill="${P.amber}"/><circle r="14" fill="none" stroke="#fff" stroke-width="2.5" opacity=".8"/><path d="M0 -7 v14 M-6 0 h12" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(64 30)"><circle r="12" fill="${P.navy}"/><circle r="4.5" fill="${conf.bg}"/>${[0,1,2,3,4,5].map(i => `<rect x="-2.5" y="-15" width="5" height="6" rx="1.5" fill="${P.navy}" transform="rotate(${i * 60})"/>`).join("")}</g>`);
+  if (kind === "logiciels") front.push(`<g transform="translate(46 60)"><circle r="18" fill="#fff"/><circle r="6" fill="none" stroke="${P.mint}" stroke-width="3.5"/>${[0,1,2,3,4,5].map(i => `<rect x="-2" y="-13" width="4" height="5" rx="1.5" fill="${P.mint}" transform="rotate(${i * 60})"/>`).join("")}</g>`);
+  if (kind === "encadrement") front.push(`<g transform="translate(140 46)"><rect width="78" height="48" rx="14" fill="#fff"/><path d="M18 48 l-4 14 l18 -14z" fill="#fff"/><path d="M22 18 l-9 7 l9 7 M56 18 l9 7 l-9 7 M44 14 l-9 22" fill="none" stroke="${P.blue}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><g transform="translate(46 72)"><circle r="16" fill="${P.mint}"/><path d="M-7 0 l5 5 l10 -11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></g>`);
+  if (kind === "graphisme") front.push(`<g transform="translate(144 40) rotate(6)"><rect width="66" height="88" rx="6" fill="#fff" stroke="${P.grey}" stroke-width="2"/><rect x="8" y="8" width="50" height="42" rx="4" fill="${P.red}" opacity=".85"/><circle cx="40" cy="24" r="9" fill="${P.amber}"/><rect x="8" y="58" width="44" height="6" rx="3" fill="${P.navy}"/><rect x="8" y="70" width="30" height="5" rx="2.5" fill="${P.greyDark}"/></g><g transform="translate(46 66)"><path d="M-22 4 a24 22 0 1 1 30 18 c-6 2 -6 -6 -12 -6 c-8 0 -18 4 -18 -12z" fill="#fff"/><circle cx="-10" cy="-6" r="4" fill="${P.red}"/><circle cx="2" cy="-12" r="4" fill="${P.blue}"/><circle cx="12" cy="-4" r="4" fill="${P.mint}"/><circle cx="-12" cy="6" r="4" fill="${P.violet}"/></g>`);
+  if (kind === "formation") front.push(`<g transform="translate(104 58)"><path d="M-40 0 L0 -16 L40 0 L0 16z" fill="${P.ink}"/><path d="M-24 6 v14 q24 14 48 0 v-14 l-24 10z" fill="${P.ink}"/><path d="M34 2 v24" stroke="${P.amber}" stroke-width="3"/><circle cx="34" cy="28" r="4" fill="${P.amber}"/></g><g transform="translate(150 150)"><rect width="62" height="40" rx="6" fill="${P.navy}"/><rect x="5" y="5" width="52" height="30" rx="3" fill="${P.sky}"/><rect x="11" y="12" width="28" height="5" rx="2.5" fill="${P.blue}"/><rect x="11" y="22" width="38" height="5" rx="2.5" fill="${P.greyDark}"/><rect x="-6" y="40" width="74" height="6" rx="3" fill="${P.greyDark}"/></g>`);
+  if (kind === "sites") front.push(`<g transform="translate(46 70)"><circle r="18" fill="${P.blue}"/><circle r="10" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M-10 0 h20 M0 -10 q-6 10 0 20 q6 -10 0 -20" fill="none" stroke="#fff" stroke-width="2.2"/></g>`);
+  b.push(...front);
+  return svg(240, 240, b.join(""));
+}
+export { apprendre, avatar, formateur, projet, hero, domFormation, domLogiciels, domProjets, scolia, support, equipe, questions, journal, perdu, vide, serviceAvatar };

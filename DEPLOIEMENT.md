@@ -37,7 +37,7 @@ Copiez d’abord dans `uploads/logiciels/` les fichiers de logiciels de l’anci
    - un `APP_SECRET` aléatoire.
 3. Renseignez les variables demandées : les clés R2, le SMTP et, si besoin, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`. `APP_URL` vaut déjà `https://jp-services.org`.
 4. Au démarrage, `pnpm db:migrate` crée les tables, puis le serveur démarre. La sonde `/api/health` vérifie la base.
-5. Créez le premier administrateur depuis le **Shell** du service :
+5. Créez le premier administrateur. **Plan gratuit (sans Shell)** : dans Render → service → **Environment**, ajoutez `ADMIN_EMAIL` et `ADMIN_PASSWORD` (10 caractères minimum, avec majuscule, minuscule et chiffre), enregistrez et redéployez. Au démarrage, `pnpm db:migrate` crée l’administrateur, uniquement s’il n’en existe encore aucun ; supprimez ensuite `ADMIN_PASSWORD`. Avec un plan payant, vous pouvez aussi passer par le **Shell** du service :
 
 ```bash
 ADMIN_EMAIL=vous@domaine.tld ADMIN_PASSWORD='Mot-De-Passe-Solide-2026' pnpm db:seed

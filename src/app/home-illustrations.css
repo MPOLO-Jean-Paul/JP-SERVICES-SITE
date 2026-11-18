@@ -162,3 +162,10 @@
     transition: none !important;
   }
 }
+
+/* En-têtes de page illustrés */
+.jp-page-heading-art { flex: 0 0 auto; width: clamp(150px, 17vw, 230px); height: auto; margin-bottom: -18px; animation: jp-art-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@media (max-width: 767px) { .jp-page-heading-art { display: none; } }
+/* États vides illustrés */
+.jp-empty-art { display: block; }
+@media (prefers-reduced-motion: reduce) { .jp-page-heading-art { animation: none !important; } }

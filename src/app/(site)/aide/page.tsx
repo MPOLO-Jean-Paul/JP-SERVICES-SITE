@@ -20,7 +20,7 @@ export default function AidePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd({ "@type": "FAQPage", mainEntity: FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) })} />
-      <PageHeader title="Centre d’aide" icon={LifeBuoy} text="Une réponse claire, au bon moment. Retrouvez les sujets essentiels ou transmettez une demande détaillée à notre équipe." />
+      <PageHeader illustration="/illustrations/aide-questions.svg" title="Centre d’aide" icon={LifeBuoy} text="Une réponse claire, au bon moment. Retrouvez les sujets essentiels ou transmettez une demande détaillée à notre équipe." />
       <section className="section">
         <div className="shell">
           <div className="grid gap-5 md:grid-cols-3">

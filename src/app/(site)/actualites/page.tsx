@@ -23,7 +23,7 @@ export default async function ActualitesPage({ searchParams }: { searchParams: P
   const [first, ...rest] = page === 1 ? items : [undefined, ...items];
   return (
     <>
-      <PageHeader title="Actualités" icon={Newspaper} text="Des nouvelles utiles pour apprendre, créer et progresser : les annonces, conseils et initiatives publiés par l’équipe JP-Services." />
+      <PageHeader illustration="/illustrations/actualites-journal.svg" title="Actualités" icon={Newspaper} text="Des nouvelles utiles pour apprendre, créer et progresser : les annonces, conseils et initiatives publiés par l’équipe JP-Services." />
       <section className="section">
         <div className="shell">
           {!items.length ? (

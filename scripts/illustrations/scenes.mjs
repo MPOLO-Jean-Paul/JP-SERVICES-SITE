@@ -175,4 +175,81 @@ function scolia() {
   b.push(plant(500, 300, 0.7, P.mint, P.mintLight, P.red));
   return svg(560, 340, b.join(''));
 }
-export { apprendre, avatar, formateur, projet, hero, domFormation, domLogiciels, domProjets, scolia };
+
+const T = (x, y, txt, size = 64, c = "#fff") => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="${size}" fill="${c}">${txt}</text>`;
+const bubble = (x, y, w, h, c = P.white, tail = "left") => `<g transform="translate(${x} ${y})"><rect width="${w}" height="${h}" rx="${Math.min(16, h / 2)}" fill="${c}"/><path d="${tail === "left" ? `M18 ${h} l-4 14 l18 -14z` : `M${w - 18} ${h} l4 14 l-18 -14z`}" fill="${c}"/></g>`;
+
+// 5. Contact : conseillère avec casque, bulles de conversation.
+function support() {
+  const skin = P.skin[0];
+  const b = [`<circle cx="200" cy="200" r="190" fill="${P.blush}"/>`, `<ellipse cx="200" cy="362" rx="140" ry="12" fill="${P.red}" opacity=".10"/>`];
+  b.push(bust({ x: 200, y: 214, w: 128, h: 60, skin, shirt: P.blue, hair: "bun", r: 30 }));
+  // casque
+  b.push(`<path d="M168 180 a32 32 0 0 1 64 0" fill="none" stroke="${P.navy}" stroke-width="7" stroke-linecap="round"/><rect x="160" y="172" width="14" height="24" rx="6" fill="${P.navy}"/><rect x="226" y="172" width="14" height="24" rx="6" fill="${P.navy}"/><path d="M167 194 q4 22 26 22" fill="none" stroke="${P.navy}" stroke-width="4" stroke-linecap="round"/><circle cx="195" cy="216" r="5" fill="${P.red}"/>`);
+  b.push(limb([[146, 248], [150, 272], [196, 274]], 20, shade(P.blue, -0.1)));
+  b.push(desk(80, 320, 274));
+  b.push(laptopBack(200, 214, 92, 60));
+  b.push(mug(104, 244, P.amber));
+  b.push(bubble(48, 92, 92, 48, P.white, "right") + `<rect x="64" y="108" width="58" height="6" rx="3" fill="${P.red}" opacity=".55"/><rect x="64" y="120" width="38" height="6" rx="3" fill="${P.red}" opacity=".3"/>`);
+  b.push(bubble(262, 70, 96, 52, P.blue, "left") + `<circle cx="288" cy="96" r="5" fill="#fff"/><circle cx="310" cy="96" r="5" fill="#fff"/><circle cx="332" cy="96" r="5" fill="#fff"/>`);
+  b.push(`<g transform="translate(322 170)"><circle r="20" fill="${P.mint}"/><path d="M-7 -8 q-3 9 6 17 q8 7 13 4 l-3 -6 l-6 2 q-6 -4 -7 -10 l5 -3z" fill="#fff"/></g>`);
+  b.push(plant(334, 322, 0.75, P.mint, P.mintLight, P.violet));
+  return svg(400, 400, b.join(""));
+}
+
+// 6. À propos : l’équipe, trois personnes réunies.
+function equipe() {
+  const b = [`<circle cx="200" cy="200" r="190" fill="${P.lilac}"/>`, `<defs><clipPath id="eq"><circle cx="200" cy="200" r="190"/></clipPath></defs><g clip-path="url(#eq)">`];
+  b.push(bust({ x: 108, y: 262, w: 132, h: 140, skin: P.skin[2], shirt: P.red, hair: "braids", r: 32 }));
+  b.push(bust({ x: 292, y: 262, w: 132, h: 140, skin: P.skin[3], shirt: P.amber, hair: "fade", r: 32 }));
+  b.push(bust({ x: 200, y: 238, w: 146, h: 170, skin: P.skin[0], shirt: P.violet, hair: "afro", r: 35 }));
+  b.push(`</g>`);
+  b.push(`<g transform="translate(200 62)"><rect x="-58" y="-20" width="116" height="40" rx="20" fill="#fff"/><rect x="-40" y="-6" width="6" height="14" rx="3" fill="${P.red}"/><rect x="-30" y="-12" width="6" height="20" rx="3" fill="${P.violet}"/><circle cx="-18" cy="-11" r="3.2" fill="${P.blue}"/><rect x="-6" y="-3" width="50" height="6" rx="3" fill="${P.navy}" opacity=".7"/></g>`);
+  b.push(`<g transform="translate(332 120)"><circle r="18" fill="${P.blue}"/><path d="M-7 1 l5 5 l10 -11" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>`);
+  return svg(400, 400, b.join(""));
+}
+
+// 7. Centre d’aide : question posée, réponse trouvée.
+function questions() {
+  const b = [`<circle cx="200" cy="200" r="190" fill="${P.sky}"/>`, `<ellipse cx="200" cy="360" rx="130" ry="12" fill="${P.blue}" opacity=".10"/>`];
+  b.push(bubble(196, 64, 120, 100, P.blue, "left") + T(256, 140, "?", 70));
+  b.push(`<g transform="translate(222 190)"><rect width="128" height="120" rx="14" fill="#fff" stroke="${P.grey}" stroke-width="2"/>
+    ${[0, 1, 2].map(i => `<circle cx="22" cy="${28 + i * 32}" r="9" fill="${i < 2 ? P.mint : P.grey}"/>${i < 2 ? `<path d="M17 ${28 + i * 32} l4 4 l7 -8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>` : ""}<rect x="40" y="${24 + i * 32}" width="${70 - i * 12}" height="8" rx="4" fill="${P.greyDark}"/>`).join("")}</g>`);
+  b.push(standing({ x: 128, top: 110, skin: P.skin[1], shirt: P.amber, pants: P.navy, hair: "short", armL: [[106, 184], [100, 232]], armR: [[150, 184], [176, 168], [192, 150]] }));
+  b.push(hand(100, 236, P.skin[1]) + hand(194, 146, P.skin[1]));
+  return svg(400, 400, b.join(""));
+}
+
+// 8. Actualités : tablette avec un article et mégaphone.
+function journal() {
+  const b = [`<circle cx="200" cy="200" r="190" fill="${P.cream}"/>`, `<ellipse cx="200" cy="350" rx="130" ry="12" fill="${P.amber}" opacity=".14"/>`];
+  b.push(`<g transform="translate(96 74)"><rect width="190" height="250" rx="22" fill="${P.navy}"/><rect x="12" y="16" width="166" height="218" rx="12" fill="#fff"/>
+    <rect x="26" y="32" width="138" height="78" rx="8" fill="${P.lilac}"/><rect x="40" y="70" width="16" height="30" rx="8" fill="${P.red}"/><rect x="62" y="56" width="16" height="44" rx="8" fill="${P.violet}"/><rect x="84" y="42" width="16" height="58" rx="8" fill="${P.blue}"/><circle cx="116" cy="48" r="8" fill="${P.blue}"/>
+    <rect x="26" y="124" width="120" height="10" rx="5" fill="${P.navy}"/><rect x="26" y="144" width="138" height="6" rx="3" fill="${P.greyDark}"/><rect x="26" y="158" width="128" height="6" rx="3" fill="${P.greyDark}"/><rect x="26" y="172" width="100" height="6" rx="3" fill="${P.greyDark}"/>
+    <rect x="26" y="196" width="62" height="22" rx="11" fill="${P.blue}"/></g>`);
+  b.push(`<g transform="translate(250 210) rotate(-18)"><path d="M0 18 L64 -10 V74 L0 46z" fill="${P.red}"/><rect x="-22" y="14" width="26" height="36" rx="8" fill="${shade(P.red, -0.2)}"/><rect x="-14" y="46" width="12" height="30" rx="5" fill="${P.navy}"/><path d="M78 14 q14 18 0 36 M90 2 q24 30 0 60" fill="none" stroke="${P.amber}" stroke-width="6" stroke-linecap="round"/></g>`);
+  return svg(400, 400, b.join(""));
+}
+
+// 9. Page introuvable : une voyageuse et un panneau indicateur.
+function perdu() {
+  const b = [`<circle cx="200" cy="200" r="190" fill="${P.lilac}"/>`, `<ellipse cx="200" cy="358" rx="140" ry="12" fill="${P.violet}" opacity=".12"/>`];
+  b.push(`<rect x="268" y="96" width="10" height="262" rx="5" fill="${P.navy}"/>
+    <path d="M276 108 h76 l18 20 l-18 20 h-76z" fill="${P.blue}"/><path d="M270 168 h-84 l-18 20 l18 20 h84z" fill="${P.red}"/><path d="M276 228 h64 l16 18 l-16 18 h-64z" fill="${P.amber}"/>
+    <rect x="292" y="124" width="40" height="6" rx="3" fill="#fff" opacity=".8"/><rect x="198" y="184" width="50" height="6" rx="3" fill="#fff" opacity=".8"/><rect x="290" y="242" width="34" height="6" rx="3" fill="#fff" opacity=".8"/>`);
+  b.push(standing({ x: 130, top: 112, skin: P.skin[2], shirt: P.violet, pants: P.navy, hair: "bun", armL: [[108, 186], [114, 222], [140, 214]], armR: [[152, 186], [158, 220], [148, 214]] }));
+  b.push(`<g transform="translate(120 196) rotate(-8)"><rect width="58" height="42" rx="4" fill="${P.cream}"/><path d="M19 0 v42 M39 0 v42" stroke="${P.amber}" stroke-width="2"/><path d="M6 30 q14 -20 26 -6 t20 -14" fill="none" stroke="${P.red}" stroke-width="2.5" stroke-dasharray="3 4"/></g>`);
+  b.push(hand(132, 218, P.skin[2]) + hand(160, 212, P.skin[2]));
+  return svg(400, 400, b.join(""));
+}
+
+// 10. État vide : boîte ouverte, une pousse qui sort.
+function vide() {
+  const b = [`<circle cx="120" cy="110" r="100" fill="${P.lilac}"/>`];
+  b.push(`<path d="M120 112 C102 92 104 66 122 52 C126 72 126 92 120 112z" fill="${P.mint}"/><path d="M120 112 C138 96 150 82 146 60 C132 70 124 88 120 112z" fill="${P.mintLight}"/>`);
+  b.push(`<path d="M62 112 L120 92 L178 112 L120 132z" fill="${shade(P.violet, -0.25)}"/><path d="M62 112 V164 L120 186 V132z" fill="${P.violet}"/><path d="M178 112 V164 L120 186 V132z" fill="${shade(P.violet, -0.12)}"/>`);
+  b.push(`<path d="M62 112 L40 132 L98 154 L120 132z" fill="${shade(P.violet, 0.25)}"/><path d="M178 112 L200 132 L142 154 L120 132z" fill="${shade(P.violet, 0.15)}"/>`);
+  b.push(`<circle cx="186" cy="56" r="10" fill="${P.amber}"/><circle cx="54" cy="70" r="6" fill="${P.blue}" opacity=".7"/>`);
+  return svg(240, 220, b.join(""));
+}
+export { apprendre, avatar, formateur, projet, hero, domFormation, domLogiciels, domProjets, scolia, support, equipe, questions, journal, perdu, vide };

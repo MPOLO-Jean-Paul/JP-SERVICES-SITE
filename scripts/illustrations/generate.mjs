@@ -17,6 +17,12 @@ const files = {
   "domaine-logiciels.svg": S.domLogiciels(),
   "domaine-projets.svg": S.domProjets(),
   "scolia-gestion.svg": S.scolia(),
+  "contact-conseillere.svg": S.support(),
+  "a-propos-equipe.svg": S.equipe(),
+  "aide-questions.svg": S.questions(),
+  "actualites-journal.svg": S.journal(),
+  "page-introuvable.svg": S.perdu(),
+  "etat-vide.svg": S.vide(),
 };
 for (let i = 0; i < 6; i++) files[`avatar-${i + 1}.svg`] = S.avatar(i);
 for (const [name, content] of Object.entries(files)) {

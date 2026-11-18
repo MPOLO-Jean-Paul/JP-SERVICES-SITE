@@ -23,7 +23,7 @@ export default async function AProposPage() {
   const shown = stats ? ([[stats.formations, "formations", 5], [stats.membres, "membres", 50], [stats.logiciels, "logiciels", 5]] as const).filter(([n, , min]) => n >= min).map(([n, l]) => [n, l] as const) : [];
   return (
     <>
-      <PageHeader title="À propos de JP-Services" icon={Users} text="L’excellence numérique à votre portée. Nous transformons les idées en projets concrets et les projets en résultats." />
+      <PageHeader illustration="/illustrations/a-propos-equipe.svg" title="À propos de JP-Services" icon={Users} text="L’excellence numérique à votre portée. Nous transformons les idées en projets concrets et les projets en résultats." />
       <section className="section">
         <div className="shell grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>

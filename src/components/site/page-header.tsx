@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -5,12 +6,14 @@ import { cn } from "@/lib/utils";
 
 export type Crumb = { href?: string; label: string };
 
-export function PageHeader({ title, crumbs, text, actions, className }: {
+export function PageHeader({ title, crumbs, text, actions, illustration, className }: {
   title: string;
   icon?: LucideIcon;
   crumbs?: Crumb[];
   text?: string;
   actions?: React.ReactNode;
+  /** Illustration JP-Services affichée à droite (chemin dans /illustrations). */
+  illustration?: string;
   className?: string;
 }) {
   return <div className={cn("jp-page-heading border-b", className)}>
@@ -27,6 +30,7 @@ export function PageHeader({ title, crumbs, text, actions, className }: {
         {text ? <p className="jp-page-heading-lead">{text}</p> : null}
       </div>
       {actions ? <div className="jp-page-heading-actions">{actions}</div> : null}
+      {illustration ? <Image src={illustration} width={400} height={400} alt="" priority unoptimized className="jp-page-heading-art" /> : null}
     </div>
   </div>;
 }

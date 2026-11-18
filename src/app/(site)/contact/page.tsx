@@ -28,7 +28,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
       url: SITE_URL + "/contact",
       mainEntity: { "@type": "Organization", name: "JP-Services", email, ...(phone ? { telephone: phone } : {}), ...(location ? { address: location } : {}) },
     })} />
-    <PageHeader title="Parlons de votre projet." text="Une question sur une formation, une solution numérique ou un partenariat ? Présentez-nous votre besoin." />
+    <PageHeader illustration="/illustrations/contact-conseillere.svg" title="Parlons de votre projet." text="Une question sur une formation, une solution numérique ou un partenariat ? Présentez-nous votre besoin." />
     <section className="jp-contact-section">
       <div className="shell jp-contact-layout">
         <div className="jp-contact-main">

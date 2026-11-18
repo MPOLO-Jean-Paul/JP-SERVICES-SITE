@@ -242,3 +242,26 @@ html:has(.jp-nav-progress[data-state="loading"]) body { cursor: progress; }
   .jp-admin-quick a { justify-content: center; padding: 0 10px; }
   .jp-admin-quick-primary { grid-column: 1 / -1; }
 }
+
+/* ── Tableau des cookies : étiquettes de type, et fiches empilées sur mobile ── */
+.jp-cookie-table code { font-family: var(--font-mono); font-size: 13px; padding: 2px 7px; border-radius: 6px; background: var(--panel-2); color: var(--ink); white-space: nowrap; }
+.jp-cookie-tag { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+.jp-cookie-tag-ok { background: #e6f7f0; color: #0f7a57; }
+.jp-cookie-tag-opt { background: #fff4e0; color: #a05a00; }
+[data-theme="dark"] .jp-cookie-tag-ok { background: rgb(19 145 106 / 0.18); color: #6ee7b7; }
+[data-theme="dark"] .jp-cookie-tag-opt { background: rgb(217 130 0 / 0.18); color: #fcd34d; }
+@media (max-width: 640px) {
+  .jp-cookie-table { overflow: visible; border: 0; }
+  .jp-cookie-table table, .jp-cookie-table tbody, .jp-cookie-table tr, .jp-cookie-table td { display: block; width: 100%; }
+  .jp-cookie-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .jp-cookie-table tbody { display: grid; gap: 12px; }
+  .jp-cookie-table tr { padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+  .jp-cookie-table td { padding: 0 !important; border: 0 !important; }
+  .jp-cookie-table td + td { margin-top: 10px; }
+  .jp-cookie-table td[data-label]::before { content: attr(data-label); display: block; margin-bottom: 2px; color: var(--muted); font-size: 12px; font-weight: 600; }
+  /* Durée et type côte à côte */
+  .jp-cookie-table tr { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; }
+  .jp-cookie-table td.jp-cookie-name, .jp-cookie-table td[data-label="Finalité"] { grid-column: 1 / -1; }
+  .jp-cookie-table td[data-label="Type"] { text-align: right; }
+  .jp-cookie-table tbody tr:hover { background: var(--panel); }
+}

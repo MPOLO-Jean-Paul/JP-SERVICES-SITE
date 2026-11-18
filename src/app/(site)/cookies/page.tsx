@@ -28,10 +28,17 @@ export default function CookiesPage() {
         {
           title: "Les cookies que nous utilisons",
           body: (
-            <div className="overflow-x-auto rounded-xl border">
+            <div className="jp-cookie-table overflow-x-auto rounded-xl border">
               <table className="table-jp">
                 <thead><tr><th>Nom</th><th>Finalité</th><th>Durée</th><th>Type</th></tr></thead>
-                <tbody>{ROWS.map(([n, f, d, t]) => <tr key={n}><td className="font-medium">{n}</td><td>{f}</td><td>{d}</td><td><span className={t === "Essentiel" ? "text-emerald-700" : "text-amber-700"}>{t}</span></td></tr>)}</tbody>
+                <tbody>{ROWS.map(([n, f, d, t]) => (
+                  <tr key={n}>
+                    <td className="jp-cookie-name font-medium"><CookieName name={String(n)} /></td>
+                    <td data-label="Finalité">{f}</td>
+                    <td data-label="Durée" className="whitespace-nowrap">{d}</td>
+                    <td data-label="Type"><span className={t === "Essentiel" ? "jp-cookie-tag jp-cookie-tag-ok" : "jp-cookie-tag jp-cookie-tag-opt"}>{t}</span></td>
+                  </tr>
+                ))}</tbody>
               </table>
             </div>
           ),
@@ -42,4 +49,11 @@ export default function CookiesPage() {
       aside={<div className="rounded-xl bg-panel-2 p-5 text-sm text-copy"><strong className="block text-ink">En résumé</strong><ul className="mt-2 list-disc space-y-1 pl-5"><li>Aucun cookie publicitaire n’est utilisé.</li><li>Les cookies essentiels ne peuvent pas être désactivés : ils font fonctionner le site.</li><li>La mesure d’audience n’est activée qu’avec votre consentement.</li></ul></div>}
     />
   );
+}
+
+/** Nom technique en style code ; libellé simple (« Mesure d’audience ») en texte normal. */
+function CookieName({ name }: { name: string }) {
+  const [id = "", ...rest] = name.split(" ");
+  if (!/^[a-z][\w-]*$/i.test(id) || /^[A-Z]/.test(id)) return <>{name}</>;
+  return <span><code>{id}</code>{rest.length ? <span className="mt-1 block text-xs font-normal text-muted">{rest.join(" ").replace(/[()]/g, "")}</span> : null}</span>;
 }

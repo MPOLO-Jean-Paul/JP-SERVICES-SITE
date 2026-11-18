@@ -31,3 +31,50 @@ a, button, [role="button"], summary { -webkit-tap-highlight-color: transparent; 
 @media (prefers-reduced-motion: reduce) {
   .jp-page-enter { animation: none !important; }
 }
+
+/* Bandeau d’annonce : repli en douceur à la fermeture */
+.jp-announcement { display: grid; grid-template-rows: 1fr; transition: grid-template-rows 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease; }
+.jp-announcement-inner { min-height: 0; overflow: hidden; }
+.jp-announcement[data-closing="true"] { grid-template-rows: 0fr; opacity: 0; border-bottom-width: 0; }
+
+/* ── Ergonomie tactile : zones d’appui d’au moins 44 px, sans changer l’apparence ── */
+@media (pointer: coarse) {
+  /* Pas de zoom automatique de l’iPhone dans les listes déroulantes */
+  select { font-size: max(16px, 1em); }
+
+  .jp-gallery-icon { width: 44px !important; height: 44px !important; }
+  .jp-gallery-dot { min-width: 44px; min-height: 44px; }
+  .jp-announcement button[aria-label] { position: relative; }
+  .jp-announcement button[aria-label]::before { content: ""; position: absolute; inset: -8px; }
+
+  /* Liens courts : la zone d’appui déborde verticalement du texte */
+  .jp-breadcrumb a, footer a, .jp-inline-link, .jp-path-action, .jp-site-logo,
+  a.hover\:text-primary, .jp-story-share {
+    position: relative;
+  }
+  .jp-breadcrumb a::before, footer a::before, .jp-inline-link::before, .jp-path-action::before,
+  a.hover\:text-primary::before, .jp-story-share::before {
+    content: "";
+    position: absolute;
+    inset: -10px -4px;
+  }
+  footer a.size-9 { width: 44px; height: 44px; }
+  footer a.size-9::before { content: none; }
+  #site-header a.h-9, #site-header button.h-9 { min-height: 40px; }
+  #site-header a.h-9::before { content: ""; position: absolute; inset: -4px 0; }
+  #site-header a.h-9 { position: relative; }
+}
+@media (pointer: coarse) {
+  .jp-hit, .jp-site-logo, nav[aria-label="Fil d’Ariane"] a { position: relative; }
+  .jp-hit::before, .jp-site-logo::before, nav[aria-label="Fil d’Ariane"] a::before { content: ""; position: absolute; inset: -10px -6px; }
+}
+/* Flèches des liens : glissement léger au survol, partout sur le site */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  a svg.lucide-arrow-right, a svg.lucide-arrow-up-right, a .jp-md3-icon { transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1); }
+  a:hover > svg.lucide-arrow-right, a:hover > .lucide-arrow-right { transform: translateX(3px); }
+  a:hover > svg.lucide-arrow-up-right, a:hover > .lucide-arrow-up-right { transform: translate(2px, -2px); }
+}
+@media (pointer: coarse) {
+  footer button { position: relative; }
+  footer button::before { content: ""; position: absolute; inset: -12px -4px; }
+}

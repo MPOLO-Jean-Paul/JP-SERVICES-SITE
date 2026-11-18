@@ -195,7 +195,7 @@ export default async function FormationPage({ params }: { params: Promise<{ id: 
                     </span>
                     <strong>{formatPrice(r.prix)}</strong>
                   </div>
-                  <Link href={`/formations/${r.id}`} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary">
+                  <Link href={`/formations/${r.id}`} className="jp-hit group mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary">
                     Voir la formation <ArrowRight className="size-4" />
                   </Link>
                 </div></article>

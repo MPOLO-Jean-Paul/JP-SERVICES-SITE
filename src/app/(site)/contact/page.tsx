@@ -65,7 +65,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
           <div className="jp-contact-note">
             <span>UNE DEMANDE BIEN PRÉPARÉE</span>
             <p>Précisez le contexte, le résultat recherché et les contraintes importantes. Cela facilite un échange concret.</p>
-            <Link href="/a-propos">Découvrir JP-SERVICES <ArrowUpRight size={16}/></Link>
+            <Link href="/a-propos" className="jp-hit">Découvrir JP-SERVICES <ArrowUpRight size={16}/></Link>
           </div>
         </aside>
       </div>

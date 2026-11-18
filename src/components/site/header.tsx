@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { getTranslations } from "next-intl/server";
+import { ANNOUNCEMENT_COOKIE, announcementKey } from "@/lib/announcement";
 import { MaterialIcon } from "@/components/ui/material-symbol";
 import { LogoMark } from "@/components/brand/logo";
 import { getCurrentUser } from "@/server/auth/session";
@@ -18,12 +20,13 @@ export async function SiteHeader() {
   const unread = user ? await countUnreadNotifications(user.id).catch(() => 0) : 0;
   const preview = process.env.JP_PREVIEW_MODE === "1";
   const announcement = settings.annonce_texte?.trim();
+  const announcementClosed = announcement ? (await cookies()).get(ANNOUNCEMENT_COOKIE)?.value === announcementKey(announcement) : true;
   const announcementHref = /^(?:https?:\/\/|\/)/i.test(settings.annonce_url ?? "") ? settings.annonce_url! : "/formations";
   const publicUser = user ? { displayName: user.displayName, email: user.email, isAdmin: user.isAdmin, photoProfil: user.photoProfil } : null;
 
   return (
     <>
-      {announcement ? <AnnouncementBar text={announcement} href={announcementHref} label={settings.annonce_lien_label || "En savoir plus"} /> : null}
+      {announcement && !announcementClosed ? <AnnouncementBar text={announcement} href={announcementHref} label={settings.annonce_lien_label || "En savoir plus"} /> : null}
       <header className="glass sticky top-0 z-40 border-b" id="site-header">
         <div className="shell jp-header-inner flex h-16 items-center gap-2.5 sm:gap-3">
           <MobileDrawer user={publicUser} logoutAction={logoutAction} preview={preview} />

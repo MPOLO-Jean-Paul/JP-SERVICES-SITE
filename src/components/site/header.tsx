@@ -33,18 +33,18 @@ export async function SiteHeader() {
           <Link href="/" className="jp-site-logo flex items-center gap-2" aria-label="JP-Services — Accueil">
             <LogoMark className="size-9" />
           </Link>
-          <div className="mx-auto">
+          <div className="jp-header-navigation mx-auto">
             <DesktopNav user={publicUser} />
           </div>
-          <div className="flex items-center gap-1">
+          <div className="jp-header-actions flex items-center gap-1">
             <SearchPalette compact />
-            <Link href="/aide" aria-label={t("help")} title={t("help")} className="hidden size-10 items-center justify-center rounded-full text-copy transition hover:bg-panel-2 hover:text-ink md:inline-flex">
+            <Link href="/aide" aria-label={t("help")} title={t("help")} className="jp-header-help hidden size-10 items-center justify-center rounded-full text-copy transition hover:bg-panel-2 hover:text-ink md:inline-flex">
               <MaterialIcon name="help" size={20} />
             </Link>
-            <PwaInstall className="hidden md:inline-flex" />
-            <LanguageMenu className="hidden sm:inline-flex" />
-            <ThemeMenu className="hidden sm:inline-flex" />
-            <div className="ml-1">
+            <PwaInstall className="jp-header-install hidden md:inline-flex" />
+            <LanguageMenu className="jp-header-language hidden sm:inline-flex" />
+            <ThemeMenu className="jp-header-theme hidden sm:inline-flex" />
+            <div className="jp-header-account ml-1">
               <AccountMenu user={publicUser} logoutAction={logoutAction} unread={unread} preview={preview} />
               {!user ? (
                 <Link href={preview ? "/contact" : "/connexion"} className="inline-flex h-9 items-center rounded-lg bg-ink px-3 text-sm font-medium text-canvas sm:hidden">

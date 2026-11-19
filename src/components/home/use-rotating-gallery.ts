@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export function useRotatingGallery(count: number, intervalMs: number) {
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const scrollFrameRef = useRef<number | null>(null);
   const [active, setActive] = useState(0);
   const [manualPause, setManualPause] = useState(false);
   const [hover, setHover] = useState(false);
@@ -33,6 +34,7 @@ export function useRotatingGallery(count: number, intervalMs: number) {
       observer?.disconnect();
       media.removeEventListener("change", updateMotion);
       document.removeEventListener("visibilitychange", updateVisibility);
+      if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
     };
   }, []);
 
@@ -54,11 +56,16 @@ export function useRotatingGallery(count: number, intervalMs: number) {
     return () => window.clearInterval(handle);
   }, [active, goTo, intervalMs, playing]);
 
+  // Une seule lecture de position par frame, même sur les trackpads haute fréquence.
   const onScroll = useCallback(() => {
-    const el = trackRef.current;
-    if (!el?.clientWidth) return;
-    const index = Math.max(0, Math.min(count - 1, Math.round(el.scrollLeft / el.clientWidth)));
-    setActive((previous) => previous === index ? previous : index);
+    if (scrollFrameRef.current !== null) return;
+    scrollFrameRef.current = window.requestAnimationFrame(() => {
+      scrollFrameRef.current = null;
+      const el = trackRef.current;
+      if (!el?.clientWidth) return;
+      const index = Math.max(0, Math.min(count - 1, Math.round(el.scrollLeft / el.clientWidth)));
+      setActive((previous) => previous === index ? previous : index);
+    });
   }, [count]);
 
   return {

@@ -1,4 +1,11 @@
 /*
+ * Recherche desktop : les libellés existent dans le composant unique
+ * mais restent masqués tant que la largeur disponible ne le permet pas.
+ */
+.jp-header-search-text,
+.jp-header-search-kbd { display: none; }
+
+/*
  * JP-Services / desktop : navigation stable et perception de netteté.
  * Le mobile ne reçoit aucune règle de cette feuille.
  */
@@ -248,5 +255,75 @@
   #main-content .jp-promo-illustration {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Barre de recherche identifiable sur écrans larges. Aucun second dialogue. */
+@media (min-width: 1440px) {
+  #site-header .jp-header-search-trigger {
+    width: clamp(142px, 10.5vw, 172px);
+    height: 42px;
+    padding-inline: 12px;
+    justify-content: flex-start;
+    gap: 9px;
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    background: var(--panel-2);
+    color: var(--copy);
+    white-space: nowrap;
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+  }
+
+  #site-header .jp-header-search-text {
+    display: inline;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12.5px;
+    font-weight: 560;
+    letter-spacing: -.01em;
+    line-height: 1;
+  }
+
+  #site-header .jp-header-search-trigger:hover,
+  #site-header .jp-header-search-trigger[aria-expanded="true"] {
+    border-color: color-mix(in srgb, var(--primary) 34%, var(--line));
+    background: color-mix(in srgb, var(--primary) 8%, var(--panel));
+    color: var(--ink);
+  }
+}
+
+@media (min-width: 1650px) {
+  #site-header .jp-header-search-trigger {
+    width: 196px;
+  }
+  #site-header .jp-header-search-kbd {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto;
+    padding: 4px 6px;
+    margin-left: auto;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--muted);
+    font: 500 10px/1 var(--font-sans);
+    white-space: nowrap;
+  }
+}
+
+/* Conserver des repères visibles au clavier et des transitions stables. */
+@media (min-width: 1024px) {
+  #site-header .jp-nav-link:focus-visible,
+  #site-header .jp-site-logo:focus-visible,
+  #site-header .jp-header-search-trigger:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    box-shadow: none;
+  }
+
+  #site-header :is(.jp-header-search-trigger, .jp-nav-link, .jp-site-logo) {
+    backface-visibility: visible;
   }
 }

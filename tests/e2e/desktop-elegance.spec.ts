@@ -46,3 +46,42 @@ test("La présentation mobile reste une liste tactile horizontale", async ({ pag
   const width = await page.evaluate(() => document.documentElement.scrollWidth);
   expect(width).toBeLessThanOrEqual(391);
 });
+
+test("Le nouvel en-tête desktop ne chevauche ni le menu ni les actions", async ({ page }) => {
+  for (const width of [1280, 1366, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+
+    const nav = page.locator('#site-header nav[aria-label="Menu principal"]');
+    const logo = page.locator("#site-header .jp-site-logo");
+    const actions = page.locator("#site-header .jp-header-actions");
+    await expect(nav).toBeVisible();
+    await expect(logo).toBeVisible();
+    await expect(actions).toBeVisible();
+    await expect(nav.locator("a.jp-nav-link")).toHaveCount(6);
+
+    const sizes = await page.evaluate(() => {
+      const nav = document.querySelector<HTMLElement>('#site-header nav[aria-label="Menu principal"]')!;
+      const links = [...nav.querySelectorAll("a.jp-nav-link")];
+      const actions = document.querySelector<HTMLElement>("#site-header .jp-header-actions")!;
+      const logo = document.querySelector<HTMLElement>("#site-header .jp-site-logo")!;
+      return {
+        rightmostLink: Math.max(...links.map((link) => link.getBoundingClientRect().right)),
+        leftmostLink: Math.min(...links.map((link) => link.getBoundingClientRect().left)),
+        actionsLeft: actions.getBoundingClientRect().left,
+        logoRight: logo.getBoundingClientRect().right,
+        scrollWidth: document.documentElement.scrollWidth,
+      };
+    });
+    expect(sizes.scrollWidth, `Débordement de l'en-tête à ${width}px`).toBeLessThanOrEqual(width + 1);
+    expect(sizes.rightmostLink, `Menu collé aux actions à ${width}px`).toBeLessThanOrEqual(sizes.actionsLeft);
+    expect(sizes.leftmostLink, `Menu collé au logo à ${width}px`).toBeGreaterThanOrEqual(sizes.logoRight);
+  }
+});
+
+test("Le menu repliable reste accessible sur les petits ordinateurs", async ({ page }) => {
+  await page.setViewportSize({ width: 1100, height: 768 });
+  await page.goto("/");
+  await expect(page.locator('#site-header nav[aria-label="Menu principal"]')).toBeHidden();
+  await expect(page.locator('#site-header button[aria-controls="mobile-drawer"]')).toBeVisible();
+});

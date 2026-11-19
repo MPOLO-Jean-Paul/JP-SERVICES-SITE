@@ -50,14 +50,19 @@ export function SiteMotion() {
     document.addEventListener("pointerdown", onPointerDown, { passive: true });
 
     let observer: IntersectionObserver | undefined;
+    // Les titres et pictogrammes desktop ne subissent plus de translation
+    // (qui pouvait donner un rendu légèrement flou pendant l'entrée).
+    const desktop = window.matchMedia("(min-width: 1024px)").matches;
     if (!reducedMotion.matches && "IntersectionObserver" in window) {
       observer = new IntersectionObserver(entries => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
           observer?.unobserve(entry.target);
           entry.target.animate(
-            [{ opacity: 0.7, transform: "translateY(10px)" }, { opacity: 1, transform: "translateY(0)" }],
-            { duration: 480, easing: "cubic-bezier(.2,.85,.2,1)", iterations: 1 },
+            desktop
+              ? [{ opacity: 0.88 }, { opacity: 1 }]
+              : [{ opacity: 0.7, transform: "translateY(10px)" }, { opacity: 1, transform: "translateY(0)" }],
+            { duration: desktop ? 330 : 480, easing: "cubic-bezier(.2,.85,.2,1)", iterations: 1 },
           );
         }
       }, { threshold: 0.09, rootMargin: "0px 0px -24px 0px" });

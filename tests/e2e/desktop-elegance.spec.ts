@@ -91,3 +91,50 @@ test("Les rubriques essentielles et le menu complet coexistent sur petits ordina
   const viewportOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
   expect(viewportOverflow).toBe(false);
 });
+
+test("La recherche devient lisible sur grand écran sans changer le mobile", async ({ page }) => {
+  const search = page.locator("#site-header .jp-header-search-trigger");
+  const label = search.locator(".jp-header-search-text");
+  const kbd = search.locator(".jp-header-search-kbd");
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await expect(search).toBeVisible();
+  await expect(label).toBeHidden();
+  await expect(kbd).toBeHidden();
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(search).toBeVisible();
+  await expect(label).toBeVisible();
+  await expect(kbd).toBeHidden();
+
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await expect(label).toBeVisible();
+  await expect(kbd).toBeVisible();
+
+  await search.click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await expect(search).toHaveAttribute("aria-expanded", "true");
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toBeHidden();
+
+  await page.keyboard.press("Control+k");
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.keyboard.press("Escape");
+});
+
+test("L'en-tête reste collant sans mouvement ni débordement après le défilement", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const header = page.locator("#site-header");
+  await expect(header).toBeVisible();
+  await page.evaluate(() => window.scrollTo({ top: 850, behavior: "instant" }));
+  await expect(header).toHaveAttribute("data-scrolled", "");
+  const metrics = await header.evaluate((element) => {
+    const bounds = element.getBoundingClientRect();
+    return { top: bounds.top, width: bounds.width, viewport: window.innerWidth };
+  });
+  expect(metrics.top).toBeGreaterThanOrEqual(-1);
+  expect(metrics.top).toBeLessThanOrEqual(1);
+  expect(metrics.width).toBeLessThanOrEqual(metrics.viewport + 1);
+});

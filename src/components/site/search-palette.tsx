@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 const loadDialog = () => import("./search-dialog").then((m) => m.SearchDialog);
 const SearchDialog = dynamic(loadDialog, { ssr: false });
 
-export function SearchPalette({ triggerClassName, compact }: { triggerClassName?: string; compact?: boolean }) {
+export function SearchPalette({ triggerClassName, compact, desktopExpanded = false }: { triggerClassName?: string; compact?: boolean; desktopExpanded?: boolean }) {
   const tn = useTranslations("nav");
   const [open, setOpen] = useState(false);
   const [requested, setRequested] = useState(false);
@@ -40,9 +40,15 @@ export function SearchPalette({ triggerClassName, compact }: { triggerClassName?
         onPointerEnter={prefetch}
         onFocus={prefetch}
         onClick={() => { setRequested(true); setOpen(true); }}
-        className={cn("inline-flex h-10 items-center gap-2 rounded-full text-copy transition hover:bg-panel-2 hover:text-ink", compact ? "size-10 justify-center" : "border px-3.5 pr-2 text-sm", triggerClassName)}
+        className={cn("inline-flex h-10 items-center gap-2 rounded-full text-copy transition hover:bg-panel-2 hover:text-ink", compact ? "size-10 justify-center" : "border px-3.5 pr-2 text-sm", desktopExpanded && "jp-header-search-trigger", triggerClassName)}
       >
         <MaterialIcon name="search" size={20} />
+        {compact && desktopExpanded ? (
+          <>
+            <span className="jp-header-search-text" aria-hidden="true">{tn("searchLabel")}</span>
+            <kbd className="jp-header-search-kbd" aria-hidden="true">Ctrl K</kbd>
+          </>
+        ) : null}
         {compact ? null : (
           <>
             <span className="hidden lg:inline">{tn("searchLabel")}</span>

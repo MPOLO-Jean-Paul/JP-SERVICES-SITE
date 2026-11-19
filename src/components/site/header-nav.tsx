@@ -37,7 +37,7 @@ export function DesktopNav({ user }: { user: Props["user"] }) {
     { href: "/a-propos", label: t("about") },
   ];
   return (
-    <nav className="hidden items-center gap-1 xl:flex" aria-label="Menu principal">
+    <nav className="hidden items-center gap-1 lg:flex" aria-label="Menu principal">
       {links.map(link => {
         const active = pathname === link.href || pathname.startsWith(link.href + "/");
         return <Link

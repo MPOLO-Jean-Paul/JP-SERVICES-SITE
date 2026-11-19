@@ -37,7 +37,7 @@ export async function SiteHeader() {
             <DesktopNav user={publicUser} />
           </div>
           <div className="jp-header-actions flex items-center gap-1">
-            <SearchPalette compact />
+            <SearchPalette compact desktopExpanded />
             <Link href="/aide" aria-label={t("help")} title={t("help")} className="jp-header-help hidden size-10 items-center justify-center rounded-full text-copy transition hover:bg-panel-2 hover:text-ink md:inline-flex">
               <MaterialIcon name="help" size={20} />
             </Link>

@@ -1,0 +1,313 @@
+/*
+ * JP-Services — finition éditoriale desktop, novembre 2026.
+ * Tous les ajustements sont limités aux écrans d'ordinateur.
+ * Le rendu mobile et tablette (< 1024px) reste celui de la version validée.
+ */
+@media (min-width: 1024px) {
+  :root {
+    --jp-desktop-soft-shadow: 0 22px 60px -43px rgb(10 25 58 / .36);
+    --jp-desktop-ease: cubic-bezier(.22, 1, .36, 1);
+  }
+
+  /* Colonne de lecture cohérente sur toute la vitrine, sans écran étiré. */
+  #main-content :is(.jp-hero, .jp-section, .jp-scolia-section, .jp-finale, .jp-inner-hero, .jp-page-heading, .jp-svc-hero) > .shell,
+  #site-header > .shell,
+  .jp-site-footer > .shell {
+    width: 100%;
+    max-width: 1460px;
+    padding-inline: clamp(32px, 4.2vw, 76px);
+    margin-inline: auto;
+  }
+
+  /* Barre de navigation : plus d'air, contraste net et repère actif. */
+  #site-header .jp-header-inner {
+    min-height: 76px;
+    height: auto;
+    gap: clamp(12px, 1.4vw, 22px);
+  }
+  #site-header .jp-nav-link {
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 570;
+    padding-inline: clamp(9px, .83vw, 14px);
+    letter-spacing: -.012em;
+  }
+  #site-header .jp-nav-link:hover,
+  #site-header .jp-nav-link[aria-current="page"] {
+    color: var(--ink);
+    background: color-mix(in srgb, var(--primary) 7%, var(--panel));
+  }
+  #site-header .jp-nav-link[aria-current="page"] { font-weight: 700; }
+
+  /* Accueil : vraie composition gauche/droite, sans vide au centre. */
+  #main-content .jp-hero {
+    background:
+      radial-gradient(ellipse 55% 86% at 92% 30%, color-mix(in srgb, var(--primary) 7%, transparent), transparent 72%),
+      var(--canvas);
+  }
+  #main-content .jp-hero .jp-hero-layout {
+    grid-template-columns: minmax(0, .98fr) minmax(0, 1.02fr);
+    align-items: center;
+    gap: clamp(35px, 5vw, 86px);
+    min-height: clamp(515px, 43vw, 660px);
+    padding-top: clamp(66px, 6vw, 102px);
+    padding-bottom: clamp(50px, 5vw, 80px);
+  }
+  #main-content .jp-hero-main { min-width: 0; }
+  #main-content .jp-hero-main h1 {
+    max-width: 18ch;
+    margin-block: 21px 26px;
+    font-size: clamp(3.12rem, 4.35vw, 4.8rem);
+    font-weight: 680;
+    line-height: 1.075;
+    letter-spacing: -.058em;
+    text-wrap: balance;
+  }
+  #main-content .jp-hero-lead {
+    max-width: 49ch;
+    font-size: clamp(1.05rem, 1.22vw, 1.2rem);
+    font-weight: 430;
+    line-height: 1.7;
+    color: var(--copy);
+    opacity: 1;
+    text-wrap: pretty;
+  }
+  #main-content .jp-hero-actions { gap: 15px; margin-top: 31px; }
+  #main-content .jp-hero-actions .jp-action {
+    min-height: 52px;
+    padding-inline: 19px;
+    gap: 15px;
+    border-radius: 12px;
+    font-size: 14px;
+  }
+  #main-content .jp-hero-actions .jp-action-text { padding-inline: 5px; }
+  #main-content .jp-hero-support { margin-top: 32px; font-size: 12px; }
+  #main-content .jp-hero-art {
+    justify-self: end;
+    width: min(100%, 625px);
+    max-width: 100%;
+    isolation: isolate;
+    filter: drop-shadow(0 22px 35px rgb(23 47 94 / .07));
+  }
+  #main-content .jp-hero-art-image { width: 100%; max-width: none; }
+  #main-content .jp-hero-chip-progress { left: 0; top: 19%; }
+  #main-content .jp-hero-chip-live { top: 27%; right: 0; }
+  #main-content .jp-hero-chip-check { bottom: 13%; right: 5%; }
+
+  /* Raccourcis : une vraie barre de navigation secondaire. */
+  #main-content .jp-hero-start {
+    border-top: 1px solid var(--line-strong);
+    gap: 0;
+  }
+  #main-content .jp-hero-start-link {
+    min-height: 89px;
+    padding-block: 20px;
+    gap: 13px;
+    transition: background-color .22s ease, color .22s ease;
+  }
+  #main-content .jp-hero-start-link strong {
+    font-size: clamp(13px, 1vw, 15px);
+    line-height: 1.4;
+    text-wrap: pretty;
+  }
+  #main-content .jp-hero-start-link:hover {
+    background: color-mix(in srgb, var(--primary) 5%, transparent);
+  }
+
+  /* Grands rythmes et titres : densité éditoriale sans interlignes excessifs. */
+  #main-content .jp-section { padding-block: clamp(78px, 7vw, 112px); }
+  #main-content .jp-section-heading {
+    align-items: end;
+    gap: clamp(32px, 4vw, 64px);
+    margin-bottom: 37px;
+  }
+  #main-content :is(.jp-section-heading h2, .jp-sticky-intro h2) {
+    max-width: 880px;
+    font-size: clamp(2.3rem, 2.8vw, 3.15rem);
+    font-weight: 650;
+    line-height: 1.14;
+    letter-spacing: -.045em;
+    margin-top: 16px;
+  }
+  #main-content .jp-section-heading .jp-section-aside {
+    max-width: 380px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  /* Domaines : bloc d'introduction fixe et lignes illustrées mieux équilibrées. */
+  #main-content .jp-areas-layout {
+    grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+    align-items: start;
+    gap: clamp(54px, 6vw, 98px);
+  }
+  #main-content .jp-sticky-intro { position: sticky; top: 120px; min-width: 0; }
+  #main-content .jp-sticky-intro h2 { max-width: 16ch; }
+  #main-content .jp-sticky-intro > p:not(.jp-overline) {
+    max-width: 45ch;
+    font-size: 15px;
+    line-height: 1.72;
+  }
+  #main-content .jp-areas-list { display: grid; gap: 13px; border-top: 0; }
+  #main-content .jp-areas-list .jp-area-link {
+    grid-template-columns: 30px minmax(0, 1fr) clamp(104px, 10vw, 146px) 22px;
+    align-items: center;
+    min-height: 166px;
+    gap: clamp(12px, 1.45vw, 22px);
+    padding: 21px clamp(18px, 2vw, 30px);
+    margin: 0;
+    border: 1px solid var(--line);
+    border-radius: 19px;
+    background: var(--panel);
+    box-shadow: none;
+    transition: border-color .28s ease, box-shadow .35s ease, transform .35s var(--jp-desktop-ease);
+  }
+  #main-content .jp-area-link h3 {
+    font-size: clamp(1.28rem, 1.4vw, 1.6rem);
+    line-height: 1.25;
+    margin-block: 6px;
+  }
+  #main-content .jp-area-link p { max-width: 48ch; font-size: 13px; line-height: 1.58; }
+  #main-content .jp-area-visual { width: 100%; aspect-ratio: 1.2; }
+  #main-content .jp-area-visual img { max-height: 145px; object-fit: contain; }
+
+  /* Carrousel d'affiches : grand visuel net, texte sur un véritable axe. */
+  #main-content .jp-promo-gallery {
+    border-radius: 26px;
+    box-shadow: var(--jp-desktop-soft-shadow);
+  }
+  #main-content .jp-promo-slide { min-height: clamp(410px, 36vw, 545px); }
+  #main-content .jp-promo-copy {
+    width: min(60%, 770px);
+    padding: clamp(38px, 5vw, 75px);
+  }
+  #main-content .jp-promo-copy h3 {
+    max-width: 17ch;
+    font-size: clamp(2.15rem, 2.95vw, 3.55rem);
+    line-height: 1.1;
+    letter-spacing: -.045em;
+  }
+  #main-content .jp-promo-description { max-width: 47ch; font-size: 15px; line-height: 1.7; }
+  #main-content .jp-promo-illustration {
+    right: clamp(28px, 6vw, 90px);
+    width: min(38%, 440px);
+  }
+  #main-content .jp-promo-controls { padding-inline: 28px; }
+
+  /* Services : des cartes larges, et la demande de devis comme conclusion forte. */
+  #main-content .jp-hsvc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 2vw, 25px);
+    margin-top: 32px;
+    overflow: visible;
+  }
+  #main-content .jp-hsvc {
+    min-width: 0;
+    border-radius: 22px;
+    box-shadow: 0 8px 28px -24px rgb(13 31 61 / .28);
+  }
+  #main-content .jp-hsvc-visual,
+  #main-content .jp-hsvc-quote-art {
+    aspect-ratio: 16 / 10;
+    margin: 9px 9px 0;
+    border-radius: 16px;
+  }
+  #main-content .jp-hsvc-avatar { width: min(54%, 190px); }
+  #main-content .jp-hsvc-body { gap: 11px; padding: 22px 24px 25px; }
+  #main-content .jp-hsvc-body h3 { font-size: clamp(17px, 1.32vw, 20px); line-height: 1.32; }
+  #main-content .jp-hsvc-body p { font-size: 14px; line-height: 1.67; }
+  #main-content .jp-hsvc-quote:last-child {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(230px, .7fr) minmax(0, 1.3fr);
+    align-items: center;
+    min-height: 225px;
+  }
+  #main-content .jp-hsvc-quote-art { height: calc(100% - 18px); aspect-ratio: auto; margin: 9px; }
+  #main-content .jp-hsvc-quote .jp-hsvc-body { padding: 30px clamp(30px, 4vw, 60px); }
+  #main-content .jp-hsvc-quote .jp-hsvc-body h3 { font-size: clamp(1.6rem, 2vw, 2.2rem); }
+  #main-content .jp-hsvc-quote .jp-hsvc-body p { max-width: 59ch; }
+
+  /* Parcours et catalogue : lisibilité avant les effets. */
+  #main-content .jp-course-row {
+    gap: 24px;
+    padding: 26px 18px;
+    border-radius: 13px;
+    box-shadow: none;
+  }
+  #main-content .jp-learning-empty { border-radius: 22px; }
+  #main-content .jp-method-grid { border-top: 0; gap: clamp(17px, 2vw, 25px); }
+  #main-content .jp-method-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 29px 26px 32px;
+    border: 1px solid var(--line);
+    border-radius: 23px;
+    background: var(--panel);
+    box-shadow: 0 18px 48px -40px rgb(10 25 58 / .26);
+  }
+  #main-content .jp-method-illustration { width: min(72%, 190px); margin-bottom: 19px; }
+  #main-content .jp-method-rule { width: 70px; margin: 19px auto; background: var(--line-strong); }
+  #main-content .jp-method-step p { max-width: 35ch; margin-inline: auto; font-size: 14px; line-height: 1.67; }
+
+  /* SCOLIA : produit phare, deux colonnes stables, tableau aéré. */
+  #main-content .jp-scolia-section { padding-block: clamp(90px, 8vw, 126px); }
+  #main-content .jp-scolia-grid {
+    grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr);
+    gap: clamp(58px, 6vw, 102px);
+  }
+  #main-content .jp-scolia-main h2 {
+    max-width: 18ch;
+    font-size: clamp(2.55rem, 3.05vw, 3.65rem);
+    line-height: 1.14;
+  }
+  #main-content .jp-scolia-main > p:not(.jp-overline) { max-width: 52ch; font-size: 15px; line-height: 1.75; }
+  #main-content .jp-scolia-index-row { padding-block: 19px; }
+  #main-content .jp-scolia-index-row strong { font-size: 16px; }
+  #main-content .jp-scolia-photo.jp-scolia-illustration { max-width: 100%; margin-bottom: 13px; }
+
+  /* En-têtes internes, appels à l'action et bas de page sans ruptures. */
+  #main-content .jp-inner-hero-layout { gap: clamp(40px, 5vw, 74px); }
+  #main-content .jp-inner-hero-copy h1,
+  #main-content .jp-page-heading h1 {
+    max-width: 21ch;
+    font-size: clamp(2.5rem, 3.2vw, 3.6rem);
+    line-height: 1.13;
+  }
+  #main-content .jp-inner-hero-lead,
+  #main-content .jp-page-heading-lead { max-width: 60ch; font-size: 17px; line-height: 1.7; }
+  #main-content .jp-finale { padding-block: 88px 104px; }
+  #main-content .jp-finale-layout { align-items: center; }
+  #main-content .jp-finale h2 {
+    max-width: 21ch;
+    font-size: clamp(2.75rem, 3.4vw, 4rem);
+    line-height: 1.12;
+  }
+  #main-content .jp-finale-link { gap: 22px; font-size: 16px; }
+  .jp-site-footer .jp-footer-title { max-width: 24ch; line-height: 1.2; }
+}
+
+@media (min-width: 1440px) {
+  #main-content .jp-hero .jp-hero-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
+  #main-content .jp-hero-main h1 { font-size: clamp(4rem, 4.25vw, 4.95rem); }
+  #main-content .jp-hero-art { width: min(100%, 670px); }
+  #main-content .jp-areas-layout { gap: 100px; }
+}
+
+@media (min-width: 1024px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  #main-content .jp-areas-list .jp-area-link:hover {
+    border-color: color-mix(in srgb, var(--primary) 27%, var(--line));
+    box-shadow: 0 18px 45px -33px rgb(10 25 58 / .34);
+    transform: translateY(-2px);
+  }
+  #main-content .jp-hsvc:hover { transform: translateY(-5px); }
+  #main-content .jp-method-step:hover { box-shadow: 0 24px 55px -38px rgb(10 25 58 / .32); }
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  #main-content .jp-areas-list .jp-area-link,
+  #main-content .jp-hsvc,
+  #main-content .jp-method-step { transition: none !important; transform: none !important; }
+}

@@ -327,3 +327,17 @@
     backface-visibility: visible;
   }
 }
+
+/* Petits laptops : priorité à la lecture, sans collision avec les comptes. */
+@media (min-width: 1024px) and (max-width: 1151px) {
+  #site-header .jp-header-inner { padding-inline: 25px; gap: 9px; }
+  #site-header .jp-header-navigation { justify-content: flex-start; }
+  #site-header nav[aria-label="Menu principal"] > .jp-nav-link:nth-child(4),
+  #site-header nav[aria-label="Menu principal"] > .jp-nav-link:nth-child(5) {
+    display: none;
+  }
+  #site-header .jp-nav-link { padding-inline: 8px; }
+  #site-header .jp-header-actions { padding-left: 6px; }
+  #site-header .jp-header-account a[href="/inscription"] { padding-inline: 11px; }
+  #site-header .jp-header-account a[href="/connexion"] { padding-inline: 7px; }
+}

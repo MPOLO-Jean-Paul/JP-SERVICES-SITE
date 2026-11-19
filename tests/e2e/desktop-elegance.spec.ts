@@ -79,9 +79,15 @@ test("Le nouvel en-tête desktop ne chevauche ni le menu ni les actions", async 
   }
 });
 
-test("Le menu repliable reste accessible sur les petits ordinateurs", async ({ page }) => {
+test("Les rubriques essentielles et le menu complet coexistent sur petits ordinateurs", async ({ page }) => {
   await page.setViewportSize({ width: 1100, height: 768 });
   await page.goto("/");
-  await expect(page.locator('#site-header nav[aria-label="Menu principal"]')).toBeHidden();
+  const nav = page.locator('#site-header nav[aria-label="Menu principal"]');
+  await expect(nav).toBeVisible();
+  await expect(nav.locator("a.jp-nav-link").nth(0)).toBeVisible();
+  await expect(nav.locator("a.jp-nav-link").nth(1)).toBeVisible();
+  await expect(nav.locator("a.jp-nav-link").nth(2)).toBeHidden();
   await expect(page.locator('#site-header button[aria-controls="mobile-drawer"]')).toBeVisible();
+  const viewportOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
+  expect(viewportOverflow).toBe(false);
 });

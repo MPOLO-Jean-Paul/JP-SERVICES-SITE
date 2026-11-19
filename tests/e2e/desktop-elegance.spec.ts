@@ -90,6 +90,16 @@ test("Les rubriques essentielles et le menu complet coexistent sur petits ordina
   await expect(page.locator('#site-header button[aria-controls="mobile-drawer"]')).toBeVisible();
   const viewportOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
   expect(viewportOverflow).toBe(false);
+
+  // À 1024 px, ne garder que les deux entrées principales avec le tiroir complet.
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await expect(nav.locator("a.jp-nav-link").nth(0)).toBeVisible();
+  await expect(nav.locator("a.jp-nav-link").nth(1)).toBeVisible();
+  await expect(nav.locator("a.jp-nav-link").nth(3)).toBeHidden();
+  await expect(nav.locator("a.jp-nav-link").nth(4)).toBeHidden();
+  await expect(page.locator('#site-header button[aria-controls="mobile-drawer"]')).toBeVisible();
+  const narrowOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
+  expect(narrowOverflow).toBe(false);
 });
 
 test("La recherche devient lisible sur grand écran sans changer le mobile", async ({ page }) => {
